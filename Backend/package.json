@@ -1,0 +1,19 @@
+{
+  "name": "super-treb-neb",
+  "version": "1.0.0",
+  "description": "backend nebula",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/david23539/superTreNeb.git"
+  },
+  "author": "David Vizcaino Perez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/david23539/superTreNeb/issues"
+  },
+  "homepage": "https://github.com/david23539/superTreNeb#readme"
+}
