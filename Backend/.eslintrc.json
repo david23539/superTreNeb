@@ -1,0 +1,36 @@
+{
+    "plugins": [
+        "security"
+    ],
+
+    "env": {
+        "amd": true,
+        "es6": true
+    },
+    "extends": [
+    "plugin:security/recommended",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+        "sourceType": "module"
+    },
+    "rules": {
+        "indent": [
+            "error",
+            "tab"
+        ],
+        "linebreak-style": [
+            "error",
+            "windows"
+        ],
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "semi": [
+            "error",
+            "never"
+        ],
+        "no-console": 0
+    }
+}

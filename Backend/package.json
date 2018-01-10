@@ -26,6 +26,8 @@
     "mongoose": "^4.13.9"
   },
   "devDependencies": {
+    "eslint-config-google": "^0.9.1",
+    "eslint-plugin-security": "^1.4.0",
     "nodemon": "^1.14.10"
   }
 }
