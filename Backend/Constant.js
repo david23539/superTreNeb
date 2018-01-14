@@ -10,8 +10,24 @@ const constant ={
 	},
 	api:{
 		MESSAGE_OK: 'El metodo esta funcionando',
-		SERVICE_OK: 'El servicio funciona'
+		SERVICE_OK: 'El servicio funciona',
 
+
+	},
+	httpCode: {
+		PETICION_CORRECTA: 200,
+		BAD_REQUEST: 400,
+		CONFLIC: 409,
+		INTERNAL_SERVER_ERROR: 500
+	},
+	functions:{
+		ERROR_PARAMETROS_ENTRADA: 'Los parametros de entrada nos son correctos',
+		USER_REGISTER_SUCCESS: 'Usuario registrado correctamente',
+		USER_REGISTER_ERROR: 'Ha habido un error con el registro del usuario',
+		USER_NO_EXIST: 'No existe ningun usuario con este email o nombre de usuario',
+		USER_EXIST: 'Ya existe un uauario con este nombre de usuario o email ',
+		ERRO_DROP_OBJECT: 'Error al eliminar objetos',
+		SUCCES_DROP_OBJECT: 'Exito al eliminar objetos'
 	}
 }
 module.exports = constant
