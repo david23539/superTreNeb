@@ -13,6 +13,8 @@ const Log = require('log'), log = new Log('info')
 const serviceUser = require('../service/user.service')
 const validationUser = require('../Validation/user.validation')
 const adapterUser = require('../adapter/user.adapter')
+const rolBackController = require('./rollBack.controller')
+const auditoriaController = require('./saveLogs.controller')
 
 function login(req, res) {
 	res.status(200).send({
@@ -27,7 +29,6 @@ function registerUser(req, res){
 	let newAddress = new Address()
 	let newPerson = new Persons()
 	if(validationUser.validationDataNewUser(params)){//TODO los parametros de entrada son correctos
-
 		User.findOne({stn_username: params.usuario.nombreUsuario}, (err, issetUser)=>{
 			if(err){
 				globalAuxiliar.errorPeticion(res)
@@ -48,6 +49,7 @@ function registerUser(req, res){
 								globalAuxiliar.errorPeticion(res)
 							}else if(hash){
 								params.usuario.password = hash
+
 								newUser = adapterUser.userDataAdapter(params)
 								try {
 									newUser.save((err, userStored) => {
@@ -61,19 +63,26 @@ function registerUser(req, res){
 												if(err){
 													globalAuxiliar.errorPeticion(res)
 													//TODO borrar usuario
+													rolBackController.rollBack('person', userStored._doc._id)
 												}else if(!personStored){
 													userAuxiliar.notRegisterUser(res)
 													////TODO borrar usuario
+													rolBackController.rollBack('person', userStored._doc._id)
 												}else {
+
 													newAddress = personStored._doc.stn_fk_address
 													newAddress.save((err, adressStored)=>{
 														if(err){
 															globalAuxiliar.errorPeticion(res)
 															//TODO borrar usuario y persona
+															rolBackController.rollBack('address', userStored._doc._id, personStored._doc._id)
 														}else if(!adressStored){
 															userAuxiliar.notRegisterUser(res)
 															////TODO borrar usuario y persona
+															rolBackController.rollBack('address', userStored._doc._id, personStored._doc._id)
 														}else{
+															auditoriaController.saveLogsData(userStored._doc.stn_username, constantFile.functions.USER_REGISTER_SUCCESS,
+																userStored._doc.stn_associatedDevice, params.usuario.navegador)
 															globalAuxiliar.registerSuccess(res, userStored, constantFile.functions.USER_REGISTER_SUCCESS)
 														}
 													})

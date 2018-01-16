@@ -10,6 +10,7 @@ function userDataAdapter(params){
 	user.stn_reminderPhrase = usuario.fraseRecordatorio
 	user.stn_associatedDevice = usuario.dispositivoAsociado
 	user.stn_state = usuario.estado
+	user.stn_role = 'ROLE_USER'
 	user.stn_person = personAdapter.personDataAdapter(params.persona)
 	return user
 }

@@ -1,6 +1,6 @@
 'use strict'
-
 const constantFile = require('../Constant')
+
 
 function errorPeticion(res){
 	res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({
@@ -15,6 +15,7 @@ function registerSuccess(res, object, message){
 	})
 }
 
+// eslint-disable-next-line no-undef
 module.exports = {
 	errorPeticion,
 	registerSuccess

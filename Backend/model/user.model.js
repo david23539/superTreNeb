@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const UserSchema = Schema({
+	stn_role: String,
 	stn_username:{
 		type:String,
 		require:true

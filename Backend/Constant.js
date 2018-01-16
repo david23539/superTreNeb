@@ -27,7 +27,13 @@ const constant ={
 		USER_NO_EXIST: 'No existe ningun usuario con este email o nombre de usuario',
 		USER_EXIST: 'Ya existe un uauario con este nombre de usuario o email ',
 		ERRO_DROP_OBJECT: 'Error al eliminar objetos',
-		SUCCES_DROP_OBJECT: 'Exito al eliminar objetos'
+		SUCCES_DROP_OBJECT: 'Exito al eliminar objetos',
+
+	},
+	messageLog:{
+		ERROR: 'Error en la generacion del logs',
+		SUCCESS_REGISTER_USER: 'Se ha registrado con exito el usuario ',
+		INFO_IP: 'con ip '
 	}
 }
 module.exports = constant
