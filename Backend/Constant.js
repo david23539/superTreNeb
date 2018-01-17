@@ -30,6 +30,10 @@ const constant ={
 		SUCCES_DROP_OBJECT: 'Exito al eliminar objetos',
 
 	},
+	regex:{
+		EMAIL:'^(([^<>()\\[\\]\\\\.,;:\\s@"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@"]+)*)|(".+"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$',
+		USERNAME: '^[0-9a-zA-Z]+$'
+	},
 	messageLog:{
 		ERROR: 'Error en la generacion del logs',
 		SUCCESS_REGISTER_USER: 'Se ha registrado con exito el usuario ',

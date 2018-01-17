@@ -4,6 +4,7 @@ const addressAdapter = require('./address.adapter')
 
 function personDataAdapter(personaParams) {
 	let person = new Person()
+
 	person.stn_name = personaParams.nombre
 	person.stn_lastname1 = personaParams.apellido1
 	person.stn_lastname2 = personaParams.apellido2
@@ -12,8 +13,11 @@ function personDataAdapter(personaParams) {
 	person.stn_dni = personaParams.dni
 	person.stn_email = personaParams.email
 	person.stn_image = personaParams.image
-	person.stn_fk_address = addressAdapter.addressDataAdapter(personaParams.direccion)
-
+	if(null != personaParams.direccion.provincia){
+		person.stn_fk_address = addressAdapter.addressDataAdapter(personaParams.direccion)
+    }else{
+        person.stn_fk_address = personaParams.direccion
+	}
 	return person
 }
 

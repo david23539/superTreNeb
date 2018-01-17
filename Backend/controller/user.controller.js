@@ -71,21 +71,27 @@ function registerUser(req, res){
 												}else {
 
 													newAddress = personStored._doc.stn_fk_address
-													newAddress.save((err, adressStored)=>{
-														if(err){
-															globalAuxiliar.errorPeticion(res)
-															//TODO borrar usuario y persona
-															rolBackController.rollBack('address', userStored._doc._id, personStored._doc._id)
-														}else if(!adressStored){
-															userAuxiliar.notRegisterUser(res)
-															////TODO borrar usuario y persona
-															rolBackController.rollBack('address', userStored._doc._id, personStored._doc._id)
-														}else{
-															auditoriaController.saveLogsData(userStored._doc.stn_username, constantFile.functions.USER_REGISTER_SUCCESS,
-																userStored._doc.stn_associatedDevice, params.usuario.navegador)
-															globalAuxiliar.registerSuccess(res, userStored, constantFile.functions.USER_REGISTER_SUCCESS)
-														}
-													})
+													if(null != newAddress.stn_province) {
+                                                        newAddress.save((err, adressStored) => {
+                                                            if (err) {
+                                                                globalAuxiliar.errorPeticion(res)
+                                                                //TODO borrar usuario y persona
+                                                                rolBackController.rollBack('address', userStored._doc._id, personStored._doc._id)
+                                                            } else if (!adressStored) {
+                                                                userAuxiliar.notRegisterUser(res)
+                                                                ////TODO borrar usuario y persona
+                                                                rolBackController.rollBack('address', userStored._doc._id, personStored._doc._id)
+                                                            } else {
+                                                                auditoriaController.saveLogsData(userStored._doc.stn_username, constantFile.functions.USER_REGISTER_SUCCESS,
+                                                                    userStored._doc.stn_associatedDevice, params.usuario.navegador)
+                                                                globalAuxiliar.registerSuccess(res, userStored, constantFile.functions.USER_REGISTER_SUCCESS)
+                                                            }
+                                                        })
+                                                    }else{
+                                                        auditoriaController.saveLogsData(userStored._doc.stn_username, constantFile.functions.USER_REGISTER_SUCCESS,
+                                                            userStored._doc.stn_associatedDevice, params.usuario.navegador)
+                                                        globalAuxiliar.registerSuccess(res, userStored, constantFile.functions.USER_REGISTER_SUCCESS)
+													}
 
 												}
 											})
@@ -114,7 +120,21 @@ function registerUser(req, res){
 	}
 }
 
+function login(req, res){
 
+	let params = req.body
+	if(validationUser.validationLoginData(params)){
+        res.status(constantFile.httpCode.PETICION_CORRECTA).send({
+            message: constantFile.api.MESSAGE_OK
+
+        })
+	}else{
+        res.status(constantFile.httpCode.BAD_REQUEST).send({
+            message: constantFile.functions.ERROR_PARAMETROS_ENTRADA,
+            parametros : params
+        })
+	}
+}
 
 // eslint-disable-next-line no-undef
 module.exports = {

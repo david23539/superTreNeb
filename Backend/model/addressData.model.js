@@ -6,6 +6,7 @@ const Schema = mongoose.Schema
 const AddressDataSchema = Schema({
 	stn_province:String,
 	stn_location: String,
+	stn_directionName: String,
 	stn_typeVia: String,
 	stn_postalCod: String,
 	stn_number: Number,

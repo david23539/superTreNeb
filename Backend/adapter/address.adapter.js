@@ -11,6 +11,7 @@ function addressDataAdapter(addresParams) {
 	address.stn_number = addresParams.numero
 	address.stn_floor = addresParams.piso
 	address.stn_door = addresParams.puerta
+	address.stn_directionName = addresParams.nombreCalle
 	return address
 
 
