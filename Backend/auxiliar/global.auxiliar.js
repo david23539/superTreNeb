@@ -9,7 +9,7 @@ function errorPeticion(res){
 }
 
 function registerSuccess(res, object, message){
-	res.status(constantFile.httpCode.PETICION_CORRECTA).send({
+	res.status(constantFile.httpCode.PETITION_CORRECT).send({
 		message: message,
 		object
 	})

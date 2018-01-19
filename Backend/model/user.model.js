@@ -14,11 +14,11 @@ const UserSchema = Schema({
 		require:true
 	},
 	stn_reminderPhrase: String,
-	stn_associatedDevice:String,
 	stn_state:{
 		type:Boolean,
 		require:true
 	},
+
 	stn_person: {type: Schema.ObjectId, ref: 'STN_Person'}
 
 })

@@ -11,10 +11,10 @@ const app = require('./app')
 mongoose.Promise = global.Promise
 
 
-mongoose.connect(constantFile.db.conectionUrl, {useMongoClient: true})
+mongoose.connect(constantFile.db.CONNECTION_URL, {useMongoClient: true})
 	.then(() =>{
 
-		log.info(constantFile.db.CONEXION_OK)
+		log.info(constantFile.db.CONNECTION_OK)
 
 		app.listen(port, ()=>{
 			log.info(constantFile.db.NODE_EXPRESS_OK)

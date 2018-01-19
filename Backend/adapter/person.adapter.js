@@ -13,11 +13,7 @@ function personDataAdapter(personaParams) {
 	person.stn_dni = personaParams.dni
 	person.stn_email = personaParams.email
 	person.stn_image = personaParams.image
-	if(null != personaParams.direccion.provincia){
-		person.stn_fk_address = addressAdapter.addressDataAdapter(personaParams.direccion)
-    }else{
-        person.stn_fk_address = personaParams.direccion
-	}
+	person.stn_fk_address = null != personaParams.direccion.provincia ? addressAdapter.addressDataAdapter(personaParams.direccion) : personaParams.direccion
 	return person
 }
 

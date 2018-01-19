@@ -3,14 +3,14 @@
 const constantFile = require('../Constant')
 
 function userExist(res) {
-	res.status(constantFile.httpCode.CONFLIC).send({
+	res.status(constantFile.httpCode.CONFLICT).send({
 		message:constantFile.functions.USER_EXIST
 	})
 
 }
 
 function notRegisterUser(res) {
-	res.status(constantFile.httpCode.CONFLIC).send({
+	res.status(constantFile.httpCode.CONFLICT).send({
 		message:constantFile.functions.USER_REGISTER_ERROR
 	})
 }
