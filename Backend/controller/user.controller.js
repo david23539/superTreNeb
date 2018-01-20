@@ -21,6 +21,7 @@ const jwtService = require('../service/jwt.service')
 
 function registerUser(req, res){
 
+
 	const params = req.body
 	let newUser = new User()
 	let newAddress = new Address()
@@ -135,22 +136,24 @@ function login(req, res){
 	let params = req.body
 	if(validationUser.validationLoginData(params)){
 		if(params.type === 'usuario') {
-			User.findOne({stn_username: params.usuario.nombreUsuario}, (err, userStorage) => {
+			User.findOne({stn_username: params.usuario.nombreUsuario, stn_state:true}, (err, userStorage) => {
 				if(getData(err, userStorage, params.usuario.password, serviceUser.comparePassword)){
+
 					if(params.getToken){
+						auditoriaController.saveLogsData(userStorage._doc.stn_username, constantFile.functions.USER_LOGIN_SUCCESS_TOKEN,params.direccionIp.direccionData, params.direccionIp.navegador)
 						res.status(constantFile.httpCode.PETITION_CORRECT).send({
 							token: jwtService.createToken(userStorage)
 						})
 					}else{
+						auditoriaController.saveLogsData(userStorage._doc.stn_username, constantFile.functions.USER_LOGIN_SUCCESS,params.direccionIp.direccionData, params.direccionIp.navegador)
 						res.status(constantFile.httpCode.PETITION_CORRECT).send({
 							message: constantFile.api.MESSAGE_OK
-
 						})
 					}
-
-
+				}else if(userStorage){
+					checkIp(userStorage, params, res)
 				}else{
-					globalAuxiliar.errorPeticion(res)
+					userAuxiliar.userNoExist(res)
 				}
 			})
 		}else if(params.type === 'persona'){
@@ -158,20 +161,24 @@ function login(req, res){
 				if(err || !person){
 					globalAuxiliar.errorPeticion(res)
 				}else {
-					User.findOne({stn_person: person}, (err, userStorage) => {
+					User.findOne({stn_person: person, stn_state:true}, (err, userStorage) => {
 						if (getData(err, userStorage, params.usuario.password, serviceUser.comparePassword)) {
 							if(params.getToken){
+								auditoriaController.saveLogsData(userStorage._doc.stn_username, constantFile.functions.USER_LOGIN_SUCCESS_TOKEN,params.direccionIp.direccionData, params.direccionIp.navegador)
 								res.status(constantFile.httpCode.PETITION_CORRECT).send({
 									token: jwtService.createToken(userStorage)
 								})
 							}else{
+								auditoriaController.saveLogsData(userStorage._doc.stn_username, constantFile.functions.USER_LOGIN_SUCCESS,params.direccionIp.direccionData, params.direccionIp.navegador)
 								res.status(constantFile.httpCode.PETITION_CORRECT).send({
 									message: constantFile.api.MESSAGE_OK
 
 								})
 							}
-						} else {
-							globalAuxiliar.errorPeticion(res)
+						} else if(userStorage){
+							checkIp(userStorage, params, res)
+						}else{
+							userAuxiliar.userNoExist(res)
 						}
 					})
 				}
@@ -195,7 +202,35 @@ function getData(err, data, password, fnc){
 	}
 }
 
+function checkIp(userStorage, params, res){
+	DirectionIp.findOne({stn_user: userStorage._doc._id}, (err, data)=>{
+		if(err || !data){
+			auditoriaController.saveLogsData(userStorage._doc.stn_username, err, params.direccionIp.direccionData, params.direccionIp.navegador)
+		}else if((data._doc.stn_tryNumber ++) >= 2){
+			DirectionIp.findByIdAndUpdate(data._id,{$set:{stn_tryNumber:data._doc.stn_tryNumber, stn_status:false}}, {new: true}, (err, data)=>{
+				if(data){
+					auditoriaController.saveLogsData(userStorage._doc.stn_username, constantFile.functions.USER_BLOCK,params.direccionIp.direccionData, params.direccionIp.navegador)
+				}
+			})
 
+			User.update({ _id: userStorage._id }, { $set: { stn_state: false}}, (err, data)=>{
+				if(err || !data){
+					log.info(err)
+				}else{
+					log.info(data)
+				}
+			})
+
+		}else{
+			DirectionIp.findByIdAndUpdate(data._id,{$set:{stn_tryNumber:data._doc.stn_tryNumber++}}, {new: true}, (err, data)=>{
+				if(data){
+					auditoriaController.saveLogsData(userStorage._doc.stn_username, constantFile.functions.LOGIN_TRY_FAIL,params.direccionIp.direccionData, params.direccionIp.navegador)
+				}
+			})
+		}
+	})
+	userAuxiliar.userNoExist(res)
+}
 // eslint-disable-next-line no-undef
 module.exports = {
 	login,

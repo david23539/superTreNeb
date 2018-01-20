@@ -32,13 +32,17 @@ const constant ={
 	functions:{
 		ERROR_PARAMETROS_ENTRADA: 'Los parametros de entrada nos son correctos',
 		USER_REGISTER_SUCCESS: 'Usuario registrado correctamente',
+		USER_LOGIN_SUCCESS_TOKEN: 'Usuario logeado con token correctamente',
+		USER_LOGIN_SUCCESS: 'Usuario logeado sin token correctamente',
 		USER_REGISTER_ERROR: 'Ha habido un error con el registro del usuario',
-		USER_NO_EXIST: 'No existe ningun usuario con este email o nombre de usuario',
+		USER_NO_EXIST: 'No existe ningun usuario con estas credenciales o esta bloqueado',
 		USER_EXIST: 'Ya existe un uauario con este nombre de usuario o email ',
 		ERROR_DROP_OBJECT: 'Error al eliminar objetos',
 		SUCCESS_DROP_OBJECT: 'Exito al eliminar objetos',
 		ROL_ADMIN:'ROLE_ADMIN',
-		ROL_USER:'ROLE_USER'
+		ROL_USER:'ROLE_USER',
+		USER_BLOCK: 'Usuario bloqueado por exceso de intentos',
+		LOGIN_TRY_FAIL: 'aumento en uno el numero de intentos'
 
 	},
 	regex:{

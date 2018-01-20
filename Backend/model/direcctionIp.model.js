@@ -9,7 +9,7 @@ const DirecctioIpSchema = Schema({
 	stn_status: Boolean,
 	stn_browser: String,
 	stn_tryNumber: Number,
-	stn_user: {type: Schema.ObjectId, ref: 'STN_User'}
+	stn_user: [{type: Schema.ObjectId, ref: 'STN_User'}]
 
 })
 // eslint-disable-next-line no-undef
