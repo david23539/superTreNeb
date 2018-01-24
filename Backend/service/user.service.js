@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 'use strict'
 const bcrypt = require('bcrypt-nodejs')
 const Log = require('log'), log = new Log('info')

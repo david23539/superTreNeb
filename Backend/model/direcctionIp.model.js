@@ -5,7 +5,7 @@ const Schema = mongoose.Schema
 
 
 const DirecctioIpSchema = Schema({
-	stn_directionIp: String,
+	stn_directionIp: [String],
 	stn_status: Boolean,
 	stn_browser: String,
 	stn_tryNumber: Number,

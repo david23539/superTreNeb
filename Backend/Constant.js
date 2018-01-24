@@ -54,7 +54,11 @@ const constant ={
 		ERROR_IP: 'ha ocurrido un error con el guardado de la ip',
 		SUCCESS_REGISTER_USER: 'Se ha registrado con exito el usuario ',
 		SUCCESS_REGISTER_IP: 'Se ha registrado con exito la ip ',
+		SUCCESS_COUNT_IP: 'Se ha restablecido el contador de intentos por ip a 0 ',
 		INFO_IP: 'con ip '
+	},
+	urls:{
+		CHANGE_IP:'/../template/changeIp.html'
 	}
 }
 module.exports = constant

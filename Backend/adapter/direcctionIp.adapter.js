@@ -1,15 +1,15 @@
 'use strict'
 
 const DirectionIp = require('../model/direcctionIp.model')
-const userAdapter = require('./user.adapter')
 
-function directionIpDataAdapter(params) {
+
+function directionIpDataAdapter(params, user) {
 	let directionIp = new DirectionIp()
 	directionIp.stn_directionIp = params.direccionIp.direccionData
 	directionIp.stn_status = true
 	directionIp.stn_tryNumber = 0
 	directionIp.stn_browser = params.direccionIp.navegador
-	directionIp.stn_user = userAdapter.userDataAdapter(params)
+	directionIp.stn_user = user
 
 
 	return directionIp

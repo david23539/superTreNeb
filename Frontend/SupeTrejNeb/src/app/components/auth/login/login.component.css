@@ -1,0 +1,12 @@
+.flexbox{
+  display: flex;
+  align-items: center;
+  height: 100vh;
+  margin-bottom: -20px;
+}
+.card{
+  flex: 1 0;
+
+}
+
+

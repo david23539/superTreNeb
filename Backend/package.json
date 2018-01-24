@@ -26,7 +26,8 @@
     "jwt-simple": "^0.5.1",
     "log": "^1.4.0",
     "moment": "^2.20.1",
-    "mongoose": "^4.13.9"
+    "mongoose": "^4.13.9",
+    "nodemailer": "^4.4.2"
   },
   "devDependencies": {
     "eslint-config-google": "^0.9.1",

@@ -18,7 +18,6 @@ const UserSchema = Schema({
 		type:Boolean,
 		require:true
 	},
-
 	stn_person: {type: Schema.ObjectId, ref: 'STN_Person'}
 
 })
