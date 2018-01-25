@@ -4,37 +4,39 @@
       <div class="card-content white-text">
         <div class="row">
          <h2 class="center">
-           SingIn
+           {{MAIN_LOGIN}}
          </h2>
           <h6 class="center card-title">
-            Hello! Sign in with your username or email
+            {{WELCOME}}
           </h6>
           <div class="col l4 offset-l4 m6 offset-m3">
-            <div class="row">
-              <div class="input-field col s12">
-                <i class="material-icons prefix">account_circle</i>
-                <input id="first_name" type="text" class="validate">
-                <label for="first_name">First Name</label>
+            <form #registerForm = "ngForm" (ngSubmit)="onSubmit()">
+              <div class="row">
+                <div class="input-field col s12">
+                  <i class="material-icons prefix">account_circle</i>
+                  <input id="username" minlength="5"  name="nameUser" #nameUser="ngModel" [(ngModel)]="usernames"  type="text" class="validate white-text">
+                  <label for="username">{{NAME_USER}}</label>
+                </div>
+                <div class="input-field col s12">
+                  <i class="material-icons prefix">lock</i>
+                  <input id="pass" minlength="8" name="contrasena" #contrasena="ngModel" [(ngModel)]="dataLogin.usuario.password" type="password" class="validate white-text">
+                  <label for="pass">{{PASSWORD}}</label>
+                </div>
+                <div class="input-field col s12">
+                  <label>
+                    <input type="checkbox" name="recordar" #recordar="ngModel" [(ngModel)]="recordarCredenciales" />
+                    <span>{{REMEMBER}}</span>
+                  </label>
+                </div>
               </div>
-              <div class="input-field col s12">
-                <i class="material-icons prefix">lock</i>
-                <input id="last_name" type="password" class="validate">
-                <label for="last_name">Last Name</label>
+              <div class="row" >
+                <div class="input-field col s12">
+                  <button class="btn waves-effect waves-light col s12" type="submit" name="action">{{ENTER}}
+                    <i class="material-icons right">send</i>
+                  </button>
+                </div>
               </div>
-              <div class="input-field col s12">
-                <label>
-                  <input type="checkbox" />
-                  <span>Recordar contraseña</span>
-                </label>
-              </div>
-            </div>
-            <div class="row" >
-              <div class="input-field col s12">
-                <button class="btn waves-effect waves-light col s12" type="submit" name="action">Submit
-                  <i class="material-icons right">send</i>
-                </button>
-              </div>
-            </div>
+            </form>
           </div>
         </div>
         <div class="card-content">
