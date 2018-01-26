@@ -15,8 +15,16 @@ export class LoginService {
     this.url = GLOBAL.url;
   }
 
-  login() {
-    console.log(this.url);
+  login(data_login, gettoken = null) {
+    if(gettoken != null){
+      data_login.gettoken = gettoken;
+    }else{
+      data_login.gettoken = "";
+    }
+    let param = JSON.stringify(data_login);
+    let header = new HttpHeaders({'Content-Type': 'application/json'});
+    return this._http.post(this.url+'/login', param, {headers:header})
+
   }
 
 }
