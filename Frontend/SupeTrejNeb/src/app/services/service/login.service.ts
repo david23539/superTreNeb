@@ -23,7 +23,7 @@ export class LoginService {
     }
     let param = JSON.stringify(data_login);
     let header = new HttpHeaders({'Content-Type': 'application/json'});
-    return this._http.post(this.url+'/login', param, {headers:header})
+    return this._http.post(this.url+'login', param, {headers:header})
 
   }
 
