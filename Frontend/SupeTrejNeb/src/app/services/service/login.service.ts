@@ -17,7 +17,7 @@ export class LoginService {
 
   login(data_login, gettoken = null) {
     if(gettoken != null){
-      data_login.gettoken = gettoken;
+      data_login.getToken = gettoken;
     }else{
       data_login.gettoken = "";
     }

@@ -17,12 +17,12 @@
               <div class="row">
                 <div class="input-field col s12">
                   <i class="material-icons prefix">account_circle</i>
-                  <input id="username" minlength="5"  name="nameUser" #nameUser="ngModel" [(ngModel)]="usernames"  type="text" [class]="claseFormulario">
+                  <input id="username" minlength="5"  name="nameUser" #nameUser="ngModel" autocomplete="false" [(ngModel)]="usernames"  type="text" [class]="claseFormulario">
                   <label for="username">{{NAME_USER}}</label>
                 </div>
                 <div class="input-field col s12">
                   <i class="material-icons prefix">lock</i>
-                  <input id="pass" minlength="8" name="contrasena" #contrasena="ngModel" [(ngModel)]="dataLogin.contrasena" type="password" [class]="claseFormulario">
+                  <input id="pass" minlength="5" name="contrasena" #contrasena="ngModel" [(ngModel)]="dataLogin.usuario.password" type="password" [class]="claseFormulario">
                   <label for="pass">{{PASSWORD}}</label>
                 </div>
                 <div class="input-field col s12">
@@ -39,6 +39,13 @@
                   </button>
                 </div>
               </div>
+
+
+              <!-- Modal Structure -->
+              <!--<div id="modal1" class="modal center">
+
+              </div>-->
+
             </form>
           </div>
         </div>
@@ -47,7 +54,28 @@
             <p>Don't have an account? Sign Up</p>
           </div>
         </div>
+
+
+
       </div>
     </div>
   </div>
+</div>
+<div class="qwerty flexbox center">
+  <div class="q1">
+  <div class="preloader-wrapper big active">
+    <div class="spinner-layer spinner-green-only">
+      <div class="circle-clipper left">
+        <div class="circle"></div>
+      </div>
+
+      <div class="gap-patch">
+        <div class="circle"></div>
+      </div>
+      <div class="circle-clipper center">
+        <div class="circle"></div>
+      </div>
+    </div>
+  </div>
+</div>
 </div>

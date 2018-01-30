@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import {Login} from "../../../model/login";
 import CryptoJS = require('crypto-js');
 import {LoginService} from "../../../services/service/login.service";
 import {GLOBAL} from "../../../services/global";
+
+
 
 
 @Component({
@@ -25,15 +27,22 @@ export class LoginComponent implements OnInit {
   public usernames: string;
   public credenciales = true;
   public recordarCredenciales:Boolean;
+  public token: any;
+  /*public elem: any;
+  public instance: any;*/
+
+  @ViewChild('hiddenLabel') label: ElementRef;
 
   constructor(private _loginService:LoginService) {
-    this.dataLogin = new Login("","","", "");
+    this.dataLogin = new Login({nombreUsuario:"", password:""}, {email:""},{direccionData:"",navegador:""});
     this.claseFormulario = 'validate white-text';
+
   }
 
   ngOnInit() {
-    console.log(this.getDataBrowser());
-    console.log(CryptoJS.SHA512("adios").toString());
+    /*this.elem = document.querySelector('.modal');
+    this.instance = M.Modal.init(this.elem, {dismissible: false});*/
+    //this.instance.open();
   }
 
   /*
@@ -61,6 +70,7 @@ export class LoginComponent implements OnInit {
     let version = '' + parseFloat(navigator.appVersion);
     let majorVersion = parseInt(navigator.appVersion, 10);
     let nameOffset, verOffset, ix;
+
 
     // Opera
     if ((verOffset = nAgt.indexOf('Opera')) != -1) {
@@ -214,26 +224,46 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(){
-
+    // this.instance.open();
     let regexp = new RegExp('^(([^<>()\\[\\]\\\\.,;:\\s@"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@"]+)*)|(".+"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$');
     let email = regexp.test(this.usernames);
     if(!email){
       regexp = new RegExp('^[0-9a-zA-Z]+$');
       let username = regexp.test(this.usernames);
       if(!username){
+        // this.instance.close();
         this.claseFormulario = 'invalid red-text';
         this.credenciales = false;
         this.usernames = '';
-        this.dataLogin.contrasena = "";
+        this.dataLogin.usuario.password = "";
+
       }else{
         this.claseFormulario = 'validate white-text';
+        this.dataLogin.usuario.nombreUsuario = this.usernames;
+        this.sendInfoLogin();
       }
     }else{
       this.claseFormulario = 'validate white-text';
-
+      this.dataLogin.persona.email = this.usernames;
+      this.sendInfoLogin();
     }
 
 
+  }
+
+  private sendInfoLogin(){
+    this.dataLogin.direccionIp.navegador = this.getDataBrowser().browser + this.getDataBrowser().browserVersion;
+    this._loginService.login(this.dataLogin, 'true').subscribe(
+      response=>{
+        console.log(response);
+        // this.instance.close();
+
+
+      },error=>{
+        console.log(error)
+        // this.instance.close();
+      }
+    )
   }
 
 }

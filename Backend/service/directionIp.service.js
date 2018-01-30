@@ -16,7 +16,7 @@ function seteoDataIp(params, userStorage){
 function compareIps(ipParam, ipData) {
 	let data = ipData
 	for (let i = 0; i <=data.length; i++){
-		if(ipParam === data[0][i]){
+		if(ipParam === data[i]){
 			return true
 		}
 	}

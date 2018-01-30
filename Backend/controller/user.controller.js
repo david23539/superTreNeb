@@ -29,6 +29,7 @@ function registerUser(req, res){
 	let newAddress = new Address()
 	let newPerson = new Persons()
 	let directionIp = new DirectionIp()
+	params.direccion.direccionData = req.connection.remoteAddress
 	if(validationUser.validationDataNewUser(params)){//TODO los parametros de entrada son correctos
 		User.findOne({stn_username: params.usuario.nombreUsuario}, (err, issetUser)=>{
 			if(err){
@@ -186,6 +187,7 @@ function extractMethodCheckIp(err, userStorage, params, res, ips) {
 function login(req, res){
 
 	let params = req.body
+	params.direccionIp.direccionData = req.connection.remoteAddress
 	let ips = []
 	if(validationUser.validationLoginData(params)){
 		if(params.type === 'usuario') {

@@ -1,11 +1,20 @@
 
 export class Login{
   constructor(
-    public usuario: String,
-    public contrasena: String,
-    public persona: String,
-    public direccionIp: String
+    public usuario: {
+      nombreUsuario: String,
+      password: String
+    },
+
+    public persona: {
+      email: String
+    },
+    public direccionIp: {
+      direccionData:String,
+      navegador: String
+    }
 
 
   ){}
 }
+
