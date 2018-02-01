@@ -4,12 +4,13 @@ import { Routes, RouterModule} from "@angular/router";
 //TODO componentes routing
 import { LoginComponent } from './components/auth/login/login.component';
 import {DashboardComponent} from "./components/dashboard/dashboard.component";
+import {AdminGuard} from "./guard/admin.guard";
 
 const appRoutes : Routes = [
   {path: '', component: LoginComponent, pathMatch: 'full'},
   {path: '', redirectTo : 'login', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
-  {path: 'dashboard', component: DashboardComponent},
+  {path: 'dashboard', component: DashboardComponent , canActivate: [AdminGuard]},
   {path: '**', component: LoginComponent},
 
  /* {path: '', component: HomeComponent, pathMatch: 'full'},

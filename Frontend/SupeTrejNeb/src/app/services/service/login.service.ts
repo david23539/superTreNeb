@@ -9,10 +9,11 @@ export class LoginService {
 
 
 
-
+  public token: String;
   public url: String;
   constructor( private _http: HttpClient) {
     this.url = GLOBAL.url;
+    this.token = "";
   }
 
   login(data_login, gettoken = null) {
@@ -25,6 +26,16 @@ export class LoginService {
     let header = new HttpHeaders({'Content-Type': 'application/json'});
     return this._http.post(this.url+'login', param, {headers:header})
 
+  }
+
+  public getToken(): String{//queda hacer pruebas para ver si esta vacio
+    if(localStorage.getItem('token')){
+      this.token = localStorage.getItem('token')
+    }else{
+      this.token = sessionStorage.getItem('token')
+    }
+
+    return this.token;
   }
 
 }

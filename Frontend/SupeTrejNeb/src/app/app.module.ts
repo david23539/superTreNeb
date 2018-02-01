@@ -6,14 +6,17 @@ import { HttpClientModule} from "@angular/common/http";
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { WaitLoadComponent } from './components/wait-load/wait-load.component';
+import {AdminGuard} from "./guard/admin.guard";
 
-
+import {LoginService} from "./services/service/login.service";
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    DashboardComponent
+    DashboardComponent,
+    WaitLoadComponent
 
   ],
   imports: [
@@ -22,7 +25,10 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     FormsModule,
     HttpClientModule
   ],
-  providers: [appRoutingProviders],
+  providers: [
+    LoginService,
+    AdminGuard,
+    appRoutingProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

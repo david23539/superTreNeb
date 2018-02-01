@@ -28,10 +28,11 @@ export class LoginComponent implements OnInit {
   public credenciales = true;
   public recordarCredenciales:Boolean;
   public token: any;
+  public show: Boolean = false;
   /*public elem: any;
   public instance: any;*/
 
-  @ViewChild('hiddenLabel') label: ElementRef;
+  //@ViewChild('hiddenLabel') label: ElementRef;
 
   constructor(private _loginService:LoginService) {
     this.dataLogin = new Login({nombreUsuario:"", password:""}, {email:""},{direccionData:"",navegador:""});
@@ -45,12 +46,10 @@ export class LoginComponent implements OnInit {
     //this.instance.open();
   }
 
-  /*
-  * Crea un identificado semi-unico para el navegador
-  * */
-  private createKey(data:string): string{
+
+  /*private createKey(data:string): string{
     return CryptoJS.SHA512(data).toString();
-  }
+  }*/
 
   private getDataBrowser():any{
     let unknown = '-';
@@ -223,14 +222,16 @@ export class LoginComponent implements OnInit {
     return jscd
   }
 
-  onSubmit(){
+  onSubmit():void{
     // this.instance.open();
+    this.show = true;
     let regexp = new RegExp('^(([^<>()\\[\\]\\\\.,;:\\s@"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@"]+)*)|(".+"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$');
     let email = regexp.test(this.usernames);
     if(!email){
       regexp = new RegExp('^[0-9a-zA-Z]+$');
       let username = regexp.test(this.usernames);
       if(!username){
+        this.show =false;
         // this.instance.close();
         this.claseFormulario = 'invalid red-text';
         this.credenciales = false;
@@ -251,19 +252,32 @@ export class LoginComponent implements OnInit {
 
   }
 
-  private sendInfoLogin(){
+  private sendInfoLogin(): void{
     this.dataLogin.direccionIp.navegador = this.getDataBrowser().browser + this.getDataBrowser().browserVersion;
     this._loginService.login(this.dataLogin, 'true').subscribe(
       response=>{
-        console.log(response);
+        this.token = response;
+        if(this.recordarCredenciales){
+          localStorage.setItem('token', this.token.token);
+        }else{
+          sessionStorage.setItem('token', this.token.token)
+        }
+        this.show = false;
         // this.instance.close();
 
 
       },error=>{
-        console.log(error)
+        console.log(error);
+        this.show = false;
         // this.instance.close();
       }
     )
   }
+  public logout(): void{
+    localStorage.clear();
+    sessionStorage.clear();
+  }
+
+
 
 }
