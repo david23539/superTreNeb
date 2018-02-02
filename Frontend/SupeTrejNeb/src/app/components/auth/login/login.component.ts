@@ -3,8 +3,7 @@ import {Login} from "../../../model/login";
 import CryptoJS = require('crypto-js');
 import {LoginService} from "../../../services/service/login.service";
 import {GLOBAL} from "../../../services/global";
-
-
+import { Router} from "@angular/router";
 
 
 @Component({
@@ -34,7 +33,7 @@ export class LoginComponent implements OnInit {
 
   //@ViewChild('hiddenLabel') label: ElementRef;
 
-  constructor(private _loginService:LoginService) {
+  constructor(private _loginService:LoginService, private  _router: Router) {
     this.dataLogin = new Login({nombreUsuario:"", password:""}, {email:""},{direccionData:"",navegador:""});
     this.claseFormulario = 'validate white-text';
 
@@ -259,8 +258,10 @@ export class LoginComponent implements OnInit {
         this.token = response;
         if(this.recordarCredenciales){
           localStorage.setItem('token', this.token.token);
+          this._router.navigate(['/dashboard']);
         }else{
-          sessionStorage.setItem('token', this.token.token)
+          sessionStorage.setItem('token', this.token.token);
+          this._router.navigate(['/dashboard']);
         }
         this.show = false;
         // this.instance.close();

@@ -42,7 +42,12 @@ function sendMailChangeIp(params, templateUrl, direccionEmailDestinatario ){
 	})
 }
 
+function sendMail(params, template, email){
+	this.sendMailChangeIp(params, template, email)
+}
+
 // eslint-disable-next-line no-undef
 module.exports={
-	sendMailChangeIp
+	sendMailChangeIp,
+	sendMail
 }

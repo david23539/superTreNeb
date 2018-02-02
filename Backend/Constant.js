@@ -14,7 +14,8 @@ const constant ={
 		AUTHENTICATE_FAIL: 'la peticion no tien la cabecera de autenticación',
 		EXPIRED_TOKEN:'El token ha expirado',
 		NO_VALID_TOKEN: 'El token no es valido',
-		ACCESS_DENIED: 'acceso denegado a esta zona'
+		ACCESS_DENIED: 'acceso denegado a esta zona',
+		ERROR_REQUEST: 'Error en la peticion '
 
 
 	},
@@ -42,7 +43,9 @@ const constant ={
 		ROL_ADMIN:'ROLE_ADMIN',
 		ROL_USER:'ROLE_USER',
 		USER_BLOCK: 'Usuario bloqueado por exceso de intentos',
-		LOGIN_TRY_FAIL: 'aumento en uno el numero de intentos'
+		LOGIN_TRY_FAIL: 'aumento en uno el numero de intentos',
+		EMAIL_NO_EXIT: 'No existe el email '
+
 
 	},
 	regex:{

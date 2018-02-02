@@ -6,6 +6,7 @@ const constantFile = require('./Constant')
 const app = express()
 //rutas
 const user_routes = require('./rutes/user.rutes')
+const person_router = require('./rutes/person.router')
 //const animal_routes = require('./rutes/animal')
 
 //configurar middlewares de body-pare
@@ -24,6 +25,7 @@ app.use((req,res,next)=>{
 })
 //rutas base
 app.use('/api', user_routes)
+app.use('/api', person_router)
 //app.use('/api', animal_routes)
 
 //rutas body-parse

@@ -7,8 +7,8 @@ import {DashboardComponent} from "./components/dashboard/dashboard.component";
 import {AdminGuard} from "./guard/admin.guard";
 
 const appRoutes : Routes = [
-  {path: '', component: LoginComponent, pathMatch: 'full'},
-  {path: '', redirectTo : 'login', pathMatch: 'full'},
+  {path: '', component: DashboardComponent, pathMatch: 'full'},
+  {path: '', redirectTo : 'dashboard', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
   {path: 'dashboard', component: DashboardComponent , canActivate: [AdminGuard]},
   {path: '**', component: LoginComponent},

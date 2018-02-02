@@ -235,6 +235,10 @@ function userObject(user, cb){
 	User.findById(user._id).populate({path:'stn_person'}).exec(cb)
 }
 
+function getUserByPersonId(id, cb){
+	User.find({stn_person:id}, cb)
+}
+
 function compareIp(UserId, cb){
 	DirectionIp.findOne({stn_user:UserId},cb)
 }
@@ -276,9 +280,16 @@ function checkIp(userStorage, params, res){
 	})
 	userAuxiliar.userNoExist(res)
 }
+
+function changePassword(req, res){
+
+}
+
 // eslint-disable-next-line no-undef
 module.exports = {
 	login,
 	registerUser,
-	userObject
+	userObject,
+	changePassword,
+	getUserByPersonId
 }
