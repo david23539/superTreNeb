@@ -1,5 +1,5 @@
 'use strict'
-const constantFile = require('../Constant')
+const constantFile = require('../utils/Constant')
 
 // eslint-disable-next-line no-undef
 exports.isAdmin = function (req, res, next) {

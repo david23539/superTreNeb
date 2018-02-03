@@ -3,7 +3,7 @@
 const jwt = require('jwt-simple')
 const moment = require('moment')
 const secret = 'secret_key_token_for_superTrebNeb_project_1_df2es7f7'
-const constantFile = require('../Constant')
+const constantFile = require('../utils/Constant')
 
 // eslint-disable-next-line no-undef
 exports.ensureAuth = function(req, res, next){

@@ -1,5 +1,5 @@
 'use strict'
-const constantFile = require('../Constant')
+const constantFile = require('../utils/Constant')
 
 function validateDataPersonEmail(params){
 	const regexEmail = new RegExp(constantFile.regex.EMAIL)

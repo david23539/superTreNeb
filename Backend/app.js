@@ -2,11 +2,11 @@
 
 const express = require('express')
 const bodyParser = require('body-parser')
-const constantFile = require('./Constant')
+const constantFile = require('./utils/Constant')
 const app = express()
 //rutas
-const user_routes = require('./rutes/user.rutes')
-const person_router = require('./rutes/person.router')
+const user_routes = require('./rutes/user.route')
+const person_router = require('./rutes/person.route')
 //const animal_routes = require('./rutes/animal')
 
 //configurar middlewares de body-pare

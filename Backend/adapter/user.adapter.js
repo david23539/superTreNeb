@@ -2,7 +2,7 @@
 
 const User = require('../model/user.model')
 const personAdapter = require('./person.adapter')
-const constantFile = require('../Constant')
+const constantFile = require('../utils/Constant')
 
 function userDataAdapter(params){
 	let usuario = params.usuario

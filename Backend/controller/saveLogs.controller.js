@@ -2,7 +2,7 @@
 const Auditory = require('../model/auditory.model')
 const auditoryAdapter = require('../adapter/auditory.adapter')
 const Log = require('log'), log = new Log('info')
-const constantFile = require('../Constant')
+const constantFile = require('../utils/Constant')
 
 function saveLogsData(username, messaje, ip, browser){
 

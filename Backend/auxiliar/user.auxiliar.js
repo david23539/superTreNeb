@@ -1,6 +1,6 @@
 'use strict'
 
-const constantFile = require('../Constant')
+const constantFile = require('../utils/Constant')
 
 function userExist(res) {
 	res.status(constantFile.httpCode.CONFLICT).send({

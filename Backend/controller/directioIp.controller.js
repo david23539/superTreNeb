@@ -1,7 +1,7 @@
 'use strict'
 const auditoriaController = require('./saveLogs.controller')
 const DirectionIp = require('../model/direcctionIp.model')
-const constantFile = require('../Constant')
+const constantFile = require('../utils/Constant')
 const serviceIp = require('../service/directionIp.service')
 const emailService = require('../service/email.service')
 // const userController = require('./user.controller')

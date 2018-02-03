@@ -3,7 +3,7 @@
 
 const mongoose = require('mongoose')
 const Log = require('log'), log = new Log('info')
-const constantFile = require('./Constant')
+const constantFile = require('./utils/Constant')
 // eslint-disable-next-line no-undef
 const port = process.env.PORT || 3789
 const app = require('./app')

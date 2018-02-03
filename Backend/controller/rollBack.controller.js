@@ -2,7 +2,7 @@
 const Person = require('../model/personData.model')
 const User = require('../model/user.model')
 const Log = require('log'), log = new Log('info')
-const constantFile = require('../Constant')
+const constantFile = require('../utils/Constant')
 
 function rollBack(collection, idUsuario, idPersona = null){
 

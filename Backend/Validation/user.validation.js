@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-non-literal-regexp,security/detect-non-literal-regexp */
 'use strict'
-const constantFile = require('../Constant')
+const constantFile = require('../utils/Constant')
 
 function validationDataNewUser(params) {
 	let usuario = params.usuario

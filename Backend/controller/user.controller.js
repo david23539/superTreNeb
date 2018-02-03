@@ -8,7 +8,7 @@ const Address = require('../model/addressData.model')
 const DirectionIp = require('../model/direcctionIp.model')
 const directionIpController = require ('./directioIp.controller')
 const directionIpService = require('../service/directionIp.service')
-const constantFile = require('../Constant')
+const constantFile = require('../utils/Constant')
 const userAuxiliar = require('../auxiliar/user.auxiliar')
 const globalAuxiliar = require('../auxiliar/global.auxiliar')
 const Log = require('log'), log = new Log('info')
@@ -281,6 +281,10 @@ function checkIp(userStorage, params, res){
 	userAuxiliar.userNoExist(res)
 }
 
+function setCodeValidation(code, id, cb){
+	User.setCodeValidation(id, {$set:{stn_codeVerication:code}}, {new: true}, cb)
+}
+
 function changePassword(req, res){
 
 }
@@ -291,5 +295,6 @@ module.exports = {
 	registerUser,
 	userObject,
 	changePassword,
+	setCodeValidation,
 	getUserByPersonId
 }

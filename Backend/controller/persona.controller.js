@@ -2,7 +2,8 @@
 
 const validationPerson = require('../Validation/person.validation')
 const Person = require('../model/personData.model')
-const constantFile = require('../Constant')
+
+const constantFile = require('../utils/Constant')
 const auditoriaController = require('./saveLogs.controller')
 const userController = require('./user.controller')
 const emailService = require('../service/email.service')
@@ -23,9 +24,20 @@ function sendCodeActivation(req, res) {
 				userController.getUserByPersonId(personStorage._id, (err, userStorage)=>{
 					if(userStorage){
 						//--------------------------QUEDA POR IMPLEMENTAR AQUI Y EN LA FUNCION compareCodeActivation()------------------------------------------
+						let codeVerification = (Math.random()* (Math.random() *100)).toString().replace('.','')
+						userController.setCodeValidation(codeVerification, userStorage._id, (err, userUpdateStorage)=>{
+							if(err || !userUpdateStorage){
+								auditoriaController.saveLogsData(userStorage._doc.stn_username, constantFile.api.ERROR_REQUEST + err, ip, params.navegador)
+								res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.functions.ERROR_GENERATE_CODE})
+							}else{
+
+								emailService.sendMail(emailAdapter.adapterParamsEmail(userStorage._id, ip, params.navegador), '', params.persona.email)//nos envia un correo con la clave y deja constacia en los logs
+							}
+						})
+
 						//GENERAR NUMERO ALEATORIO Y ASIGNARSELO AL USUARIO
 						//CREAR UNA PLANTILLA DINAMICA CON EL NUMERO ALEATORIO Y PASARLA A LA FUNCION DE ABAJO sendEmail(param, ¡¡¡¡TEMPLATE!!!!, email)
-						emailService.sendMail(emailAdapter.adapterParamsEmail(userStorage._id, ip, params.navegador), '', params.persona.email)//nos envia un correo con la clave y deja constacia en los logs
+
 						//ENVIO DE RESPUESTA AL CLIENTE
 						//----------------------logica el la funcion de comparar-------------
 						//LLAMADA AL CONTROLADOR DE USUARIO PARA VERIFICAR EL NUEMERO Y SI ES CORRECTO DEVOLVER UN TRUE Y PASAR A LA SOLICITACION DE LA NUEVA CLAVE

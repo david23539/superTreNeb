@@ -13,6 +13,7 @@ const UserSchema = Schema({
 		type:String,
 		require:true
 	},
+	stn_codeVerication:String,
 	stn_reminderPhrase: String,
 	stn_state:{
 		type:Boolean,
