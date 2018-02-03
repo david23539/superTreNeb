@@ -3,10 +3,17 @@
 const nodemailer = require('nodemailer')
 const auditoriaController = require('../controller/saveLogs.controller')
 const fs = require('fs')
+const constantFile = require('../utils/Constant')
 
 
 function sendMailChangeIp(params, templateUrl, direccionEmailDestinatario ){
-	const template = fs.readFileSync(__dirname + templateUrl, 'utf8')
+	let template = ''
+	if(templateUrl.search('<!DOCTYPE') !== -1){
+		template = templateUrl
+	}else{
+		template = fs.readFileSync(__dirname + templateUrl, 'utf8')
+	}
+
 	// eslint-disable-next-line no-unused-vars
 	nodemailer.createTestAccount((err, account) => {
 
@@ -31,23 +38,25 @@ function sendMailChangeIp(params, templateUrl, direccionEmailDestinatario ){
 		}
 
 		// send mail with defined transport object
+
+		// eslint-disable-next-line no-unused-vars
 		transporter.sendMail(mailOptions, (error, info) => {
 			if (error) {
 				auditoriaController.saveLogsData(params.usuario.nombreUsuario, error,params.direccionIp.direccionData, params.direccionIp.navegador)
 			}else{
-				auditoriaController.saveLogsData(params.usuario.nombreUsuario, nodemailer.getTestMessageUrl(info),params.direccionIp.direccionData, params.direccionIp.navegador)
+				auditoriaController.saveLogsData(params.usuario.nombreUsuario, constantFile.functions.EMAIL_SEND,params.direccionIp.direccionData, params.direccionIp.navegador)
 			}
 
 		})
 	})
 }
 
-function sendMail(params, template, email){
+function sendMails(params, template, email){
 	this.sendMailChangeIp(params, template, email)
 }
 
 // eslint-disable-next-line no-undef
 module.exports={
 	sendMailChangeIp,
-	sendMail
+	sendMails
 }

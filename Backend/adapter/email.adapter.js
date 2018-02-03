@@ -1,7 +1,15 @@
 'use strict'
 
 function adapterParamsEmail(user, ip, browser){
-	let params = ''
+	let params = {
+		usuario :{
+			nombreUsuario : ''
+		},
+		direccionIp:{
+			direccionData: '',
+			navegador: ''
+		}
+	}
 	params.usuario.nombreUsuario = user
 	params.direccionIp.direccionData = ip
 	params.direccionIp.navegador = browser

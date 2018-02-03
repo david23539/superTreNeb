@@ -45,7 +45,8 @@ const constant ={
 		USER_BLOCK: 'Usuario bloqueado por exceso de intentos',
 		LOGIN_TRY_FAIL: 'aumento en uno el numero de intentos',
 		EMAIL_NO_EXIT: 'No existe el email ',
-		ERROR_GENERATE_CODE: 'Error en la generación del codigo'
+		ERROR_GENERATE_CODE: 'Error en la generación del codigo',
+		EMAIL_SEND: 'El email se ha enviado'
 
 
 	},

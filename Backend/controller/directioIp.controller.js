@@ -57,10 +57,14 @@ function resetCount(idIp, params){
 	})
 }
 
+function findIp(ip, cb){
+	DirectionIp.find({stn_directionIp:ip}, cb)
+}
 
 // eslint-disable-next-line no-undef
 module.exports = {
 	registerNewIp,
 	addIpForUser,
-	resetCount
+	resetCount,
+	findIp
 }

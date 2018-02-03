@@ -13,8 +13,15 @@ function comparePassword(password, userDataPassword){
 
 }
 
+function encriptCodeVerification(code, cb){
+	bcrypt.hash(code,null, null, cb)
+}
+
+
+
 // eslint-disable-next-line no-undef
 module.exports={
 	registerNewUser,
-	comparePassword
+	comparePassword,
+	encriptCodeVerification
 }

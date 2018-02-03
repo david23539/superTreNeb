@@ -6,58 +6,60 @@ const Person = require('../model/personData.model')
 const constantFile = require('../utils/Constant')
 const auditoriaController = require('./saveLogs.controller')
 const userController = require('./user.controller')
+const userService = require('../service/user.service')
 const emailService = require('../service/email.service')
 const emailAdapter = require('../adapter/email.adapter')
-
+const htmlrenderService = require('../service/htmlCodeVerification.service')
 function sendCodeActivation(req, res) {
 	const params = req.body
 	const ip = req.connection.remoteAddress
 	if(validationPerson.validateDataPersonEmail(params)){
-		Person.find({stn_email:params.persona.email}, (err, personStorage)=>{
+		Person.find({stn_email:params.persona.email.toLowerCase()}, (err, personStorage)=>{
 			if(err){
 				auditoriaController.saveLogsData('undefined', constantFile.api.ERROR_REQUEST + err, ip, params.navegador)
 				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.api.ERROR_REQUEST})
-			}else if(!personStorage){
+			}else if(personStorage.length === 0){
 				auditoriaController.saveLogsData('undefined',constantFile.functions.EMAIL_NO_EXIT + params.persona.email, ip, params.navegador)
 				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.api.ERROR_REQUEST})
 			}else{
-				userController.getUserByPersonId(personStorage._id, (err, userStorage)=>{
-					if(userStorage){
-						//--------------------------QUEDA POR IMPLEMENTAR AQUI Y EN LA FUNCION compareCodeActivation()------------------------------------------
+				userController.getUserByPersonId(personStorage[0]._id, (err, userStorage)=>{
+					if(userStorage.length !== 0){
 						let codeVerification = (Math.random()* (Math.random() *100)).toString().replace('.','')
-						userController.setCodeValidation(codeVerification, userStorage._id, (err, userUpdateStorage)=>{
-							if(err || !userUpdateStorage){
-								auditoriaController.saveLogsData(userStorage._doc.stn_username, constantFile.api.ERROR_REQUEST + err, ip, params.navegador)
-								res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.functions.ERROR_GENERATE_CODE})
+						userService.encriptCodeVerification(codeVerification, (err, encriptCode)=>{
+							if(encriptCode){
+								userController.setCodeValidation(encriptCode, userStorage[0]._id, (err, userUpdateStorage)=>{
+									if(err || userUpdateStorage.length === 0){
+										auditoriaController.saveLogsData('undefined', constantFile.api.ERROR_REQUEST + err, ip, params.navegador)
+										res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.functions.ERROR_GENERATE_CODE})
+									}else{
+										emailService.sendMails(emailAdapter.adapterParamsEmail(userStorage[0]._doc.stn_username, ip, params.navegador), htmlrenderService.getHtmlCodeVerification(codeVerification), params.persona.email)//nos envia un correo con la clave y deja constacia en los logs
+										res.status(constantFile.httpCode.PETITION_CORRECT).send({message : constantFile.functions.EMAIL_SEND})
+									}
+								})
 							}else{
-
-								emailService.sendMail(emailAdapter.adapterParamsEmail(userStorage._id, ip, params.navegador), '', params.persona.email)//nos envia un correo con la clave y deja constacia en los logs
+								auditoriaController.saveLogsData('undefined', constantFile.api.ERROR_REQUEST + err, ip, params.navegador)
+								res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.functions.ERROR_GENERATE_CODE})
 							}
 						})
 
-						//GENERAR NUMERO ALEATORIO Y ASIGNARSELO AL USUARIO
-						//CREAR UNA PLANTILLA DINAMICA CON EL NUMERO ALEATORIO Y PASARLA A LA FUNCION DE ABAJO sendEmail(param, ¡¡¡¡TEMPLATE!!!!, email)
 
-						//ENVIO DE RESPUESTA AL CLIENTE
-						//----------------------logica el la funcion de comparar-------------
-						//LLAMADA AL CONTROLADOR DE USUARIO PARA VERIFICAR EL NUEMERO Y SI ES CORRECTO DEVOLVER UN TRUE Y PASAR A LA SOLICITACION DE LA NUEVA CLAVE
-						//SI ES TRUE ELIMINAR CLAVE ALEATORIA EN EL USUARIO PARA QUE NO SE REPITA O SE PUEDA VOLVER A USAR
+					}else{
+						auditoriaController.saveLogsData('undefined', constantFile.api.ERROR_REQUEST + err, ip, params.navegador)
+						res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.functions.ERROR_GENERATE_CODE})
 					}
 				})
 			}
 		})
-		//console.log(Math.random()* Math.random() *100)
+	}else{
+		auditoriaController.saveLogsData('undefined', constantFile.api.ERROR_REQUEST + params.persona.email, ip, params.navegador)
+		res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.functions.ERROR_PARAMETROS_ENTRADA})
 	}
-
-
 }
 
-function compareCodeActivation(req, res){
 
-}
 
 // eslint-disable-next-line no-undef
 module.exports ={
-	sendCodeActivation,
-	compareCodeActivation
+	sendCodeActivation
+
 }

@@ -32,6 +32,7 @@ function validationLoginData(params){
 }
 
 
+
 // eslint-disable-next-line no-undef
 module.exports = {
 	validationDataNewUser,

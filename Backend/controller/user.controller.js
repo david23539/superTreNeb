@@ -282,12 +282,53 @@ function checkIp(userStorage, params, res){
 }
 
 function setCodeValidation(code, id, cb){
-	User.setCodeValidation(id, {$set:{stn_codeVerication:code}}, {new: true}, cb)
+	User.findByIdAndUpdate(id, {$set:{stn_codeVerication:code}}, {new: true}, cb)
 }
 
 function changePassword(req, res){
 
 }
+
+function compareCodeActivation(req, res){
+	const params = req.body
+	const ip = req.connection.remoteAddress
+	//-----------------------QUEDA BUSCAR LA IP QUE NO ESTE DESABILITADA EN CASO AFIRMATIVO DENEGAR LA PETICION
+	//  CODIGO DE LA BUSQUEDA DE IP
+	serviceUser.encriptCodeVerification(params.code, (err, hash)=>{
+		if(hash){
+			User.findOne({stn_codeVerication:hash}, (err, data)=>{//si el codigo no esta relacionado se busca la ip si la ip no existe se añade, si extiste se comprueba que no este desabilitada
+				if(err){
+					auditoriaController.saveLogsData('undefined', constantFile.api.ERROR_REQUEST + err, ip, params.navegador)
+					res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.functions.ERROR_GENERATE_CODE})
+				}else if(!data){
+					///queda por implementar el bloqueo de ip
+					directionIpController.findIp(ip,(err, ipData)=>{
+						if(err){
+							auditoriaController.saveLogsData('undefined', constantFile.api.ERROR_REQUEST + err, ip, params.navegador)
+						}else if(!ipData){
+							//HABRÁ QUE HACER UNA LLAMADA PARA REGISTRAR LA NUEVA IP
+						}else{
+							//SI EXISTE Y TIENE 3 INTENTOS SE DESABILITA Y SI NO SE LE SUMA UNO AL NUMERO DE INTENTOS
+						}
+					})
+
+					/*auditoriaController.saveLogsData('undefined', constantFile.api.ERROR_REQUEST + err, ip, params.navegador)
+					res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.functions.ERROR_GENERATE_CODE})*/
+				}else{
+					//--------------------------------SE DEBUELVE UN TRUE
+
+
+					/*auditoriaController.saveLogsData('undefined', constantFile.api.ERROR_REQUEST + err, ip, params.navegador)
+					res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.functions.ERROR_GENERATE_CODE})*/
+				}
+			})
+		}
+	})
+//----------------------logica el la funcion de comparar-------------
+	//LLAMADA AL CONTROLADOR DE USUARIO PARA VERIFICAR EL NUEMERO Y SI ES CORRECTO DEVOLVER UN TRUE Y PASAR A LA SOLICITACION DE LA NUEVA CLAVE
+	//SI ES TRUE ELIMINAR CLAVE ALEATORIA EN EL USUARIO PARA QUE NO SE REPITA O SE PUEDA VOLVER A USAR
+}
+
 
 // eslint-disable-next-line no-undef
 module.exports = {
@@ -296,5 +337,6 @@ module.exports = {
 	userObject,
 	changePassword,
 	setCodeValidation,
-	getUserByPersonId
+	getUserByPersonId,
+	compareCodeActivation
 }
