@@ -315,7 +315,7 @@ function compareCodeActivation(req, res){
 					/*auditoriaController.saveLogsData('undefined', constantFile.api.ERROR_REQUEST + err, ip, params.navegador)
 					res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.functions.ERROR_GENERATE_CODE})*/
 				}else{
-					//--------------------------------SE DEBUELVE UN TRUE
+					//--------------------------------SE DEBUELVE UN TRUE Y SE ELIMINA LA CODIGO ALEATORIO DEL USUARIO
 
 
 					/*auditoriaController.saveLogsData('undefined', constantFile.api.ERROR_REQUEST + err, ip, params.navegador)
