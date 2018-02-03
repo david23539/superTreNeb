@@ -5,8 +5,8 @@ const bodyParser = require('body-parser')
 const constantFile = require('./utils/Constant')
 const app = express()
 //rutas
-const user_routes = require('./rutes/user.route')
-const person_router = require('./rutes/person.route')
+const user_routes = require('./routes/user.route')
+const person_router = require('./routes/person.route')
 //const animal_routes = require('./rutes/animal')
 
 //configurar middlewares de body-pare
