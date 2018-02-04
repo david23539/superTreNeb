@@ -3,7 +3,8 @@
 function adapterParamsFormat(){
 	let params = {
 		usuario :{
-			nombreUsuario : ''
+			nombreUsuario : '',
+			password: ''
 		},
 		direccionIp:{
 			direccionData: '',

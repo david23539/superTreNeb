@@ -30,3 +30,18 @@
 
 
 */
+.flexbox{
+  display: flex;
+  align-items: center;
+  height: 100vh;
+  margin-bottom: -20px;
+}
+
+.spinerCustom{
+  background: transparent !important;
+  height: 100vh;
+  box-shadow: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+}

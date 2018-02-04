@@ -20,7 +20,7 @@ const auditoriaController = require('./saveLogs.controller')
 const jwtService = require('../service/jwt.service')
 const userAdapter = require('../adapter/user.adapter')
 const adapterParams = require('../adapter/params.adapter')
-// const personController = require('./persona.controller')
+
 
 function registerUser(req, res){
 
@@ -352,8 +352,10 @@ function compareCodeActivation(req, res){
 			}else{
 				//--------------------------------SE DEBUELVE UN TRUE Y SE ELIMINA LA CODIGO ALEATORIO DEL USUARIO
 				data._doc.stn_codeVerication = ''
-				serviceUser.registerNewUser(params.password, (hash)=>{
-					if(!hash){
+				let password = adapterParams.adapterParamsFormat()
+				password.usuario.password = params.password
+				serviceUser.registerNewUser(password, (err, hash)=>{
+					if(err || !hash){
 						auditoriaController.saveLogsData(data._doc.stn_username, constantFile.api.ERROR_REQUEST + err, ip, params.navegador)
 						res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.api.ERROR_REQUEST})
 					}else{
@@ -363,7 +365,6 @@ function compareCodeActivation(req, res){
 								auditoriaController.saveLogsData(data._doc.stn_username, constantFile.functions.FAIL_GENERATE_PASS, ip, params.navegador)
 								res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.api.ERROR_REQUEST})
 							}else{
-								//implemetar el envio de email confirmando el cambio
 								res.status(constantFile.httpCode.PETITION_CORRECT).send({result : true})
 							}
 						})

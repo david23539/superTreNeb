@@ -10,13 +10,15 @@ import { WaitLoadComponent } from './components/wait-load/wait-load.component';
 import {AdminGuard} from "./guard/admin.guard";
 
 import {LoginService} from "./services/service/login.service";
+import { RecoverUserComponent } from './components/auth/recover-user/recover-user.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     DashboardComponent,
-    WaitLoadComponent
+    WaitLoadComponent,
+    RecoverUserComponent
 
   ],
   imports: [

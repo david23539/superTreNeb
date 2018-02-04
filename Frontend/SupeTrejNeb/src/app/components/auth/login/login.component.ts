@@ -21,6 +21,7 @@ export class LoginComponent implements OnInit {
   public ENTER = "Entrar";
   public WELCOME = "Introduzca sus credenciales";
   public ERROR_CREDENCIALS = "Introduzca sus credenciales correctamente";
+  public RECOVER_PASSWORD = "Para recuperar su cuenta pulse ";
   public claseFormulario = '';
   public dataLogin:Login;
   public usernames: string;

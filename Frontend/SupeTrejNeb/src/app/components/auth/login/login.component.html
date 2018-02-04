@@ -17,12 +17,12 @@
               <div class="row">
                 <div class="input-field col s12">
                   <i class="material-icons prefix">account_circle</i>
-                  <input id="username" minlength="5"  name="nameUser" #nameUser="ngModel" autocomplete="false" [(ngModel)]="usernames"  type="text" [class]="claseFormulario">
+                  <input id="username" minlength="5"  name="nameUser" #nameUser="ngModel" autocomplete="false" [(ngModel)]="usernames"  type="text" [class]="claseFormulario" required>
                   <label for="username">{{NAME_USER}}</label>
                 </div>
                 <div class="input-field col s12">
                   <i class="material-icons prefix">lock</i>
-                  <input id="pass" minlength="5" name="contrasena" #contrasena="ngModel" [(ngModel)]="dataLogin.usuario.password" type="password" [class]="claseFormulario">
+                  <input id="pass" minlength="5" name="contrasena" #contrasena="ngModel" [(ngModel)]="dataLogin.usuario.password" type="password" [class]="claseFormulario" required>
                   <label for="pass">{{PASSWORD}}</label>
                 </div>
                 <div class="input-field col s12">
@@ -34,7 +34,7 @@
               </div>
               <div class="row" >
                 <div class="input-field col s12">
-                  <button class="btn waves-effect waves-light col s12" type="submit" name="action">{{ENTER}}
+                  <button class="btn waves-effect waves-light col s12" type="submit" name="action" required>{{ENTER}}
                     <i class="material-icons right">send</i>
                   </button>
                 </div>
@@ -51,7 +51,7 @@
         </div>
         <div class="card-content">
           <div class="col s12 center">
-            <p>Don't have an account? Sign Up</p>
+            <p>{{RECOVER_PASSWORD}} <a [routerLink]="['/recover-user']">aquí</a></p>
           </div>
         </div>
 

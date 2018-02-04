@@ -5,27 +5,17 @@ import { Routes, RouterModule} from "@angular/router";
 import { LoginComponent } from './components/auth/login/login.component';
 import {DashboardComponent} from "./components/dashboard/dashboard.component";
 import {AdminGuard} from "./guard/admin.guard";
+import {RecoverUserComponent} from "./components/auth/recover-user/recover-user.component";
 
 const appRoutes : Routes = [
-  {path: '', component: DashboardComponent, pathMatch: 'full'},
-  {path: '', redirectTo : 'dashboard', pathMatch: 'full'},
+  {path: '', component: DashboardComponent, pathMatch: 'full',canActivate: [AdminGuard]},
+  {path: '', redirectTo : 'dashboard', pathMatch: 'full',canActivate: [AdminGuard]},
   {path: 'login', component: LoginComponent},
+  {path: 'recover-user', component:RecoverUserComponent},
   {path: 'dashboard', component: DashboardComponent , canActivate: [AdminGuard]},
-  {path: '**', component: LoginComponent},
+  {path: '**', component: LoginComponent}
 
- /* {path: '', component: HomeComponent, pathMatch: 'full'},
-  {path: '', redirectTo : 'home', pathMatch: 'full'},
-  {path: 'home', component: HomeComponent},
-  {path: 'parques', component: ParquesComponent},
-  {path: 'tienda', component: TiendaComponent},
-  {path: 'contacto', component: ContactoComponent},
-  {path: 'animals', component: AnimalsComponent},
-  {path: 'keepers', component: KeepersComponent},
-  {path: 'login', component: LoginComponent},
-  {path: 'registro', component: RegisterComponent},
-  {path: 'mis-datos', component: UserEditComponent},
-  {path: 'get-animal/:id', component: AnimalDetailComponent},
-  {path: '**', component: HomeComponent}*/
+
 
 ];
 

@@ -14,6 +14,8 @@ function getHtmlCodeVerification(code){
 	return htmlHead+htmlBody
 }
 
+
+
 // eslint-disable-next-line no-undef
 module.exports={
 	getHtmlCodeVerification
