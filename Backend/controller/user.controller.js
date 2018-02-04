@@ -19,7 +19,8 @@ const rolBackController = require('./rollBack.controller')
 const auditoriaController = require('./saveLogs.controller')
 const jwtService = require('../service/jwt.service')
 const userAdapter = require('../adapter/user.adapter')
-
+const adapterParams = require('../adapter/params.adapter')
+// const personController = require('./persona.controller')
 
 function registerUser(req, res){
 
@@ -256,12 +257,11 @@ function checkIp(userStorage, params, res){
 		if(err || !data){
 			auditoriaController.saveLogsData(userStorage._doc.stn_username, err, params.direccionIp.direccionData, params.direccionIp.navegador)
 		}else if((data._doc.stn_tryNumber ++) >= 2){
-			DirectionIp.findByIdAndUpdate(data._id,{$set:{stn_tryNumber:data._doc.stn_tryNumber, stn_status:false}}, {new: true}, (err, data)=>{
+			/*DirectionIp.findByIdAndUpdate(data._id,{$set:{stn_tryNumber:data._doc.stn_tryNumber, stn_status:false}}, {new: true}, (err, data)=>{
 				if(data){
 					auditoriaController.saveLogsData(userStorage._doc.stn_username, constantFile.functions.USER_BLOCK,params.direccionIp.direccionData, params.direccionIp.navegador)
 				}
-			})
-
+			})*/
 			User.update({ _id: userStorage._id }, { $set: { stn_state: false}}, (err, data)=>{
 				if(err || !data){
 					log.info(err)
@@ -271,11 +271,18 @@ function checkIp(userStorage, params, res){
 			})
 
 		}else{
-			DirectionIp.findByIdAndUpdate(data._id,{$set:{stn_tryNumber:data._doc.stn_tryNumber++}}, {new: true}, (err, data)=>{
+			let tryNumber = data._doc.stn_tryNumber++
+			data._doc.stn_tryNumber = tryNumber
+			directionIpController.updateRecordIpAnonimus(data, (err, data)=>{
 				if(data){
 					auditoriaController.saveLogsData(userStorage._doc.stn_username, constantFile.functions.LOGIN_TRY_FAIL,params.direccionIp.direccionData, params.direccionIp.navegador)
 				}
 			})
+			/*DirectionIp.findByIdAndUpdate(data._id,{$set:{stn_tryNumber:data._doc.stn_tryNumber++}}, {new: true}, (err, data)=>{
+				if(data){
+					auditoriaController.saveLogsData(userStorage._doc.stn_username, constantFile.functions.LOGIN_TRY_FAIL,params.direccionIp.direccionData, params.direccionIp.navegador)
+				}
+			})*/
 		}
 	})
 	userAuxiliar.userNoExist(res)
@@ -285,48 +292,97 @@ function setCodeValidation(code, id, cb){
 	User.findByIdAndUpdate(id, {$set:{stn_codeVerication:code}}, {new: true}, cb)
 }
 
-function changePassword(req, res){
-
+function updateIpExtractMethod(data, ip, params, res) {
+	directionIpController.updateRecordIpAnonimus(data[0], (err, updateDataIp) => {
+		if (err || !updateDataIp) {
+			auditoriaController.saveLogsData('undefined', constantFile.api.ERROR_REQUEST + err, ip, params.navegador)
+			res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.api.ERROR_REQUEST})
+		} else {
+			auditoriaController.saveLogsData('undefined', constantFile.api.ERROR_REQUEST + err, ip, params.navegador)
+			res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.api.ERROR_REQUEST})//actualizada ip con fallo al introducir codigo
+		}
+	})
 }
 
 function compareCodeActivation(req, res){
 	const params = req.body
 	const ip = req.connection.remoteAddress
+	// const ip = '192.168.123.123.456'
+	let userUndefined = new User()
 	//-----------------------QUEDA BUSCAR LA IP QUE NO ESTE DESABILITADA EN CASO AFIRMATIVO DENEGAR LA PETICION
-	//  CODIGO DE LA BUSQUEDA DE IP
-	serviceUser.encriptCodeVerification(params.code, (err, hash)=>{
-		if(hash){
-			User.findOne({stn_codeVerication:hash}, (err, data)=>{//si el codigo no esta relacionado se busca la ip si la ip no existe se añade, si extiste se comprueba que no este desabilitada
-				if(err){
-					auditoriaController.saveLogsData('undefined', constantFile.api.ERROR_REQUEST + err, ip, params.navegador)
-					res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.functions.ERROR_GENERATE_CODE})
-				}else if(!data){
-					///queda por implementar el bloqueo de ip
-					directionIpController.findIp(ip,(err, ipData)=>{
-						if(err){
-							auditoriaController.saveLogsData('undefined', constantFile.api.ERROR_REQUEST + err, ip, params.navegador)
-						}else if(!ipData){
-							//HABRÁ QUE HACER UNA LLAMADA PARA REGISTRAR LA NUEVA IP
+	// serviceUser.compareCodeVerification(params.code, (err, hash)=>{
+	if(validationUser.validationCodeData(params.code)){
+		User.findOne({stn_codeVerication:params.code}, (err, data)=>{//si el codigo no esta relacionado se busca la ip si la ip no existe se añade, si extiste se comprueba que no este desabilitada
+			if(err){
+				auditoriaController.saveLogsData('undefined', constantFile.api.ERROR_REQUEST + err, ip, params.navegador)
+				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.functions.ERROR_GENERATE_CODE})
+			}else if(!data){
+				directionIpController.findIp(ip,(err, ipData)=>{
+					if(err){
+						auditoriaController.saveLogsData('undefined', constantFile.api.ERROR_REQUEST + err, ip, params.navegador)
+						res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.api.ERROR_REQUEST})
+					}else if(ipData.length === 0){
+						let paramsAdapter = adapterParams.adapterParamsFormat()//esto crea el esquema de los parametros de entrada que seran pasado a otras funciones
+						paramsAdapter.direccionIp.direccionData = ip
+						paramsAdapter.direccionIp.navegador = params.navegador
+
+						let ipObject = adapterDirectionIp.directionIpDataAdapter(paramsAdapter, userUndefined)
+						directionIpController.registerNewIpAnonimus(ipObject, (err, newIpData)=>{
+							if(err || !newIpData){
+								auditoriaController.saveLogsData('undefined', constantFile.api.ERROR_REQUEST + err, ip, params.navegador)
+								res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.api.ERROR_REQUEST})
+							}else{
+								auditoriaController.saveLogsData('undefined', constantFile.api.ERROR_REQUEST + err, ip, params.navegador)
+								res.status(constantFile.httpCode.PETITION_CORRECT).send({message : constantFile.api.ERROR_REQUEST})//registrada ip con fallo al introducir codigo
+							}
+						})
+					}else if(!ipData[0]._doc.stn_status){
+						let tryNumber = ipData[0]._doc.stn_tryNumber
+						tryNumber++
+						if(tryNumber > 2){
+							ipData[0]._doc.stn_tryNumber = tryNumber
+							ipData[0]._doc.stn_status = true
+							updateIpExtractMethod(ipData, ip, params, res)// bloqueo ip
 						}else{
-							//SI EXISTE Y TIENE 3 INTENTOS SE DESABILITA Y SI NO SE LE SUMA UNO AL NUMERO DE INTENTOS
+							ipData[0]._doc.stn_tryNumber = tryNumber
+							updateIpExtractMethod(ipData, ip, params, res)//+ 1 el numero de intentos
 						}
-					})
-
-					/*auditoriaController.saveLogsData('undefined', constantFile.api.ERROR_REQUEST + err, ip, params.navegador)
-					res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.functions.ERROR_GENERATE_CODE})*/
-				}else{
-					//--------------------------------SE DEBUELVE UN TRUE Y SE ELIMINA LA CODIGO ALEATORIO DEL USUARIO
-
-
-					/*auditoriaController.saveLogsData('undefined', constantFile.api.ERROR_REQUEST + err, ip, params.navegador)
-					res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.functions.ERROR_GENERATE_CODE})*/
-				}
-			})
-		}
-	})
+					}
+				})
+			}else{
+				//--------------------------------SE DEBUELVE UN TRUE Y SE ELIMINA LA CODIGO ALEATORIO DEL USUARIO
+				data._doc.stn_codeVerication = ''
+				serviceUser.registerNewUser(params.password, (hash)=>{
+					if(!hash){
+						auditoriaController.saveLogsData(data._doc.stn_username, constantFile.api.ERROR_REQUEST + err, ip, params.navegador)
+						res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.api.ERROR_REQUEST})
+					}else{
+						data._doc.stn_password = hash
+						updateUser(data, (err, dataUserUpdate)=>{
+							if(err || !dataUserUpdate){
+								auditoriaController.saveLogsData(data._doc.stn_username, constantFile.functions.FAIL_GENERATE_PASS, ip, params.navegador)
+								res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.api.ERROR_REQUEST})
+							}else{
+								//implemetar el envio de email confirmando el cambio
+								res.status(constantFile.httpCode.PETITION_CORRECT).send({result : true})
+							}
+						})
+					}
+				})
+			}
+		})
+	}else{
+		auditoriaController.saveLogsData('undefined', constantFile.api.ERROR_REQUEST + params.code, ip, params.navegador)
+		res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.api.ERROR_REQUEST})
+	}
+	// })
 //----------------------logica el la funcion de comparar-------------
 	//LLAMADA AL CONTROLADOR DE USUARIO PARA VERIFICAR EL NUEMERO Y SI ES CORRECTO DEVOLVER UN TRUE Y PASAR A LA SOLICITACION DE LA NUEVA CLAVE
 	//SI ES TRUE ELIMINAR CLAVE ALEATORIA EN EL USUARIO PARA QUE NO SE REPITA O SE PUEDA VOLVER A USAR
+}
+
+function updateUser(userData, cb){
+	User.findByIdAndUpdate(userData._id, userData, {new:true}, cb)
 }
 
 
@@ -335,8 +391,8 @@ module.exports = {
 	login,
 	registerUser,
 	userObject,
-	changePassword,
 	setCodeValidation,
 	getUserByPersonId,
-	compareCodeActivation
+	compareCodeActivation,
+	updateUser
 }

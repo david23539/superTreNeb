@@ -10,7 +10,7 @@ const md_auth = require('../middleware/autenticate.middleware')
 api.post('/registerNewUser', UserController.registerUser)
 api.post('/login', UserController.login)
 api.post('/compareCode', UserController.compareCodeActivation)
-api.post('/newPass', UserController.changePassword)
+//api.post('/newPass', UserController.changePassword)
 
 // eslint-disable-next-line no-undef
 module.exports = api

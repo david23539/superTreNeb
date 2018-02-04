@@ -31,10 +31,15 @@ function validationLoginData(params){
 	return true
 }
 
+function validationCodeData(code){
+	const regexCode = new RegExp(constantFile.regex.CODE)
+	return (regexCode.test(code))
+}
 
 
 // eslint-disable-next-line no-undef
 module.exports = {
 	validationDataNewUser,
-	validationLoginData
+	validationLoginData,
+	validationCodeData
 }

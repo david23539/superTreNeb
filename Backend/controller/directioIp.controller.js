@@ -49,12 +49,20 @@ function registerData(err, data, params){//data es una instancia de la coleccion
 	}
 }
 
+function registerNewIpAnonimus(objectIp, cb){
+	objectIp.save(cb)
+}
+
 function resetCount(idIp, params){
 	DirectionIp.update({_id:idIp}, { $set: { stn_tryNumber: 0}},(err,data)=>{
 		if(!err && data){
 			auditoriaController.saveLogsData(params.usuario.nombreUsuario, constantFile.messageLog.SUCCESS_COUNT_IP,params.direccionIp.direccionData, params.direccionIp.navegador)
 		}
 	})
+}
+
+function updateRecordIpAnonimus(ipObject, cb){
+	DirectionIp.findByIdAndUpdate(ipObject._id, ipObject, {new: true}, cb)
 }
 
 function findIp(ip, cb){
@@ -66,5 +74,7 @@ module.exports = {
 	registerNewIp,
 	addIpForUser,
 	resetCount,
-	findIp
+	findIp,
+	registerNewIpAnonimus,
+	updateRecordIpAnonimus
 }

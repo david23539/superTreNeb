@@ -42,6 +42,7 @@ const constant ={
 		SUCCESS_DROP_OBJECT: 'Exito al eliminar objetos',
 		ROL_ADMIN:'ROLE_ADMIN',
 		ROL_USER:'ROLE_USER',
+		FAIL_GENERATE_PASS: 'Error al generar el hash',
 		USER_BLOCK: 'Usuario bloqueado por exceso de intentos',
 		LOGIN_TRY_FAIL: 'aumento en uno el numero de intentos',
 		EMAIL_NO_EXIT: 'No existe el email ',
@@ -52,7 +53,9 @@ const constant ={
 	},
 	regex:{
 		EMAIL:'^(([^<>()\\[\\]\\\\.,;:\\s@"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@"]+)*)|(".+"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$',
-		USERNAME: '^[0-9a-zA-Z]+$'
+		USERNAME: '^[0-9a-zA-Z]+$',
+		CODE: '^([0-9])*$'
+
 	},
 	messageLog:{
 		ERROR: 'Error en la generacion del logs',

@@ -1,15 +1,8 @@
 'use strict'
+const adapterParams = require('./params.adapter')
 
 function adapterParamsEmail(user, ip, browser){
-	let params = {
-		usuario :{
-			nombreUsuario : ''
-		},
-		direccionIp:{
-			direccionData: '',
-			navegador: ''
-		}
-	}
+	let params = adapterParams.adapterParamsFormat()
 	params.usuario.nombreUsuario = user
 	params.direccionIp.direccionData = ip
 	params.direccionIp.navegador = browser
