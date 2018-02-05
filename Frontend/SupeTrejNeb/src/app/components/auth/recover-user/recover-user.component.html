@@ -6,8 +6,6 @@
           <h3 class="center">
             {{TITLE_RECOVER_ACOUNT_EMAIL}}
           </h3>
-
-
           <h6 class="center card-title white-text">
             {{IF_EXIST_EMAIL}}
           </h6>
@@ -16,13 +14,13 @@
               <div class="row">
                 <div class="input-field col s12">
                   <i class="material-icons prefix">email</i>
-                  <input id="emailRecover" minlength="5"  name="emailRecover" #emailRecover="ngModel" autocomplete="false" type="email" [(ngModel)]="emailInputRecover" class="validate white-text" required>
+                  <input id="emailRecover" minlength="5"  name="emailRecover" #emailRecover="ngModel" autocomplete="false" (ngModelChange)="validateEmail()" type="email" [(ngModel)]="emailInputRecover" class="validate white-text" required>
                   <label for="emailRecover">{{EMAIL}}</label>
                 </div>
               </div>
               <div class="row" >
                 <div class="input-field col s12">
-                  <button class="btn waves-effect waves-light col s12" type="submit" name="action" [disabled]="emailInputRecover == ''" required="emailInputRecover">{{SEND_EMAIL}}
+                  <button class="btn waves-effect waves-light col s12" type="submit" name="action" [disabled]="butonEmailDisabled" required="emailInputRecover">{{SEND_EMAIL}}
                     <i class="material-icons right">send</i>
                   </button>
                 </div>
@@ -30,7 +28,7 @@
             </form>
           </div>
       </div>
+      </div>
     </div>
   </div>
-
 </div>
