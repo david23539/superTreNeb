@@ -20,7 +20,7 @@ function sendCodeActivation(req, res) {
 				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.api.ERROR_REQUEST})
 			}else if(personStorage.length === 0){
 				auditoriaController.saveLogsData('undefined',constantFile.functions.EMAIL_NO_EXIT + params.persona.email, ip, params.navegador)
-				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.api.ERROR_REQUEST})
+				res.status(constantFile.httpCode.PETITION_CORRECT).send({message : constantFile.api.ERROR_REQUEST})
 			}else{
 				userController.getUserByPersonId(personStorage[0]._id, (err, userStorage)=>{
 					if(userStorage.length !== 0){

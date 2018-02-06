@@ -11,6 +11,7 @@ import {AdminGuard} from "./guard/admin.guard";
 
 import {LoginService} from "./services/service/login.service";
 import { RecoverUserComponent } from './components/auth/recover-user/recover-user.component';
+import { NewPasswordComponent } from './components/auth/new-password/new-password.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { RecoverUserComponent } from './components/auth/recover-user/recover-use
     LoginComponent,
     DashboardComponent,
     WaitLoadComponent,
-    RecoverUserComponent
+    RecoverUserComponent,
+    NewPasswordComponent
 
   ],
   imports: [

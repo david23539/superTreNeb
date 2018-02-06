@@ -3,6 +3,8 @@ import { emailValidate} from "../../../validate/email.validate";
 import { RecoverUser} from "../../../model/recoverUser";
 import {DataBrowser} from "../../../utils/dataBrowser";
 import {RecoverUserService} from "../../../services/service/recover-user.service";
+import {Router} from "@angular/router";
+
 
 @Component({
   selector: 'recover-user',
@@ -22,7 +24,7 @@ export class RecoverUserComponent implements OnInit {
   public dataBrowser:any;
   public responseEmail:String;
 
-  constructor(private _getDataBrowser:DataBrowser, private _emailValid: emailValidate, private _recoverUser:RecoverUserService) {
+  constructor(private _getDataBrowser:DataBrowser, private _emailValid: emailValidate, private _recoverUser:RecoverUserService, private  _router: Router) {
     this.recoverUser = new RecoverUser({email: ""}, "");
 
   }
@@ -33,15 +35,14 @@ export class RecoverUserComponent implements OnInit {
   onSubmit(){
     this.recoverUser.persona.email = this.emailInputRecover;
     this.recoverUser.navegador = this.dataBrowser.browser + this.dataBrowser.browserVersion;
-    this._recoverUser.sendEmail( this.recoverUser).subscribe(
-      response=>{
-        this.responseEmail = response.message;
-        console.log(this.responseEmail);
+      this._recoverUser.sendEmail(this.recoverUser).subscribe(
+        response => {
+          this._router.navigate(['/new-password']);
+
+        }
+      )
 
 
-
-      }
-    )
   }
 
   validateEmail(){
