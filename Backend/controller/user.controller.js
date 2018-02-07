@@ -352,6 +352,7 @@ function compareCodeActivation(req, res){
 			}else{
 				//--------------------------------SE DEBUELVE UN TRUE Y SE ELIMINA LA CODIGO ALEATORIO DEL USUARIO
 				data._doc.stn_codeVerication = ''
+				data._doc.stn_state = true
 				let password = adapterParams.adapterParamsFormat()
 				password.usuario.password = params.password
 				serviceUser.registerNewUser(password, (err, hash)=>{
