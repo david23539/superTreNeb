@@ -29,8 +29,9 @@ export class RecoverUserComponent implements OnInit {
 
   }
   ngOnInit() {
-    this.dataBrowser = this._getDataBrowser.getDataBrowser();
+     this.dataBrowser = this._getDataBrowser.getDataBrowser();
   }
+
 
   onSubmit(){
     this.recoverUser.persona.email = this.emailInputRecover;
