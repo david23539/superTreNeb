@@ -14,7 +14,7 @@
               <div class="row">
                 <div class="input-field col s12">
                   <i class="material-icons prefix">email</i>
-                  <input id="emailRecover" minlength="5"  name="emailRecover" #emailRecover="ngModel" autocomplete="false" (ngModelChange)="validateEmail()" type="email" [(ngModel)]="emailInputRecover" class="validate white-text" required>
+                  <input id="emailRecover" minlength="5"  name="emailRecover" #emailRecover="ngModel" autocomplete="false" (keyup)="validateEmail()" type="email" [(ngModel)]="emailInputRecover" class="validate white-text" required>
                   <label for="emailRecover">{{EMAIL}}</label>
                 </div>
               </div>
