@@ -76,13 +76,15 @@ function findIp(ip, cb){
 
 function checkIpForBlock(req, res){
 	const ip = req.connection.remoteAddress
-	DirectionIp.findOne({stn_status:false, stn_directionIp:ip}, (err, dataIp)=>{
+	DirectionIp.findOne({stn_directionIp:ip}, (err, dataIp)=>{
 		if(err){
 			res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.api.ERROR_REQUEST})
 		}else if(!dataIp){
-			res.status(constantFile.httpCode.PETITION_CORRECT).send({status : true})
-		}else{
 			res.status(constantFile.httpCode.PETITION_CORRECT).send({status : false})
+		}else if(dataIp._doc.stn_status === false){
+			res.status(constantFile.httpCode.PETITION_CORRECT).send({status : false})
+		}else{
+			res.status(constantFile.httpCode.PETITION_CORRECT).send({status : true})
 		}
 	})
 }
