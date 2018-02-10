@@ -8,10 +8,12 @@ import { LoginComponent } from './components/auth/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { WaitLoadComponent } from './components/wait-load/wait-load.component';
 import {AdminGuard} from "./guard/admin.guard";
-
+import {TerminalBlockGuard} from "./guard/terminal-block.guard";
+import {CheckBlockClientTerminalService} from "./services/service/check-block-client-terminal.service";
 import {LoginService} from "./services/service/login.service";
 import { RecoverUserComponent } from './components/auth/recover-user/recover-user.component';
 import { NewPasswordComponent } from './components/auth/new-password/new-password.component';
+import { PageBlockComponent } from './components/auth/page-block/page-block.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,8 @@ import { NewPasswordComponent } from './components/auth/new-password/new-passwor
     DashboardComponent,
     WaitLoadComponent,
     RecoverUserComponent,
-    NewPasswordComponent
+    NewPasswordComponent,
+    PageBlockComponent
 
   ],
   imports: [
@@ -31,7 +34,9 @@ import { NewPasswordComponent } from './components/auth/new-password/new-passwor
   ],
   providers: [
     LoginService,
+    CheckBlockClientTerminalService,
     AdminGuard,
+    TerminalBlockGuard,
     appRoutingProviders],
   bootstrap: [AppComponent]
 })

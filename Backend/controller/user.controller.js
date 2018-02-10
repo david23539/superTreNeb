@@ -197,9 +197,11 @@ function login(req, res){
 			})
 		}else if(params.type === 'persona'){
 			Persons.findOne({stn_email:params.persona.email.toLowerCase()}, (err, person)=>{
-				if(err || !person){
+				if(err){
 					globalAuxiliar.errorPeticion(res)
-				}else {
+				}else if(!person) {
+					userAuxiliar.userNoExist(res)
+				}else{
 					User.findOne({stn_person: person, stn_state:true}, (err, userStorage) => {
 						if (getData(err, userStorage, params.usuario.password, serviceUser.comparePassword)) {
 							if(params.getToken){
@@ -225,7 +227,7 @@ function login(req, res){
 			})
 		}
 	}else{
-		res.status(constantFile.httpCode.BAD_REQUEST).send({
+		res.status(constantFile.httpCode.PETITION_CORRECT).send({
 			message: constantFile.functions.ERROR_PARAMETROS_ENTRADA,
 			parametros : params
 		})
@@ -257,11 +259,6 @@ function checkIp(userStorage, params, res){
 		if(err || !data){
 			auditoriaController.saveLogsData(userStorage._doc.stn_username, err, params.direccionIp.direccionData, params.direccionIp.navegador)
 		}else if((data._doc.stn_tryNumber ++) >= 2){
-			/*DirectionIp.findByIdAndUpdate(data._id,{$set:{stn_tryNumber:data._doc.stn_tryNumber, stn_status:false}}, {new: true}, (err, data)=>{
-				if(data){
-					auditoriaController.saveLogsData(userStorage._doc.stn_username, constantFile.functions.USER_BLOCK,params.direccionIp.direccionData, params.direccionIp.navegador)
-				}
-			})*/
 			User.update({ _id: userStorage._id }, { $set: { stn_state: false}}, (err, data)=>{
 				if(err || !data){
 					log.info(err)
@@ -269,7 +266,6 @@ function checkIp(userStorage, params, res){
 					log.info(data)
 				}
 			})
-
 		}else{
 			let tryNumber = data._doc.stn_tryNumber++
 			data._doc.stn_tryNumber = tryNumber
@@ -278,11 +274,7 @@ function checkIp(userStorage, params, res){
 					auditoriaController.saveLogsData(userStorage._doc.stn_username, constantFile.functions.LOGIN_TRY_FAIL,params.direccionIp.direccionData, params.direccionIp.navegador)
 				}
 			})
-			/*DirectionIp.findByIdAndUpdate(data._id,{$set:{stn_tryNumber:data._doc.stn_tryNumber++}}, {new: true}, (err, data)=>{
-				if(data){
-					auditoriaController.saveLogsData(userStorage._doc.stn_username, constantFile.functions.LOGIN_TRY_FAIL,params.direccionIp.direccionData, params.direccionIp.navegador)
-				}
-			})*/
+
 		}
 	})
 	userAuxiliar.userNoExist(res)
@@ -304,10 +296,33 @@ function updateIpExtractMethod(data, ip, params, res) {
 	})
 }
 
+function changePassUer(data, params, ip, res) {
+	data._doc.stn_codeVerication = ''
+	data._doc.stn_state = true
+	let password = adapterParams.adapterParamsFormat()
+	password.usuario.password = params.password
+	serviceUser.registerNewUser(password, (err, hash) => {
+		if (err || !hash) {
+			auditoriaController.saveLogsData(data._doc.stn_username, constantFile.api.ERROR_REQUEST + err, ip, params.navegador)
+			res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.api.ERROR_REQUEST})
+		} else {
+			data._doc.stn_password = hash
+			updateUser(data, (err, dataUserUpdate) => {
+				if (err || !dataUserUpdate) {
+					auditoriaController.saveLogsData(data._doc.stn_username, constantFile.functions.FAIL_GENERATE_PASS, ip, params.navegador)
+					res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.api.ERROR_REQUEST})
+				} else {
+					res.status(constantFile.httpCode.PETITION_CORRECT).send({result: true})
+				}
+			})
+		}
+	})
+}
+
 function compareCodeActivation(req, res){
 	const params = req.body
 	const ip = req.connection.remoteAddress
-	// const ip = '192.168.123.123.456'
+	//const ip = '192.168.123.123.456'
 	let userUndefined = new User()
 	//-----------------------QUEDA BUSCAR LA IP QUE NO ESTE DESABILITADA EN CASO AFIRMATIVO DENEGAR LA PETICION
 	// serviceUser.compareCodeVerification(params.code, (err, hash)=>{
@@ -347,30 +362,15 @@ function compareCodeActivation(req, res){
 							ipData[0]._doc.stn_tryNumber = tryNumber
 							updateIpExtractMethod(ipData, ip, params, res)//+ 1 el numero de intentos
 						}
-					}
-				})
-			}else{
-				//--------------------------------SE DEBUELVE UN TRUE Y SE ELIMINA LA CODIGO ALEATORIO DEL USUARIO
-				data._doc.stn_codeVerication = ''
-				data._doc.stn_state = true
-				let password = adapterParams.adapterParamsFormat()
-				password.usuario.password = params.password
-				serviceUser.registerNewUser(password, (err, hash)=>{
-					if(err || !hash){
-						auditoriaController.saveLogsData(data._doc.stn_username, constantFile.api.ERROR_REQUEST + err, ip, params.navegador)
-						res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.api.ERROR_REQUEST})
 					}else{
-						data._doc.stn_password = hash
-						updateUser(data, (err, dataUserUpdate)=>{
-							if(err || !dataUserUpdate){
-								auditoriaController.saveLogsData(data._doc.stn_username, constantFile.functions.FAIL_GENERATE_PASS, ip, params.navegador)
-								res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.api.ERROR_REQUEST})
-							}else{
-								res.status(constantFile.httpCode.PETITION_CORRECT).send({result : true})
-							}
-						})
+						res.status(constantFile.httpCode.PETITION_CORRECT).send({message:constantFile.api.PC_BLOCK})
 					}
 				})
+			}else if(params.final){
+				changePassUer(data, params, ip, res)
+			}else{
+				directionIpController.resetCountByIp(ip)
+				res.status(constantFile.httpCode.PETITION_CORRECT).send({result: true})
 			}
 		})
 	}else{
@@ -386,6 +386,7 @@ function compareCodeActivation(req, res){
 function updateUser(userData, cb){
 	User.findByIdAndUpdate(userData._id, userData, {new:true}, cb)
 }
+
 
 
 // eslint-disable-next-line no-undef

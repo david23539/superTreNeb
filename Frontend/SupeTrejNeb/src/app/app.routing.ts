@@ -5,19 +5,20 @@ import { Routes, RouterModule} from "@angular/router";
 import { LoginComponent } from './components/auth/login/login.component';
 import {DashboardComponent} from "./components/dashboard/dashboard.component";
 import {AdminGuard} from "./guard/admin.guard";
+import {TerminalBlockGuard} from "./guard/terminal-block.guard";
 import {RecoverUserComponent} from "./components/auth/recover-user/recover-user.component";
 import {NewPasswordComponent} from "./components/auth/new-password/new-password.component";
+import {PageBlockComponent} from "./components/auth/page-block/page-block.component";
 
 const appRoutes : Routes = [
-  {path: '', component: DashboardComponent, pathMatch: 'full',canActivate: [AdminGuard]},
-  {path: '', redirectTo : 'dashboard', pathMatch: 'full',canActivate: [AdminGuard]},
-  {path: 'login', component: LoginComponent},
-  {path: 'recover-user', component:RecoverUserComponent},
-  {path: 'new-password', component:NewPasswordComponent},
-  {path: 'dashboard', component: DashboardComponent , canActivate: [AdminGuard]},
-  {path: '**', component: LoginComponent}
-
-
+  {path: 'page-block', component: PageBlockComponent},
+  {path: '', component: DashboardComponent, pathMatch: 'full',canActivate: [TerminalBlockGuard,AdminGuard]},
+  {path: '', redirectTo : 'dashboard', pathMatch: 'full',canActivate: [TerminalBlockGuard, AdminGuard]},
+  {path: 'login', component: LoginComponent, canActivate: [TerminalBlockGuard]},
+  {path: 'recover-user', component:RecoverUserComponent, canActivate: [TerminalBlockGuard]},
+  {path: 'new-password', component:NewPasswordComponent, canActivate: [TerminalBlockGuard]},
+  {path: 'dashboard', component: DashboardComponent , canActivate: [TerminalBlockGuard, AdminGuard]},
+  {path: '**', component: LoginComponent, canActivate: [TerminalBlockGuard]}
 
 ];
 

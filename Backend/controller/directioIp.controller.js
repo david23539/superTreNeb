@@ -61,12 +61,30 @@ function resetCount(idIp, params){
 	})
 }
 
+function resetCountByIp(idIp){
+	DirectionIp.update({stn_directionIp:idIp}, { $set: { stn_tryNumber: 0}}).exec()
+}
+
 function updateRecordIpAnonimus(ipObject, cb){
 	DirectionIp.findByIdAndUpdate(ipObject._id, ipObject, {new: true}, cb)
 }
 
 function findIp(ip, cb){
 	DirectionIp.find({stn_directionIp:ip}, cb)
+}
+
+
+function checkIpForBlock(req, res){
+	const ip = req.connection.remoteAddress
+	DirectionIp.findOne({stn_status:false, stn_directionIp:ip}, (err, dataIp)=>{
+		if(err){
+			res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.api.ERROR_REQUEST})
+		}else if(!dataIp){
+			res.status(constantFile.httpCode.PETITION_CORRECT).send({status : true})
+		}else{
+			res.status(constantFile.httpCode.PETITION_CORRECT).send({status : false})
+		}
+	})
 }
 
 // eslint-disable-next-line no-undef
@@ -76,5 +94,7 @@ module.exports = {
 	resetCount,
 	findIp,
 	registerNewIpAnonimus,
-	updateRecordIpAnonimus
+	updateRecordIpAnonimus,
+	checkIpForBlock,
+	resetCountByIp
 }

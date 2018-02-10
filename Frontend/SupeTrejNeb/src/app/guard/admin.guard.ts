@@ -15,7 +15,7 @@ export class AdminGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     let token = this._loginService.getToken();
     if(token && token != ""){
-     //this._router.navigate(['/dashboard']);
+
       return true;
     }else{
       this._router.navigate(['/login']);

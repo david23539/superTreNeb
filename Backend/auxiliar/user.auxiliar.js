@@ -10,7 +10,7 @@ function userExist(res) {
 }
 
 function userNoExist(res){
-	res.status(constantFile.httpCode.CONFLICT).send({
+	res.status(constantFile.httpCode.PETITION_CORRECT).send({
 		message:constantFile.functions.USER_NO_EXIST
 	})
 }

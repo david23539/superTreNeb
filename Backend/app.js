@@ -7,6 +7,7 @@ const app = express()
 //rutas
 const user_routes = require('./routes/user.route')
 const person_router = require('./routes/person.route')
+const direcctionIp_router = require('./routes/direcctionIp.route')
 //const animal_routes = require('./rutes/animal')
 
 //configurar middlewares de body-pare
@@ -26,6 +27,7 @@ app.use((req,res,next)=>{
 //rutas base
 app.use('/api', user_routes)
 app.use('/api', person_router)
+app.use('/api', direcctionIp_router)
 //app.use('/api', animal_routes)
 
 //rutas body-parse

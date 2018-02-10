@@ -42,20 +42,16 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    /*this.elem = document.querySelector('.modal');
-    this.instance = M.Modal.init(this.elem, {dismissible: false});*/
-    //this.instance.open();
+
   }
 
 
 
 
-  /*private createKey(data:string): string{
-    return CryptoJS.SHA512(data).toString();
-  }*/
+
 
   onSubmit():void{
-    // this.instance.open();
+
     this.show = true;
     let regexp = new RegExp('^(([^<>()\\[\\]\\\\.,;:\\s@"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@"]+)*)|(".+"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$');
     let email = regexp.test(this.usernames);
@@ -64,7 +60,7 @@ export class LoginComponent implements OnInit {
       let username = regexp.test(this.usernames);
       if(!username){
         this.show =false;
-        // this.instance.close();
+
         this.claseFormulario = 'invalid red-text';
         this.credenciales = false;
         this.usernames = '';
@@ -88,7 +84,13 @@ export class LoginComponent implements OnInit {
     this._loginService.login(this.dataLogin, 'true').subscribe(
       response=>{
         this.token = response;
-        if(this.recordarCredenciales){
+        if(this.token.token == undefined){
+          M.toast({html: this.token.message , classes: 'red accent-2'});
+          this.claseFormulario = 'invalid red-text';
+          this.credenciales = false;
+          this.usernames = '';
+          this.dataLogin.usuario.password = "";
+        }else if(this.recordarCredenciales){
           localStorage.setItem('token', this.token.token);
           this._router.navigate(['/dashboard']);
         }else{

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NewPassService} from "../../../services/service/new-pass.service";
 import { DataBrowser} from "../../../utils/dataBrowser";
 import { NewPassModel} from "../../../model/newPass";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'new-password',
@@ -34,8 +35,10 @@ export class NewPasswordComponent implements OnInit {
   public elem: any;
   public browser: any;
   public dataPass:NewPassModel;
+  public messageResponse: any;
+  public tryNumber:number = 0;
 
-  constructor( private _getDataBrowser:DataBrowser, private _newPassService:NewPassService) {
+  constructor( private _getDataBrowser:DataBrowser, private _newPassService:NewPassService,private _router:Router) {
     this.CLASS_STATUS = "validate white-text";
     this.codes = "";
     this.codeNull = true;
@@ -56,6 +59,8 @@ export class NewPasswordComponent implements OnInit {
 
   private resetInput(){
 
+
+
    // this.validateData = true;
     this.showMessage(this.SECOND_CODE_TITLE, this.styleError);
     this.firstPass = "";
@@ -64,17 +69,19 @@ export class NewPasswordComponent implements OnInit {
   }
 
   showMessage(message:String, styles:String){
-    M.toast({html: message , classes: /*'teal accent-4'*/styles} );
+    M.toast({html: message , classes:styles, completeCallback: this.redirectTo()} );
   }
-
-
+  private redirectTo(){
+    this._router.navigate(['/login']);
+  }
   onSubmit(){
-    if (!this.codeNull && (this.codes && this.firstPass && this.SecondPass) ) {
+    if (this.codes && this.firstPass && this.SecondPass) {
       if (this.validatePass()) {
         this.browser = this._getDataBrowser.getDataBrowser();
         this.dataPass.code = this.codes;
-        this.dataPass.navegador = this.browser;
+        this.dataPass.navegador = this.browser.browser;
         this.dataPass.password = this.firstPass;
+        this.dataPass.final = true;
         this._newPassService.recoverPassword(this.dataPass).subscribe();
         //this.instance.open();LIMPIAR HTML
         this.showMessage(this.CHANGE_PASS_SUBTITLE_MODAL, this.styleSuccess);
@@ -82,7 +89,35 @@ export class NewPasswordComponent implements OnInit {
         this.resetInput()
       }
     }else{
-     // this.resetInput()
+      this.browser = this._getDataBrowser.getDataBrowser();
+      this.dataPass.code = this.codes;
+      this.dataPass.navegador = this.browser.browser;
+      this.dataPass.password = this.firstPass;
+     // console.log(this.dataPass);
+      this._newPassService.recoverPassword(this.dataPass).subscribe(
+        response=>{
+          this.messageResponse = response;
+          if(this.messageResponse.message === 'Error en la peticion '){
+            this.tryNumber++;
+            let infoMessage = 'Codigo incorrecto';
+            this.codeNull = true;
+            this.codes = "";
+            M.toast({html: infoMessage , classes: 'red accent-2'});
+
+          }else if (this.messageResponse.message === 'Equipo Boqueado') {
+            this._router.navigate(['/login']);
+
+
+            //generacion de guardian
+          }else{
+            this.codeNull = false;
+            this.codeNull = false;
+            this.BUTTON_CODE = this.CHANGE_PASS;
+            this.CODE_TITLE = this.NEW_PASS;
+          }
+
+
+        })
     }
   }
 }

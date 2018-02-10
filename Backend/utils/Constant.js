@@ -15,7 +15,8 @@ const constant ={
 		EXPIRED_TOKEN:'El token ha expirado',
 		NO_VALID_TOKEN: 'El token no es valido',
 		ACCESS_DENIED: 'acceso denegado a esta zona',
-		ERROR_REQUEST: 'Error en la peticion '
+		ERROR_REQUEST: 'Error en la peticion ',
+		PC_BLOCK: 'Equipo Boqueado'
 
 
 	},
