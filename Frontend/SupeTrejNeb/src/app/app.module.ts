@@ -14,6 +14,7 @@ import {LoginService} from "./services/service/login.service";
 import { RecoverUserComponent } from './components/auth/recover-user/recover-user.component';
 import { NewPasswordComponent } from './components/auth/new-password/new-password.component';
 import { PageBlockComponent } from './components/auth/page-block/page-block.component';
+import { PruebaComponent } from './components/prueba/prueba.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { PageBlockComponent } from './components/auth/page-block/page-block.comp
     WaitLoadComponent,
     RecoverUserComponent,
     NewPasswordComponent,
-    PageBlockComponent
+    PageBlockComponent,
+    PruebaComponent
 
   ],
   imports: [

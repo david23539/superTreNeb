@@ -9,7 +9,8 @@
       "outDir": "dist",
       "assets": [
         "assets",
-        "title.png"
+        "title.png",
+        "./app/images/userAnonimus.png"
       ],
       "index": "index.html",
       "main": "main.ts",

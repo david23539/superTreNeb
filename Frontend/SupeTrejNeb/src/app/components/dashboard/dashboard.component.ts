@@ -15,6 +15,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     $(document).ready(function(){
       $('.sidenav').sidenav();
+      $(".dropdown-trigger").dropdown();
     });
   }
 
