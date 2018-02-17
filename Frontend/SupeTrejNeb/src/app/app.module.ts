@@ -5,7 +5,7 @@ import { routing, appRoutingProviders} from "./app.routing";
 import { HttpClientModule} from "@angular/common/http";
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/auth/login/login.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { DashboardComponent } from './adminDashboard/components/dashboard/dashboard.component';
 import { WaitLoadComponent } from './components/wait-load/wait-load.component';
 import {AdminGuard} from "./guard/admin.guard";
 import {TerminalBlockGuard} from "./guard/terminal-block.guard";
@@ -14,7 +14,7 @@ import {LoginService} from "./services/service/login.service";
 import { RecoverUserComponent } from './components/auth/recover-user/recover-user.component';
 import { NewPasswordComponent } from './components/auth/new-password/new-password.component';
 import { PageBlockComponent } from './components/auth/page-block/page-block.component';
-import { PruebaComponent } from './components/prueba/prueba.component';
+import { AdminDashboardModule} from "./adminDashboard/admin-dashboard.module";
 
 @NgModule({
   declarations: [
@@ -24,14 +24,15 @@ import { PruebaComponent } from './components/prueba/prueba.component';
     WaitLoadComponent,
     RecoverUserComponent,
     NewPasswordComponent,
-    PageBlockComponent,
-    PruebaComponent
+    PageBlockComponent
+
 
   ],
   imports: [
     BrowserModule,
     routing,
     FormsModule,
+    AdminDashboardModule,
     HttpClientModule
   ],
   providers: [
