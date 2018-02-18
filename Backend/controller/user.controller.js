@@ -388,6 +388,18 @@ function updateUser(userData, cb){
 }
 
 
+function getUserData(req, res){
+	let user={_id:req.user.sub}
+	userObject(user, (err, data)=>{
+		if(err || !data){
+			res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message:constantFile.functions.ERROR_PARAMETROS_ENTRADA})
+		}else if(data){
+
+			res.status(constantFile.httpCode.PETITION_CORRECT).send({person: userAdapter.userDataExitAdapter(data)})
+		}
+	})
+}
+
 
 // eslint-disable-next-line no-undef
 module.exports = {
@@ -397,5 +409,6 @@ module.exports = {
 	setCodeValidation,
 	getUserByPersonId,
 	compareCodeActivation,
-	updateUser
+	updateUser,
+	getUserData
 }

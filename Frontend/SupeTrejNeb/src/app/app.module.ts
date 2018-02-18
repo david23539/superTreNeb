@@ -24,10 +24,12 @@ import { AdminDashboardModule} from "./adminDashboard/admin-dashboard.module";
     WaitLoadComponent,
     RecoverUserComponent,
     NewPasswordComponent,
-    PageBlockComponent
+    PageBlockComponent,
+
 
 
   ],
+
   imports: [
     BrowserModule,
     routing,

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {GLOBAL} from "../global";
+import {GLOBAL} from "../../global";
 
 @Injectable()
-export class NewPassService {
+export class DirectionIpService {
 
   public url: String;
 
@@ -11,11 +11,10 @@ export class NewPassService {
     this.url = GLOBAL.url;
   }
 
-  recoverPassword(data){
-    let param = JSON.stringify(data);
+  blockIp(navegador){
+    let param = JSON.stringify(navegador);
     let header = new HttpHeaders({'Content-Type': 'application/json'});
-    return this._http.post(this.url+'compareCode', param, {headers:header})
+    return this._http.post(this.url+'blockPC', param, {headers:header})
   }
-
 
 }

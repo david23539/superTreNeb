@@ -1,30 +1,37 @@
 <nav class="blue-grey darken-1 z-depth-3">
-  <div class="nav-wrapper col s12">
+  <div class="nav-wrapper navbar-fixed col s12">
     <a href="#"  class="brand-logo right">Autoservicio Olalla</a>
-    <ul id="nav-mobile" class="left hide-on-med-and-down">
+    <ul id="nav-mobile" class="left">
       <li><a id="menu" (click)="showHelp()"  class="waves-effect waves-light btn btn-floating blue-grey darken-1 z-depth-0"><i class="material-icons">help_outline</i></a></li>
-      <li><a href="#"><i class="material-icons">notifications</i></a></li>
-      <li><a href="#"><i class="material-icons">search</i></a></li>
-      <li><a href="#"><i class="material-icons">settings</i></a></li>
+      <li class="hide-on-med-and-down"><a href="#"><i class="material-icons">notifications</i></a></li>
+      <li class="hide-on-med-and-down"><a href="#"><i class="material-icons">search</i></a></li>
+      <li class="hide-on-med-and-down"><a href="#"><i class="material-icons">settings</i></a></li>
     </ul>
   </div>
 </nav>
 
 <!--SIDENAV-->
-<div class="col s12">
-<a href="#" data-target="slide-out" class="hide-on-med-and-down sidenav-trigger"><i class="material-icons blue-grey-text">menu</i></a>
-  <a href="#!" class="breadcrumb blue-grey-text">First</a>
-  <a href="#!" class="breadcrumb blue-grey-text">Second</a>
-  <a href="#!" class="breadcrumb blue-grey-text">Third</a>
+<div class="row">
+  <div class="col s12">
+    <a href="#" data-target="slide-out" class="hide-on-med-and-down sidenav-trigger"><i class="material-icons blue-grey-text">menu</i></a>
+  </div>
+  <breadcums [breadcumsTags]="nameRoutes"></breadcums>
 </div>
+
 <ul id="slide-out" class="sidenav blue-grey lighten-2 z-depth-3">
   <li><div class="user-view">
     <div class="background">
       <img src="">
     </div>
-    <a href="#!user"><img class="circle" src="http://localhost:4200/app/images/userAnonimus.png"></a>
-    <a href="#!name"><span class="white-text name">John Doe</span></a>
-    <a href="#!email"><span class="white-text email">jdandturk@gmail.com</span></a>
+    <div *ngIf="!IMAGE; else imageUrl">
+    <a href="#"><i class="material-icons black-text">account_circle</i></a>
+    </div>
+    <ng-template #imageUrl>
+      <!--<a href="#"><img src="{{url + 'get-image-file/'+ n.image}}" alt="imageProfile"> </a> LLAMAR A LA FUNCION QUE OBTIENE LOS DATOS DE LAS PERSONA-->
+    </ng-template>
+    <a href="#"><span class="white-text name">{{NAME}}</span></a>
+    <a href="#"><span class="white-text name">{{LASTNAME}}</span></a>
+    <a href="#"><span class="white-text email">{{EMAIL}}</span></a>
   </div></li>
   <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
   <li><a href="#!">Second Link</a></li>
@@ -41,12 +48,7 @@
     <p>{{subtitleDiscover}}</p>
   </div>
 </div>
-<!--
-<div class="row">
-  <div class="col s12">
--->
-    <router-outlet></router-outlet>
-<!--
-  </div>
-</div>
--->
+
+
+<router-outlet></router-outlet>
+

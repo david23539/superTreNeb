@@ -56,24 +56,15 @@ function sendCodeActivation(req, res) {
 	}
 }
 
-/*function getUserByEmailPersona(email, browser, ip, res, cb){
-	let params = {
-		persona: email,
-		navegador: browser
-	}
-	if(validationPerson.validateDataPersonEmail(params)){
-		Person.findOne({stn_email:email}).populate({path:'stn_user'}).exec(cb)
-	}else{
-		auditoriaController.saveLogsData('undefined', constantFile.functions.ERROR_PARAMETROS_ENTRADA, ip, params.navegador)
-		res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.api.ERROR_REQUEST})
-	}
 
-}*/
+
+
 
 
 // eslint-disable-next-line no-undef
 module.exports ={
 	sendCodeActivation,
+
 	//getUserByEmailPersona
 
 }

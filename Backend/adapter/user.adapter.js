@@ -16,7 +16,18 @@ function userDataAdapter(params){
 	return user
 }
 
+function userDataExitAdapter(userWithPerson){
+	let dataPerson ={
+		image: userWithPerson.stn_person.stn_image,
+		email: userWithPerson.stn_person.stn_email,
+		name: userWithPerson.stn_person.stn_name,
+		lastname: userWithPerson.stn_person.stn_lastname1,
+	}
+	return dataPerson
+
+}
 // eslint-disable-next-line no-undef
 module.exports = {
-	userDataAdapter
+	userDataAdapter,
+	userDataExitAdapter
 }

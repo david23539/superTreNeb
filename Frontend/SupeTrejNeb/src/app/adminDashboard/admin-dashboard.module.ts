@@ -4,6 +4,7 @@ import { FormsModule} from "@angular/forms";
 import { HttpClientModule} from "@angular/common/http";
 import { AdminDashboardRoutingModule} from "./admin-dashboard-routing.module";
 import {PruebaComponent} from "./components/prueba/prueba.component";
+import { BreadcumsComponent } from './utils/breadcums/breadcums.component';
 
 @NgModule({
   imports: [
@@ -13,11 +14,13 @@ import {PruebaComponent} from "./components/prueba/prueba.component";
     AdminDashboardRoutingModule
   ],
   declarations: [
-    PruebaComponent
+    PruebaComponent,
+    BreadcumsComponent
   ],
 
   exports:[
-    AdminDashboardRoutingModule
+    AdminDashboardRoutingModule,
+    BreadcumsComponent
   ]
 })
 export class AdminDashboardModule { }

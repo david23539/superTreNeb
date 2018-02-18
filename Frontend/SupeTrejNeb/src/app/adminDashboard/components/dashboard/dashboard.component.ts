@@ -1,10 +1,15 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router} from "@angular/router";
+import { GLOBAL} from "../../../services/global";
+import {UserService} from "../../../services/service/user/user.service";
+import {DirectionIpService} from "../../../services/service/direcctionIP/direction-ip.service";
+import { DataBrowser} from "../../../utils/dataBrowser";
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.css'],
+  providers:[DataBrowser, UserService, DirectionIpService]
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
 
@@ -13,14 +18,53 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   public titleDiscover:String;
   public subtitleDiscover:String;
   public routers:any;
+  public breadcumsTagsArray;
+  public nameRoutes =[];
+  public personData:any;
+  public url: string;
+  public IMAGE:String;
+  public EMAIL: String;
+  public NAME:String;
+  public LASTNAME:String;
+  public browser: any;
 
-  constructor(private _router:Router) {
+
+  constructor(private _router:Router, private _userService:UserService, private _getDataBrowser:DataBrowser,
+              private _directionIpService:DirectionIpService) {
     this.routers = _router;
-    console.log(this.routers.url);
+    this.breadcumsTagsArray = this.routers.url;
+    this.url = GLOBAL.url;
+
   }
 
   ngOnInit() {
 
+    this.nameRoutes = this.routers.url.split("/");
+    this.nameRoutes.splice(0,2);
+    this._userService.getDataUserByToken().subscribe(
+      response=>{
+        this.personData = response;
+        this.IMAGE = this.personData.person.image;
+        this.EMAIL = this.personData.person.email;
+        this.NAME = this.personData.person.name;
+        this.LASTNAME = this.personData.person.lastname;
+      },error=>{//en caso de error  porque no exista el token lo mando al login y el guard a la pagina de bloqueo
+        this.personData = error;
+        if(this.personData.message === "El token no es valido"){
+          this.browser = this._getDataBrowser.getDataBrowser();
+          this._directionIpService.blockIp(this.browser.browser + this.browser.browserVersion).subscribe(
+            response=>{
+              this._router.navigate(['/login']);
+            }
+          )
+        }else{
+          this._router.navigate(['/login']);
+
+        }
+      }
+    )
+
+    //lamar al servicio para mostrar la imagen y obtener todos los datos del usuario
   }
 
   ngAfterViewInit(): void {
@@ -43,7 +87,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
       default:
         this.titleDiscover = "MENÚ LATERAL";
-        this.subtitleDiscover = "Pulse sobre el icono de menú, situado aquí debajo, para mostrar el menú oculto";
+        this.subtitleDiscover = "Pulse sobre el icono de menú, situado aquí debajo, para mostrar el menú oculto. Si se encuentra en la versión mobil arrastre de izquierda a derecha";
     }
 
   }

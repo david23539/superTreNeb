@@ -4,8 +4,9 @@ const DirectionIp = require('../model/direcctionIp.model')
 const constantFile = require('../utils/Constant')
 const serviceIp = require('../service/directionIp.service')
 const emailService = require('../service/email.service')
-// const userController = require('./user.controller')
+const adapterParams = require('../adapter/params.adapter')
 const User = require('../model/user.model')
+const adapterDirectionIp = require('../adapter/direcctionIp.adapter')
 function registerNewIp(params, userStorage){
 	let ipObject = new DirectionIp()
 	ipObject = serviceIp.seteoDataIp(params,userStorage)
@@ -21,6 +22,52 @@ function addIpForUser(ipObject, ips, params){
 	DirectionIp.findByIdAndUpdate({_id:direcctionIp._id}, {$set:{stn_directionIp : ips}}, {new: true}).populate('stn_user').exec((err,data)=>{
 		registerData(err, data, params)
 
+	})
+}
+
+function blockIp(req, res){
+	const ip = req.connection.remoteAddress
+	//const ip = "123.123.123"
+	const params = req.body
+	let userUndefined = new User()
+	findIp(ip, (err, dataIP)=>{
+		if(err){
+			res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.api.ERROR_REQUEST})
+		}else if(dataIP.length > 0){
+			dataIP[0]._doc.stn_status = true
+			updateRecordIpAnonimus(dataIP[0], (err, ipBlock)=>{
+				if(err || !ipBlock){
+					auditoriaController.saveLogsData('undefined', err,ip, params.navegador)
+					res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.api.ERROR_REQUEST})
+				}else{
+					auditoriaController.saveLogsData('undefined', constantFile.api.PC_BLOCK,ip, params.navegador)
+					res.status(constantFile.httpCode.PETITION_CORRECT).send({message : constantFile.api.PC_BLOCK})
+				}
+			})
+		}else{
+			let paramsAdapter = adapterParams.adapterParamsFormat()//esto crea el esquema de los parametros de entrada que seran pasado a otras funciones
+			paramsAdapter.direccionIp.direccionData = ip
+			paramsAdapter.direccionIp.navegador = params.navegador
+
+			let ipObject = adapterDirectionIp.directionIpDataAdapter(paramsAdapter, userUndefined)
+			registerNewIpAnonimus(ipObject, (err, dataIpBlock)=>{
+				if(err || !dataIpBlock){
+					auditoriaController.saveLogsData('undefined', err,ip, params.navegador)
+					res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.api.ERROR_REQUEST})
+				}else{
+					dataIpBlock._doc.stn_status = true
+					updateRecordIpAnonimus(dataIpBlock, (err, updataDataIP)=>{
+						if(err || !updataDataIP){
+							auditoriaController.saveLogsData('undefined', err,ip, params.navegador)
+							res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.api.ERROR_REQUEST})
+						}else{
+							auditoriaController.saveLogsData('undefined', constantFile.api.PC_BLOCK,ip, params.navegador)
+							res.status(constantFile.httpCode.PETITION_CORRECT).send({message : constantFile.api.PC_BLOCK})
+						}
+					})
+				}
+			})
+		}
 	})
 }
 
@@ -89,6 +136,8 @@ function checkIpForBlock(req, res){
 	})
 }
 
+
+
 // eslint-disable-next-line no-undef
 module.exports = {
 	registerNewIp,
@@ -98,5 +147,6 @@ module.exports = {
 	registerNewIpAnonimus,
 	updateRecordIpAnonimus,
 	checkIpForBlock,
-	resetCountByIp
+	resetCountByIp,
+	blockIp
 }
