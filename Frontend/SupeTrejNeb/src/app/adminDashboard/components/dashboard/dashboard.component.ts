@@ -44,19 +44,26 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this._userService.getDataUserByToken().subscribe(
       response=>{
         this.personData = response;
-        this.IMAGE = this.personData.person.image;
-        this.EMAIL = this.personData.person.email;
-        this.NAME = this.personData.person.name;
-        this.LASTNAME = this.personData.person.lastname;
+        console.log(response);
+        if(this.personData.message !== "Equipo Boqueado") {
+          this.IMAGE = this.personData.person.image;
+          this.EMAIL = this.personData.person.email;
+          this.NAME = this.personData.person.name;
+          this.LASTNAME = this.personData.person.lastname;
+        }else{
+          this._router.navigate(['/login']);
+        }
       },error=>{//en caso de error  porque no exista el token lo mando al login y el guard a la pagina de bloqueo
         this.personData = error;
-        if(this.personData.message === "El token no es valido"){
-          this.browser = this._getDataBrowser.getDataBrowser();
-          this._directionIpService.blockIp(this.browser.browser + this.browser.browserVersion).subscribe(
+
+        if(this.personData.message === "Equipo Boqueado"){
+          // this.browser = this._getDataBrowser.getDataBrowser();
+          /*this._directionIpService.blockIp(this.browser.browser + this.browser.browserVersion).subscribe(
             response=>{
               this._router.navigate(['/login']);
             }
-          )
+          )*/
+          this._router.navigate(['/login']);
         }else{
           this._router.navigate(['/login']);
 

@@ -8,7 +8,7 @@ function seteoDataIp(params, userStorage){
 	ipObject.stn_user = userStorage
 	ipObject.stn_directionIp = params.direccionIp.direccionData
 	ipObject.stn_browser = params.direccionIp.navegador
-	ipObject.stn_status = true
+	ipObject.stn_status = false
 	ipObject.stn_tryNumber = 0
 	return ipObject
 }

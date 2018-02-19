@@ -45,4 +45,12 @@
   top: 50%;
   left: 50%;
 }
+app-dashboard {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
 
+main {
+  flex: 1 0 auto;
+}
