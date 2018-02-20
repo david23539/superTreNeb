@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule} from "@angular/forms";
 import { HttpClientModule} from "@angular/common/http";
 import { AdminDashboardRoutingModule} from "./admin-dashboard-routing.module";
-import {PruebaComponent} from "./components/prueba/prueba.component";
+import {MainDashboardComponent} from "./components/mainDashboard/mainDashboard.component";
 import { BreadcumsComponent } from './utils/breadcums/breadcums.component';
 
 @NgModule({
@@ -14,7 +14,7 @@ import { BreadcumsComponent } from './utils/breadcums/breadcums.component';
     AdminDashboardRoutingModule
   ],
   declarations: [
-    PruebaComponent,
+    MainDashboardComponent,
     BreadcumsComponent
   ],
 

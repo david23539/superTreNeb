@@ -13,6 +13,7 @@ import { DataBrowser} from "../../../utils/dataBrowser";
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
 
+
   public elem:any;
   public instance:any;
   public titleDiscover:String;
@@ -27,6 +28,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   public NAME:String;
   public LASTNAME:String;
   public browser: any;
+  public MAINPAGE: String = "Panel Principal";
 
 
   constructor(private _router:Router, private _userService:UserService, private _getDataBrowser:DataBrowser,
@@ -37,6 +39,17 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   }
 
+
+  hidenSidenaves():void{
+    $('.sidenav-overlay').click();
+  }
+
+
+
+
+
+
+
   ngOnInit() {
 
     this.nameRoutes = this.routers.url.split("/");
@@ -44,7 +57,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this._userService.getDataUserByToken().subscribe(
       response=>{
         this.personData = response;
-        console.log(response);
+
         if(this.personData.message !== "Equipo Boqueado") {
           this.IMAGE = this.personData.person.image;
           this.EMAIL = this.personData.person.email;

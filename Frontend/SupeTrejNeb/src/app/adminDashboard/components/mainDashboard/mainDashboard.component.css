@@ -1,0 +1,7 @@
+.card-panel{
+  overflow-y: auto;
+  height: 63vh;
+}
+.borderDown{
+  border-bottom-color: #e91e63;
+}
