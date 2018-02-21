@@ -1,7 +1,18 @@
 .card-panel{
   overflow-y: auto;
-  height: 63vh;
+  height: 50vh;
 }
 .borderDown{
   border-bottom-color: #e91e63;
+}
+.heigthPanelCalculator{
+  height: 10vh;
+  width: 100%;
+}
+.heigthPanelTotal{
+  height: 10vh;
+}
+.heigthKeys{
+  height: 5vh;
+  border: 1px solid black;
 }
