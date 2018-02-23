@@ -14,5 +14,15 @@
 }
 .heigthKeys{
   height: 5vh;
-  border: 1px solid black;
+  border-bottom: #e91e63 1px solid;
+  /*border: 1px solid black;*/
+}
+.neverScroll{
+  overflow: hidden;
+}
+.sizeText{
+  font-size: 30px;
+}
+#keyboard:hover{
+  background-color: red;
 }
