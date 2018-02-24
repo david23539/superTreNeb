@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col s12 l8">
     <div class="card-panel white">
-        <table class="highlight responsive-table">
+        <table class="highlight centered responsive-table" >
           <thead class="pink-text fixed">
           <tr class="borderDown">
             <th>Producto <i class="right material-icons">arrow_drop_down</i></th>
@@ -11,113 +11,17 @@
             <th>Imagen</th>
           </tr>
           </thead>
-
           <tbody>
-          <tr class="borderDown">
-            <td>Alvin</td>
-            <td>Eclair</td>
-            <td>$0.87</td>
-            <td>Eclair</td>
-            <td>$0.87</td>
-          </tr>
-          <tr class="borderDown">
-            <td>Alan</td>
-            <td>Jellybean</td>
-            <td>$3.76</td>
-            <td>Jellybean</td>
-            <td>$3.76</td>
-          </tr ><tr class="borderDown">
-            <td>Alan</td>
-            <td>Jellybean</td>
-            <td>$3.76</td>
-            <td>Jellybean</td>
-            <td>$3.76</td>
-          </tr><tr class="borderDown">
-            <td>Alan</td>
-            <td>Jellybean</td>
-            <td>$3.76</td>
-            <td>Jellybean</td>
-            <td>$3.76</td>
-          </tr><tr class="borderDown">
-            <td>Alan</td>
-            <td>Jellybean</td>
-            <td>$3.76</td>
-            <td>Jellybean</td>
-            <td>$3.76</td>
-          </tr><tr class="borderDown">
-            <td>Alan</td>
-            <td>Jellybean</td>
-            <td>$3.76</td>
-            <td>Jellybean</td>
-            <td>$3.76</td>
-          </tr><tr class="borderDown">
-            <td>Alan</td>
-            <td>Jellybean</td>
-            <td>$3.76</td>
-            <td>Jellybean</td>
-            <td>$3.76</td>
-          </tr><tr class="borderDown">
-            <td>Alan</td>
-            <td>Jellybean</td>
-            <td>$3.76</td>
-            <td>Jellybean</td>
-            <td>$3.76</td>
-          </tr><tr class="borderDown">
-            <td>Alan</td>
-            <td>Jellybean</td>
-            <td>$3.76</td>
-            <td>Jellybean</td>
-            <td>$3.76</td>
-          </tr><tr class="borderDown">
-            <td>Alan</td>
-            <td>Jellybean</td>
-            <td>$3.76</td>
-            <td>Jellybean</td>
-            <td>$3.76</td>
-          </tr><tr class="borderDown">
-            <td>Alan</td>
-            <td>Jellybean</td>
-            <td>$3.76</td>
-            <td>Jellybean</td>
-            <td>$3.76</td>
-          </tr><tr class="borderDown">
-            <td>Alan</td>
-            <td>Jellybean</td>
-            <td>$3.76</td>
-            <td>Jellybean</td>
-            <td>$3.76</td>
-          </tr>
-          <tr class="borderDown">
-            <td>Jonathan</td>
-            <td>Lollipop</td>
-            <td>$7.00</td>
-            <td>Lollipop</td>
-            <td>$7.00</td>
-          </tr>
-          <tr class="borderDown">
-            <td>Alan</td>
-            <td>Jellybean</td>
-            <td>$3.76</td>
-          </tr>
-          <tr class="borderDown">
-            <td>Jonathan</td>
-            <td>Lollipop</td>
-            <td>$7.00</td>
-          </tr>
-          <tr class="borderDown">
-            <td>Alan</td>
-            <td>Jellybean</td>
-            <td>$3.76</td>
-          </tr>
-          <tr class="borderDown">
-            <td>Jonathan</td>
-            <td>Lollipop</td>
-            <td>$7.00</td>
-          </tr>
+            <tr class="borderDown" *ngFor="let item of shoppingList" (click)="changeRecordOfList(item)">
+              <td>{{item.product}}</td>
+              <td>{{item.quantity}}</td>
+              <td>{{item.unitPrice}} €</td>
+              <td>{{item.finalPrice}} €</td>
+              <td>{{item.image}}</td>
+            </tr>
           </tbody>
         </table>
       </div>
-
     </div>
     <div class="col l4 s12">
       <div class="card-panel white neverScroll">
@@ -125,12 +29,12 @@
           <div class="col l12 s12 heigthPanelCalculator black pink-text">
             <div class="row">
               <div class="left">Pagado:</div>
-              <div class="right">20</div>
+              <div class="right">{{payMoney}} €</div>
             </div>
             <div class="divider"></div>
             <div class="row">
               <div class="left">Devolución:</div>
-              <div class="right">8</div>
+              <div class="right">{{returnPay}} €</div>
             </div>
           </div>
         </div>
@@ -216,7 +120,6 @@
     </div>
 </div>
 
-
 <div class="row">
   <div class="col l8 s12">
     <div class="card-panel white heigthPanelTotal neverScroll">
@@ -224,11 +127,10 @@
         TOTAL:
       </div>
       <div class="right sizeText">
-        12 <i class="material-icons pink-text">euro_symbol</i>
+        {{totalItemPrice}} <i class="material-icons pink-text">euro_symbol</i>
       </div>
     </div>
   </div>
-
   <div class="col l4 s12 center ">
     <button class="btn col s12 light-blue darken-4">Añadir Producto Manual</button>
     <br>
@@ -236,12 +138,3 @@
     <button class="btn col s12 ">Pagar y Finalizar</button>
   </div>
 </div>
-
-
-
-
-
-
-
-
-

@@ -26,3 +26,6 @@
 #keyboard:hover{
   background-color: red;
 }
+tr:active {
+  background-color: #ffa;
+}
