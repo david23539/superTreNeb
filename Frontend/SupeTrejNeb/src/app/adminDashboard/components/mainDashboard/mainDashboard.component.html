@@ -4,10 +4,22 @@
         <table class="highlight centered responsive-table" >
           <thead class="pink-text fixed">
           <tr class="borderDown">
-            <th>Producto <i class="right material-icons">arrow_drop_down</i></th>
-            <th>Cantidad <i class="right material-icons">arrow_drop_down</i></th>
-            <th>Precio Unidad <i class="right material-icons">arrow_drop_down</i></th>
-            <th>Precio Final <i class="right material-icons">arrow_drop_down</i></th>
+            <th (click)="orderTableByColums('product');productAsc == false? productAsc=true:productAsc=false">Producto <i *ngIf="productAsc; else productDSC" class="right material-icons">arrow_drop_down</i>
+              <ng-template #productDSC>
+                <i class="right material-icons">arrow_drop_up</i>
+              </ng-template>
+            </th>
+            <th (click)="orderTableByColums('quantity'); quantityAsc == false? quantityAsc=true:quantityAsc=false" >Cantidad <i *ngIf="quantityAsc; else imagenDSC" class="right material-icons" >arrow_drop_down</i>
+              <ng-template #imagenDSC>
+                <i class="right material-icons">arrow_drop_up</i>
+              </ng-template>
+            </th>
+            <th>Precio Unidad</th>
+            <th (click)="orderTableByColums('finalPrice'); finalPriceAsc == false? finalPriceAsc=true:finalPriceAsc=false">Precio Final <i *ngIf="finalPriceAsc; else priceASC" class="right material-icons">arrow_drop_down</i>
+              <ng-template #priceASC>
+                <i class="right material-icons">arrow_drop_up</i>
+              </ng-template>
+            </th>
             <th>Imagen</th>
           </tr>
           </thead>
@@ -41,52 +53,52 @@
         <div class="row">
           <div class="col l12 s12">
             <div class="row">
-              <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5 borderDown">
+              <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5" (click)="calculateActions('7')" >
                 <p class="col s12 center">7</p>
               </div>
-              <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5">
+              <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5" (click)="calculateActions('8')">
                 <p class="col s12 center">8</p>
               </div>
-              <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5">
+              <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5" (click)="calculateActions('9')">
                 <p class="col s12 center">9</p>
               </div>
-              <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5">
+              <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5" (click)="calculateActions('+')">
                 <i class="material-icons col s12 center">add</i>
               </div>
-              <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5">
+              <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5" (click)="calculateActions('4')">
                 <p class="col s12 center">4</p>
               </div>
-              <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5">
+              <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5" (click)="calculateActions('5')">
                 <p class="col s12 center">5</p>
               </div>
-              <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5">
+              <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5" (click)="calculateActions('6')">
                 <p class="col s12 center">6</p>
               </div>
-              <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5">
+              <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5" (click)="calculateActions('-')">
                 <i class="material-icons col s12 center">remove</i>
               </div>
-              <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5">
+              <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5" (click)="calculateActions('1')">
                 <p class="col s12 center">1</p>
               </div>
-              <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5">
+              <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5" (click)="calculateActions('2')">
                 <p class="col s12 center">2</p>
               </div>
-              <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5">
+              <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5" (click)="calculateActions('3')">
                 <p class="col s12 center">3</p>
               </div>
-              <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5">
+              <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5" (click)="calculateActions('*')">
                 <i class="material-icons col s12 center">close</i>
               </div>
-              <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5">
+              <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5" (click)="calculateActions('Backspace')">
                 <i class="material-icons col s12 center">arrow_back</i>
               </div>
-              <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5">
+              <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5" (click)="calculateActions('0')">
                 <p class="col s12 center">0</p>
               </div>
-              <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5">
+              <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5" (click)="calculateActions(',')">
                 <p class="col s12 center">,</p>
               </div>
-              <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5">
+              <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5" (click)="calculateActions('Enter')">
                 <i class="material-icons col s12 center">keyboard_return</i>
               </div>
               <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5">
@@ -136,5 +148,64 @@
     <br>
     <br>
     <button class="btn col s12 ">Pagar y Finalizar</button>
+  </div>
+</div>
+
+
+<!-- Modal Trigger -->
+
+
+<!-- Modal Structure -->
+<div id="modal2" class="modal">
+  <div class="modal-content">
+    <div class="row">
+      <div class="col s12">
+        <ul class="tabs">
+          <li class="tab col s3"><a href="#addProduct">Añadir Producto</a></li>
+          <li class="tab col s3"><a class="active" href="#searchProductForList">Buscar Producto</a></li>
+        </ul>
+      </div>
+      <div id="addProduct" class="col s12 center">
+        <div class="row">
+          <div class="input-field col s6 ">
+            <input id="product" type="text" class="validate">
+            <label class="active" for="product">Producto</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s6">
+            <input id="price" type="text" class="validate">
+            <label class="active" for="price">Precio</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s6">
+            <select>
+              <option value="" disabled selected>Choose your option</option>
+              <option value="1">Option 1</option>
+              <option value="2">Option 2</option>
+              <option value="3">Option 3</option>
+            </select>
+            <label>Categoria</label>
+          </div>
+        </div>
+       <!-- <div class="row">
+          <div class="input-field col s6">
+            <a class="waves-effect waves-light btn">Buscar</a>
+          </div>
+        </div>-->
+      </div>
+      <div id="searchProductForList" class="col s12 center">
+        <div class="row">
+          <div class="input-field col s6">
+            <input id="searchProduct" type="text" class="validate">
+            <label class="active" for="searchProduct">Buscar Producto</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <!--<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>-->
   </div>
 </div>

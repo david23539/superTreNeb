@@ -26,6 +26,11 @@
 #keyboard:hover{
   background-color: red;
 }
-tr:active {
-  background-color: #ffa;
+
+
+
+.heigthKeys:hover{
+  background-color: #e91e63 !important;
+  color: black !important;
+  cursor: pointer;
 }

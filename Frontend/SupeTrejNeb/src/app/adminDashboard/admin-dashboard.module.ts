@@ -11,7 +11,7 @@ import { BreadcumsComponent } from './utils/breadcums/breadcums.component';
     CommonModule,
     FormsModule,
     HttpClientModule,
-    AdminDashboardRoutingModule
+    AdminDashboardRoutingModule,
   ],
   declarations: [
     MainDashboardComponent,
@@ -20,7 +20,8 @@ import { BreadcumsComponent } from './utils/breadcums/breadcums.component';
 
   exports:[
     AdminDashboardRoutingModule,
-    BreadcumsComponent
+    BreadcumsComponent,
+
   ]
 })
 export class AdminDashboardModule { }

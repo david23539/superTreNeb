@@ -7,5 +7,8 @@ export const CONSTANT = {
     COMA:".",
     ENTER: "Enter"
 
+  },
+  messageToast:{
+    NOSELECTEDITEM: "Debe seleccional un elemento antes de hacer algun cambio"
   }
 };

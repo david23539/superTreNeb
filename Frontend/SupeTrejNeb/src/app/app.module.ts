@@ -25,9 +25,6 @@ import { AdminDashboardModule} from "./adminDashboard/admin-dashboard.module";
     RecoverUserComponent,
     NewPasswordComponent,
     PageBlockComponent,
-
-
-
   ],
 
   imports: [
@@ -35,7 +32,8 @@ import { AdminDashboardModule} from "./adminDashboard/admin-dashboard.module";
     routing,
     FormsModule,
     AdminDashboardModule,
-    HttpClientModule
+    HttpClientModule,
+
   ],
   providers: [
     LoginService,

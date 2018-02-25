@@ -103,16 +103,27 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   messageIntoDiscover():void{
-    switch (this.routers.url){
 
-      default:
+    switch (this._router.url){
+      case "/dashboard/main-dashboard":
+        this.titleDiscover = "USO DE LA TABLA";
+        this.subtitleDiscover = "Seleccione un elemento de la lista, marque la cantidad y ejecute la acción. Si desea sumar o restar un elemneto pulse el - o el +. " +
+          "Si desea eliminar un elemento pulse sobre eliminar o borrar en el teclado";
+        break;
+      case "/":
         this.titleDiscover = "MENÚ LATERAL";
         this.subtitleDiscover = "Pulse sobre el icono de menú, situado aquí debajo, para mostrar el menú oculto. Si se encuentra en la versión mobil arrastre de izquierda a derecha";
     }
-
   }
-
 }
+
+
+
+
+
+
+
+
 
 
 

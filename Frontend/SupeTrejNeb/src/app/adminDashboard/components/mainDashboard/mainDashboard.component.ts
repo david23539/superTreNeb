@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
+
 import {CONSTANT} from "../../../services/constant";
 
 @Component({
@@ -9,7 +10,7 @@ import {CONSTANT} from "../../../services/constant";
     '(document:keyup)':'getValueKey($event)'
   }
 })
-export class MainDashboardComponent implements OnInit{
+export class MainDashboardComponent implements OnInit, AfterViewInit{
 
 
   public shoppingList:any;
@@ -19,23 +20,40 @@ export class MainDashboardComponent implements OnInit{
   public returnPay:number = 0;
   public actionNumberKey:string;
   public constant:any;
+  public constantToast:any;
+  public finalPriceAsc:Boolean = true;
+  public quantityAsc:Boolean = true;
+  public productAsc:Boolean = true;
 
   constructor() {
     this.constant = CONSTANT.keysPress;
+    this.constantToast = CONSTANT.messageToast;
     this.actionNumberKey = "";
   }
 
 
 
   ngOnInit() {
-  this.shoppingList = [{id:"0",product: "leche", quantity: 1, unitPrice:0.22, finalPrice: 0.333, image: "image"},
+    var elem = document.querySelector('.modal');
+    var instance = M.Modal.init(elem);
+    instance.open();
+    var tabs = document.querySelector('.tabs');
+    var instanceTab = M.Tabs.init(tabs);
+
+
+
+
+
+    this.shoppingList = [{id:"0",product: "leche", quantity: 1, unitPrice:0.22, finalPrice: 0.333, image: "image"},
     {id:"1", product: "tomate", quantity: 1, unitPrice:0.4, finalPrice: 0.5, image: "image"},
     {id:"2", product: "chicles", quantity: 1, unitPrice:0.1, finalPrice: 0.3, image: "image"},
     {id:"3", product: "llave inglesa", quantity: 1, unitPrice:30, finalPrice: 31.5, image: "image"},
     {id:"4", product: "chorizo", quantity: 1, unitPrice:5, finalPrice: 5.5, image: "image"},
     {id:"5", product: "salchichon", quantity: 1, unitPrice:6, finalPrice: 6.5, image: "image"},
     {id:"6", product: "sal", quantity: 1, unitPrice:1, finalPrice: 1.21, image: "image"},
-    {id:"7", product: "pan", quantity: 1, unitPrice:0.6, finalPrice: 0.8, image: "image"}];
+    {id:"7", product: "agua", quantity: 1, unitPrice:1, finalPrice: 1, image: "image"},
+    {id:"8", product: "amoniaco", quantity: 1, unitPrice:1, finalPrice: 1, image: "image"},
+    {id:"9", product: "pan", quantity: 1, unitPrice:0.6, finalPrice: 0.8, image: "image"}];
 
   this.getTotalFinalPrice(this.shoppingList);
   }
@@ -49,6 +67,12 @@ export class MainDashboardComponent implements OnInit{
     this.calculateReturnPayDinamic(this.totalItemPrice)
     // Math.round(this.totalItemPrice * 100) / 100;
   }
+
+  ngAfterViewInit(): void {
+    $('select').formSelect();
+  }
+
+
 
 
 
@@ -65,16 +89,7 @@ export class MainDashboardComponent implements OnInit{
     this.calculateActions(content.key)
   }
 
-  updateShoppingList(itemUpdate){
-    for (let i = 0; i < this.shoppingList.length; i++){
-      if(this.shoppingList[i].id == itemUpdate.id){
-        this.shoppingList.splice(i, 1);
-        this.shoppingList.push(itemUpdate);
-        this.shoppingList.sort();
-        this.getTotalFinalPrice(this.shoppingList);
-      }
-    }
-  }
+
   deleteItemShoppingList(itemDelete){
     for (let i = 0; i < this.shoppingList.length; i++){
       if(this.shoppingList[i].id == itemDelete.id){
@@ -130,8 +145,66 @@ export class MainDashboardComponent implements OnInit{
         this.actionNumberKey= "";
         // this.updateShoppingList(this.itemSelected);
       }
-    }
+    }else{
 
+    }
   }
 
+  orderTableByColums(colums){
+    let beforeItem;
+    let afterItem;
+    let i = 0;
+    if(this.shoppingList){
+      switch (colums){
+        case "product":
+          while (i < this.shoppingList.length) {
+            i++;
+            for (let i = 0; i < this.shoppingList.length; i++) {
+              beforeItem = this.shoppingList[i];
+              afterItem = this.shoppingList[i + 1];
+              if (this.productAsc && afterItem && (beforeItem.product > afterItem.product)) {
+                this.shoppingList.splice(i + 1, 1);
+                this.shoppingList.splice(i, 0, afterItem)
+              }else if(!this.productAsc && afterItem && (beforeItem.product < afterItem.product)){
+                this.shoppingList.splice(i + 1, 1);
+                this.shoppingList.splice(i, 0, afterItem)
+              }
+            }
+          }
+          break;
+        case "quantity":
+          while (i < this.shoppingList.length) {
+            i++;
+            for (let i = 0; i < this.shoppingList.length; i++) {
+              beforeItem = this.shoppingList[i];
+              afterItem = this.shoppingList[i + 1];
+              if (this.quantityAsc && afterItem && (beforeItem.quantity > afterItem.quantity)) {
+                this.shoppingList.splice(i + 1, 1);
+                this.shoppingList.splice(i, 0, afterItem)
+              }else if(!this.quantityAsc && afterItem && (beforeItem.quantity < afterItem.quantity)){
+                this.shoppingList.splice(i + 1, 1);
+                this.shoppingList.splice(i, 0, afterItem)
+              }
+            }
+          }
+          break;
+        case "finalPrice":
+          while (i < this.shoppingList.length) {
+            i++;
+            for (let i = 0; i < this.shoppingList.length; i++) {
+              beforeItem = this.shoppingList[i];
+              afterItem = this.shoppingList[i + 1];
+              if (this.finalPriceAsc && afterItem && (beforeItem.finalPrice > afterItem.finalPrice)) {
+                this.shoppingList.splice(i + 1, 1);
+                this.shoppingList.splice(i, 0, afterItem)
+              }else if(!this.finalPriceAsc && afterItem && (beforeItem.finalPrice < afterItem.finalPrice)){
+                this.shoppingList.splice(i + 1, 1);
+                this.shoppingList.splice(i, 0, afterItem)
+              }
+            }
+          }
+          break;
+      }
+    }
+  }
 }

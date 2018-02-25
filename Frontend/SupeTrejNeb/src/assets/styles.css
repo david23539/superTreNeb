@@ -30,6 +30,10 @@
 
 
 */
+tr:hover{
+  cursor: pointer;
+}
+
 .flexbox{
   display: flex;
   align-items: center;
