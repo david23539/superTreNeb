@@ -36,7 +36,7 @@ export class MainDashboardComponent implements OnInit, AfterViewInit{
   ngOnInit() {
     /*var elem = document.querySelector('.modal');
     var instance = M.Modal.init(elem);
-    instance.open();
+    // instance.open();
     var tabs = document.querySelector('.tabs');
     var instanceTab = M.Tabs.init(tabs);*/
 
