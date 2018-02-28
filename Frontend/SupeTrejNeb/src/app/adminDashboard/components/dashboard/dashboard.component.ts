@@ -13,8 +13,8 @@ import { DataBrowser} from "../../../utils/dataBrowser";
   providers:[DataBrowser, UserService, DirectionIpService]
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
-
-
+  fondo ="pink-text";
+  public prueba: any = "prueba";
   public elem:any;
   public instance:any;
   public titleDiscover:String;
@@ -39,7 +39,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.url = GLOBAL.url;
 
   }
-
+  pruebas(){
+    console.log("dvdsfsdf"+this.prueba);
+  }
 
   hidenSidenaves():void{
     // $('.sidenav-overlay').click();
@@ -89,18 +91,19 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-     /* $('.sidenav').sidenav();
-      this.elem = document.querySelector('.tap-target');
-      this.instance = M.FeatureDiscovery.init(this.elem);*/
+      // $('.sidenav').sidenav();
+      /*this.elem = document.querySelector('.tap-target');
+      this.instance = Materialize.FeatureDiscovery.init(this.elem);*/
+
   }
 
   showHelp():void{
-    if(this.instance.isOpen){
-      this.instance.close();
-    }else{
+    //if(this.instance.isOpen){
+      //this.instance.close();
+    //}else{
       this.messageIntoDiscover();
       this.instance.open();
-    }
+    //}
   }
 
   messageIntoDiscover():void{

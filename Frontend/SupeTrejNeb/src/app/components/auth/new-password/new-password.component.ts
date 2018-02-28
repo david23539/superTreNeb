@@ -3,17 +3,18 @@ import { NewPassService} from "../../../services/service/new-pass.service";
 import { DataBrowser} from "../../../utils/dataBrowser";
 import { NewPassModel} from "../../../model/newPass";
 import {Router} from "@angular/router";
+import {MzToastService} from "ng2-materialize";
 
 @Component({
   selector: 'new-password',
   templateUrl: './new-password.component.html',
   styleUrls: ['./new-password.component.css'],
-  providers: [DataBrowser,NewPassService]
+  providers: [DataBrowser,NewPassService, MzToastService]
 })
 export class NewPasswordComponent implements OnInit {
 
   public CODE_TITLE: String = "Introduzca su código";
-  public SECOND_CODE_TITLE: String = "Las contraseñas no coinciden o tienen una <br> longuitud menor a 8 caracteres";
+  public SECOND_CODE_TITLE: string = "Las contraseñas no coinciden o tienen una <br> longuitud menor a 8 caracteres";
   public CODE_LABEL: String = "Código";
   public NEW_PASS: String = "Nueva Contraseña";
   public CLASS_STATUS: String = "";
@@ -21,11 +22,11 @@ export class NewPasswordComponent implements OnInit {
   public CHANGE_PASS: String = "Cambiar Contraseña";
   public REPEAT_PASS: String = "Repita La Nueva Contraseña";
   public ACCEPT: String = "ACEPTAR";
-  public CHANGE_PASS_TITLE_MODAL: String = "Cambio de contraseña";
-  public CHANGE_PASS_SUBTITLE_MODAL: String = "Contraseña cambiada con exito";
-  public CHANGE_PASS_SUBSUBTITLE_MODAL: String = "Si se equivocó en su código, recuerde que tiene 2 intentos mas";
-  public styleSuccess: String = 'teal accent-4';
-  public styleError: String = 'red accent-2';
+  public CHANGE_PASS_TITLE_MODAL: string = "Cambio de contraseña";
+  public CHANGE_PASS_SUBTITLE_MODAL: string = "Contraseña cambiada con exito";
+  public CHANGE_PASS_SUBSUBTITLE_MODAL: string = "Si se equivocó en su código, recuerde que tiene 2 intentos mas";
+  public styleSuccess: string = 'teal accent-4';
+  public styleError: string = 'red accent-2';
   public codes: String;
   public firstPass: String;
   public SecondPass: String;
@@ -38,7 +39,7 @@ export class NewPasswordComponent implements OnInit {
   public messageResponse: any;
   public tryNumber:number = 0;
 
-  constructor( private _getDataBrowser:DataBrowser, private _newPassService:NewPassService,private _router:Router) {
+  constructor( private _getDataBrowser:DataBrowser, private _newPassService:NewPassService,private _router:Router, private toastService: MzToastService) {
     this.CLASS_STATUS = "validate white-text";
     this.codes = "";
     this.codeNull = true;
@@ -48,8 +49,7 @@ export class NewPasswordComponent implements OnInit {
 
   ngOnInit() {
 
-   /* this.elem = document.querySelector('.modal');
-    this.instance = M.Modal.init(this.elem, {dismissible: false})*/
+
   }
 
   private validatePass():Boolean{
@@ -68,11 +68,13 @@ export class NewPasswordComponent implements OnInit {
     this.CLASS_STATUS = "invalid red-text";
   }
 
-  showMessage(message:String, styles:String){
-    // M.toast({html: message , classes:styles, completeCallback: this.redirectTo()} );
+  showMessage(message:string, styles:string){
+
+    this.toastService.show(message, 4000, styles, this.redirectTo());
   }
-  private redirectTo(){
+  private redirectTo():Function{
     this._router.navigate(['/login']);
+    return null;
   }
   onSubmit(){
     if (this.codes && this.firstPass && this.SecondPass) {
@@ -102,6 +104,7 @@ export class NewPasswordComponent implements OnInit {
             let infoMessage = 'Codigo incorrecto';
             this.codeNull = true;
             this.codes = "";
+            this.toastService.show(infoMessage, 4000, 'red accent-2' );
             // M.toast({html: infoMessage , classes: 'red accent-2'});
 
           }else if (this.messageResponse.message === 'Equipo Boqueado') {

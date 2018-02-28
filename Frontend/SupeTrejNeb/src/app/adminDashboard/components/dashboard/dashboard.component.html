@@ -38,6 +38,26 @@
   <mz-sidenav-divider></mz-sidenav-divider>
   <mz-sidenav-link [active]="true">
     <a href="#">Active Link</a>
+    <div (click)="pruebas()">
+      hola
+    <mz-select-container  >
+      <select mz-select
+              id="options-select"
+
+              [class]="fondo"
+              [(ngModel)]="prueba"
+              >
+
+        <optgroup label="Group 1" >
+          <option class="left circle" >Option 1</option>
+          <option class="left circle">Option 2</option>
+        </optgroup>
+        <optgroup label="Group 2">
+          <option class="left circle">Option 3</option>
+        </optgroup>
+      </select>
+    </mz-select-container>
+    </div>
   </mz-sidenav-link>
   <mz-sidenav-divider></mz-sidenav-divider>
   <mz-sidenav-link>

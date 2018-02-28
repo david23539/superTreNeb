@@ -15,7 +15,7 @@ import {LoginService} from "./services/service/login.service";
 import { RecoverUserComponent } from './components/auth/recover-user/recover-user.component';
 import { NewPasswordComponent } from './components/auth/new-password/new-password.component';
 import { PageBlockComponent } from './components/auth/page-block/page-block.component';
-import { MzToastModule, MzSidenavModule} from "ng2-materialize";
+import { MzToastModule, MzSidenavModule, MzCheckboxModule, MzSelectModule } from "ng2-materialize";
 
  import { AdminDashboardModule} from "./adminDashboard/admin-dashboard.module";
 
@@ -39,7 +39,9 @@ import { MzToastModule, MzSidenavModule} from "ng2-materialize";
     HttpClientModule,
     BrowserAnimationsModule,
     MzToastModule,
-    MzSidenavModule
+    MzSidenavModule,
+    MzCheckboxModule,
+    MzSelectModule
 
   ],
   providers: [

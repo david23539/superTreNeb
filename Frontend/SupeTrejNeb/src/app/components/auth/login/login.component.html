@@ -25,11 +25,14 @@
                   <input id="pass" minlength="5" name="contrasena" #contrasena="ngModel" [(ngModel)]="dataLogin.usuario.password" type="password" [class]="claseFormulario" required>
                   <label for="pass">{{PASSWORD}}</label>
                 </div>
-                <div class="input-field col s12">
-                  <label>
+                <div class=" col s12">
+                  <!--<label>
                     <input type="checkbox" name="recordar" #recordar="ngModel" [(ngModel)]="recordarCredenciales" />
                     <span>{{REMEMBER}}</span>
-                  </label>
+                  </label>-->
+                  <mz-checkbox-container>
+                    <input mz-checkbox  [disabled]="false" [checked]="true"  [label]=REMEMBER type="checkbox" id="checkbox-id" (click)="changeCredentials()"/>
+                  </mz-checkbox-container>
                 </div>
               </div>
               <div class="row" >

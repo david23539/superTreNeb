@@ -26,19 +26,19 @@ export class LoginComponent implements OnInit {
   public dataLogin:Login;
   public usernames: string;
   public credenciales = true;
-  public recordarCredenciales:Boolean;
+  public recordarCredenciales:Boolean = true;
   public token: any;
   public show: Boolean = false;
-  // public browser: any ={browser: String,browserVersion:String};
   public browser: any;
-  /*public elem: any;
-  public instance: any;*/
-
-  //@ViewChild('hiddenLabel') label: ElementRef;
 
   constructor(private _loginService:LoginService, private  _router: Router, private _getDataBrowser:DataBrowser, private toastService: MzToastService) {
     this.dataLogin = new Login({nombreUsuario:"", password:""}, {email:""},{direccionData:"",navegador:""});
     this.claseFormulario = 'validate white-text';
+
+  }
+
+  changeCredentials(){
+    this.recordarCredenciales = !this.recordarCredenciales;
 
   }
 
@@ -56,12 +56,10 @@ export class LoginComponent implements OnInit {
       let username = regexp.test(this.usernames);
       if(!username){
         this.show =false;
-
         this.claseFormulario = 'invalid red-text';
         this.credenciales = false;
         this.usernames = '';
         this.dataLogin.usuario.password = "";
-
       }else{
         this.claseFormulario = 'validate white-text';
         this.dataLogin.usuario.nombreUsuario = this.usernames;
@@ -75,6 +73,7 @@ export class LoginComponent implements OnInit {
   }
 
   private sendInfoLogin(): void{
+
     this.browser = this._getDataBrowser.getDataBrowser();
     this.dataLogin.direccionIp.navegador = this.browser.browser + this.browser.browserVersion;
     this._loginService.login(this.dataLogin, 'true').subscribe(
