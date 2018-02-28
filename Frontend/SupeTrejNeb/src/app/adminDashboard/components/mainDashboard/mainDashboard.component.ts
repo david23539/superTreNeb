@@ -69,7 +69,7 @@ export class MainDashboardComponent implements OnInit, AfterViewInit{
   }
 
   ngAfterViewInit(): void {
-
+   // $('select').formSelect();
   }
 
 
@@ -108,7 +108,7 @@ export class MainDashboardComponent implements OnInit, AfterViewInit{
 
 
   calculateActions(value){
-    console.log(value);
+    // console.log(value);
     let quantityItem = 0;
     if((value.charCodeAt(0)>=48 && value.charCodeAt(0)<=57) || (value.charCodeAt(0)==46 || value.charCodeAt(0)==44)){
       this.actionNumberKey +=value;
