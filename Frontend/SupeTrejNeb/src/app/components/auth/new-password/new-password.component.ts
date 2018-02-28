@@ -48,8 +48,8 @@ export class NewPasswordComponent implements OnInit {
 
   ngOnInit() {
 
-    this.elem = document.querySelector('.modal');
-    this.instance = M.Modal.init(this.elem, {dismissible: false})
+   /* this.elem = document.querySelector('.modal');
+    this.instance = M.Modal.init(this.elem, {dismissible: false})*/
   }
 
   private validatePass():Boolean{
@@ -69,7 +69,7 @@ export class NewPasswordComponent implements OnInit {
   }
 
   showMessage(message:String, styles:String){
-    M.toast({html: message , classes:styles, completeCallback: this.redirectTo()} );
+    // M.toast({html: message , classes:styles, completeCallback: this.redirectTo()} );
   }
   private redirectTo(){
     this._router.navigate(['/login']);
@@ -102,7 +102,7 @@ export class NewPasswordComponent implements OnInit {
             let infoMessage = 'Codigo incorrecto';
             this.codeNull = true;
             this.codes = "";
-            M.toast({html: infoMessage , classes: 'red accent-2'});
+            // M.toast({html: infoMessage , classes: 'red accent-2'});
 
           }else if (this.messageResponse.message === 'Equipo Boqueado') {
             this._router.navigate(['/login']);

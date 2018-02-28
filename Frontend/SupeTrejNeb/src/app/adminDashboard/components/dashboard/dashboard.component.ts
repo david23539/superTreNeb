@@ -5,6 +5,7 @@ import {UserService} from "../../../services/service/user/user.service";
 import {DirectionIpService} from "../../../services/service/direcctionIP/direction-ip.service";
 import { DataBrowser} from "../../../utils/dataBrowser";
 
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -29,7 +30,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   public LASTNAME:String;
   public browser: any;
   public MAINPAGE: String = "Panel Principal";
-
+  public classBackgraundSidenav="blue-grey lighten-2 z-depth-3";
 
   constructor(private _router:Router, private _userService:UserService, private _getDataBrowser:DataBrowser,
               private _directionIpService:DirectionIpService) {
@@ -41,7 +42,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
 
   hidenSidenaves():void{
-    $('.sidenav-overlay').click();
+    // $('.sidenav-overlay').click();
   }
 
 
@@ -88,9 +89,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-      $('.sidenav').sidenav();
+     /* $('.sidenav').sidenav();
       this.elem = document.querySelector('.tap-target');
-      this.instance = M.FeatureDiscovery.init(this.elem);
+      this.instance = M.FeatureDiscovery.init(this.elem);*/
   }
 
   showHelp():void{

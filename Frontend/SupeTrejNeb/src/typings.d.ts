@@ -4,6 +4,6 @@ interface NodeModule {
   id: string;
 }
 
-declare var $:any;
-declare let M:any;
+/*declare var $:any;
+declare let M:any;*/
 

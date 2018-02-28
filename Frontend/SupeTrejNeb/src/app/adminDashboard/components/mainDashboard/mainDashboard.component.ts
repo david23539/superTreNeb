@@ -34,11 +34,11 @@ export class MainDashboardComponent implements OnInit, AfterViewInit{
 
 
   ngOnInit() {
-    var elem = document.querySelector('.modal');
+    /*var elem = document.querySelector('.modal');
     var instance = M.Modal.init(elem);
     instance.open();
     var tabs = document.querySelector('.tabs');
-    var instanceTab = M.Tabs.init(tabs);
+    var instanceTab = M.Tabs.init(tabs);*/
 
 
 
@@ -69,7 +69,7 @@ export class MainDashboardComponent implements OnInit, AfterViewInit{
   }
 
   ngAfterViewInit(): void {
-    $('select').formSelect();
+
   }
 
 

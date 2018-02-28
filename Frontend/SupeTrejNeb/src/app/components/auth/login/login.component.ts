@@ -3,13 +3,14 @@ import {Login} from "../../../model/login";
 import {LoginService} from "../../../services/service/login.service";
 import { Router} from "@angular/router";
 import { DataBrowser} from "../../../utils/dataBrowser";
+import { MzToastService } from 'ng2-materialize'
 
 
 @Component({
   selector: 'login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  providers: [DataBrowser, LoginService]
+  providers: [DataBrowser, LoginService, MzToastService]
 })
 export class LoginComponent implements OnInit {
 
@@ -35,7 +36,7 @@ export class LoginComponent implements OnInit {
 
   //@ViewChild('hiddenLabel') label: ElementRef;
 
-  constructor(private _loginService:LoginService, private  _router: Router, private _getDataBrowser:DataBrowser) {
+  constructor(private _loginService:LoginService, private  _router: Router, private _getDataBrowser:DataBrowser, private toastService: MzToastService) {
     this.dataLogin = new Login({nombreUsuario:"", password:""}, {email:""},{direccionData:"",navegador:""});
     this.claseFormulario = 'validate white-text';
 
@@ -80,7 +81,7 @@ export class LoginComponent implements OnInit {
       response=>{
         this.token = response;
         if(this.token.token == undefined){
-          M.toast({html: this.token.message , classes: 'red accent-2'});
+          this.toastService.show(this.token.message, 4000, 'red accent-2' );
           this.claseFormulario = 'invalid red-text';
           this.credenciales = false;
           this.usernames = '';

@@ -5,6 +5,7 @@ import { HttpClientModule} from "@angular/common/http";
 import { AdminDashboardRoutingModule} from "./admin-dashboard-routing.module";
 import {MainDashboardComponent} from "./components/mainDashboard/mainDashboard.component";
 import { BreadcumsComponent } from './utils/breadcums/breadcums.component';
+// import { MzSidenavModule } from 'ng2-materialize'
 
 @NgModule({
   imports: [
@@ -12,6 +13,7 @@ import { BreadcumsComponent } from './utils/breadcums/breadcums.component';
     FormsModule,
     HttpClientModule,
     AdminDashboardRoutingModule,
+    // MzSidenavModule
   ],
   declarations: [
     MainDashboardComponent,

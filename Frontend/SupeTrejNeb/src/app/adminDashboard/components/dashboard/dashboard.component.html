@@ -1,22 +1,52 @@
 <header>
 <nav id="navedes" class="blue-grey darken-1 z-depth-3">
   <div class="nav-wrapper navbar-fixed col s12">
-    <a href="#"  class="brand-logo right">Autoservicio Olalla</a>
+    <a href="#"  class="brand-logo right">Tienda</a>
     <ul id="nav-mobile" class="left">
-      <li><a href="#" data-target="slide-out" class="show-on-large hide-on-med-and-down sidenav-trigger"><i class="material-icons">menu</i></a></li>
+      <!--<li><button mz-button id="btn-sidenav-demo" ><i class="material-icons">menu</i></button></li>-->
+      <li><a data-target="slide-out" (click)="sidenav.opened = !sidenav.opened" class="show-on-large hide-on-med-and-down sidenav-trigger"><i class="material-icons">menu</i></a></li>
       <li><a id="menu" (click)="showHelp()"  class="waves-effect waves-light btn btn-floating blue-grey darken-1 z-depth-0"><i class="material-icons">help_outline</i></a></li>
       <li class="hide-on-med-and-down"><a href="#"><i class="material-icons">notifications</i></a></li>
       <li class="hide-on-med-and-down"><a href="#"><i class="material-icons">search</i></a></li>
       <li class="hide-on-med-and-down"><a href="#"><i class="material-icons">settings</i></a></li>
-      <li><a href="#" data-target="slide-out" class="hide-on-med-and-down sidenav-trigger"><i class="material-icons blue-grey-text">menu</i></a></li>
+      <!--<li><a href="#" data-target="slide-out" class="hide-on-med-and-down sidenav-trigger"><i class="material-icons blue-grey-text">menu</i></a></li>-->
     </ul>
   </div>
 </nav>
 </header>
 
+<mz-sidenav
+  [id]="'slide-out'"
+  #sidenav
+  [draggable]="true"
+  [backgroundClass]="classBackgraundSidenav"
+  [collapseButtonId]="'slide-out'">
+  <mz-sidenav-header>
+    <div class="user-view">
+      <div class="background">
+        <img src="">
+      </div>
+      <div *ngIf="!IMAGE; else imageUrl">
+        <a href="#"><i class="material-icons black-text">account_circle</i></a>
+      </div>
+    </div>
+  </mz-sidenav-header>
+  <mz-sidenav-subheader>Link Subheader</mz-sidenav-subheader>
+  <mz-sidenav-link>
+    <a href="#">First Link</a>
+  </mz-sidenav-link>
+  <mz-sidenav-divider></mz-sidenav-divider>
+  <mz-sidenav-link [active]="true">
+    <a href="#">Active Link</a>
+  </mz-sidenav-link>
+  <mz-sidenav-divider></mz-sidenav-divider>
+  <mz-sidenav-link>
+    <a href="#" class="waves-effect">Second Link With Waves</a>
+  </mz-sidenav-link>
+</mz-sidenav>
 
 
-<ul id="slide-out" class="sidenav blue-grey lighten-2 z-depth-3">
+<!--<ul id="slide-out" class="sidenav blue-grey lighten-2 z-depth-3">
   <li><div class="user-view">
     <div class="background">
       <img src="">
@@ -26,7 +56,7 @@
     </div>
     <ng-template #imageUrl>
       <!--<a href="#"><img src="{{url + 'get-image-file/'+ n.image}}" alt="imageProfile"> </a> LLAMAR A LA FUNCION QUE OBTIENE LOS DATOS DE LAS PERSONA-->
-    </ng-template>
+   <!-- </ng-template>
     <a href="#"><span class="white-text name">{{NAME}}</span></a>
     <a href="#"><span class="white-text name">{{LASTNAME}}</span></a>
     <a href="#"><span class="white-text email">{{EMAIL}}</span></a>
@@ -36,7 +66,7 @@
   <li><div class="divider"></div></li>
   <li><a href="#!">Second Link</a></li>
   <li><div class="divider"></div></li>
-</ul>
+</ul>-->
 
 
 
@@ -51,7 +81,7 @@
   <div class="row">
     <div class="col s12">
     </div>
-    <breadcums [breadcumsTags]="nameRoutes"></breadcums>
+    <!--<breadcums [breadcumsTags]="nameRoutes"></breadcums>-->
   </div>
 
 <router-outlet></router-outlet>

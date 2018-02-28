@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { routing, appRoutingProviders} from "./app.routing";
@@ -14,7 +15,10 @@ import {LoginService} from "./services/service/login.service";
 import { RecoverUserComponent } from './components/auth/recover-user/recover-user.component';
 import { NewPasswordComponent } from './components/auth/new-password/new-password.component';
 import { PageBlockComponent } from './components/auth/page-block/page-block.component';
-import { AdminDashboardModule} from "./adminDashboard/admin-dashboard.module";
+import { MzToastModule, MzSidenavModule} from "ng2-materialize";
+
+ import { AdminDashboardModule} from "./adminDashboard/admin-dashboard.module";
+
 
 @NgModule({
   declarations: [
@@ -33,6 +37,9 @@ import { AdminDashboardModule} from "./adminDashboard/admin-dashboard.module";
     FormsModule,
     AdminDashboardModule,
     HttpClientModule,
+    BrowserAnimationsModule,
+    MzToastModule,
+    MzSidenavModule
 
   ],
   providers: [
