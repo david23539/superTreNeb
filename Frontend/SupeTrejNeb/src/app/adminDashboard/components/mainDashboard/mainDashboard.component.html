@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col s12 l8">
     <div class="card-panel white">
-        <table class="highlight centered responsive-table" >
+        <table class="highlight centered" >
           <thead class="pink-text fixed">
           <tr class="borderDown">
             <th (click)="orderTableByColums('product');productAsc == false? productAsc=true:productAsc=false">Producto <i *ngIf="productAsc; else productDSC" class="right material-icons">arrow_drop_down</i>
@@ -14,7 +14,8 @@
                 <i class="right material-icons">arrow_drop_up</i>
               </ng-template>
             </th>
-            <th>Precio Unidad</th>
+
+
             <th (click)="orderTableByColums('finalPrice'); finalPriceAsc == false? finalPriceAsc=true:finalPriceAsc=false">Precio Final <i *ngIf="finalPriceAsc; else priceASC" class="right material-icons">arrow_drop_down</i>
               <ng-template #priceASC>
                 <i class="right material-icons">arrow_drop_up</i>
@@ -24,10 +25,9 @@
           </tr>
           </thead>
           <tbody>
-            <tr class="borderDown" *ngFor="let item of shoppingList" (click)="changeRecordOfList(item)">
+            <tr class="heigthKeys" *ngFor="let item of shoppingList" (click)="changeRecordOfList(item)">
               <td>{{item.product}}</td>
               <td>{{item.quantity}}</td>
-              <td>{{item.unitPrice}} €</td>
               <td>{{item.finalPrice}} €</td>
               <td>{{item.image}}</td>
             </tr>
@@ -54,37 +54,37 @@
           <div class="col l12 s12">
             <div class="row">
               <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5" (click)="calculateActions('7')" >
-                <p class="col s12 center">7</p>
+                <p class="col s12 center"><b>7</b></p>
               </div>
               <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5" (click)="calculateActions('8')">
-                <p class="col s12 center">8</p>
+                <p class="col s12 center"><b>8</b></p>
               </div>
               <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5" (click)="calculateActions('9')">
-                <p class="col s12 center">9</p>
+                <p class="col s12 center"><b>9</b></p>
               </div>
               <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5" (click)="calculateActions('+')">
                 <i class="material-icons col s12 center">add</i>
               </div>
               <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5" (click)="calculateActions('4')">
-                <p class="col s12 center">4</p>
+                <p class="col s12 center"><b>4</b></p>
               </div>
               <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5" (click)="calculateActions('5')">
-                <p class="col s12 center">5</p>
+                <p class="col s12 center"><b>5</b></p>
               </div>
               <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5" (click)="calculateActions('6')">
-                <p class="col s12 center">6</p>
+                <p class="col s12 center"><b>6</b></p>
               </div>
               <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5" (click)="calculateActions('-')">
                 <i class="material-icons col s12 center">remove</i>
               </div>
               <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5" (click)="calculateActions('1')">
-                <p class="col s12 center">1</p>
+                <p class="col s12 center"><b>1</b></p>
               </div>
               <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5" (click)="calculateActions('2')">
-                <p class="col s12 center">2</p>
+                <p class="col s12 center"><b>2</b></p>
               </div>
               <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5" (click)="calculateActions('3')">
-                <p class="col s12 center">3</p>
+                <p class="col s12 center"><b>3</b></p>
               </div>
               <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5" (click)="calculateActions('*')">
                 <i class="material-icons col s12 center">close</i>
@@ -93,10 +93,10 @@
                 <i class="material-icons col s12 center">arrow_back</i>
               </div>
               <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5" (click)="calculateActions('0')">
-                <p class="col s12 center">0</p>
+                <p class="col s12 center"><b>0</b></p>
               </div>
               <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5" (click)="calculateActions(',')">
-                <p class="col s12 center">,</p>
+                <p class="col s12 center"><b>,</b></p>
               </div>
               <div class="col s3 valign-wrapper heigthKeys pink-text blue-grey lighten-5" (click)="calculateActions('Enter')">
                 <i class="material-icons col s12 center">keyboard_return</i>
@@ -144,10 +144,13 @@
     </div>
   </div>
   <div class="col l4 s12 center ">
-    <button class="btn col s12 light-blue darken-4">Añadir Producto Manual</button>
+    <button class="btn col s12 light-blue darken-4">{{OPEN_BOX_REGISTER}}</button>
     <br>
     <br>
-    <button class="btn col s12 ">Pagar y Finalizar</button>
+    <button class="btn col s12 light-blue darken-4">{{ADD_PRODUCT}}</button>
+    <br>
+    <br>
+    <button class="btn col s12 ">{{PAY_FINISH}}</button>
   </div>
 </div>
 
@@ -161,8 +164,9 @@
     <div class="row">
       <div class="col s12">
         <ul class="tabs">
-          <li class="tab col s3"><a href="#addProduct">Añadir Producto</a></li>
-          <li class="tab col s3"><a class="active" href="#searchProductForList">Buscar Producto</a></li>
+          <li class="tab col s3"><a href="#">Añadir Producto</a></li>
+          <li class="tab col s3"><a class="active" href="#">Buscar Producto</a></li>
+          <li class="tab col s3"><a class="active" href="#">{{OPEN_BOX_REGISTER}}</a></li>
         </ul>
       </div>
       <div id="addProduct" class="col s12 center">
@@ -189,11 +193,7 @@
             <label>Categoria</label>
           </div>
         </div>
-       <!-- <div class="row">
-          <div class="input-field col s6">
-            <a class="waves-effect waves-light btn">Buscar</a>
-          </div>
-        </div>-->
+
       </div>
       <div id="searchProductForList" class="col s12 center">
         <div class="row">

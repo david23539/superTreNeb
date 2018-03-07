@@ -5,7 +5,7 @@
     <ul id="nav-mobile" class="left">
       <!--<li><button mz-button id="btn-sidenav-demo" ><i class="material-icons">menu</i></button></li>-->
       <li><a data-target="slide-out" (click)="sidenav.opened = !sidenav.opened" class="show-on-large hide-on-med-and-down sidenav-trigger"><i class="material-icons">menu</i></a></li>
-      <li><a id="menu" (click)="showHelp()"  class="waves-effect waves-light btn btn-floating blue-grey darken-1 z-depth-0"><i class="material-icons">help_outline</i></a></li>
+      <li><a id="menu"  class="waves-effect waves-light btn btn-floating blue-grey darken-1 z-depth-0"><i class="material-icons">help_outline</i></a></li>
       <li class="hide-on-med-and-down"><a href="#"><i class="material-icons">notifications</i></a></li>
       <li class="hide-on-med-and-down"><a href="#"><i class="material-icons">search</i></a></li>
       <li class="hide-on-med-and-down"><a href="#"><i class="material-icons">settings</i></a></li>
@@ -29,66 +29,35 @@
       <div *ngIf="!IMAGE; else imageUrl">
         <a href="#"><i class="material-icons black-text">account_circle</i></a>
       </div>
+      <ng-template #imageUrl>
+        <!--<a href="#"><img src="{{url + 'get-image-file/'+ n.image}}" alt="imageProfile"> </a> LLAMAR A LA FUNCION QUE OBTIENE LOS DATOS DE LAS PERSONA-->
+      </ng-template>
+      <a href="#"><span class="white-text name">{{NAME}}</span></a>
+      <a href="#"><span class="white-text name">{{LASTNAME}}</span></a>
+      <a href="#"><span class="white-text email">{{EMAIL}}</span></a>
+      <mz-sidenav-link>
+        <a class="white-text waves-effect" [routerLink]="['/login']" (click)="exitSession()" ><i class="material-icons white-text">exit_to_app</i>{{EXITAPPSESSION}}</a>
+      </mz-sidenav-link>
+
+
+
+
     </div>
-  </mz-sidenav-header>
-  <mz-sidenav-subheader>Link Subheader</mz-sidenav-subheader>
-  <mz-sidenav-link>
-    <a href="#">First Link</a>
-  </mz-sidenav-link>
-  <mz-sidenav-divider></mz-sidenav-divider>
-  <mz-sidenav-link [active]="true">
-    <a href="#">Active Link</a>
-    <div (click)="pruebas()">
-      hola
-    <mz-select-container  >
-      <select mz-select
-              id="options-select"
+     </mz-sidenav-header>
 
-              [class]="fondo"
-              [(ngModel)]="prueba"
-              >
-
-        <optgroup label="Group 1" >
-          <option class="left circle" >Option 1</option>
-          <option class="left circle">Option 2</option>
-        </optgroup>
-        <optgroup label="Group 2">
-          <option class="left circle">Option 3</option>
-        </optgroup>
-      </select>
-    </mz-select-container>
-    </div>
-  </mz-sidenav-link>
-  <mz-sidenav-divider></mz-sidenav-divider>
-  <mz-sidenav-link>
-    <a href="#" class="waves-effect">Second Link With Waves</a>
-  </mz-sidenav-link>
-</mz-sidenav>
-
-
-<!--<ul id="slide-out" class="sidenav blue-grey lighten-2 z-depth-3">
-  <li><div class="user-view">
-    <div class="background">
-      <img src="">
-    </div>
-    <div *ngIf="!IMAGE; else imageUrl">
-    <a href="#"><i class="material-icons black-text">account_circle</i></a>
-    </div>
-    <ng-template #imageUrl>
-      <!--<a href="#"><img src="{{url + 'get-image-file/'+ n.image}}" alt="imageProfile"> </a> LLAMAR A LA FUNCION QUE OBTIENE LOS DATOS DE LAS PERSONA-->
-   <!-- </ng-template>
-    <a href="#"><span class="white-text name">{{NAME}}</span></a>
-    <a href="#"><span class="white-text name">{{LASTNAME}}</span></a>
-    <a href="#"><span class="white-text email">{{EMAIL}}</span></a>
-  </div></li>
-
-  <li class="hide-on-med-and-down"><a [routerLink]="['/dashboard/main-dashboard']" (click)="hidenSidenaves()" ><i class="material-icons">dashboard</i>{{MAINPAGE}}</a></li>
-  <li><div class="divider"></div></li>
-  <li><a href="#!">Second Link</a></li>
-  <li><div class="divider"></div></li>
-</ul>-->
-
-
+     <mz-sidenav-divider></mz-sidenav-divider>
+     <mz-sidenav-link>
+       <a [routerLink]="['/dashboard/main-dashboard']" (click)="hidenSidenaves()" ><i class="material-icons">dashboard</i>{{MAINPAGE}}</a>
+     </mz-sidenav-link>
+     <mz-sidenav-divider></mz-sidenav-divider>
+     <mz-sidenav-link [active]="true">
+       <a href="#">Active Link</a>
+     </mz-sidenav-link>
+     <mz-sidenav-divider></mz-sidenav-divider>
+     <mz-sidenav-link>
+       <a href="#" class="waves-effect">Second Link With Waves</a>
+     </mz-sidenav-link>
+   </mz-sidenav>
 
 <div class="tap-target blue-grey lighten-3" data-target="menu">
   <div class="tap-target-content white-text">
@@ -111,7 +80,7 @@
     <div class="container">
       © 2018 Copyright David
     <div class="right">
-      ver. 1.0.2 Beta
+      ver. 1.0.3 Beta
     </div>
     </div>
   </div>

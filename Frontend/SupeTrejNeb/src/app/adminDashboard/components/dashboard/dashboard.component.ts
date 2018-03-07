@@ -13,15 +13,12 @@ import { DataBrowser} from "../../../utils/dataBrowser";
   providers:[DataBrowser, UserService, DirectionIpService]
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
-  fondo ="pink-text";
+  public EXITAPPSESSION = "Salir";
   public prueba: any = "prueba";
-  public elem:any;
-  public instance:any;
   public titleDiscover:String;
   public subtitleDiscover:String;
   public routers:any;
   public breadcumsTagsArray;
-  public nameRoutes =[];
   public personData:any;
   public url: string;
   public IMAGE:String;
@@ -47,7 +44,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     // $('.sidenav-overlay').click();
   }
 
-
+  exitSession(){
+    localStorage.clear();
+    sessionStorage.clear();
+  }
 
 
 
@@ -55,8 +55,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
 
-    this.nameRoutes = this.routers.url.split("/");
-    this.nameRoutes.splice(0,2);
+
     this._userService.getDataUserByToken().subscribe(
       response=>{
         this.personData = response;
@@ -73,12 +72,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         this.personData = error;
 
         if(this.personData.message === "Equipo Boqueado"){
-          // this.browser = this._getDataBrowser.getDataBrowser();
-          /*this._directionIpService.blockIp(this.browser.browser + this.browser.browserVersion).subscribe(
-            response=>{
-              this._router.navigate(['/login']);
-            }
-          )*/
+
           this._router.navigate(['/login']);
         }else{
           this._router.navigate(['/login']);
@@ -97,14 +91,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   }
 
-  showHelp():void{
-    //if(this.instance.isOpen){
-      //this.instance.close();
-    //}else{
-      this.messageIntoDiscover();
-      this.instance.open();
-    //}
-  }
+
 
   messageIntoDiscover():void{
 

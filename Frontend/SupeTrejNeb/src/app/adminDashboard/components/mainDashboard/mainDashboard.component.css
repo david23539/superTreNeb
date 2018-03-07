@@ -4,6 +4,7 @@
 }
 .borderDown{
   border-bottom-color: #e91e63;
+
 }
 .heigthPanelCalculator{
   height: 10vh;
@@ -27,6 +28,9 @@
   background-color: red;
 }
 
+td, th{
+  padding: 0px 5px;
+}
 
 
 .heigthKeys:hover{

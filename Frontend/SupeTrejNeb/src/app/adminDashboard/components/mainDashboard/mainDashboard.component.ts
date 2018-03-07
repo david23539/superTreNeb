@@ -12,6 +12,9 @@ import {CONSTANT} from "../../../services/constant";
 })
 export class MainDashboardComponent implements OnInit, AfterViewInit{
 
+  public OPEN_BOX_REGISTER = "Abrir caja registradora";
+  public ADD_PRODUCT = "Añadir Producto Manual";
+  public PAY_FINISH = "Pagar y Finalizar";
 
   public shoppingList:any;
   public totalItemPrice: number = 0;
@@ -34,15 +37,6 @@ export class MainDashboardComponent implements OnInit, AfterViewInit{
 
 
   ngOnInit() {
-    /*var elem = document.querySelector('.modal');
-    var instance = M.Modal.init(elem);
-    // instance.open();
-    var tabs = document.querySelector('.tabs');
-    var instanceTab = M.Tabs.init(tabs);*/
-
-
-
-
 
     this.shoppingList = [{id:"0",product: "leche", quantity: 1, unitPrice:0.22, finalPrice: 0.333, image: "image"},
     {id:"1", product: "tomate", quantity: 1, unitPrice:0.4, finalPrice: 0.5, image: "image"},
@@ -62,27 +56,21 @@ export class MainDashboardComponent implements OnInit, AfterViewInit{
     for(let item of items){
       this.totalItemPrice += item.finalPrice * item.quantity;
     }
-    // this.totalItemPrice += this.totalItemPrice + 0.001;
-    this.totalItemPrice.toFixed(2);
+
+    let numerro = this.totalItemPrice.toString();
+    let primeras  = numerro.indexOf(".");
+    let numeroFinal = numerro.substr(0, primeras+3);
+    this.totalItemPrice = parseFloat(numeroFinal);
     this.calculateReturnPayDinamic(this.totalItemPrice)
-    // Math.round(this.totalItemPrice * 100) / 100;
   }
 
   ngAfterViewInit(): void {
    // $('select').formSelect();
   }
 
-
-
-
-
-
-
-
   changeRecordOfList(item){
     this.itemSelected = item;
     this.actionNumberKey = "";
-    console.log(this.itemSelected)
   }
 
   getValueKey(content){
