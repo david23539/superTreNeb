@@ -10,7 +10,7 @@ import {CONSTANT} from "../../../services/constant";
     '(document:keyup)':'getValueKey($event)'
   }
 })
-export class MainDashboardComponent implements OnInit, AfterViewInit{
+export class MainDashboardComponent implements OnInit, AfterViewInit {
 
   public OPEN_BOX_REGISTER = "Abrir caja registradora";
   public ADD_PRODUCT = "Añadir Producto Manual";
@@ -27,11 +27,23 @@ export class MainDashboardComponent implements OnInit, AfterViewInit{
   public finalPriceAsc:Boolean = true;
   public quantityAsc:Boolean = true;
   public productAsc:Boolean = true;
+  public modalOptions: Materialize.ModalOptions = {
+    dismissible: false, // Modal can be dismissed by clicking outside of the modal
+    opacity: .5, // Opacity of modal background
+    inDuration: 300, // Transition in duration
+    outDuration: 200, // Transition out duration
+    startingTop: '100%', // Starting top style attribute
+    endingTop: '10%' // Ending top style attribute
+  };
+
+
 
   constructor() {
+
     this.constant = CONSTANT.keysPress;
     this.constantToast = CONSTANT.messageToast;
     this.actionNumberKey = "";
+
   }
 
 
@@ -85,6 +97,14 @@ export class MainDashboardComponent implements OnInit, AfterViewInit{
         this.getTotalFinalPrice(this.shoppingList);
       }
     }
+  }
+
+  openBoxMoney(){
+    const contenido= document.getElementById("openBox").innerHTML;
+    const contenidoOriginal= document.body.innerHTML;
+    document.body.innerHTML = contenido;
+    window.print();
+    document.body.innerHTML = contenidoOriginal;
   }
 
   calculateReturnPayDinamic( total){
