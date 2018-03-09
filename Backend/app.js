@@ -27,13 +27,13 @@ app.use((req,res,next)=>{
 })
 
 //rutas base
-//app.use('/', express.static('client', {redirect:false}))
+// app.use('/', express.static('client', {redirect:false}))
 app.use('/api', user_routes)
 app.use('/api', person_router)
 app.use('/api', direcctionIp_router)
-/*app.get('*', function(req, res, next){
-	res.sendFile(path.resolve('client/index.html'))
-})*/
+// app.get('*', function(req, res, next){
+// 	res.sendFile(path.resolve('client/index.html'))
+// })
 //app.use('/api', animal_routes)
 
 //rutas body-parse

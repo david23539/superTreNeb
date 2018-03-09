@@ -20,7 +20,12 @@ exports.ensureAuth = function(req, res, next){
 			return res.status(constantFile.httpCode.UNAUTHORIZED).send({message: constantFile.api.EXPIRED_TOKEN})
 		}
 	} catch (ex) {
-		return direcctionIpController.blockIp(req, res)
+		if(ex.message === constantFile.api.TOKEN_EXPIRED){
+			return res.status(constantFile.httpCode.UNAUTHORIZED).send({message: constantFile.api.EXPIRED_TOKEN})
+		}else{
+			return direcctionIpController.blockIp(req, res)
+		}
+
 		// return res.status(constantFile.httpCode.NO_FOUND).send({message: constantFile.api.NO_VALID_TOKEN})
 	}
 	req.user = payload
