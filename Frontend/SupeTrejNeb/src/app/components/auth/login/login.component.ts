@@ -87,9 +87,11 @@ export class LoginComponent implements OnInit {
           this.dataLogin.usuario.password = "";
         }else if(this.recordarCredenciales){
           localStorage.setItem('token', this.token.token);
+
           this._router.navigate(['/dashboard']);
         }else{
           sessionStorage.setItem('token', this.token.token);
+
           this._router.navigate(['/dashboard']);
         }
         this.show = false;

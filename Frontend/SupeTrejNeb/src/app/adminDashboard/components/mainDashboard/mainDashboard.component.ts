@@ -15,7 +15,9 @@ export class MainDashboardComponent implements OnInit, AfterViewInit {
   public OPEN_BOX_REGISTER = "Abrir caja registradora";
   public ADD_PRODUCT = "Añadir Producto Manual";
   public PAY_FINISH = "Pagar y Finalizar";
-
+  public INCLUDE_PRODUCT = "Incluir Producto Manualmente";
+  public SEARCH_PRODUCT = "Buscar Productos";
+  public CLASS_MAX = "col l12";
   public shoppingList:any;
   public totalItemPrice: number = 0;
   public itemSelected: any;
@@ -49,7 +51,8 @@ export class MainDashboardComponent implements OnInit, AfterViewInit {
 
 
   ngOnInit() {
-
+    $('.modal').modal();
+    $('.tabs').tabs();
     this.shoppingList = [{id:"0",product: "leche", quantity: 1, unitPrice:0.22, finalPrice: 0.333, image: "image"},
     {id:"1", product: "tomate", quantity: 1, unitPrice:0.4, finalPrice: 0.5, image: "image"},
     {id:"2", product: "chicles", quantity: 1, unitPrice:0.1, finalPrice: 0.3, image: "image"},
@@ -77,7 +80,7 @@ export class MainDashboardComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-   // $('select').formSelect();
+
   }
 
   changeRecordOfList(item){

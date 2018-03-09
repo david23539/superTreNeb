@@ -147,7 +147,7 @@
     <button class="btn col s12 light-blue darken-4 waves-effect waves-light" (click)="openBoxMoney()">{{OPEN_BOX_REGISTER}}</button>
     <br>
     <br>
-    <button class="btn col s12 light-blue darken-4 waves-effect waves-light" (click)="bottomSheetModal.open()">{{ADD_PRODUCT}}</button>
+    <button class="btn col s12 light-blue darken-4 waves-effect waves-light modal-trigger" data-target="addProducts">{{ADD_PRODUCT}}</button>
     <br>
     <br>
     <button class="btn col s12 waves-effect waves-light">{{PAY_FINISH}}</button>
@@ -156,6 +156,58 @@
 
 
 <!-- Modal Trigger -->
+
+
+<!-- Modal Structure -->
+<div id="addProducts" class="modal">
+  <div class="modal-content">
+    <div class="row">
+
+      <!--Inicio tabss Materializzer-->
+      <div class="col s12">
+        <ul class="tabs tabs-fixed-width">
+          <li class="tab col s6"><a class="active" href="#addProduct">{{INCLUDE_PRODUCT}}</a></li>
+          <li class="tab col s6"><a  href="#searchProductForList">{{SEARCH_PRODUCT}}</a></li>
+        </ul>
+      </div>
+      <!--fin materialize tabs-->
+      <!--inicio plantillas primera-->
+      <div id="addProduct" class="col s12 center">
+        <div class="row center">
+          <div class="input-field col s6 ">
+            <input id="product" type="text" class="validate">
+            <label class="active" for="product">Producto</label>
+          </div>
+        </div>
+        <div class="row center">
+          <div class="input-field col s6">
+            <input id="price" type="text" class="validate">
+            <label class="active" for="price">Precio</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s6">
+
+          </div>
+        </div>
+      </div>
+      <!--fin plantilla primera-->
+      <!--inicio plantilla segunda-->
+      <div id="searchProductForList" class="col s12 center">
+        <div class="row">
+          <div class="input-field col s6">
+            <input id="searchProduct" type="text" class="validate">
+            <label class="active" for="searchProduct">Buscar Producto</label>
+          </div>
+        </div>
+      </div>
+      <!--fin plantilla segunda-->
+    </div>
+  </div>
+  <div class="modal-footer">
+    <!--<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>-->
+  </div>
+</div>
 
 
 <div  [hidden]="true" id="openBox">

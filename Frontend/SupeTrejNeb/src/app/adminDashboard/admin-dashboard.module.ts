@@ -5,7 +5,7 @@ import { HttpClientModule} from "@angular/common/http";
 import { AdminDashboardRoutingModule} from "./admin-dashboard-routing.module";
 import {MainDashboardComponent} from "./components/mainDashboard/mainDashboard.component";
 import { BreadcumsComponent } from './utils/breadcums/breadcums.component';
-
+// import { MzTabModule } from 'ng2-materialize' SE HA COMENTADO PORQUE NO SE USA AUNQUE SI QUEREMOS INCLUIR OTRO HABRA QUE IMPORTARLO AQUI E INFORMARLO EN IMPORTS
 
 @NgModule({
   imports: [
@@ -13,6 +13,7 @@ import { BreadcumsComponent } from './utils/breadcums/breadcums.component';
     FormsModule,
     HttpClientModule,
     AdminDashboardRoutingModule
+    // MzTabModule
 
   ],
   declarations: [

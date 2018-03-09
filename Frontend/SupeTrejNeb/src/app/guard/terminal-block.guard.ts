@@ -16,7 +16,9 @@ export class TerminalBlockGuard implements CanActivate {
     state: RouterStateSnapshot) {
     return this._checkBlockClientTerminalService.checkIpBlockCall().map(e =>{
       if(!e.status){
-
+        if(e.message === "El token ha expirado"){
+          this._router.navigate(['/login']);
+        }
         return true;
 
       }else{
