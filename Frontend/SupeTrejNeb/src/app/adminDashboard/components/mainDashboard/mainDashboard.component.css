@@ -39,6 +39,14 @@ td, th{
   cursor: pointer;
 }
 
-openBoxs{
-  display: none;
+
+.widthTicket{
+  width: 155px;
+  max-width: 155px;
+}
+
+.widthItemTicket{
+  width: 40px;
+  max-width: 40px;
+  word-break: break-all;
 }

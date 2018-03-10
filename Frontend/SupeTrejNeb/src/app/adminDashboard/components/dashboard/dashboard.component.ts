@@ -12,6 +12,7 @@ import { DataBrowser} from "../../../utils/dataBrowser";
   styleUrls: ['./dashboard.component.css'],
   providers:[DataBrowser, UserService, DirectionIpService]
 })
+
 export class DashboardComponent implements OnInit, AfterViewInit {
   public EXITAPPSESSION = "Salir";
   public prueba: any = "prueba";

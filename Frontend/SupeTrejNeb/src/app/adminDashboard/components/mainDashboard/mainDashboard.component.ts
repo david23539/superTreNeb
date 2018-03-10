@@ -29,6 +29,9 @@ export class MainDashboardComponent implements OnInit, AfterViewInit {
   public finalPriceAsc:Boolean = true;
   public quantityAsc:Boolean = true;
   public productAsc:Boolean = true;
+  public addProductName :string = "";
+  public addProductPrice :number = 0;
+  public addProductQuantity:number = 1;
   public modalOptions: Materialize.ModalOptions = {
     dismissible: false, // Modal can be dismissed by clicking outside of the modal
     opacity: .5, // Opacity of modal background
@@ -63,7 +66,7 @@ export class MainDashboardComponent implements OnInit, AfterViewInit {
     {id:"7", product: "agua", quantity: 1, unitPrice:1, finalPrice: 1, image: "image"},
     {id:"8", product: "amoniaco", quantity: 1, unitPrice:1, finalPrice: 1, image: "image"},
     {id:"9", product: "pan", quantity: 1, unitPrice:0.6, finalPrice: 0.8, image: "image"}];
-
+    // this.shoppingList= [];
   this.getTotalFinalPrice(this.shoppingList);
   }
   getTotalFinalPrice(items){
@@ -82,6 +85,22 @@ export class MainDashboardComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
 
   }
+
+  addProductToList(){
+    const numberElementOfList = this.shoppingList.length;
+    if(this.addProductName && this.addProductPrice){
+      const newItemToList = {
+        id: numberElementOfList+1,
+        product:this.addProductName,
+        quantity: this.addProductQuantity,
+        unitPrice:0,
+        finalPrice: this.addProductPrice
+      };
+      this.shoppingList.push(newItemToList);
+      this.getTotalFinalPrice(this.shoppingList);
+    }
+  }
+
 
   changeRecordOfList(item){
     this.itemSelected = item;
@@ -103,11 +122,25 @@ export class MainDashboardComponent implements OnInit, AfterViewInit {
   }
 
   openBoxMoney(){
-    const contenido= document.getElementById("openBox").innerHTML;
-    const contenidoOriginal= document.body.innerHTML;
-    document.body.innerHTML = contenido;
-    window.print();
-    document.body.innerHTML = contenidoOriginal;
+
+
+    const ficha=document.getElementById("openBox");
+    const ventimp=window.open(' ','popimpr');
+    ventimp.document.write(ficha.innerHTML);
+    ventimp.document.close();
+    ventimp.print();
+    ventimp.close();
+  }
+
+  printTickets(){
+
+    const ficha=document.getElementById("ticket");
+    const ventimp=window.open(' ','popimpr');
+    ventimp.document.write(ficha.innerHTML);
+    ventimp.document.close();
+    ventimp.print();
+    ventimp.close();
+
   }
 
   calculateReturnPayDinamic( total){
@@ -123,7 +156,7 @@ export class MainDashboardComponent implements OnInit, AfterViewInit {
     let quantityItem = 0;
     if((value.charCodeAt(0)>=48 && value.charCodeAt(0)<=57) || (value.charCodeAt(0)==46 || value.charCodeAt(0)==44)){
       this.actionNumberKey +=value;
-      console.log(this.actionNumberKey);
+      // console.log(this.actionNumberKey);
     }
 
     if(value == this.constant.ENTER && this.actionNumberKey){

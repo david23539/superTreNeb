@@ -147,10 +147,10 @@
     <button class="btn col s12 light-blue darken-4 waves-effect waves-light" (click)="openBoxMoney()">{{OPEN_BOX_REGISTER}}</button>
     <br>
     <br>
-    <button class="btn col s12 light-blue darken-4 waves-effect waves-light modal-trigger" data-target="addProducts">{{ADD_PRODUCT}}</button>
+    <button class="btn col s12 light-blue darken-4 waves-effect waves-light modal-trigger" (click)="addProductName=''; addProductPrice=''; addProductQuantity=1; " data-target="addProducts">{{ADD_PRODUCT}}</button>
     <br>
     <br>
-    <button class="btn col s12 waves-effect waves-light">{{PAY_FINISH}}</button>
+    <button class="btn col s12 waves-effect waves-light modal-trigger" data-target="payAndFinish">{{PAY_FINISH}}</button>
   </div>
 </div>
 
@@ -175,14 +175,20 @@
       <div id="addProduct" class="col s12 center">
         <div class="row center">
           <div class="input-field col s6 ">
-            <input id="product" type="text" class="validate">
+            <input id="product" type="text" [(ngModel)]="addProductName" class="validate">
             <label class="active" for="product">Producto</label>
           </div>
         </div>
         <div class="row center">
           <div class="input-field col s6">
-            <input id="price" type="text" class="validate">
+            <input id="price" type="text" [(ngModel)]="addProductPrice" class="validate">
             <label class="active" for="price">Precio</label>
+          </div>
+        </div>
+        <div class="row center">
+          <div class="input-field col s6">
+            <input id="quantity" type="text" [(ngModel)]="addProductQuantity" class="validate">
+            <label class="active" for="price">Cantidad</label>
           </div>
         </div>
         <div class="row">
@@ -196,7 +202,7 @@
       <div id="searchProductForList" class="col s12 center">
         <div class="row">
           <div class="input-field col s6">
-            <input id="searchProduct" type="text" class="validate">
+            <input id="searchProduct" type="text" class="validate" >
             <label class="active" for="searchProduct">Buscar Producto</label>
           </div>
         </div>
@@ -205,10 +211,38 @@
     </div>
   </div>
   <div class="modal-footer">
-    <!--<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>-->
+    <button  class="btn modal-action modal-close waves-effect waves-green btn-flat">Cancelar</button>
+    <button (click)="addProductToList()"  class="btn modal-action modal-close waves-effect waves-green btn-flat">Añadir</button>
+
   </div>
 </div>
 
+<div id="payAndFinish" class="modal">
+  <div class="modal-content">
+
+    <div [hidden]="payMoney > totalItemPrice">
+      La cantidad de dinero introduccido es menor al precio total
+    </div>
+    ¿Imprimir ticket?
+  </div>
+
+  <div class="modal-footer">
+    <button  class="btn modal-action modal-close waves-effect waves-green btn-flat">Cancelar</button>
+    <button  class="btn modal-action modal-close waves-effect waves-green btn-flat" (click)="shoppingList=[]; totalItemPrice=0; payMoney=0; returnPay=0">No</button>
+    <button  class="btn modal-action modal-close waves-effect waves-green btn-flat" (click)="printTickets(); shoppingList=[]; totalItemPrice=0; payMoney=0; returnPay=0">Si</button>
+  </div>
+</div>
+
+<div class="widthTicket" id="ticket" [hidden]="true">
+  <p class="widthItemTicket" *ngFor="let items of shoppingList">
+  {{items.product}}
+  {{items.finalPrice}}
+  </p>
+  <p class="widthItemTicket">
+    Total: {{totalItemPrice}}
+  </p>
+
+</div>
 
 <div  [hidden]="true" id="openBox">
   27,112,0,100,200
