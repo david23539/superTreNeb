@@ -11,7 +11,7 @@ const constant ={
 	api:{
 		MESSAGE_OK: 'El metodo esta funcionando',
 		SERVICE_OK: 'El servicio funciona',
-		AUTHENTICATE_FAIL: 'la peticion no tien la cabecera de autenticación',
+		AUTHENTICATE_FAIL: 'la peticion no tiene la cabecera de autenticación',
 		EXPIRED_TOKEN:'El token ha expirado',
 		NO_VALID_TOKEN: 'El token no es valido',
 		ACCESS_DENIED: 'acceso denegado a esta zona',
@@ -33,7 +33,8 @@ const constant ={
 
 	},
 	functions:{
-		ERROR_PARAMETROS_ENTRADA: 'Los parametros de entrada nos son correctos',
+		ERROR_PARAMETROS_ENTRADA: 'Los parametros de entrada no son correctos',
+		ERROR_PARAMETROS_ENTRADA_LOG: 'Los parametros de entrada no correctos Categoria',
 		USER_REGISTER_SUCCESS: 'Usuario registrado correctamente',
 		USER_LOGIN_SUCCESS_TOKEN: 'Usuario logeado con token correctamente',
 		USER_LOGIN_SUCCESS: 'Usuario logeado sin token correctamente',
@@ -49,14 +50,19 @@ const constant ={
 		LOGIN_TRY_FAIL: 'aumento en uno el numero de intentos',
 		EMAIL_NO_EXIT: 'No existe el email ',
 		ERROR_GENERATE_CODE: 'Error en la generación del codigo',
-		EMAIL_SEND: 'El email se ha enviado'
+		EMAIL_SEND: 'El email se ha enviado',
+		CATEGORY_REGISTER_FAIL: 'Ha fallado el registro de la categoria',
+		CATEGORY_REGISTER_SUCCESS: 'Se ha creado la categoria con exito'
+
 
 
 	},
 	regex:{
 		EMAIL:'^(([^<>()\\[\\]\\\\.,;:\\s@"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@"]+)*)|(".+"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$',
 		USERNAME: '^[0-9a-zA-Z]+$',
-		CODE: '^([0-9])*$'
+		STRINGS: '^[0-9a-zA-Z]+$',
+		CODE: '^([0-9])*$',
+		NUMBERS: '^([0-9])*$'
 
 	},
 	messageLog:{
