@@ -32,8 +32,32 @@ function createCategory(req, res){
 	}
 }
 
+/*Funcion actualizar una categoria*/
+
+function updateCategory(req, res){
+	const params = req.body
+	let category = new CategoryModel()
+	params.direccionIp.direccionData = req.connection.remoteAddress
+	category = categoryAdapter.categoryDataAdapter(params)
+	if(categoryValidation.validateDataCategory(category) && categoryValidation.updateParamsId(params.id)){
+		category._doc._id = params.id
+		CategoryModel.findByIdAndUpdate(params.id, category, {new: true}, (err, categoryUpdate)=>{
+			if(err || !categoryUpdate ){
+				auditoriaController.saveLogsData(req.user.name,err, params.direccionIp.direccionData, params.direccionIp.navegador)
+				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.CATEGORY_UPDATE_ERROR})
+			}else{
+				auditoriaController.saveLogsData(req.user.name,constantFile.functions.CATEGORY_UPDATE_SUCCESS, params.direccionIp.direccionData, params.direccionIp.navegador)
+				res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.CATEGORY_UPDATE_SUCCESS})
+			}
+		})
+	}else{
+		auditoriaController.saveLogsData(req.user.name,constantFile.functions.ERROR_PARAMETROS_ENTRADA_LOG, params.direccionIp.direccionData, params.direccionIp.navegador)
+		res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.ERROR_PARAMETROS_ENTRADA})
+	}
+}
 
 // eslint-disable-next-line no-undef
 module.exports = {
-	createCategory
+	createCategory,
+	updateCategory
 }

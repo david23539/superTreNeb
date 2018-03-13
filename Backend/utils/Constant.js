@@ -52,7 +52,9 @@ const constant ={
 		ERROR_GENERATE_CODE: 'Error en la generación del codigo',
 		EMAIL_SEND: 'El email se ha enviado',
 		CATEGORY_REGISTER_FAIL: 'Ha fallado el registro de la categoria',
-		CATEGORY_REGISTER_SUCCESS: 'Se ha creado la categoria con exito'
+		CATEGORY_REGISTER_SUCCESS: 'Se ha creado la categoria con exito',
+		CATEGORY_UPDATE_SUCCESS: 'Se ha actualizado correctamente la categoria',
+		CATEGORY_UPDATE_ERROR: 'Ha ocurrido un error al actualizar la categoria'
 
 
 

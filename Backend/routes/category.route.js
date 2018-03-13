@@ -7,6 +7,7 @@ const md_auth = require('../middleware/autenticate.middleware')
 
 
 api.post('/createCategory', md_auth.ensureAuth, categoryController.createCategory)
+api.put('/updateCategory', md_auth.ensureAuth, categoryController.updateCategory)
 
 
 

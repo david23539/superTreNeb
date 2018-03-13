@@ -11,7 +11,20 @@ function validateDataCategory(categoryObject){
 	return nameCategory && descriptionCategory && ivaCategory
 }
 
+function updateParamsId(paramid){
+	if(!paramid){
+		return false
+	}else{
+		const regexString = new RegExp(constantFile.regex.STRINGS)
+		let id = regexString.test(paramid.id)
+		return true
+	}
+
+
+}
+
 // eslint-disable-next-line no-undef
 module.exports ={
-	validateDataCategory
+	validateDataCategory,
+	updateParamsId
 }
