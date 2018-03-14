@@ -56,8 +56,64 @@ function updateCategory(req, res){
 	}
 }
 
+function deletedCategory(req, res){
+	const categoryId = req.params.id
+	const params = req.body
+	params.direccionIp.direccionData = req.connection.remoteAddress
+	if(categoryValidation.validateId(categoryId)){
+		CategoryModel.findByIdAndRemove(categoryId, (err, categoryRemoved)=>{
+			if(err || !categoryRemoved){
+				auditoriaController.saveLogsData(req.user.name,err, params.direccionIp.direccionData, params.direccionIp.navegador)
+				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.CATEGORY_DELETE_ERROR})
+			}else{
+				auditoriaController.saveLogsData(req.user.name,constantFile.functions.CATEGORY_DELETE_SUCCESS, params.direccionIp.direccionData, params.direccionIp.navegador)
+				res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.CATEGORY_DELETE_SUCCESS})
+			}
+		})
+	}else{
+		auditoriaController.saveLogsData(req.user.name,constantFile.functions.ERROR_PARAMETROS_ENTRADA_LOG, params.direccionIp.direccionData, params.direccionIp.navegador)
+		res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.ERROR_PARAMETROS_ENTRADA})
+	}
+}
+
+function getCategoryById(req, res){
+	const categoryId = req.params.id
+	const params = req.body
+	params.direccionIp.direccionData = req.connection.remoteAddress
+	if(categoryValidation.validateId(categoryId)){
+		CategoryModel.findById(categoryId, (err, category)=>{
+			if(err || !category){
+				auditoriaController.saveLogsData(req.user.name,err, params.direccionIp.direccionData, params.direccionIp.navegador)
+				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.CATEGORY_GET_CATEGORY_ERROR})
+			}else{
+
+				res.status(constantFile.httpCode.PETITION_CORRECT).send({categoryObject: categoryAdapter.getCategoryByIdAdapter(category)})
+			}
+		})
+	}else{
+		auditoriaController.saveLogsData(req.user.name,constantFile.functions.ERROR_PARAMETROS_ENTRADA_LOG, params.direccionIp.direccionData, params.direccionIp.navegador)
+		res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.ERROR_PARAMETROS_ENTRADA})
+	}
+
+}
+
+function getAllCategory(req,res){
+	const params = req.body
+	params.direccionIp.direccionData = req.connection.remoteAddress
+	CategoryModel.find({},(err,categoryData)=>{
+		if(err || !categoryData){
+			auditoriaController.saveLogsData(req.user.name,err, params.direccionIp.direccionData, params.direccionIp.navegador)
+			res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.CATEGORY_GET_CATEGORY_ERROR})
+		}else{
+			res.status(constantFile.httpCode.PETITION_CORRECT).send({categoryObject: categoryAdapter.getAllCategoriesAdapter(categoryData)})
+		}
+	})
+}
 // eslint-disable-next-line no-undef
 module.exports = {
 	createCategory,
-	updateCategory
+	updateCategory,
+	deletedCategory,
+	getCategoryById,
+	getAllCategory
 }

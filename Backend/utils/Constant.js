@@ -54,7 +54,11 @@ const constant ={
 		CATEGORY_REGISTER_FAIL: 'Ha fallado el registro de la categoria',
 		CATEGORY_REGISTER_SUCCESS: 'Se ha creado la categoria con exito',
 		CATEGORY_UPDATE_SUCCESS: 'Se ha actualizado correctamente la categoria',
-		CATEGORY_UPDATE_ERROR: 'Ha ocurrido un error al actualizar la categoria'
+		CATEGORY_UPDATE_ERROR: 'Ha ocurrido un error al actualizar la categoria',
+		CATEGORY_DELETE_SUCCESS: 'La categoria se ha eliminado',
+		CATEGORY_DELETE_ERROR: 'Ha ocurrido un error al eliminar la categoria',
+		CATEGORY_GET_CATEGORY_ERROR: 'Ha ocurrido un error al obtener la categoria'
+
 
 
 

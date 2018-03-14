@@ -16,15 +16,19 @@ function updateParamsId(paramid){
 		return false
 	}else{
 		const regexString = new RegExp(constantFile.regex.STRINGS)
-		let id = regexString.test(paramid.id)
-		return true
+		return regexString.test(paramid.id)
 	}
-
-
 }
+
+function validateId(id){
+	const regexString = new RegExp(constantFile.regex.STRINGS)
+	return regexString.test(id)
+}
+
 
 // eslint-disable-next-line no-undef
 module.exports ={
 	validateDataCategory,
-	updateParamsId
+	updateParamsId,
+	validateId
 }
