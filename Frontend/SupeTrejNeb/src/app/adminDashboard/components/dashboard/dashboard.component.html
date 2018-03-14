@@ -18,6 +18,7 @@
 <mz-sidenav
   [id]="'slide-out'"
   #sidenav
+
   [draggable]="true"
   [backgroundClass]="classBackgraundSidenav"
   [collapseButtonId]="'slide-out'">
@@ -38,10 +39,6 @@
       <mz-sidenav-link>
         <a class="white-text waves-effect" [routerLink]="['/login']" (click)="exitSession()" ><i class="material-icons white-text">exit_to_app</i>{{EXITAPPSESSION}}</a>
       </mz-sidenav-link>
-
-
-
-
     </div>
      </mz-sidenav-header>
 
@@ -49,13 +46,10 @@
      <mz-sidenav-link>
        <a [routerLink]="['/dashboard/main-dashboard']" (click)="hidenSidenaves()" ><i class="material-icons">dashboard</i>{{MAINPAGE}}</a>
      </mz-sidenav-link>
-     <mz-sidenav-divider></mz-sidenav-divider>
-     <mz-sidenav-link [active]="true">
-       <a href="#">Active Link</a>
-     </mz-sidenav-link>
+
      <mz-sidenav-divider></mz-sidenav-divider>
      <mz-sidenav-link>
-       <a href="#" class="waves-effect">Second Link With Waves</a>
+       <a [routerLink]="['/dashboard/main-dashboard']" (click)="hidenSidenaves()" ><i class="material-icons">local_offer</i>Categorías</a>
      </mz-sidenav-link>
    </mz-sidenav>
 
