@@ -1,4 +1,23 @@
-<tableComponenets [headsTable]="headsTables" [bodyTableContent]="bodyTable" [title]="TITLE"></tableComponenets>
+<tableComponenets [headsTable]="headsTables" [bodyTableContent]="bodyTable" (createItem)="addCategory($event)" [title]="TITLE"></tableComponenets>
+
+<div id="createCategory" class="modal">
+  <div class="modal-content">
+    <h4>{{ADD_CATEGORY_TITTLE}}</h4>
+    <div class="row">
+      <div class="input-field col s12">
+        <!--HAY QUE TERMINAR DE MAQUETAR EL MODAL-->
+        <!--<input id="nameCategory" minlength="5" [(ngModel)]="usernames"  type="text" [class]="claseFormulario" required>
+        <label for="nameCategory">{{NAME_USER}}</label>-->
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+  </div>
+</div>
+
+
+
 
 
 

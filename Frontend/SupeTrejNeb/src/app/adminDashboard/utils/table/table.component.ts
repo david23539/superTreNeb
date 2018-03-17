@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, OnChanges, SimpleChange, SimpleChanges} from '@angular/core';
+import {Component, Input, Output, OnInit, OnChanges, SimpleChanges, EventEmitter} from '@angular/core';
 
 @Component({
   selector: 'tableComponenets',
@@ -13,7 +13,7 @@ export class TableComponent implements OnInit, OnChanges {
   @Input() title:any;
   public propertiesContent:any;
   public searchResult:string;
-
+  @Output() createItem = new EventEmitter();
   constructor() { }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -34,6 +34,13 @@ export class TableComponent implements OnInit, OnChanges {
     });
 
   }
+
+  addElement(){
+    this.createItem.emit({
+      operation: "create"
+    })
+  }
+
   ngOnInit() {
 
   }

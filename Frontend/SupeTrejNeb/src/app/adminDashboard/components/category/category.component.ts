@@ -3,7 +3,8 @@ import {CONSTANT} from "../../../services/constant";
 import {CategoryService} from "../../services/category/category.service";
 import {DataBrowser} from "../../../utils/dataBrowser";
 import {Category} from "../../model/category/category.model";
-import { MzToastService } from 'ng2-materialize'
+import { MzToastService } from 'ng2-materialize';
+import { MzModalService } from 'ng2-materialize';
 
 @Component({
   selector: 'category',
@@ -18,13 +19,28 @@ export class CategoryComponent implements OnInit {
   public browser:any;
   public responseServer:any;
   public categoryModel:Category;
+  public ADD_CATEGORY_TITTLE= CONSTANT.Labels.AddCategory;
+
+
   constructor(private _categoryService:CategoryService, private _getDataBrowser:DataBrowser, private toastService: MzToastService) {
     this.categoryModel = new Category({direccionData:"",navegador:""});
+
   }
 
 
 
+
+  addCategory(event){
+    if(event.operation === CONSTANT.OperationTables.create){
+      $('#createCategory').modal('open');
+    }
+
+
+  }
+
   ngOnInit() {
+    $('.modal').modal();
+
     this.browser = this._getDataBrowser.getDataBrowser();
     this.categoryModel.direccionIp.navegador = this.browser.browser;
     this._categoryService.getCategories(this.categoryModel).subscribe(

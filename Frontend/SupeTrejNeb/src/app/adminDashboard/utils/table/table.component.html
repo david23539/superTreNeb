@@ -10,7 +10,7 @@
       <table class="highlight centered" >
         <thead class="pink-text fixed">
           <tr class="borderDown">
-            <th>Boton</th>
+            <th (click)="addElement()"><i class="material-icons">add_circle_outline</i></th>
             <th *ngFor="let itemHead of headsTable; let i = index" >
               <div (click)="orderByIndexASC(i)">
                 {{itemHead}} <i class="right material-icons">arrow_drop_up</i>
