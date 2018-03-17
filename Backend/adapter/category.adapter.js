@@ -26,9 +26,11 @@ function getAllCategoriesAdapter(categoriesObjects){
 	for(let item of categoriesObjects){
 		let category = {
 			id: item._doc._id,
-			iva: item._doc.stn_ivaCategory,
+			name: item._doc.stn_nameCategory,
 			description: item._doc.stn_descriptionCategory,
-			name: item._doc.stn_nameCategory
+			iva: item._doc.stn_ivaCategory
+
+
 		}
 		adaptationCategories.push(category)
 	}
