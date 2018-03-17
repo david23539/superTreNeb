@@ -8,6 +8,7 @@ export const CONSTANT = {
     ENTER: "Enter"
 
   },
+  headCategory:["Id", "Nombre", "Descripción", "IVA"],
   messageToast:{
     NOSELECTEDITEM: "Debe seleccional un elemento antes de hacer algun cambio"
   }
