@@ -4,9 +4,9 @@ const CategoryModel = require('../model/category.model')
 
 function categoryDataAdapter(categoryParams) {
 	let category = new CategoryModel()
-	category.stn_nameCategory = categoryParams.nameCat
-	category.stn_descriptionCategory = categoryParams.descriptionCat
-	category.stn_ivaCategory = categoryParams.ivaCat
+	category.stn_nameCategory = categoryParams.dataCategory.nameCat
+	category.stn_descriptionCategory = categoryParams.dataCategory.descriptionCat
+	category.stn_ivaCategory = categoryParams.dataCategory.ivaCat
 	return category
 
 

@@ -12,24 +12,31 @@ function createCategory(req, res){
 
 	const params = req.body
 	let category = new CategoryModel()
-	params.direccionIp.direccionData = req.connection.remoteAddress
-	category = categoryAdapter.categoryDataAdapter(params)
-	if(categoryValidation.validateDataCategory(category)){
-		category.save((err, categoryStored) => {
-			if(err || !categoryStored){
-				auditoriaController.saveLogsData(req.user.name,err, params.direccionIp.direccionData, params.direccionIp.navegador)
-				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.CATEGORY_REGISTER_FAIL})
-			}else if(categoryStored){
-				auditoriaController.saveLogsData(req.user.name,constantFile.functions.CATEGORY_REGISTER_SUCCESS, params.direccionIp.direccionData, params.direccionIp.navegador)
-				res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.CATEGORY_REGISTER_SUCCESS})
-			}
-		})
+	if(params.direccionIp && params.direccionIp.navegador){
+		params.direccionIp.direccionData = req.connection.remoteAddress
+		category = categoryAdapter.categoryDataAdapter(params)
+		if(categoryValidation.validateDataCategory(category)){
+			category.save((err, categoryStored) => {
+				if(err || !categoryStored){
+					auditoriaController.saveLogsData(req.user.name,err, params.direccionIp.direccionData, params.direccionIp.navegador)
+					res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.CATEGORY_REGISTER_FAIL})
+				}else if(categoryStored){
+					auditoriaController.saveLogsData(req.user.name,constantFile.functions.CATEGORY_REGISTER_SUCCESS, params.direccionIp.direccionData, params.direccionIp.navegador)
+					res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.CATEGORY_REGISTER_SUCCESS, categoryObject:categoryStored})
+				}
+			})
+		}else{
+			auditoriaController.saveLogsData(req.user.name,constantFile.functions.ERROR_PARAMETROS_ENTRADA_LOG, params.direccionIp.direccionData, params.direccionIp.navegador)
+			res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.ERROR_PARAMETROS_ENTRADA})
+
+
+		}
 	}else{
-		auditoriaController.saveLogsData(req.user.name,constantFile.functions.ERROR_PARAMETROS_ENTRADA_LOG, params.direccionIp.direccionData, params.direccionIp.navegador)
+		auditoriaController.saveLogsData(req.user.name,constantFile.functions.ERROR_PARAMETROS_ENTRADA_LOG, 0, 'undefined')
 		res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.ERROR_PARAMETROS_ENTRADA})
-
-
 	}
+
+
 }
 
 /*Funcion actualizar una categoria*/
