@@ -23,7 +23,8 @@ export class TableComponent implements OnInit, OnChanges {
   }
   orderByIndexASC(index) {
     let columnProperties = this.propertiesContent[index];
-    this.bodyTableContent.sort(function (a,b) {
+    let table = this.bodyTableContent;
+    table.sort(function (a,b) {
       if(a[columnProperties] > b[columnProperties]){
         return 1;
       }
@@ -32,7 +33,8 @@ export class TableComponent implements OnInit, OnChanges {
       }
       return 0;
     });
-
+    this.bodyTableContent = [];
+    this.bodyTableContent = table;
   }
 
   addElement(){

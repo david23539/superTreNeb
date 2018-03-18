@@ -2,19 +2,52 @@
 
 <div id="createCategory" class="modal">
   <div class="modal-content">
-    <h4>{{ADD_CATEGORY_TITTLE}}</h4>
+    <h4 class="pink-text">{{ADD_CATEGORY_TITTLE}}</h4>
     <div class="row">
-      <div class="input-field col s12">
-        <!--HAY QUE TERMINAR DE MAQUETAR EL MODAL-->
-        <!--<input id="nameCategory" minlength="5" [(ngModel)]="usernames"  type="text" [class]="claseFormulario" required>
-        <label for="nameCategory">{{NAME_USER}}</label>-->
-      </div>
+      <form #createUpdateForm = "ngForm" (ngSubmit)="onSubmit(createUpdateForm)">
+        <div class="row">
+          <div class="input-field col s12 pink-text">
+            <i class="material-icons prefix ">local_offer</i>
+            <input id="nameCategory"  name="nameCategory" #nameCategory="ngModel" autocomplete="false" [(ngModel)]="categoryModel.dataCategory.nameCat"  type="text" class="validate pink-text" required>
+            <label for="nameCategory">{{LABEL_CATEGORY}}</label>
+            <span *ngIf="!nameCategory.valid && nameCategory.touched">
+              <span class="red-text">{{inputEmpty}}</span>
+            </span>
+          </div>
+          <div class="input-field col s12 pink-text">
+            <i class="material-icons prefix ">description</i>
+            <textarea id="description" name="descriptionCategory" #descriptionCategory="ngModel" [(ngModel)]="categoryModel.dataCategory.descriptionCat" class="materialize-textarea pink-text validate" required></textarea>
+            <label for="description">{{LABEL_DESCRIPTION_CATEGORY}}</label>
+            <span *ngIf="!descriptionCategory.valid && descriptionCategory.touched">
+              <span class="red-text">{{inputEmpty}}</span>
+            </span>
+          </div>
+        </div>
+        <div class="input-field col s12 pink-text">
+          <input id="ivaCategory"  name="ivaCategory" #ivaCategory="ngModel" autocomplete="false" [(ngModel)]="categoryModel.dataCategory.ivaCat"  type="number" class="validate" required>
+          <label for="ivaCategory">{{LABEL_IVA_CATEGORY}}</label>
+          <span *ngIf="!ivaCategory.valid && ivaCategory.touched">
+              <span class="red-text">{{inputEmpty}}</span>
+            </span>
+        </div>
+        <div class="row" >
+          <div class="input-field col s12">
+            <button class="btn waves-effect waves-light col s12" type="submit" name="action" [disabled]="!createUpdateForm.form.valid">{{LABEL_SAVE_CATEGORY}}
+              <i class="material-icons right">save</i>
+            </button>
+          </div>
+          <div class="input-field col s12">
+            <button class="btn modal-action modal-close waves-effect waves-light blue col s12" type="button" >{{LABEL_CANCEL_CATEGORY}}
+              <i class="material-icons right">close</i>
+            </button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
-  <div class="modal-footer">
-    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
-  </div>
 </div>
+
+
 
 
 

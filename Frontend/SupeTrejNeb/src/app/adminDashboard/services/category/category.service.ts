@@ -22,4 +22,11 @@ export class CategoryService {
 
   }
 
+  createCategory(categoryModel){
+    this.token = this._loginService.getToken();
+    let param = JSON.stringify(categoryModel);
+    let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
+    return this._http.post(this.url+'createCategory', param, {headers:header})
+  }
+
 }

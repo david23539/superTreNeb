@@ -1,9 +1,14 @@
 
 export class Category{
   constructor(
+    public dataCategory:{
+      nameCat:string,
+      descriptionCat:string,
+      ivaCat:number
+    },
     public direccionIp: {
-      direccionData:String,
-      navegador: String
+      direccionData:string,
+      navegador: string
     }
   ){}
 }
