@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit } from '@angular/core';
 import {CONSTANT} from "../../../services/constant";
 import {CategoryService} from "../../services/category/category.service";
 import {DataBrowser} from "../../../utils/dataBrowser";
 import {Category} from "../../model/category/category.model";
 import { MzToastService } from 'ng2-materialize';
-import { MzModalService } from 'ng2-materialize';
 
 @Component({
   selector: 'category',
@@ -24,24 +23,43 @@ export class CategoryComponent implements OnInit {
   public LABEL_DESCRIPTION_CATEGORY = CONSTANT.Labels.Description;
   public LABEL_IVA_CATEGORY = CONSTANT.Labels.Iva;
   public LABEL_SAVE_CATEGORY = CONSTANT.Labels.Save;
+  public LABEL_UPDATE_CATEGORY = CONSTANT.Labels.Update;
   public LABEL_CANCEL_CATEGORY = CONSTANT.Labels.Cancel;
   public inputEmpty: string = CONSTANT.Labels.Control_Input_Required;
+  public buttonSaveUpdate:boolean;
 
 
   constructor(private _categoryService: CategoryService, private _getDataBrowser: DataBrowser, private toastService: MzToastService) {
     this.categoryModel = new Category({nameCat: "", descriptionCat: "", ivaCat: 0}, {direccionData: "", navegador: ""});
+    this.buttonSaveUpdate = true;
+  }
 
-
+  private clearModal(){
+    this.categoryModel.dataCategory.nameCat = " ";
+    this.categoryModel.dataCategory.descriptionCat = " ";
+    this.categoryModel.dataCategory.ivaCat = 0;
   }
 
 
-  addCategory(event) {
+  addUpdateCategory(event) {
     if (event.operation === CONSTANT.OperationTables.create) {
+
+      this.clearModal();
       $('#createCategory').modal('open');
+    }else if(event.operation === CONSTANT.OperationTables.update && event.items){
+      $('#createCategory').modal('open');
+      this.clearModal();
+      this.buttonSaveUpdate = false;
+      let categoryUpdate = event.items;
+      this.categoryModel.dataCategory.nameCat = categoryUpdate.name;
+      this.categoryModel.dataCategory.descriptionCat = categoryUpdate.description;
+      this.categoryModel.dataCategory.ivaCat = categoryUpdate.iva;
+
     }
   }
 
   onSubmit(createUpdateForm) {
+
     this.categoryModel.direccionIp.navegador = this.browser.browser;
     this._categoryService.createCategory(this.categoryModel).subscribe(
       response => {
@@ -51,6 +69,7 @@ export class CategoryComponent implements OnInit {
           this.toastService.show(CONSTANT.messageToast.CATEGORY_NEW_SUCCESS, 4000, 'teal lighten-1');
           this.getCategories();
           $('#createCategory').modal('close');
+
 
 
         }else if(this.responseServer && this.responseServer.message === CONSTANT.ResponseServers.Category_InvalidParams){

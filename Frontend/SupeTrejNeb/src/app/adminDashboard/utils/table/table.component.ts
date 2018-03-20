@@ -13,7 +13,7 @@ export class TableComponent implements OnInit, OnChanges {
   @Input() title:any;
   public propertiesContent:any;
   public searchResult:string;
-  @Output() createItem = new EventEmitter();
+  @Output() changeItem = new EventEmitter();
   constructor() { }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -38,8 +38,14 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   addElement(){
-    this.createItem.emit({
+    this.changeItem.emit({
       operation: "create"
+    })
+  }
+  updateElement(item){
+    this.changeItem.emit({
+      operation: "update",
+      items: item
     })
   }
 

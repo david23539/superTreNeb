@@ -9,7 +9,8 @@ export const CONSTANT = {
 
   },
   OperationTables:{
-    create:"create"
+    create:"create",
+    update:"update"
   },
   ResponseServers:{
     Category_Success:"Se ha creado la categoria con exito",
@@ -22,6 +23,7 @@ export const CONSTANT = {
     Description: "Descripción",
     Iva:"IVA",
     Save:"Guardar",
+    Update:"Actualizar",
     Cancel:"Cancelar",
     Control_Input_Required: "El campo debe estar informado"
   },

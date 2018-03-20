@@ -1,4 +1,7 @@
-<tableComponenets [headsTable]="headsTables" [bodyTableContent]="bodyTable" (createItem)="addCategory($event)" [title]="TITLE"></tableComponenets>
+<div class="col s12 l12">
+  <tableComponenets [headsTable]="headsTables" [bodyTableContent]="bodyTable" (changeItem)="addUpdateCategory($event)" [title]="TITLE"></tableComponenets>
+</div>
+
 
 <div id="createCategory" class="modal">
   <div class="modal-content">
@@ -8,34 +11,44 @@
         <div class="row">
           <div class="input-field col s12 pink-text">
             <i class="material-icons prefix ">local_offer</i>
-            <input id="nameCategory"  name="nameCategory" #nameCategory="ngModel" autocomplete="false" [(ngModel)]="categoryModel.dataCategory.nameCat"  type="text" class="validate pink-text" required>
+            <input id="nameCategory"  placeholder="Solo letras" name="nameCategory" #nameCategory="ngModel" autocomplete="false" [(ngModel)]="categoryModel.dataCategory.nameCat" mz-tooltip [tooltip]="'Nombre de la categoría'"  type="text"  class="validate pink-text " required>
             <label for="nameCategory">{{LABEL_CATEGORY}}</label>
             <span *ngIf="!nameCategory.valid && nameCategory.touched">
               <span class="red-text">{{inputEmpty}}</span>
             </span>
           </div>
+          <br>
           <div class="input-field col s12 pink-text">
             <i class="material-icons prefix ">description</i>
-            <textarea id="description" name="descriptionCategory" #descriptionCategory="ngModel" [(ngModel)]="categoryModel.dataCategory.descriptionCat" class="materialize-textarea pink-text validate" required></textarea>
+            <textarea id="description" placeholder="Sin espacios" name="descriptionCategory" #descriptionCategory="ngModel" mz-tooltip [tooltip]="'Descripción de la categoría'" [(ngModel)]="categoryModel.dataCategory.descriptionCat" class="materialize-textarea pink-text validate" required></textarea>
             <label for="description">{{LABEL_DESCRIPTION_CATEGORY}}</label>
             <span *ngIf="!descriptionCategory.valid && descriptionCategory.touched">
               <span class="red-text">{{inputEmpty}}</span>
             </span>
           </div>
         </div>
+
         <div class="input-field col s12 pink-text">
-          <input id="ivaCategory"  name="ivaCategory" #ivaCategory="ngModel" autocomplete="false" [(ngModel)]="categoryModel.dataCategory.ivaCat"  type="number" class="validate" required>
+          <input id="ivaCategory"  name="ivaCategory" #ivaCategory="ngModel" mz-tooltip [tooltip]="'Porcentaje de iva'" autocomplete="false" [(ngModel)]="categoryModel.dataCategory.ivaCat"  type="number" class="validate" required>
           <label for="ivaCategory">{{LABEL_IVA_CATEGORY}}</label>
           <span *ngIf="!ivaCategory.valid && ivaCategory.touched">
               <span class="red-text">{{inputEmpty}}</span>
             </span>
         </div>
         <div class="row" >
-          <div class="input-field col s12">
+          <div class="input-field col s12" *ngIf="buttonSaveUpdate">
             <button class="btn waves-effect waves-light col s12" type="submit" name="action" [disabled]="!createUpdateForm.form.valid">{{LABEL_SAVE_CATEGORY}}
               <i class="material-icons right">save</i>
             </button>
           </div>
+
+          <div class="input-field col s12" *ngIf="!buttonSaveUpdate">
+            <button class="btn waves-effect orange lighten-1 waves-light col s12" type="submit" name="action" [disabled]="!createUpdateForm.form.valid">{{LABEL_UPDATE_CATEGORY}}
+              <i class="material-icons right">save</i>
+            </button>
+          </div>
+
+
           <div class="input-field col s12">
             <button class="btn modal-action modal-close waves-effect waves-light blue col s12" type="button" >{{LABEL_CANCEL_CATEGORY}}
               <i class="material-icons right">close</i>

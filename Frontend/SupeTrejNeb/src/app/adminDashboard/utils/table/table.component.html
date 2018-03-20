@@ -2,33 +2,41 @@
   <div class="col s12 l12">
     <div class="card-panel white">
       <span class="card-title pink-text"><b>{{title}}</b></span>
-      <div class="input-field col s12 pink-text">
+      <div class="input-field pink-text">
         <i class="material-icons prefix">search</i>
         <input id="searchPipes"  [(ngModel)]="searchResult"  type="text" >
         <label for="searchPipes">Búsqueda</label>
       </div>
-      <table class="highlight centered" >
-        <thead class="pink-text fixed">
-          <tr class="borderDown">
-            <th (click)="addElement()"><i class="material-icons">add_circle_outline</i></th>
-            <th *ngFor="let itemHead of headsTable; let i = index" >
-              <div (click)="orderByIndexASC(i)">
-                {{itemHead}} <i class="right material-icons">arrow_drop_up</i>
-              </div>
 
-            </th>
-          </tr>
+      <div class="row">
+        <div class="col s12">
+          <table class="striped centered responsive-table" >
+            <thead class="pink-text fixed">
+              <tr>
+                <th (click)="addElement()"><i class="material-icons">add_circle_outline</i></th>
+                <th *ngFor="let itemHead of headsTable; let i = index" >
+                  <span (click)="orderByIndexASC(i)">
+                    {{itemHead}} <i class="right material-icons">arrow_drop_up</i>
+                  </span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let itemBody of bodyTableContent | search:searchResult">
+                  <td>
+                      <i (click)="updateElement(itemBody)" class="material-icons">edit</i>
+                      <i class="material-icons">remove</i>
+                  </td>
+                  <td *ngFor="let propertyItem of propertiesContent">
+                    {{itemBody[propertyItem]}}
+                  </td>
+              </tr>
 
-        </thead>
-        <tbody>
-          <tr class="heigthKeys" *ngFor="let itemBody of bodyTableContent | search:searchResult">
-              <td>Action</td>
-              <td *ngFor="let propertyItem of propertiesContent ">
-                {{itemBody[propertyItem]}}
-              </td>
-          </tr>
-        </tbody>
-      </table>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
