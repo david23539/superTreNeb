@@ -72,8 +72,10 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  private sendInfoLogin(): void{
 
+  private sendInfoLogin(): void{
+    localStorage.clear();
+    sessionStorage.clear();
     this.browser = this._getDataBrowser.getDataBrowser();
     this.dataLogin.direccionIp.navegador = this.browser.browser + this.browser.browserVersion;
     this._loginService.login(this.dataLogin, 'true').subscribe(

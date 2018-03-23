@@ -1,4 +1,4 @@
-import {Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {CONSTANT} from "../../../services/constant";
 import {CategoryService} from "../../services/category/category.service";
 import {DataBrowser} from "../../../utils/dataBrowser";
@@ -12,6 +12,7 @@ import { MzToastService } from 'ng2-materialize';
   providers:[CategoryService, DataBrowser, MzToastService]
 })
 export class CategoryComponent implements OnInit {
+  @ViewChild('modals') modals:ElementRef;
   public headsTables = CONSTANT.headCategory;
   public TITLE = "Categorías";
   public bodyTable: any;
@@ -27,23 +28,23 @@ export class CategoryComponent implements OnInit {
   public LABEL_CANCEL_CATEGORY = CONSTANT.Labels.Cancel;
   public inputEmpty: string = CONSTANT.Labels.Control_Input_Required;
   public buttonSaveUpdate:boolean;
+  public initialStateModal:any;
 
 
-  constructor(private _categoryService: CategoryService, private _getDataBrowser: DataBrowser, private toastService: MzToastService) {
+  constructor(private _categoryService: CategoryService, private _getDataBrowser: DataBrowser, private toastService: MzToastService, private _renderer: Renderer2) {
     this.categoryModel = new Category({nameCat: "", descriptionCat: "", ivaCat: 0}, {direccionData: "", navegador: ""});
     this.buttonSaveUpdate = true;
   }
 
   private clearModal(){
-    this.categoryModel.dataCategory.nameCat = " ";
-    this.categoryModel.dataCategory.descriptionCat = " ";
+    this.categoryModel.dataCategory.nameCat = "";
+    this.categoryModel.dataCategory.descriptionCat = "";
     this.categoryModel.dataCategory.ivaCat = 0;
   }
 
-
   addUpdateCategory(event) {
+    this.createInstanceModal();
     if (event.operation === CONSTANT.OperationTables.create) {
-
       this.clearModal();
       $('#createCategory').modal('open');
     }else if(event.operation === CONSTANT.OperationTables.update && event.items){
@@ -83,10 +84,13 @@ export class CategoryComponent implements OnInit {
   }
 
 
-
+  private createInstanceModal(){
+    $('.modal').modal();
+  }
 
   ngOnInit() {
-    $('.modal').modal();
+    this.createInstanceModal();
+
     this.getCategories();
 
 
