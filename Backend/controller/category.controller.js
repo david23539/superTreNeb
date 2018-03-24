@@ -43,12 +43,12 @@ function createCategory(req, res){
 
 function updateCategory(req, res){
 	const params = req.body
+	const id = params.identifier.id
 	let category = new CategoryModel()
 	params.direccionIp.direccionData = req.connection.remoteAddress
 	category = categoryAdapter.categoryDataAdapter(params)
-	if(categoryValidation.validateDataCategory(category) && categoryValidation.updateParamsId(params.id)){
-		category._doc._id = params.id
-		CategoryModel.findByIdAndUpdate(params.id, category, {new: true}, (err, categoryUpdate)=>{
+	if(categoryValidation.validateDataCategory(category) && categoryValidation.updateParamsId(id)){
+		CategoryModel.findByIdAndUpdate(id, category, {new: true}, (err, categoryUpdate)=>{
 			if(err || !categoryUpdate ){
 				auditoriaController.saveLogsData(req.user.name,err, params.direccionIp.direccionData, params.direccionIp.navegador)
 				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.CATEGORY_UPDATE_ERROR})
@@ -65,20 +65,18 @@ function updateCategory(req, res){
 
 function deletedCategory(req, res){
 	const categoryId = req.params.id
-	const params = req.body
-	params.direccionIp.direccionData = req.connection.remoteAddress
 	if(categoryValidation.validateId(categoryId)){
 		CategoryModel.findByIdAndRemove(categoryId, (err, categoryRemoved)=>{
 			if(err || !categoryRemoved){
-				auditoriaController.saveLogsData(req.user.name,err, params.direccionIp.direccionData, params.direccionIp.navegador)
+				auditoriaController.saveLogsData(req.user.name,err, req.connection.remoteAddress,'undefined')
 				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.CATEGORY_DELETE_ERROR})
 			}else{
-				auditoriaController.saveLogsData(req.user.name,constantFile.functions.CATEGORY_DELETE_SUCCESS, params.direccionIp.direccionData, params.direccionIp.navegador)
+				auditoriaController.saveLogsData(req.user.name,constantFile.functions.CATEGORY_DELETE_SUCCESS, req.connection.remoteAddress, 'undefined')
 				res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.CATEGORY_DELETE_SUCCESS})
 			}
 		})
 	}else{
-		auditoriaController.saveLogsData(req.user.name,constantFile.functions.ERROR_PARAMETROS_ENTRADA_LOG, params.direccionIp.direccionData, params.direccionIp.navegador)
+		auditoriaController.saveLogsData(req.user.name,constantFile.functions.ERROR_PARAMETROS_ENTRADA_LOG, req.connection.remoteAddress, 'undefined')
 		res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.ERROR_PARAMETROS_ENTRADA})
 	}
 }
