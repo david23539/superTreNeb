@@ -1,5 +1,5 @@
 <div class="col s12 l12">
-  <tableComponenets [headsTable]="headsTables" [bodyTableContent]="bodyTable" (changeItem)="addUpdateCategory($event)" [title]="TITLE"></tableComponenets>
+  <tableComponenets [headsTable]="headsTables" [bodyTableContent]="bodyTable" (filterByElement)="filterCategory($event)" (changeItem)="addUpdateCategory($event)" [title]="TITLE"></tableComponenets>
 </div>
 
 

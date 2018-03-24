@@ -13,12 +13,27 @@ export class TableComponent implements OnInit, OnChanges {
   @Input() title:any;
   public propertiesContent:any;
   public searchResult:string;
+  public bodyTableContentStored:any;
   @Output() changeItem = new EventEmitter();
+  @Output() filterByElement = new EventEmitter();
   constructor() { }
+
+  filterItem(){
+    if(this.searchResult && this.searchResult.length > 2){
+      this.filterByElement.emit({
+        filter: this.searchResult
+      })
+    }else{
+      this.bodyTableContent = this.bodyTableContentStored;
+    }
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if(this.bodyTableContent)
     this.propertiesContent = Object.keys(this.bodyTableContent[0]);
+    if(!this.searchResult){
+      this.bodyTableContentStored = this.bodyTableContent;
+    }
 
   }
   orderByIndexASC(index) {

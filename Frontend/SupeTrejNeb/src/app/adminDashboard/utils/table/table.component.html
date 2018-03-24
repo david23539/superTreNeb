@@ -4,7 +4,7 @@
       <span class="card-title pink-text"><b>{{title}}</b></span>
       <div class="input-field pink-text">
         <i class="material-icons prefix">search</i>
-        <input id="searchPipes"  [(ngModel)]="searchResult"  type="text" >
+        <input id="searchPipes"  [(ngModel)]="searchResult" (keyup)="filterItem()"  type="text" >
         <label for="searchPipes">Búsqueda</label>
       </div>
 
@@ -22,7 +22,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let itemBody of bodyTableContent | search:searchResult">
+              <tr *ngFor="let itemBody of bodyTableContent">
                   <td>
                       <i (click)="updateElement(itemBody)" class="material-icons">edit</i>
                       <i (click)="deleteElement(itemBody)" class="material-icons">remove</i>

@@ -7,7 +7,6 @@ import {MainDashboardComponent} from "./components/mainDashboard/mainDashboard.c
 import { BreadcumsComponent } from './utils/breadcums/breadcums.component';
 import { CategoryComponent } from './components/category/category.component';
 import { TableComponent } from './utils/table/table.component';
-import { SearchPipe } from './pipes/search.pipe';
 import { MzTooltipModule} from "ng2-materialize";
 
 
@@ -26,8 +25,7 @@ import { MzTooltipModule} from "ng2-materialize";
     MainDashboardComponent,
     BreadcumsComponent,
     CategoryComponent,
-    TableComponent,
-    SearchPipe
+    TableComponent
   ],
 
   exports:[

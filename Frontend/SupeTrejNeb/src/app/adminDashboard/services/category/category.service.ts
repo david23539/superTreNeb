@@ -41,4 +41,9 @@ export class CategoryService {
     let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
     return this._http.delete(this.url+'deletedCategory/'+id,{headers:header})
   }
+  getCategoriesFildered(keyWords){
+    this.token = this._loginService.getToken();
+    let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
+    return this._http.get(this.url+'getCategoriesFilter/'+keyWords,{headers:header})
+  }
 }

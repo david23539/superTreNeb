@@ -212,4 +212,24 @@ export class CategoryComponent implements OnInit {
       }
     );
   }
+
+
+  filterCategory(event){
+    if(event.filter){
+      this._categoryService.getCategoriesFildered(event.filter).subscribe(
+        response=>{
+          this.responseServer = response;
+          if(this.responseServer.message && this.responseServer.message == CONSTANT.ResponseServers.Category_InvalidParams){
+            this.toastService.show(CONSTANT.ResponseServers.Category_InvalidParams, 4000, 'orange lighten-1');
+          }else if(this.responseServer.message && this.responseServer.message == CONSTANT.ResponseServers.No_Data_Category){
+            this.toastService.show(CONSTANT.messageToast.NO_DATA_CATEGORY, 4000, 'blue darken-1');
+          }else{
+            this.bodyTable = this.responseServer
+          }
+        },error=>{
+          this.toastService.show(error.message, 4000, 'red accent-2');
+        }
+      )
+    }
+  }
 }
