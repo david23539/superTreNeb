@@ -29,4 +29,16 @@ export class CategoryService {
     return this._http.post(this.url+'createCategory', param, {headers:header})
   }
 
+  updateCategory(categoryModel){
+    this.token = this._loginService.getToken();
+    let param = JSON.stringify(categoryModel);
+    let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
+    return this._http.put(this.url+'updateCategory', param, {headers:header})
+  }
+
+  deletedCategory(id){
+    this.token = this._loginService.getToken();
+    let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
+    return this._http.delete(this.url+'deletedCategory/'+id,{headers:header})
+  }
 }

@@ -25,7 +25,7 @@
               <tr *ngFor="let itemBody of bodyTableContent | search:searchResult">
                   <td>
                       <i (click)="updateElement(itemBody)" class="material-icons">edit</i>
-                      <i class="material-icons">remove</i>
+                      <i (click)="deleteElement(itemBody)" class="material-icons">remove</i>
                   </td>
                   <td *ngFor="let propertyItem of propertiesContent">
                     {{itemBody[propertyItem]}}

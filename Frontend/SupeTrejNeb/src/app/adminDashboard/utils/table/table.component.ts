@@ -48,6 +48,12 @@ export class TableComponent implements OnInit, OnChanges {
       items: item
     })
   }
+  deleteElement(item){
+    this.changeItem.emit({
+      operation: "delete",
+      items: item
+    })
+  }
 
   ngOnInit() {
 

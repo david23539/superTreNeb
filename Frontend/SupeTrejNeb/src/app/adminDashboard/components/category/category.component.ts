@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CONSTANT} from "../../../services/constant";
 import {CategoryService} from "../../services/category/category.service";
 import {DataBrowser} from "../../../utils/dataBrowser";
@@ -12,7 +12,7 @@ import { MzToastService } from 'ng2-materialize';
   providers:[CategoryService, DataBrowser, MzToastService]
 })
 export class CategoryComponent implements OnInit {
-  @ViewChild('modals') modals:ElementRef;
+
   public headsTables = CONSTANT.headCategory;
   public TITLE = "Categorías";
   public bodyTable: any;
@@ -20,19 +20,35 @@ export class CategoryComponent implements OnInit {
   public responseServer: any;
   public categoryModel: Category;
   public ADD_CATEGORY_TITTLE = CONSTANT.Labels.AddCategory;
+  public DELETED_CATEGORY_TITTLE = CONSTANT.Labels.DeleteCategory;
+  public DELETED_CATEGORY_SUBTITTLE = CONSTANT.Labels.Confirm_Deleted_Category;
   public LABEL_CATEGORY = CONSTANT.Labels.Category;
   public LABEL_DESCRIPTION_CATEGORY = CONSTANT.Labels.Description;
   public LABEL_IVA_CATEGORY = CONSTANT.Labels.Iva;
   public LABEL_SAVE_CATEGORY = CONSTANT.Labels.Save;
   public LABEL_UPDATE_CATEGORY = CONSTANT.Labels.Update;
   public LABEL_CANCEL_CATEGORY = CONSTANT.Labels.Cancel;
-  public inputEmpty: string = CONSTANT.Labels.Control_Input_Required;
+  public LABEL_DELETED_CATEGORY = CONSTANT.Labels.Delete;
   public buttonSaveUpdate:boolean;
-  public initialStateModal:any;
+  public initStyleTextArea: string = 'materialize-textarea pink-text';
+  public validStyleTextArea: string = 'valid materialize-textarea pink-text';
+  public invalidStyleTextArea: string = 'invalid materialize-textarea pink-text';
+  public classStyleTextArea: string = this.initStyleTextArea;
+  public classStyleForm:string = "";
+  public invalidClassStyleForm:string = "invalid pink-text";
+  public validClassStyleForm:string = "valid pink-text";
+  public classStyleFormNum:string = "";
+  public initStateStyleForm:string = "pink-text";
+  public initState:boolean = true;
+  public operationType:string = "";
+  public itemIdSelectDeleted:any;
 
 
-  constructor(private _categoryService: CategoryService, private _getDataBrowser: DataBrowser, private toastService: MzToastService, private _renderer: Renderer2) {
-    this.categoryModel = new Category({nameCat: "", descriptionCat: "", ivaCat: 0}, {direccionData: "", navegador: ""});
+
+
+
+  constructor(private _categoryService: CategoryService, private _getDataBrowser: DataBrowser, private toastService: MzToastService) {
+    this.categoryModel = new Category({nameCat: "", descriptionCat: "", ivaCat: 0}, {id:""},{direccionData: "", navegador: ""});
     this.buttonSaveUpdate = true;
   }
 
@@ -42,45 +58,133 @@ export class CategoryComponent implements OnInit {
     this.categoryModel.dataCategory.ivaCat = 0;
   }
 
+  validateVisualForm(value){
+
+    switch (value){
+      case 'name':
+        if(this.categoryModel.dataCategory.nameCat == ""){
+          this.classStyleForm = this.invalidClassStyleForm;
+        }else{
+          this.classStyleForm = this.validClassStyleForm;
+        }
+        break;
+      case 'description':
+        if(this.categoryModel.dataCategory.descriptionCat == ""){
+          this.classStyleTextArea = this.invalidStyleTextArea;
+        }else{
+          this.classStyleTextArea = this.validStyleTextArea;
+        }
+        break;
+      case 'number':
+        if(this.categoryModel.dataCategory.ivaCat == 0){
+          this.classStyleFormNum = this.invalidClassStyleForm;
+        }else{
+          this.classStyleFormNum = this.validClassStyleForm;
+        }
+        break;
+    }
+  }
+
+  private initStateModal(){
+    this.classStyleForm = this.initStateStyleForm;
+    this.classStyleFormNum = this.initStateStyleForm;
+    this.classStyleTextArea = this.initStyleTextArea;
+    this.initState = true;
+  }
+
   addUpdateCategory(event) {
-    this.createInstanceModal();
+
     if (event.operation === CONSTANT.OperationTables.create) {
-      this.clearModal();
+      this.operationType = CONSTANT.OperationTables.create;
       $('#createCategory').modal('open');
+      this.clearModal();
+      this.buttonSaveUpdate = true;
+      this.initStateModal();
+      this.ADD_CATEGORY_TITTLE = CONSTANT.Labels.AddCategory;
+
     }else if(event.operation === CONSTANT.OperationTables.update && event.items){
+      this.operationType = CONSTANT.OperationTables.update;
       $('#createCategory').modal('open');
       this.clearModal();
       this.buttonSaveUpdate = false;
+      this.initStateModal();
       let categoryUpdate = event.items;
       this.categoryModel.dataCategory.nameCat = categoryUpdate.name;
+      this.validateVisualForm('name');
       this.categoryModel.dataCategory.descriptionCat = categoryUpdate.description;
+      this.validateVisualForm('description');
       this.categoryModel.dataCategory.ivaCat = categoryUpdate.iva;
-
+      this.validateVisualForm('number');
+      this.categoryModel.identifier.id = categoryUpdate.id;
+      this.ADD_CATEGORY_TITTLE = CONSTANT.Labels.ModifyCategory;
+    }else if(event.operation === CONSTANT.OperationTables.delete && event.items){
+      $('#deletedCategory').modal('open');
+      this.itemIdSelectDeleted = event.items;
     }
   }
 
   onSubmit(createUpdateForm) {
 
     this.categoryModel.direccionIp.navegador = this.browser.browser;
-    this._categoryService.createCategory(this.categoryModel).subscribe(
-      response => {
-        this.responseServer = response;
-        if(this.responseServer && this.responseServer.message === CONSTANT.ResponseServers.Category_Success){
-          createUpdateForm.reset();
-          this.toastService.show(CONSTANT.messageToast.CATEGORY_NEW_SUCCESS, 4000, 'teal lighten-1');
-          this.getCategories();
-          $('#createCategory').modal('close');
+    if(this.operationType == CONSTANT.OperationTables.create){
+
+
+      this._categoryService.createCategory(this.categoryModel).subscribe(
+        response => {
+          this.responseServer = response;
+          if(this.responseServer && this.responseServer.message === CONSTANT.ResponseServers.Category_Success){
+            createUpdateForm.reset();
+            this.toastService.show(CONSTANT.messageToast.CATEGORY_NEW_SUCCESS, 4000, 'teal lighten-1');
+            this.getCategories();
+            $('#createCategory').modal('close');
 
 
 
-        }else if(this.responseServer && this.responseServer.message === CONSTANT.ResponseServers.Category_InvalidParams){
-          this.toastService.show(CONSTANT.ResponseServers.Category_InvalidParams, 4000, 'orange lighten-1');
+          }else if(this.responseServer && this.responseServer.message === CONSTANT.ResponseServers.Category_InvalidParams){
+            this.toastService.show(CONSTANT.ResponseServers.Category_InvalidParams, 4000, 'orange lighten-1');
+          }
+
+        }, error => {
+          this.toastService.show(CONSTANT.ResponseServers.Category_Error, 4000, 'red accent-2');
         }
+      )
+    }else{
+      this._categoryService.updateCategory(this.categoryModel).subscribe(
+        response => {
+          this.responseServer = response;
+          if(this.responseServer && this.responseServer.message === CONSTANT.ResponseServers.Category_Success_Update){
+            createUpdateForm.reset();
+            this.toastService.show(CONSTANT.messageToast.CATEGORY_UPDATE_SUCCESS, 4000, 'teal lighten-1');
+            this.getCategories();
+            $('#createCategory').modal('close');
+          }else if(this.responseServer && this.responseServer.message === CONSTANT.ResponseServers.Category_InvalidParams){
+            this.toastService.show(CONSTANT.ResponseServers.Category_InvalidParams, 4000, 'orange lighten-1');
+          }
+        }, error => {
+          this.toastService.show(CONSTANT.ResponseServers.Category_Error, 4000, 'red accent-2');
+        }
+      )
+    }
+  }
 
-      }, error => {
-        this.toastService.show(CONSTANT.ResponseServers.Category_Error, 4000, 'red accent-2');
-      }
-    )
+  deleteCategory(){
+    if(this.itemIdSelectDeleted){
+      this.categoryModel.direccionIp.navegador = this.browser.browser;
+      this._categoryService.deletedCategory(this.itemIdSelectDeleted.id).subscribe(
+        response => {
+          this.responseServer = response;
+          if(this.responseServer && this.responseServer.message === CONSTANT.ResponseServers.Category_Success_Deleted){
+            this.toastService.show(CONSTANT.messageToast.CATEGORY_DELETED_SUCCESS, 4000, 'teal lighten-1');
+            this.getCategories();
+            $('#deletedCategory').modal('close');
+          }else{
+            this.toastService.show(CONSTANT.ResponseServers.Category_Error, 4000, 'red accent-2');
+          }
+        }, error => {
+          this.toastService.show(CONSTANT.ResponseServers.Category_Error, 4000, 'red accent-2');
+        }
+      )
+    }
   }
 
 
