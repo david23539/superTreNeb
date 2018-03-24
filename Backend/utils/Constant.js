@@ -57,7 +57,8 @@ const constant ={
 		CATEGORY_UPDATE_ERROR: 'Ha ocurrido un error al actualizar la categoria',
 		CATEGORY_DELETE_SUCCESS: 'La categoria se ha eliminado',
 		CATEGORY_DELETE_ERROR: 'Ha ocurrido un error al eliminar la categoria',
-		CATEGORY_GET_CATEGORY_ERROR: 'Ha ocurrido un error al obtener la categoria'
+		CATEGORY_GET_CATEGORY_ERROR: 'Ha ocurrido un error al obtener la categoria',
+		NO_DATA_CATEGORY:'No hay coincidencias'
 
 
 

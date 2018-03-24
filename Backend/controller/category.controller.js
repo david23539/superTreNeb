@@ -1,5 +1,4 @@
 'use strict'
-
 const CategoryModel = require('../model/category.model')
 const categoryAdapter = require('../adapter/category.adapter')
 const categoryValidation = require('../Validation/category.validation')
@@ -47,7 +46,9 @@ function updateCategory(req, res){
 	let category = new CategoryModel()
 	params.direccionIp.direccionData = req.connection.remoteAddress
 	category = categoryAdapter.categoryDataAdapter(params)
+
 	if(categoryValidation.validateDataCategory(category) && categoryValidation.updateParamsId(id)){
+		category._doc._id = id
 		CategoryModel.findByIdAndUpdate(id, category, {new: true}, (err, categoryUpdate)=>{
 			if(err || !categoryUpdate ){
 				auditoriaController.saveLogsData(req.user.name,err, params.direccionIp.direccionData, params.direccionIp.navegador)
@@ -85,6 +86,7 @@ function getCategoryById(req, res){
 	const categoryId = req.params.id
 	const params = req.body
 	params.direccionIp.direccionData = req.connection.remoteAddress
+
 	if(categoryValidation.validateId(categoryId)){
 		CategoryModel.findById(categoryId, (err, category)=>{
 			if(err || !category){
@@ -114,11 +116,30 @@ function getAllCategory(req,res){
 		}
 	})
 }
+
+function filterCategories(req, res){
+	const keywords = req.params.key
+	if(categoryValidation.validateId(keywords)) {
+		CategoryModel.find({stn_nameCategory: /nat/i}, (err, categoryFilter) => {
+			if (err) {
+				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.CATEGORY_GET_CATEGORY_ERROR})
+			} else if (categoryFilter.length === 0) {
+				res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.NO_DATA_CATEGORY})
+			} else {
+				res.status(constantFile.httpCode.PETITION_CORRECT).send(categoryFilter)
+			}
+		})
+	}else{
+		res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.ERROR_PARAMETROS_ENTRADA})
+	}
+}
+
 // eslint-disable-next-line no-undef
 module.exports = {
 	createCategory,
 	updateCategory,
 	deletedCategory,
 	getCategoryById,
-	getAllCategory
+	getAllCategory,
+	filterCategories
 }
