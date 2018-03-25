@@ -151,11 +151,13 @@ function getCategoryPagination(req, res){
 	if(categoryValidation.validationPage(params.pagination.page)){
 
 		CategoryModel.find().skip(params.pagination.page).limit(10).exec((err,categoryData)=>{
-			if(err || categoryData.length === 0){
+			if(err){
 				auditoriaController.saveLogsData(req.user.name,err, params.direccionIp.direccionData, params.direccionIp.navegador)
 				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.CATEGORY_GET_CATEGORY_ERROR})
+			}else if(categoryData.length === 0){
+				res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.NO_DATA_AVAIBLE})
 			}else{
-				res.status(constantFile.httpCode.PETITION_CORRECT).send({categoryObject: categoryAdapter.getAllCategoriesAdapter(categoryData)})
+                res.status(constantFile.httpCode.PETITION_CORRECT).send({categoryObject: categoryAdapter.getAllCategoriesAdapter(categoryData)})
 			}
 		})
 	}else{

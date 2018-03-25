@@ -19,7 +19,8 @@ export const CONSTANT = {
     Category_Success_Deleted:"La categoria se ha eliminado",
     Category_InvalidParams:"Los parametros de entrada no son correctos",
     Category_Error:"Algo a ido mal con la categoría",
-    No_Data_Category: "No hay coincidencias"
+    No_Data_Category: "No hay coincidencias",
+    No_Data_Avaible:'No existen categorías'
   },
   Labels:{
     AddCategory:"Añadir Categorías",
@@ -41,6 +42,7 @@ export const CONSTANT = {
     CATEGORY_NEW_SUCCESS: "Se ha creado con exito la categoría",
     CATEGORY_UPDATE_SUCCESS: "Se ha actualizado con exito la categoría",
     CATEGORY_DELETED_SUCCESS: "Se ha eliminado con exito la categoría",
-    NO_DATA_CATEGORY:"No hay datos coincidentes"
+    NO_DATA_CATEGORY:"No hay datos coincidentes",
+    NO_CATEGORY_DATA:"No hay creadas categorías todavía"
   }
 };

@@ -217,8 +217,13 @@ export class CategoryComponent implements OnInit {
     this._categoryService.getCategories(this.categoryModel).subscribe(
       response => {
         this.responseServer = response;
-        this.bodyTable = this.responseServer.categoryObject;
-        this.getCountCategories();
+        if(this.responseServer.message && this.responseServer.message === CONSTANT.ResponseServers.No_Data_Avaible){
+          this.toastService.show(CONSTANT.messageToast.NO_CATEGORY_DATA, 4000, 'blue darken-1');
+        }else{
+          this.responseServer = response;
+          this.bodyTable = this.responseServer.categoryObject;
+          this.getCountCategories();
+        }
       }, error => {
         this.toastService.show(error.message, 4000, 'red accent-2');
       }
