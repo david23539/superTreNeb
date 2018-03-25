@@ -11,7 +11,9 @@ api.put('/updateCategory', md_auth.ensureAuth, categoryController.updateCategory
 api.delete('/deletedCategory/:id', md_auth.ensureAuth, categoryController.deletedCategory)
 api.post('/getCategory/:id', md_auth.ensureAuth, categoryController.getCategoryById)
 api.post('/getAllCategories', md_auth.ensureAuth, categoryController.getAllCategory)
+api.post('/getCategoriesPagination', md_auth.ensureAuth, categoryController.getCategoryPagination)
 api.get('/getCategoriesFilter/:key', md_auth.ensureAuth, categoryController.filterCategories)
+api.get('/getCountCategories', md_auth.ensureAuth, categoryController.getCountCategories)
 
 
 

@@ -120,18 +120,48 @@ function getAllCategory(req,res){
 function filterCategories(req, res){
 	const keywords = req.params.key
 	if(categoryValidation.validateId(keywords)) {
-		CategoryModel.find({stn_nameCategory: /nat/i}, (err, categoryFilter) => {
+
+		CategoryModel.find({stn_nameCategory: {$regex: keywords, $options: 'i' }}, (err, categoryFilter) => {
 			if (err) {
 				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.CATEGORY_GET_CATEGORY_ERROR})
 			} else if (categoryFilter.length === 0) {
 				res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.NO_DATA_CATEGORY})
 			} else {
-				res.status(constantFile.httpCode.PETITION_CORRECT).send(categoryFilter)
+				res.status(constantFile.httpCode.PETITION_CORRECT).send(categoryAdapter.getAllCategoriesAdapter(categoryFilter))
 			}
 		})
 	}else{
 		res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.ERROR_PARAMETROS_ENTRADA})
 	}
+}
+
+function getCountCategories(req, res){
+	CategoryModel.count({},(err, countCategories)=>{
+		if(err || !countCategories){
+			res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.CATEGORY_GET_CATEGORY_ERROR})
+		}else{
+			res.status(constantFile.httpCode.PETITION_CORRECT).send({count:countCategories})
+		}
+	})
+}
+
+function getCategoryPagination(req, res){
+	const params = req.body
+	params.direccionIp.direccionData = req.connection.remoteAddress
+	if(categoryValidation.validationPage(params.pagination.page)){
+
+		CategoryModel.find().skip(params.pagination.page).limit(10).exec((err,categoryData)=>{
+			if(err || categoryData.length === 0){
+				auditoriaController.saveLogsData(req.user.name,err, params.direccionIp.direccionData, params.direccionIp.navegador)
+				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.CATEGORY_GET_CATEGORY_ERROR})
+			}else{
+				res.status(constantFile.httpCode.PETITION_CORRECT).send({categoryObject: categoryAdapter.getAllCategoriesAdapter(categoryData)})
+			}
+		})
+	}else{
+		res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.ERROR_PARAMETROS_ENTRADA})
+	}
+
 }
 
 // eslint-disable-next-line no-undef
@@ -141,5 +171,7 @@ module.exports = {
 	deletedCategory,
 	getCategoryById,
 	getAllCategory,
-	filterCategories
+	filterCategories,
+	getCountCategories,
+	getCategoryPagination
 }

@@ -24,11 +24,16 @@ function validateId(id){
 	const regexString = new RegExp(constantFile.regex.STRINGS)
 	return regexString.test(id)
 }
+function validationPage(page){
+	const regexString = new RegExp(constantFile.regex.NUMBERS)
+	return regexString.test(page)
+}
 
 
 // eslint-disable-next-line no-undef
 module.exports ={
 	validateDataCategory,
 	updateParamsId,
-	validateId
+	validateId,
+	validationPage
 }
