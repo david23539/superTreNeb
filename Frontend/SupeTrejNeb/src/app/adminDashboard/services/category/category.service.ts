@@ -18,6 +18,13 @@ export class CategoryService {
     this.token = this._loginService.getToken();
     let param = JSON.stringify(categoryModel);
     let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
+    return this._http.post(this.url+'getCategoriesPagination', param, {headers:header})
+
+  }
+  getAllCategories(categoryModel){
+    this.token = this._loginService.getToken();
+    let param = JSON.stringify(categoryModel);
+    let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
     return this._http.post(this.url+'getAllCategories', param, {headers:header})
 
   }
@@ -46,4 +53,11 @@ export class CategoryService {
     let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
     return this._http.get(this.url+'getCategoriesFilter/'+keyWords,{headers:header})
   }
+
+  getCountCategies(){
+    this.token = this._loginService.getToken();
+    let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
+    return this._http.get(this.url+'getCountCategories',{headers:header})
+  }
+
 }

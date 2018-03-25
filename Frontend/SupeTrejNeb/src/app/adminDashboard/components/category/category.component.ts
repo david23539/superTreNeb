@@ -42,13 +42,14 @@ export class CategoryComponent implements OnInit {
   public initState:boolean = true;
   public operationType:string = "";
   public itemIdSelectDeleted:any;
-
+  public searchResult:string;
+  public countCategory:number;
 
 
 
 
   constructor(private _categoryService: CategoryService, private _getDataBrowser: DataBrowser, private toastService: MzToastService) {
-    this.categoryModel = new Category({nameCat: "", descriptionCat: "", ivaCat: 0}, {id:""},{direccionData: "", navegador: ""});
+    this.categoryModel = new Category({nameCat: "", descriptionCat: "", ivaCat: 0}, {id:""},{page:1},{direccionData: "", navegador: ""});
     this.buttonSaveUpdate = true;
   }
 
@@ -90,6 +91,14 @@ export class CategoryComponent implements OnInit {
     this.classStyleFormNum = this.initStateStyleForm;
     this.classStyleTextArea = this.initStyleTextArea;
     this.initState = true;
+  }
+
+  filterItem(){
+    if(this.searchResult && this.searchResult.length > 2) {
+      this.filterCategory();
+    }else{
+      this.getCategories(1);
+    }
   }
 
   addUpdateCategory(event) {
@@ -135,7 +144,7 @@ export class CategoryComponent implements OnInit {
           if(this.responseServer && this.responseServer.message === CONSTANT.ResponseServers.Category_Success){
             createUpdateForm.reset();
             this.toastService.show(CONSTANT.messageToast.CATEGORY_NEW_SUCCESS, 4000, 'teal lighten-1');
-            this.getCategories();
+            this.getCategories(1);
             $('#createCategory').modal('close');
 
 
@@ -155,7 +164,7 @@ export class CategoryComponent implements OnInit {
           if(this.responseServer && this.responseServer.message === CONSTANT.ResponseServers.Category_Success_Update){
             createUpdateForm.reset();
             this.toastService.show(CONSTANT.messageToast.CATEGORY_UPDATE_SUCCESS, 4000, 'teal lighten-1');
-            this.getCategories();
+            this.getCategories(1);
             $('#createCategory').modal('close');
           }else if(this.responseServer && this.responseServer.message === CONSTANT.ResponseServers.Category_InvalidParams){
             this.toastService.show(CONSTANT.ResponseServers.Category_InvalidParams, 4000, 'orange lighten-1');
@@ -175,7 +184,7 @@ export class CategoryComponent implements OnInit {
           this.responseServer = response;
           if(this.responseServer && this.responseServer.message === CONSTANT.ResponseServers.Category_Success_Deleted){
             this.toastService.show(CONSTANT.messageToast.CATEGORY_DELETED_SUCCESS, 4000, 'teal lighten-1');
-            this.getCategories();
+            this.getCategories(1);
             $('#deletedCategory').modal('close');
           }else{
             this.toastService.show(CONSTANT.ResponseServers.Category_Error, 4000, 'red accent-2');
@@ -195,18 +204,21 @@ export class CategoryComponent implements OnInit {
   ngOnInit() {
     this.createInstanceModal();
 
-    this.getCategories();
+    this.getCategories(1);
 
 
   }
 
-  private getCategories() {
+  private getCategories(page) {
+    let skiping = (page -1) *10;
     this.browser = this._getDataBrowser.getDataBrowser();
+    this.categoryModel.pagination.page=skiping;
     this.categoryModel.direccionIp.navegador = this.browser.browser;
     this._categoryService.getCategories(this.categoryModel).subscribe(
       response => {
         this.responseServer = response;
         this.bodyTable = this.responseServer.categoryObject;
+        this.getCountCategories();
       }, error => {
         this.toastService.show(error.message, 4000, 'red accent-2');
       }
@@ -214,9 +226,9 @@ export class CategoryComponent implements OnInit {
   }
 
 
-  filterCategory(event){
-    if(event.filter){
-      this._categoryService.getCategoriesFildered(event.filter).subscribe(
+  filterCategory(){
+    if(this.searchResult){
+      this._categoryService.getCategoriesFildered(this.searchResult).subscribe(
         response=>{
           this.responseServer = response;
           if(this.responseServer.message && this.responseServer.message == CONSTANT.ResponseServers.Category_InvalidParams){
@@ -224,7 +236,8 @@ export class CategoryComponent implements OnInit {
           }else if(this.responseServer.message && this.responseServer.message == CONSTANT.ResponseServers.No_Data_Category){
             this.toastService.show(CONSTANT.messageToast.NO_DATA_CATEGORY, 4000, 'blue darken-1');
           }else{
-            this.bodyTable = this.responseServer
+            this.bodyTable = this.responseServer;
+            this.countCategory = 0;
           }
         },error=>{
           this.toastService.show(error.message, 4000, 'red accent-2');
@@ -232,4 +245,25 @@ export class CategoryComponent implements OnInit {
       )
     }
   }
+
+  getCategoriesByPagination(event){
+    if(event || event.page){
+
+      this.getCategories(event.page);
+    }
+  }
+
+
+  private getCountCategories(){
+    this._categoryService.getCountCategies().subscribe(
+      response=>{
+        this.responseServer = response;
+        this.countCategory = this.responseServer.count;
+      },error=>{
+        this.toastService.show(error.message, 4000, 'red accent-2');
+      }
+
+    )
+  }
 }
+

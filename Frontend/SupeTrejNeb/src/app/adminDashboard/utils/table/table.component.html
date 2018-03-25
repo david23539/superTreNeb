@@ -1,42 +1,32 @@
 <div class="row">
-  <div class="col s12 l12">
-    <div class="card-panel white">
-      <span class="card-title pink-text"><b>{{title}}</b></span>
-      <div class="input-field pink-text">
-        <i class="material-icons prefix">search</i>
-        <input id="searchPipes"  [(ngModel)]="searchResult" (keyup)="filterItem()"  type="text" >
-        <label for="searchPipes">Búsqueda</label>
-      </div>
-
-      <div class="row">
-        <div class="col s12">
-          <table class="striped centered responsive-table" >
-            <thead class="pink-text fixed">
-              <tr>
-                <th (click)="addElement()"><i class="material-icons">add_circle_outline</i></th>
-                <th *ngFor="let itemHead of headsTable; let i = index" >
-                  <span (click)="orderByIndexASC(i)">
-                    {{itemHead}} <i class="right material-icons">arrow_drop_up</i>
-                  </span>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let itemBody of bodyTableContent">
-                  <td>
-                      <i (click)="updateElement(itemBody)" class="material-icons">edit</i>
-                      <i (click)="deleteElement(itemBody)" class="material-icons">remove</i>
-                  </td>
-                  <td *ngFor="let propertyItem of propertiesContent">
-                    {{itemBody[propertyItem]}}
-                  </td>
-              </tr>
-
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-    </div>
+  <div class="col s12">
+    <table class="striped centered responsive-table" >
+      <thead class="pink-text fixed">
+        <tr>
+          <th (click)="addElement()"><i class="material-icons">add_circle_outline</i></th>
+          <th *ngFor="let itemHead of headsTable; let i = index" >
+            <span (click)="orderByIndexASC(i)">
+              {{itemHead}} <i class="right material-icons">arrow_drop_up</i>
+            </span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let itemBody of bodyTableContent">
+            <td>
+                <i (click)="updateElement(itemBody)" class="material-icons">edit</i>
+                <i (click)="deleteElement(itemBody)" class="material-icons">remove</i>
+            </td>
+            <td *ngFor="let propertyItem of propertiesContent">
+              {{itemBody[propertyItem]}}
+            </td>
+        </tr>
+      </tbody>
+    </table>
+    <ul class="pagination center" *ngIf="countRecord > 10">
+      <li  class="waves-effect" *ngFor="let number of counter(pagination); let j=index "><a  (click)="getRecordByPage(j+1);">{{j+1}}</a></li>
+      <span class="pink-text right">TOTAL {{countRecord}}</span>
+    </ul>
   </div>
 </div>
+

@@ -1,8 +1,16 @@
-<div class="col s12 l12">
-  <tableComponenets [headsTable]="headsTables" [bodyTableContent]="bodyTable" (filterByElement)="filterCategory($event)" (changeItem)="addUpdateCategory($event)" [title]="TITLE"></tableComponenets>
+<div class="row">
+  <div class="col s12 l12">
+    <div class="card-panel white">
+      <h4 class="card-title pink-text"><b>{{TITLE}}</b></h4>
+      <div class="input-field pink-text">
+        <i class="material-icons prefix">search</i>
+        <input id="searchPipes"  [(ngModel)]="searchResult" (keyup)="filterItem()"  type="text" >
+        <label for="searchPipes">Búsqueda</label>
+      </div>
+      <tableComponenets [headsTable]="headsTables" [bodyTableContent]="bodyTable" (paginationParams)="getCategoriesByPagination($event);" [countRecord]="countCategory"  (changeItem)="addUpdateCategory($event)"></tableComponenets>
+    </div>
+  </div>
 </div>
-
-
 <div id="createCategory" #modals class="modal">
   <div class="modal-content">
     <h4 class="pink-text center">{{ADD_CATEGORY_TITTLE}}</h4>
@@ -71,7 +79,7 @@
           <button class="btn modal-action modal-close waves-effect waves-light red right col l3 s12" (click)="deleteCategory()" type="button" >{{LABEL_DELETED_CATEGORY}}
             <i class="material-icons right">remove</i>
           </button>
-          <button class="btn modal-action waves-effect waves-light blue right col l3 s12" type="button" >{{LABEL_CANCEL_CATEGORY}}
+          <button class="btn modal-action modal-close waves-effect waves-light blue right col l3 s12" type="button" >{{LABEL_CANCEL_CATEGORY}}
             <i class="material-icons right">close</i>
           </button>
         </div>

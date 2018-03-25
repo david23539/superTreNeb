@@ -10,30 +10,21 @@ export class TableComponent implements OnInit, OnChanges {
 
   @Input() headsTable:any;
   @Input() bodyTableContent: any;
-  @Input() title:any;
+  @Input() countRecord:number;
   public propertiesContent:any;
-  public searchResult:string;
-  public bodyTableContentStored:any;
+  public pagination:number;
+  public  counter = Array;
   @Output() changeItem = new EventEmitter();
-  @Output() filterByElement = new EventEmitter();
+  @Output() paginationParams = new EventEmitter();
+
   constructor() { }
 
-  filterItem(){
-    if(this.searchResult && this.searchResult.length > 2){
-      this.filterByElement.emit({
-        filter: this.searchResult
-      })
-    }else{
-      this.bodyTableContent = this.bodyTableContentStored;
-    }
-  }
+
 
   ngOnChanges(changes: SimpleChanges): void {
     if(this.bodyTableContent)
     this.propertiesContent = Object.keys(this.bodyTableContent[0]);
-    if(!this.searchResult){
-      this.bodyTableContentStored = this.bodyTableContent;
-    }
+    this.pagination = Math.ceil(this.countRecord/10);
 
   }
   orderByIndexASC(index) {
@@ -68,6 +59,12 @@ export class TableComponent implements OnInit, OnChanges {
       operation: "delete",
       items: item
     })
+  }
+
+  getRecordByPage(page){
+      this.paginationParams.emit({
+        page:page
+      })
   }
 
   ngOnInit() {

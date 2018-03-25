@@ -9,6 +9,9 @@ export class Category{
     public identifier:{
       id:string
     },
+    public pagination:{
+      page:number
+    },
     public direccionIp: {
       direccionData:string,
       navegador: string
