@@ -52,7 +52,9 @@ const constant ={
 		ERROR_GENERATE_CODE: 'Error en la generación del codigo',
 		EMAIL_SEND: 'El email se ha enviado',
 		CATEGORY_REGISTER_FAIL: 'Ha fallado el registro de la categoria',
+		PRODUCT_REGISTER_FAIL: 'Ha fallado el registro del producto',
 		CATEGORY_REGISTER_SUCCESS: 'Se ha creado la categoria con exito',
+		PRODUCT_REGISTER_SUCCESS: 'Se ha creado el producto con exito',
 		CATEGORY_UPDATE_SUCCESS: 'Se ha actualizado correctamente la categoria',
 		CATEGORY_UPDATE_ERROR: 'Ha ocurrido un error al actualizar la categoria',
 		CATEGORY_DELETE_SUCCESS: 'La categoria se ha eliminado',
@@ -69,6 +71,7 @@ const constant ={
 		EMAIL:'^(([^<>()\\[\\]\\\\.,;:\\s@"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@"]+)*)|(".+"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$',
 		USERNAME: '^[0-9a-zA-Z]+$',
 		STRINGS: '^[0-9a-zA-Z]+$',
+		STRINGS_WITH_SPACES: '^[A-Za-z0-9 \\s]+$',
 		CODE: '^([0-9])*$',
 		NUMBERS: '^([0-9])*$'
 
