@@ -7,6 +7,7 @@ const md_auth = require('../middleware/autenticate.middleware')
 
 
 api.post('/createProduct', md_auth.ensureAuth, productController.createProduct)
+api.post('/updateProduct', md_auth.ensureAuth, productController.updateProduct)
 
 
 
