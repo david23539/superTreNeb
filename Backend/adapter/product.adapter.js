@@ -33,7 +33,26 @@ function AdapterProduct_OUT(product){
     }
 
 }
+function AdapterListProduct_OUT(products){
+    let products_OUT = []
+    for(let item of products){
+        let product = {
+            name: item.stn_nameProduct,
+            description: item.stn_descriptionProduct,
+            cost: item.stn_costProduct,
+            reference: item.stn_referenceProduct,
+            iva: item.stn_ivaProduct,
+            image: item.stn_imageProduct,
+            margin: item.stn_marginProduct,
+            stock: item.stn_stockProduct,
+            id : item._doc._id
+        }
+        products_OUT.push(product)
+    }
+    return products_OUT
+}
 module.exports = {
     adapterProduct,
-    AdapterProduct_OUT
+    AdapterProduct_OUT,
+    AdapterListProduct_OUT
 }

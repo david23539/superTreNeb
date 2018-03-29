@@ -14,14 +14,14 @@ function createProduct(req, res){
     if(params.direccionIp && params.direccionIp.navegador){
         params.direccionIp.direccionData = req.connection.remoteAddress
         product = adapterProduct.adapterProduct(params)
-        //TODO La expresion regular no pasa habra que revisarla
+
         if(validationProduct.validationProductDataComplete(product)){
             checkReferenceProduct(product.stn_referenceProduct, (err, referenceProduct)=>{
                 if(err){
                     auditoriaController.saveLogsData(req.user.name,err, params.direccionIp.direccionData, params.direccionIp.navegador)
                     res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PRODUCT_REGISTER_FAIL})
                 }else if(referenceProduct.length !== 0){
-                    res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.EXISTS_REFERENCE_PRODUCT})
+                    res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.EXISTS_REFERENCE_PRODUCT})
                 }else{
                     product.save((err, productSave)=>{
                         if(err || !productSave){
@@ -91,13 +91,52 @@ function deletedProduct(req, res){
 
 }
 
+function getProductAllPagination(req, res) {
+    const params = req.body
+    params.direccionIp.direccionData = req.connection.remoteAddress
+    if(validationGlobal.validationPage(params.pagination.page)){
+        ProductModel.find().skip(params.pagination.page).limit(10).exec((err, products)=>{
+            if(err){
+                auditoriaController.saveLogsData(req.user.name,err, params.direccionIp.direccionData, params.direccionIp.navegador)
+                res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PRODUCT_GET_ERROR})
+            }else if(products.length === 0){
+                res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.NO_PRODUCT_AVAIBLE})
+            }else{
+                res.status(constantFile.httpCode.PETITION_CORRECT).send({products: adapterProduct.AdapterListProduct_OUT(products)})
+            }
+        })
+    }else{
+        paramsIvalids(res)
+    }
+}
+
+function filterProduct(req, res){
+    const keyword = req.params.key
+    if(validationGlobal.validateId(keyword)){
+        //TODO revisar el limit porque no funciona
+        ProductModel.find({stn_nameProduct: {$regex: keyword, $options: 'i', limit:2}}, (err, products)=>{
+            if(err){
+                res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PRODUCT_GET_ERROR})
+            }else if(products.length !== 0){
+                res.status(constantFile.httpCode.PETITION_CORRECT).send({products: adapterProduct.AdapterListProduct_OUT(products)})
+            }else{
+                res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.NO_PRODUCT_AVAIBLE})
+            }
+        })
+    }else{
+        paramsIvalids(res)
+    }
+}
 
 
 function paramsIvalids(res){
     res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.ERROR_PARAMETROS_ENTRADA})
 }
+
 module.exports ={
     createProduct,
     updateProduct,
-    deletedProduct
+    deletedProduct,
+    getProductAllPagination,
+    filterProduct
 }

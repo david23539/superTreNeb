@@ -11,6 +11,11 @@ function validateId(id){
     }
 }
 
+function validationPage(page){
+    return regexString.test(page)
+}
+
 module.exports = {
-    validateId
+    validateId,
+    validationPage
 }

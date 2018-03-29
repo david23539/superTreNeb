@@ -65,8 +65,11 @@ const constant ={
 		CATEGORY_DELETE_ERROR: 'Ha ocurrido un error al eliminar la categoria',
 		PRODUCT_DELETE_ERROR: 'Ha ocurrido un error al eliminar el producto',
 		CATEGORY_GET_CATEGORY_ERROR: 'Ha ocurrido un error al obtener la categoria',
+		PRODUCT_GET_ERROR: 'Ha ocurrido un error al obtener los productos',
 		NO_DATA_CATEGORY:'No hay coincidencias',
-		NO_DATA_AVAIBLE:'No existen categorías'
+		NO_DATA_AVAIBLE:'No existen categorías',
+		NO_PRODUCT_AVAIBLE:'No existen categorías'
+
 
 
 
