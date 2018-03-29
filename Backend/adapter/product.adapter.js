@@ -5,7 +5,7 @@ const ProductModel = require('../model/product.model')
 function adapterProduct(params){
     let product = new ProductModel()
     product.stn_nameProduct = params.dataProduct.nameProd
-    product.stn_descripProduct = params.dataProduct.descripProd
+    product.stn_descriptionProduct = params.dataProduct.descriptProd
     product.stn_costProduct = params.dataProduct.costProd
     product.stn_referenceProduct = params.dataProduct.refProd
     product.stn_ivaProduct = params.dataProduct.ivaProd

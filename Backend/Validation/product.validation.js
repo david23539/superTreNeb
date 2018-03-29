@@ -3,7 +3,7 @@
 const constantFile = require('../utils/Constant')
 
 const regexString = new RegExp(constantFile.regex.STRINGS_WITH_SPACES)
-const regexNumbers = new RegExp(constantFile.regex.NUMBERS)
+const regexNumbers = new RegExp(constantFile.regex.NUMBERS_AND_DECIMAL)
 
 function validationProductDataComplete(product){
     if(regexString.test(product.stn_nameProduct) &&
@@ -21,14 +21,14 @@ function privateValidationProductDataNumberComplete(product){
 }
 
 function privateValidationProductDataOpcionalComplete(product){
-    if(!product.stn_descripProduct && !product.stn_imageProduct){
+    if(!product.stn_descriptionProduct && !product.stn_imageProduct){
         return true
-    }else if(product.stn_descripProduct && !product.stn_imageProduct){
-        return regexString.test(product.stn_descripProduct)
-    }else if(!product.stn_descripProduct && product.stn_imageProduct){
+    }else if(product.stn_descriptionProduct && !product.stn_imageProduct){
+        return regexString.test(product.stn_descriptionProduct)
+    }else if(!product.stn_descriptionProduct && product.stn_imageProduct){
         return regexString.test(product.stn_imageProduct)
-    }else if(product.stn_descripProduct && product.stn_imageProduct){
-        return regexString.test(product.stn_imageProduct) && regexString.test(product.stn_descripProduct)
+    }else if(product.stn_descriptionProduct && product.stn_imageProduct){
+        return regexString.test(product.stn_imageProduct) && regexString.test(product.stn_descriptionProduct)
     }
 }
 

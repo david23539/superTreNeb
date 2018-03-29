@@ -4,7 +4,7 @@ const ProductModel = require('../model/product.model')
 const constantFile = require('../utils/Constant')
 const adapterProduct = require('../adapter/product.adapter')
 const validationProduct = require('../Validation/product.validation')
-
+const auditoriaController = require('./saveLogs.controller')
 
 function createProduct(req, res){
     const params = req.body
