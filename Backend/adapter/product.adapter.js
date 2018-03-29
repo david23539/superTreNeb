@@ -13,6 +13,7 @@ function adapterProduct(params){
     product.stn_marginProduct = params.dataProduct.marginProd
     product.stn_stockProduct = params.dataProduct.stock
     product.stn_categoryFk = params.dataProduct.catProd
+    product.stn_deleteProduct = false
     return product
 
 }

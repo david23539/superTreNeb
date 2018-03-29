@@ -12,6 +12,7 @@ const ProductSchema = Schema({
 	stn_imageProduct: String,
 	stn_marginProduct: Number,
 	stn_stockProduct: Number,
+	stn_deleteProduct: Boolean,
 	stn_categoryFk: {type: Schema.ObjectId, ref: 'STN_Category'}
 })
 // eslint-disable-next-line no-undef

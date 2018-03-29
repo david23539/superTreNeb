@@ -32,6 +32,8 @@ function privateValidationProductDataOpcionalComplete(product){
     }
 }
 
+
+
 module.exports = {
     validationProductDataComplete
 }
