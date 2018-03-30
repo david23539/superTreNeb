@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+/* eslint-disable no-undef,no-useless-escape */
 'use strict'
 
 //TODO Base de datos
@@ -68,12 +68,18 @@ const constant ={
 		PRODUCT_GET_ERROR: 'Ha ocurrido un error al obtener los productos',
 		NO_DATA_CATEGORY:'No hay coincidencias',
 		NO_DATA_AVAIBLE:'No existen categorías',
-		NO_PRODUCT_AVAIBLE:'No existen categorías'
+		NO_PRODUCT_AVAIBLE:'No existen productos'
 
 
 
 
 
+	},
+	extensions:{
+		JPG:'jpg',
+		GIF:'gif',
+		PNG:'png',
+		JPEG:'jpeg'
 	},
 	regex:{
 		EMAIL:'^(([^<>()\\[\\]\\\\.,;:\\s@"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@"]+)*)|(".+"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$',
@@ -94,7 +100,9 @@ const constant ={
 		INFO_IP: 'con ip '
 	},
 	urls:{
-		CHANGE_IP:'/../template/changeIp.html'
+		CHANGE_IP:'/../template/changeIp.html',
+		PRODUCT_IMG_ORIGINAL:'./Backend/uploadFiles/products/original/',
+		PRODUCT_IMG_RESIZE:'./Backend/uploadFiles/products/resize/'
 	}
 }
 module.exports = constant

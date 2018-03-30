@@ -121,7 +121,7 @@ function filterCategories(req, res){
 	const keywords = req.params.key
 	if(categoryValidation.validateId(keywords)) {
 
-		CategoryModel.find({stn_nameCategory: {$regex: keywords, $options: 'i' }}, (err, categoryFilter) => {
+		CategoryModel.find({stn_nameCategory: {$regex: keywords, $options: 'i' }}).limit(10).exec((err, categoryFilter) => {
 			if (err) {
 				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.CATEGORY_GET_CATEGORY_ERROR})
 			} else if (categoryFilter.length === 0) {
@@ -157,7 +157,7 @@ function getCategoryPagination(req, res){
 			}else if(categoryData.length === 0){
 				res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.NO_DATA_AVAIBLE})
 			}else{
-                res.status(constantFile.httpCode.PETITION_CORRECT).send({categoryObject: categoryAdapter.getAllCategoriesAdapter(categoryData)})
+				res.status(constantFile.httpCode.PETITION_CORRECT).send({categoryObject: categoryAdapter.getAllCategoriesAdapter(categoryData)})
 			}
 		})
 	}else{

@@ -10,6 +10,7 @@ const ProductSchema = Schema({
 	stn_referenceProduct: Number,
 	stn_ivaProduct: Number,
 	stn_imageProduct: String,
+	stn_imageProductResize: String,
 	stn_marginProduct: Number,
 	stn_stockProduct: Number,
 	stn_deleteProduct: Boolean,
