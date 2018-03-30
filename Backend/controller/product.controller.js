@@ -142,23 +142,24 @@ function countProduct(req, res) {
 function updateProductImage(req, res){
 	const productId = req.params.id
 	const params = req.body
+
 	if(validationGlobal.validateId(productId)){
 		if(req.files.image){
 			const filename = serviceProduct.validateImageFile(req.files.image)
 			serviceProduct.resizeImage(req, res, constantFile.urls.PRODUCT_IMG_ORIGINAL+filename, constantFile.urls.PRODUCT_IMG_RESIZE+filename)
 
-			/*if(filename){
-				ProductModel.findByIdAndUpdate(productId, {stn_imageProduct:filename}, {new:true},(err, productUpdate)=>{
+			if(filename){
+				ProductModel.findByIdAndUpdate(productId, {stn_imageProduct:filename, stn_imageProductResize:filename}, {new:true},(err, productUpdate)=>{
 					if(err || !productUpdate){
-						auditoriaController.saveLogsData(req.user.name,err, req.connection.remoteAddress, params.direccionIp.navegador)
+						auditoriaController.saveLogsData(req.user.name,err, req.connection.remoteAddress, 'image fail')
 						res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PRODUCT_GET_ERROR})
 					}else{
-						res.status(constantFile.httpCode.PETITION_CORRECT).send({products: adapterProduct.AdapterListProduct_OUT(productUpdate)})
+						res.status(constantFile.httpCode.PETITION_CORRECT).send({products: adapterProduct.AdapterProduct_OUT(productUpdate)})
 					}
 				})
 			}else{
 				paramsIvalids(res)
-			}*/
+			}
 
 		}else{
 			paramsIvalids(res)

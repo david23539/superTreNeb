@@ -42,7 +42,7 @@ function AdapterListProduct_OUT(products){
             cost: item.stn_costProduct,
             reference: item.stn_referenceProduct,
             iva: item.stn_ivaProduct,
-            image: item.stn_imageProduct,
+            image: item.stn_imageProductResize,
             margin: item.stn_marginProduct,
             stock: item.stn_stockProduct,
             id : item._doc._id

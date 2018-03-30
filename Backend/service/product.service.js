@@ -1,7 +1,7 @@
 'use strict'
 const constantFile = require('../utils/Constant')
 const jimp = require('jimp')
-const auditoriaController = require('./saveLogs.controller')
+const auditoriaController = require('../controller/saveLogs.controller')
 
 function validateImageFile(file){
 	const file_path = file.path
@@ -21,10 +21,11 @@ function validateImageFile(file){
 function resizeImage(req, res, routeOriginal, routeResized){
 	jimp.read(routeOriginal,(err, image)=>{
 		if(err || !image){
-			auditoriaController.saveLogsData(req.user.name,err, req.connection.remoteAddress, params.direccionIp.navegador)
+			auditoriaController.saveLogsData(req.user.name,err, req.connection.remoteAddress, 'image fail')
 			res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PRODUCT_GET_ERROR})
 		}else{
-			image.resize(10,10).write(routeResized)
+			return image.resize(50,50).write(routeResized)
+
 		}
 	})
 }
