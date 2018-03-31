@@ -1,0 +1,97 @@
+<div class="row">
+  <div class="col s12 l12">
+    <div class="card-panel white">
+      <h4 class="card-title pink-text">{{TITLE}}</h4>
+      <div class="input-field pink-text s6 l6">
+        <i class="material-icons prefix">search</i>
+        <input id="searchCategory"  [(ngModel)]="searchResult" (keyup)="filterItem()"  type="text" >
+        <label for="searchCategory">{{ProductSearch}}</label>
+      </div>
+      <tableComponenets [headsTable]="headsTables" [bodyTableContent]="bodyTable" (paginationParams)="getProductsByPagination($event);" [countRecord]="countProduct"  (changeItem)="addUpdateProduct($event)"></tableComponenets>
+    </div>
+  </div>
+</div>
+<div id="productModal" #modals class="modal">
+  <div class="modal-content">
+    <h4 class="pink-text center">{{ADD_PRODUCT_TITTLE}}</h4>
+    <div class="row">
+      <form #createUpdateForm = "ngForm" (ngSubmit)="onSubmit(createUpdateForm)">
+        <div class="row">
+          <div class="input-field col s12 pink-text">
+            <i class="material-icons prefix ">local_offer</i>
+            <input id="nameProduct"  placeholder="Only Words" name="nameProduct" #nameProduct="ngModel" autocomplete="false" [(ngModel)]="productModel.dataProduct.nameProd" mz-tooltip [tooltip]=TOLLTIP_NAME_PRODUCT (blur)="validateVisualForm('name')" type="text"  [class]="classStyleFormName" required>
+            <label for="nameProduct">{{NAME}}</label>
+          </div>
+          <br>
+          <div class="input-field col s12 pink-text">
+            <i class="material-icons prefix ">description</i>
+            <textarea id="description" placeholder="Without Spaces" name="descriptionProduct" #descriptionProduct="ngModel" mz-tooltip [tooltip]=TOLLTIP_DES_PRODUCT [(ngModel)]="productModel.dataProduct.descriptProd" (blur)="validateVisualForm('description')" [class]="classStyleFormDes"  required></textarea>
+            <label for="description">{{DESCRIPTION}}</label>
+          </div>
+        </div>
+        <div class="input-field col s12 pink-text">
+          <input id="ivaProd"  name="ivaProd" #ivaProd="ngModel" mz-tooltip [tooltip]=TOLLTIP_IVA_PRODUCT autocomplete="false" [(ngModel)]="productModel.dataProduct.ivaProd"  type="number" (blur)="validateVisualForm('number')" [class]="classStyleFormIva" required>
+          <label for="ivaProd">{{IVA}}</label>
+        </div>
+
+        <div class="input-field col s12 pink-text">
+          <input id="costProd"  name="costProd" #costProd="ngModel" mz-tooltip [tooltip]=TOLLTIP_COST_PRODUCT autocomplete="false" [(ngModel)]="productModel.dataProduct.costProd"  type="number" (blur)="validateVisualForm('cost')" [class]="classStyleFormCost" required>
+          <label for="costProd">{{COST}}</label>
+        </div>
+
+        <div class="input-field col s12 pink-text">
+          <i class="material-icons prefix ">local_offer</i>
+          <input id="refProduct"  placeholder="Only Numbers" name="refProduct" #refProduct="ngModel" autocomplete="false" [(ngModel)]="productModel.dataProduct.refProd" mz-tooltip [tooltip]=TOLLTIP_REF_PRODUCT (blur)="validateVisualForm('ref')" type="text"  [class]="classStyleFormRef" required>
+          <label for="refProduct">{{REF}}</label>
+        </div>
+
+        <div class="input-field col s12 pink-text">
+          <input id="marginProd"  name="marginProd" #marginProd="ngModel" mz-tooltip [tooltip]=TOLLTIP_MARGIN_PRODUCT autocomplete="false" [(ngModel)]="productModel.dataProduct.marginProd"  type="number" (blur)="validateVisualForm('margi')" [class]="classStyleFormMar" required>
+          <label for="marginProd">{{MARG}}</label>
+        </div>
+
+        <div class="input-field col s12 pink-text">
+          <input id="stockProduct"  name="stockProduct" #stockProduct="ngModel" mz-tooltip [tooltip]=TOLLTIP_STOCK_PRODUCT autocomplete="false" [(ngModel)]="productModel.dataProduct.stock"  type="number" (blur)="validateVisualForm('stock')" [class]="classStyleFormSto" required>
+          <label for="stockProduct">{{STOCK}}</label>
+        </div>
+        <div class="input-field col s12 pink-text">
+          <mz-select-container>
+            <select mz-select
+                    id="options-category"
+                    [label]=CATEGORY
+                    [placeholder]=CATEGORY
+                    [(ngModel)]="productModel.dataProduct.catProd" name="category"
+
+            >
+                <option *ngFor="let item of prueba" [value]=item.cod >{{item.value}}</option>
+
+
+            </select>
+          </mz-select-container>
+        </div>
+
+        <button (click)="probarDesplegable();">Probar</button>
+
+        <div class="row" >
+          <div class="input-field col s12" *ngIf="buttonSaveUpdate">
+            <button class="btn waves-effect waves-light col s12" type="submit" name="action" [disabled]="!createUpdateForm.form.valid">{{LABEL_SAVE_CATEGORY}}
+              <i class="material-icons right">save</i>
+            </button>
+          </div>
+
+          <div class="input-field col s12" *ngIf="!buttonSaveUpdate">
+            <button class="btn waves-effect orange lighten-1 waves-light col s12" type="submit" name="action" [disabled]="!createUpdateForm.form.valid">{{LABEL_UPDATE_CATEGORY}}
+              <i class="material-icons right">save</i>
+            </button>
+          </div>
+
+          <div class="input-field col s12">
+            <button class="btn modal-action modal-close waves-effect waves-light blue col s12" type="button" >{{LABEL_CANCEL_CATEGORY}}
+              <i class="material-icons right">close</i>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

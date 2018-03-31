@@ -22,6 +22,10 @@ export const CONSTANT = {
     No_Data_Category: "No hay coincidencias",
     No_Data_Avaible:'No existen categorías'
   },
+  Styles:{
+    Valid:"valid pink-text",
+    Invalid:"invalid pink-text"
+  },
   Labels:{
     AddCategory:"Añadir Categorías",
     DeleteCategory:"Eliminar Categoría",
@@ -29,14 +33,32 @@ export const CONSTANT = {
     Category:"Nombre Categoria",
     Description: "Descripción",
     Iva:"IVA",
+    Cost:"Coste",
+    Margin: "Margen",
+    Ref:"Referencia",
+    Stock:"Stock",
     Save:"Guardar",
     Update:"Actualizar",
     Cancel:"Cancelar",
     Delete: "Eliminar",
     Control_Input_Required: "El campo debe estar informado",
-    Confirm_Deleted_Category: "¿Estas seguro que quieres eliminar la categoría?"
+    Confirm_Deleted_Category: "¿Estas seguro que quieres eliminar la categoría?",
+    ProductTitle: "Productos",
+    SearchProducts: "Buscar Productos",
+    AddProduct: "Añadir Productos",
+    Name: "Nombre",
+    TooltipNameProduct: "Nombre del producto",
+    TooltipDesProduct: "Descripción del producto",
+    TooltipCostProduct: "Coste del producto",
+    TooltipRefProduct: "Referencia del producto",
+    TooltipMarginProduct: "Margen del producto",
+    TooltipStockProduct: "Stock del producto",
+    TooltipIvaProduct: "Iva del producto"
+
   },
-  headCategory:["Id", "Nombre", "Descripción", "IVA"],
+  headCategory:["Nombre", "Descripción", "IVA"],
+  headProduct:["Nombre", "Descripción", "Coste", "Referencia", "Iva", "Imagen", "Margen", "Stock","Categoría"],
+
   messageToast:{
     NOSELECTEDITEM: "Debe seleccional un elemento antes de hacer algun cambio",
     CATEGORY_NEW_SUCCESS: "Se ha creado con exito la categoría",

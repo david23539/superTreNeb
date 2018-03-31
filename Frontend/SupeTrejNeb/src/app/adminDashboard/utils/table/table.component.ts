@@ -1,4 +1,5 @@
 import {Component, Input, Output, OnInit, OnChanges, SimpleChanges, EventEmitter} from '@angular/core';
+import {GLOBAL} from "../../../services/global";
 
 @Component({
   selector: 'tableComponenets',
@@ -14,10 +15,13 @@ export class TableComponent implements OnInit, OnChanges {
   public propertiesContent:any;
   public pagination:number;
   public  counter = Array;
+  public url = "";
   @Output() changeItem = new EventEmitter();
   @Output() paginationParams = new EventEmitter();
 
-  constructor() { }
+  constructor() {
+    this.url = GLOBAL.url
+  }
 
 
 

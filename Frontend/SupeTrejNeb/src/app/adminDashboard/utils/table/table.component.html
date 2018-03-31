@@ -15,10 +15,13 @@
         <tr *ngFor="let itemBody of bodyTableContent">
             <td>
                 <i (click)="updateElement(itemBody)" class="material-icons">edit</i>
-                <i (click)="deleteElement(itemBody)" class="material-icons">remove</i>
+                <i (click)="deleteElement(itemBody)" class="material-icons">delete_sweep</i>
             </td>
             <td *ngFor="let propertyItem of propertiesContent">
-              {{itemBody[propertyItem]}}
+
+              <span *ngIf="propertyItem != 'id' && propertyItem != 'category' && propertyItem != 'image'">{{itemBody[propertyItem]}}</span>
+              <span *ngIf="propertyItem == 'category'">{{itemBody[propertyItem].name}}</span>
+              <span *ngIf="propertyItem == 'image'"><img src="{{url+'getImageResize/'+itemBody[propertyItem]}}"/></span>
             </td>
         </tr>
       </tbody>
