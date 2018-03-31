@@ -2,6 +2,7 @@
 const constantFile = require('../utils/Constant')
 const jimp = require('jimp')
 const auditoriaController = require('../controller/saveLogs.controller')
+const fs = require('fs')
 
 function validateImageFile(file){
 	const file_path = file.path
@@ -13,7 +14,14 @@ function validateImageFile(file){
 	if(file_ext === constantFile.extensions.JPEG ||file_ext === constantFile.extensions.JPG || file_ext === constantFile.extensions.PNG){
 		return file_name
 	}else{
-		return false
+		fs.unlink(file_path,(err)=>{
+			if (err){
+				return false
+			}else{
+				return false
+			}
+		})
+
 	}
 
 }
@@ -29,6 +37,7 @@ function resizeImage(req, res, routeOriginal, routeResized){
 		}
 	})
 }
+// eslint-disable-next-line no-undef
 module.exports={
 	validateImageFile,
 	resizeImage

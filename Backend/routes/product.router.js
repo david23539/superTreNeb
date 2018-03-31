@@ -13,6 +13,9 @@ api.post('/getProducts', md_auth.ensureAuth, productController.getProductAllPagi
 api.post('/uploadImageProduct/:id', [md_auth.ensureAuth, md_upload], productController.updateProductImage)
 api.get('/filterProducts/:key', md_auth.ensureAuth, productController.filterProduct)
 api.get('/countProducts', md_auth.ensureAuth, productController.countProduct)
+api.get('/getUniqueProduct/:id', md_auth.ensureAuth, productController.getDetailProduct)
+api.get('/getImageResize/:imageFile', md_auth.ensureAuth, productController.getImageResizeFile)
+api.get('/getImageOriginal/:imageFile', md_auth.ensureAuth, productController.getImageOriginalFile)
 api.delete('/deleteProduct/:id', md_auth.ensureAuth, productController.deletedProduct)
 
 

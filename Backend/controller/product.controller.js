@@ -7,6 +7,8 @@ const validationProduct = require('../Validation/product.validation')
 const validationGlobal = require('../Validation/global.validation')
 const auditoriaController = require('./saveLogs.controller')
 const serviceProduct = require('../service/product.service')
+const fs = require('fs')
+const path = require('path')
 
 
 function createProduct(req, res){
@@ -30,7 +32,7 @@ function createProduct(req, res){
 							res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PRODUCT_REGISTER_FAIL})
 						}else{
 							auditoriaController.saveLogsData(req.user.name,constantFile.functions.PRODUCT_REGISTER_SUCCESS, params.direccionIp.direccionData, params.direccionIp.navegador)
-							res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.PRODUCT_REGISTER_SUCCESS, productObject:adapterProduct.AdapterProduct_OUT(productSave)})
+							res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.PRODUCT_REGISTER_SUCCESS})
 						}
 					})
 				}
@@ -57,13 +59,13 @@ function updateProduct(req, res){
 		productUpdate = adapterProduct.adapterProduct(params)
 		if(validationGlobal.validateId(id) && validationProduct.validationProductDataComplete(productUpdate)){
 			productUpdate._doc._id = id
-			ProductModel.findByIdAndUpdate(id, productUpdate, {new: true}, (err, productUpdateStorage)=>{
+			ProductModel.findByIdAndUpdate(id, productUpdate, (err, productUpdateStorage)=>{
 				if(err || !productUpdateStorage){
 					auditoriaController.saveLogsData(req.user.name,err, params.direccionIp.direccionData, params.direccionIp.navegador)
 					res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PRODUCT_UPDATE_ERROR})
 				}else{
 					auditoriaController.saveLogsData(req.user.name,constantFile.functions.PRODUCT_UPDATE_SUCCESS, params.direccionIp.direccionData, params.direccionIp.navegador)
-					res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.PRODUCT_UPDATE_SUCCESS, productObject:adapterProduct.AdapterProduct_OUT(productUpdateStorage)})
+					res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.PRODUCT_UPDATE_SUCCESS})
 				}
 			})
 		}else{
@@ -96,7 +98,7 @@ function getProductAllPagination(req, res) {
 	const params = req.body
 	params.direccionIp.direccionData = req.connection.remoteAddress
 	if(validationGlobal.validationPage(params.pagination.page)){
-		ProductModel.find().skip(params.pagination.page).limit(10).exec((err, products)=>{
+		ProductModel.find().skip(params.pagination.page).limit(10).populate({path:'stn_categoryFk'}).exec((err, products)=>{
 			if(err){
 				auditoriaController.saveLogsData(req.user.name,err, params.direccionIp.direccionData, params.direccionIp.navegador)
 				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PRODUCT_GET_ERROR})
@@ -115,7 +117,7 @@ function filterProduct(req, res){
 	const keyword = req.params.key
 	if(validationGlobal.validateId(keyword)){
 
-		ProductModel.find({stn_nameProduct: {$regex: keyword, $options: 'i'}}).limit(10).exec((err, products)=>{
+		ProductModel.find({stn_nameProduct: {$regex: keyword, $options: 'i'}}).limit(10).populate({path:'stn_categoryFk'}).exec((err, products)=>{
 			if(err){
 				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PRODUCT_GET_ERROR})
 			}else if(products.length !== 0){
@@ -141,20 +143,17 @@ function countProduct(req, res) {
 
 function updateProductImage(req, res){
 	const productId = req.params.id
-	const params = req.body
-
 	if(validationGlobal.validateId(productId)){
 		if(req.files.image){
 			const filename = serviceProduct.validateImageFile(req.files.image)
-			serviceProduct.resizeImage(req, res, constantFile.urls.PRODUCT_IMG_ORIGINAL+filename, constantFile.urls.PRODUCT_IMG_RESIZE+filename)
-
 			if(filename){
+				serviceProduct.resizeImage(req, res, constantFile.urls.PRODUCT_IMG_ORIGINAL+filename, constantFile.urls.PRODUCT_IMG_RESIZE+filename)
 				ProductModel.findByIdAndUpdate(productId, {stn_imageProduct:filename, stn_imageProductResize:filename}, {new:true},(err, productUpdate)=>{
 					if(err || !productUpdate){
 						auditoriaController.saveLogsData(req.user.name,err, req.connection.remoteAddress, 'image fail')
 						res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PRODUCT_GET_ERROR})
 					}else{
-						res.status(constantFile.httpCode.PETITION_CORRECT).send({products: adapterProduct.AdapterProduct_OUT(productUpdate)})
+						res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.PRODUCT_UPDATE_SUCCESS})
 					}
 				})
 			}else{
@@ -169,6 +168,48 @@ function updateProductImage(req, res){
 	}
 }
 
+function getDetailProduct(req, res){
+	const productId = req.params.id
+	if(validationGlobal.validateId(productId)){
+		ProductModel.findById(productId).populate({path:'stn_categoryFk'}).exec((err, data)=>{
+			if(err){
+				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PRODUCT_GET_ERROR})
+			}else if(!data){
+				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.NO_PRODUCT_AVAIBLE})
+			}else{
+				res.status(constantFile.httpCode.PETITION_CORRECT).send({products: adapterProduct.AdapterProduct_OUT(data)})
+			}
+		})
+	}else{
+		paramsIvalids(res)
+	}
+}
+
+function getImageResizeFile(req, res) {
+	const imageFile = req.params.imageFile
+	const path_file = './Backend/uploadFiles/products/resize/'+imageFile
+
+	sendImageFile(path_file, res)
+}
+
+
+
+function getImageOriginalFile(req, res) {
+	const imageFile = req.params.imageFile
+	const path_file = './Backend/uploadFiles/products/original/'+imageFile
+
+	sendImageFile(path_file, res)
+}
+
+function sendImageFile(path_file, res) {
+	fs.access(path_file, function (err) {
+		if (!err) {
+			res.sendFile(path.resolve(path_file))
+		} else {
+			paramsIvalids(res)
+		}
+	})
+}
 
 function paramsIvalids(res){
 	res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.ERROR_PARAMETROS_ENTRADA})
@@ -182,5 +223,8 @@ module.exports ={
 	getProductAllPagination,
 	filterProduct,
 	countProduct,
-	updateProductImage
+	updateProductImage,
+	getDetailProduct,
+	getImageResizeFile,
+	getImageOriginalFile
 }
