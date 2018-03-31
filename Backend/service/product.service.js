@@ -32,7 +32,7 @@ function resizeImage(req, res, routeOriginal, routeResized){
 			auditoriaController.saveLogsData(req.user.name,err, req.connection.remoteAddress, 'image fail')
 			res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PRODUCT_GET_ERROR})
 		}else{
-			return image.resize(50,50).write(routeResized)
+			return image.resize(32,32).write(routeResized)
 
 		}
 	})
