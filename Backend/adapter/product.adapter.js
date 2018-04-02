@@ -44,10 +44,10 @@ function AdapterListProduct_OUT(products){
 			cost: item.stn_costProduct,
 			reference: item.stn_referenceProduct,
 			iva: item.stn_ivaProduct,
-			image: item.stn_imageProductResize,
 			margin: item.stn_marginProduct,
 			stock: item.stn_stockProduct,
 			category : adapterCategory.getCategoryByIdAdapter(item._doc.stn_categoryFk),
+            image: item.stn_imageProductResize,
 			id : item._doc._id
 		}
 		products_OUT.push(product)
