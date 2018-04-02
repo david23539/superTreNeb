@@ -21,7 +21,7 @@
 
               <span *ngIf="propertyItem != 'id' && propertyItem != 'category' && propertyItem != 'image'">{{itemBody[propertyItem]}}</span>
               <span *ngIf="propertyItem == 'category'">{{itemBody[propertyItem].name}}</span>
-              <span *ngIf="propertyItem == 'image'"><img src="{{url+'getImageResize/'+itemBody[propertyItem]}}"/></span>
+              <img *ngIf="propertyItem == 'image' && itemBody[propertyItem]" src="{{url+'getImageResize/'+itemBody[propertyItem]}}"/>
             </td>
         </tr>
       </tbody>
