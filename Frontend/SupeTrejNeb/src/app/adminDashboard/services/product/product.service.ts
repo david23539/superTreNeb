@@ -27,4 +27,11 @@ export class ProductService {
     let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
     return this._http.get(this.url+'getCountCategories',{headers:header})
   }
+
+  createProduct(product_IN){
+    this.token = this._loginService.getToken();
+    let param = JSON.stringify(product_IN);
+    let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
+    return this._http.post(this.url+'createProduct', param, {headers:header})
+  }
 }

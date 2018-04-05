@@ -149,8 +149,8 @@ export class CategoryComponent implements OnInit {
 
 
 
-          }else if(this.responseServer && this.responseServer.message === CONSTANT.ResponseServers.Category_InvalidParams){
-            this.toastService.show(CONSTANT.ResponseServers.Category_InvalidParams, 4000, 'orange lighten-1');
+          }else if(this.responseServer && this.responseServer.message === CONSTANT.ResponseServers.InvalidParams){
+            this.toastService.show(CONSTANT.ResponseServers.InvalidParams, 4000, 'orange lighten-1');
           }
 
         }, error => {
@@ -166,8 +166,8 @@ export class CategoryComponent implements OnInit {
             this.toastService.show(CONSTANT.messageToast.CATEGORY_UPDATE_SUCCESS, 4000, 'teal lighten-1');
             this.getCategories(1);
             $('#createCategory').modal('close');
-          }else if(this.responseServer && this.responseServer.message === CONSTANT.ResponseServers.Category_InvalidParams){
-            this.toastService.show(CONSTANT.ResponseServers.Category_InvalidParams, 4000, 'orange lighten-1');
+          }else if(this.responseServer && this.responseServer.message === CONSTANT.ResponseServers.InvalidParams){
+            this.toastService.show(CONSTANT.ResponseServers.InvalidParams, 4000, 'orange lighten-1');
           }
         }, error => {
           this.toastService.show(CONSTANT.ResponseServers.Category_Error, 4000, 'red accent-2');
@@ -221,7 +221,7 @@ export class CategoryComponent implements OnInit {
           this.toastService.show(CONSTANT.messageToast.NO_CATEGORY_DATA, 4000, 'blue darken-1');
         }else{
           this.responseServer = response;
-          this.bodyTable = this.responseServer.categoryObject;
+          this.bodyTable = this.responseServer.categoryObject_IN;
           this.getCountCategories();
         }
       }, error => {
@@ -236,8 +236,8 @@ export class CategoryComponent implements OnInit {
       this._categoryService.getCategoriesFildered(this.searchResult).subscribe(
         response=>{
           this.responseServer = response;
-          if(this.responseServer.message && this.responseServer.message == CONSTANT.ResponseServers.Category_InvalidParams){
-            this.toastService.show(CONSTANT.ResponseServers.Category_InvalidParams, 4000, 'orange lighten-1');
+          if(this.responseServer.message && this.responseServer.message == CONSTANT.ResponseServers.InvalidParams){
+            this.toastService.show(CONSTANT.ResponseServers.InvalidParams, 4000, 'orange lighten-1');
           }else if(this.responseServer.message && this.responseServer.message == CONSTANT.ResponseServers.No_Data_Category){
             this.toastService.show(CONSTANT.messageToast.NO_DATA_CATEGORY, 4000, 'blue darken-1');
           }else{

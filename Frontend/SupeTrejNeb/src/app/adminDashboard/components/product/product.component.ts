@@ -3,18 +3,22 @@ import {CONSTANT} from "../../../services/constant";
 import {Product} from "../../model/product/product.model";
 import {DataBrowser} from "../../../utils/dataBrowser";
 import {ProductService} from "../../services/product/product.service";
+import {CategoryService} from "../../services/category/category.service";
+import {Category} from "../../model/category/category.model";
 import {MzToastService} from "ng2-materialize";
 
 @Component({
   selector: 'product',
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.css'],
-  providers: [ProductService, DataBrowser, MzToastService]
+  providers: [ProductService, DataBrowser, MzToastService, CategoryService]
 })
 export class ProductComponent implements OnInit {
 
   public TITLE:string = CONSTANT.Labels.ProductTitle;
   public ADD_PRODUCT_TITTLE:string = CONSTANT.Labels.AddProduct;
+  public LABEL_SAVE_PRODUCT:string = CONSTANT.Labels.Save;
+  public LABEL_CANCEL_PRODUCT:string = CONSTANT.Labels.Cancel;
   public TOLLTIP_NAME_PRODUCT:string = CONSTANT.Labels.TooltipNameProduct;
   public TOLLTIP_DES_PRODUCT:string = CONSTANT.Labels.TooltipDesProduct;
   public TOLLTIP_IVA_PRODUCT:string = CONSTANT.Labels.TooltipIvaProduct;
@@ -22,6 +26,9 @@ export class ProductComponent implements OnInit {
   public TOLLTIP_REF_PRODUCT:string = CONSTANT.Labels.TooltipRefProduct;
   public TOLLTIP_MARGIN_PRODUCT:string = CONSTANT.Labels.TooltipMarginProduct;
   public TOLLTIP_STOCK_PRODUCT:string = CONSTANT.Labels.TooltipStockProduct;
+  public QUESTIONIMAGE:string = CONSTANT.Labels.QuestionImage;
+  public NO:string = CONSTANT.Labels.No;
+  public YES:string = CONSTANT.Labels.Yes;
   public NAME:string =CONSTANT.Labels.Name;
   public DESCRIPTION:string =CONSTANT.Labels.Description;
   public IVA:string =CONSTANT.Labels.Iva;
@@ -34,14 +41,16 @@ export class ProductComponent implements OnInit {
   public ProductSearch: string = CONSTANT.Labels.SearchProducts;
   public headsTables:any = CONSTANT.headProduct;
   public bodyTable: any;
-  public productModel:Product;
+  public productModel_IN:Product;
   public browser: any;
   public responseServer:any;
   public countProduct:number;
   public operationType:string = "";
   public buttonSaveUpdate:boolean;
-  public prueba = [{cod:"1", value: "aaa"},{cod:"2", value: "bbb"},{cod:"3", value: "ccc"}];
-  public selectValue:any;
+  public categoryObject_OUT: any;
+  public categoryObject_IN : Category;
+  public selectItemCategory:number;
+
 
   public classStyleFormName:string = "";
   public invalidClassStyleFormName:string = CONSTANT.Styles.Invalid;
@@ -65,11 +74,19 @@ export class ProductComponent implements OnInit {
   public invalidClassStyleFormSto:string = CONSTANT.Styles.Invalid;
   public validClassStyleFormSto:string = CONSTANT.Styles.Valid;
 
-  constructor(private _productService:ProductService, private _getDataBrowser: DataBrowser, private toastService: MzToastService) {
-    this.productModel = new Product({nameProd:"", image:"",catProd:"",descriptProd:"",refProd:"",ivaProd:0,marginProd:0,stock:0,costProd:0},
+  constructor(private _productService:ProductService, private _getDataBrowser: DataBrowser, private toastService: MzToastService, private _categoryService: CategoryService) {
+    this.productModel_IN = new Product({nameProd:"", image:"",catProd:"",descriptProd:"",refProd:"",ivaProd:0,marginProd:0,stock:0,costProd:0},
       {id:""},
       {page:0},
-      {direccionData:"",navegador:""})
+      {direccionData:"",navegador:""});
+    this.categoryObject_IN = new Category({
+      nameCat:"",
+      descriptionCat:"",
+      ivaCat:0},{id:""},{page:0},{direccionData:"",navegador:this.browser});
+  }
+
+  changeIva(){
+    this.productModel_IN.dataProduct.ivaProd = this.categoryObject_OUT[this.selectItemCategory].iva;
   }
 
   filterItem(){
@@ -90,55 +107,55 @@ export class ProductComponent implements OnInit {
   }
 
   probarDesplegable(){
-    console.log(this.productModel.dataProduct.catProd)
+    console.log(this.productModel_IN.dataProduct.catProd)
   }
 
   validateVisualForm(value){
     switch (value){
       case "name":
-        if(this.productModel.dataProduct.nameProd){
+        if(this.productModel_IN.dataProduct.nameProd){
           this.classStyleFormName = this.validClassStyleFormName;
         }else{
           this.classStyleFormName = this.invalidClassStyleFormName;
         }
         break;
       case "description":
-        if(this.productModel.dataProduct.descriptProd){
+        if(this.productModel_IN.dataProduct.descriptProd){
           this.classStyleFormDes = this.validClassStyleFormDes;
         }else{
           this.classStyleFormDes = this.invalidClassStyleFormDes;
         }
         break;
       case "iva":
-        if(this.productModel.dataProduct.ivaProd){
+        if(this.productModel_IN.dataProduct.ivaProd){
           this.classStyleFormIva = this.validClassStyleFormIva;
         }else{
           this.classStyleFormIva = this.invalidClassStyleFormIva;
         }
         break;
       case "cost":
-        if(this.productModel.dataProduct.costProd){
+        if(this.productModel_IN.dataProduct.costProd){
           this.classStyleFormCost = this.validClassStyleFormCost;
         }else{
           this.classStyleFormCost = this.invalidClassStyleFormCost;
         }
         break;
       case "ref":
-        if(this.productModel.dataProduct.refProd){
+        if(this.productModel_IN.dataProduct.refProd){
           this.classStyleFormRef = this.validClassStyleFormRef;
         }else{
           this.classStyleFormRef = this.invalidClassStyleFormRef;
         }
         break;
       case "margi":
-        if(this.productModel.dataProduct.marginProd){
+        if(this.productModel_IN.dataProduct.marginProd){
           this.classStyleFormMar = this.validClassStyleFormMar;
         }else{
           this.classStyleFormMar = this.invalidClassStyleFormMar;
         }
         break;
       case "stock":
-        if(this.productModel.dataProduct.stock){
+        if(this.productModel_IN.dataProduct.stock){
           this.classStyleFormSto = this.validClassStyleFormSto;
         }else{
           this.classStyleFormSto = this.invalidClassStyleFormSto;
@@ -155,6 +172,7 @@ export class ProductComponent implements OnInit {
       this.clearModal();
       this.buttonSaveUpdate = true;
       this.initStateModal();
+      this.getAllCategories();
 
     }else if(event.operation === CONSTANT.OperationTables.update && event.items){
       this.operationType = CONSTANT.OperationTables.update;
@@ -168,37 +186,72 @@ export class ProductComponent implements OnInit {
 
   getProductsByPagination(event){
     if(event || event.page){
-
       this.getProducts(event.page);
+    }
+  }
+
+  private getAllCategories(){
+    if(!this.categoryObject_OUT){
+      this._categoryService.getAllCategories(this.categoryObject_IN).subscribe(
+        response=>{
+          this.responseServer = response;
+          this.categoryObject_OUT = this.responseServer.categoryObject;
+        },error=>{
+          this.toastService.show(CONSTANT.messageToast.PRODUCT_ERROR, 4000, CONSTANT.Styles.Error);
+        }
+      )
     }
   }
 
   private getProducts(page){
     let skiping = (page -1) *10;
     this.browser = this._getDataBrowser.getDataBrowser();
-    this.productModel.pagination.page = skiping;
-    this.productModel.direccionIp.navegador = this.browser.browser;
-    this._productService.getProduct(this.productModel).subscribe(
+    this.productModel_IN.pagination.page = skiping;
+    this.productModel_IN.direccionIp.navegador = this.browser.browser;
+    this._productService.getProduct(this.productModel_IN).subscribe(
       response=>{
         this.responseServer = response;
         this.bodyTable = this.responseServer.products;
-        this.getCountCategories();
+        this.getCountProduct();
       },error=>{
-
+        this.toastService.show(CONSTANT.messageToast.PRODUCT_ERROR, 4000, CONSTANT.Styles.Error);
       }
     )
   }
 
-  private getCountCategories(){
+  private getCountProduct(){
     this._productService.getCountProduct().subscribe(
       response =>{
         this.responseServer = response;
-        this.countProduct = this.responseServer
+        this.countProduct = this.responseServer.count;
       }
     )
   }
 
   onSubmit(createUpdateForm){
+    if( this.operationType === CONSTANT.OperationTables.create){
+      this.productModel_IN.dataProduct.catProd = this.categoryObject_OUT[this.selectItemCategory].id;
+        this._productService.createProduct(this.productModel_IN).subscribe(
+          response=>{
+            this.responseServer = response;
+            if(this.responseServer.message !== CONSTANT.ResponseServers.InvalidParams){
+              createUpdateForm.reset();
+              this.toastService.show(CONSTANT.messageToast.PRODUCT_NEW_SUCCESS, 4000, CONSTANT.Styles.Success);
+              this.getProducts(1);
+              $('#productModal').modal('close');
+              $('#imageProductModal').modal('open');
+            }else{
+              this.toastService.show(CONSTANT.ResponseServers.InvalidParams, 4000, CONSTANT.Styles.Warning);
+              createUpdateForm.reset();
+            }
+
+          },error=>{
+            this.toastService.show(CONSTANT.messageToast.PRODUCT_ERROR, 4000, CONSTANT.Styles.Error);
+          }
+        )
+    }
 
   }
+
+
 }
