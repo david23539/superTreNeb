@@ -14,7 +14,10 @@
 
 <div id="productModal" #modals class="modal">
   <div class="modal-content">
-    <h4 class="pink-text center">{{ADD_PRODUCT_TITTLE}}</h4>
+    <h4 class="pink-text center" *ngIf="operationType == 'create'; else updateProducts">{{ADD_PRODUCT_TITTLE}}</h4>
+    <ng-template #updateProducts>
+      <h4 class="pink-text center">{{UPDATE_PRODUCT_TITTLE}}</h4>
+    </ng-template>
     <div class="row">
       <form #createUpdateForm = "ngForm" (ngSubmit)="onSubmit(createUpdateForm)">
         <div class="row col s12">
@@ -85,7 +88,7 @@
           </div>
 
           <div class="input-field col s12" *ngIf="!buttonSaveUpdate">
-            <button class="btn waves-effect orange lighten-1 waves-light col s12" type="submit" name="action" [disabled]="!createUpdateForm.form.valid">{{LABEL_UPDATE_CATEGORY}}
+            <button class="btn waves-effect orange lighten-1 waves-light col s12" type="submit" name="action" [disabled]="!createUpdateForm.form.valid">{{LABEL_UPDATE_PRODUCT}}
               <i class="material-icons right">save</i>
             </button>
           </div>
@@ -103,7 +106,10 @@
 
 <div id="imageProductModal" #modal class="modal">
   <div class="modal-content">
-    <h4 class="pink-text center">{{QUESTIONIMAGE}}</h4>
+    <h4 class="pink-text center" *ngIf="operationType == 'create'; else updateProductsImage">{{QUESTIONIMAGE}}</h4>
+    <ng-template #updateProductsImage>
+      <h4 class="pink-text center">{{QUESTIONIMAGECHANGE}}</h4>
+    </ng-template>
     <div class="row">
       <div class="right col l12 s12">
         <a class="btn modal-action modal-close waves-effect waves-light red left col l3 s12"  type="button" >{{NO}}
@@ -124,18 +130,41 @@
       <div class="file-field input-field">
         <div class="btn">
           <span>File</span>
-          <input type="file" (change)="fileChangeevent($event)">
+          <input type="file" accept="image/x-png,image/gif,image/jpeg" (change)="fileChangeevent($event)">
         </div>
         <div class="file-path-wrapper">
-          <input id="file" class="file-path validate">
-          <label for="file">File</label>
+          <input id="file"  class="file-path validate">
         </div>
       </div>
       <div class="right col l12 s12">
-        <button class="btn modal-action modal-close waves-effect waves-light red left col l3 s12" (click)="submitImage()" type="button" >Cargar
-          <i class="material-icons right">close</i>
+        <button class="btn modal-action modal-close waves-effect waves-light blue left col l3 s12" (click)="submitImage()" type="button" >Cargar
+          <i class="material-icons right">file_upload</i>
         </button>
       </div>
+    </div>
+  </div>
+</div>
+
+<div id="deletedProduct"  class="modal">
+  <div class="modal-content">
+    <h4 class="pink-text center">{{DELETED_PRODUCT_TITTLE}}</h4>
+    <div class="row">
+      <div class="center pink-text col l12 s12" >
+        <h6>{{DELETED_PRODUCT_SUBTITTLE}}</h6>
+      </div>
+      <div class="modal-footer">
+        <div class="right col l12 s12">
+
+          <button class="btn modal-action modal-close waves-effect waves-light red right col l3 s12" (click)="deleteProduct()" type="button" >{{LABEL_DELETED_PRODUCT}}
+            <i class="material-icons right">remove</i>
+          </button>
+          <button class="btn modal-action modal-close waves-effect waves-light blue right col l3 s12" type="button" >{{LABEL_CANCEL_PRODUCT}}
+            <i class="material-icons right">close</i>
+          </button>
+        </div>
+
+      </div>
+
     </div>
   </div>
 </div>

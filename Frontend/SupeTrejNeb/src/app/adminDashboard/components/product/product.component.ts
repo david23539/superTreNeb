@@ -19,8 +19,14 @@ export class ProductComponent implements OnInit {
 
   public TITLE:string = CONSTANT.Labels.ProductTitle;
   public ADD_PRODUCT_TITTLE:string = CONSTANT.Labels.AddProduct;
+  public UPDATE_PRODUCT_TITTLE:string = CONSTANT.Labels.UpdateProduct;
+
   public LABEL_SAVE_PRODUCT:string = CONSTANT.Labels.Save;
   public LABEL_CANCEL_PRODUCT:string = CONSTANT.Labels.Cancel;
+  public DELETED_PRODUCT_TITTLE:string = CONSTANT.Labels.DeleteProduct;
+  public DELETED_PRODUCT_SUBTITTLE:string = CONSTANT.Labels.Confirm_Deleted_Product;
+  public LABEL_DELETED_PRODUCT:string = CONSTANT.Labels.Delete;
+  public LABEL_UPDATE_PRODUCT:string = CONSTANT.Labels.Update;
   public TOLLTIP_NAME_PRODUCT:string = CONSTANT.Labels.TooltipNameProduct;
   public TOLLTIP_DES_PRODUCT:string = CONSTANT.Labels.TooltipDesProduct;
   public TOLLTIP_IVA_PRODUCT:string = CONSTANT.Labels.TooltipIvaProduct;
@@ -29,6 +35,7 @@ export class ProductComponent implements OnInit {
   public TOLLTIP_MARGIN_PRODUCT:string = CONSTANT.Labels.TooltipMarginProduct;
   public TOLLTIP_STOCK_PRODUCT:string = CONSTANT.Labels.TooltipStockProduct;
   public QUESTIONIMAGE:string = CONSTANT.Labels.QuestionImage;
+  public QUESTIONIMAGECHANGE:string = CONSTANT.Labels.QuestionImageChange;
   public NO:string = CONSTANT.Labels.No;
   public YES:string = CONSTANT.Labels.Yes;
   public NAME:string =CONSTANT.Labels.Name;
@@ -79,15 +86,19 @@ export class ProductComponent implements OnInit {
 
   constructor(private _productService:ProductService, private _getDataBrowser: DataBrowser, private toastService: MzToastService, private _categoryService: CategoryService,
       private _uploadFile:UploadService) {
-    this.productModel_IN = new Product({nameProd:"", image:"",catProd:"",descriptProd:"",refProd:"",ivaProd:0,marginProd:0,stock:0,costProd:0},
-      {id:""},
-      {page:0},
-      {direccionData:"",navegador:""});
+    this.inicializateObject();
     this.productModel_OUT = new Product_OUT({id: ""});
     this.categoryObject_IN = new Category({
       nameCat:"",
       descriptionCat:"",
       ivaCat:0},{id:""},{page:0},{direccionData:"",navegador:this.browser});
+  }
+
+  private inicializateObject(){
+    this.productModel_IN = new Product({nameProd:"", image:"",catProd:"",descriptProd:"",refProd:"",ivaProd:0,marginProd:0,stock:0,costProd:0},
+      {id:""},
+      {page:0},
+      {direccionData:"",navegador:""});
   }
 
   changeIva(){
@@ -104,7 +115,6 @@ export class ProductComponent implements OnInit {
           this.toastService.show(CONSTANT.messageToast.PRODUCT_ERROR, 4000, CONSTANT.Styles.Error);
         }
       )
-
     }else{
       this.getProducts(1);
     }
@@ -132,7 +142,7 @@ export class ProductComponent implements OnInit {
   }
 
   private clearModal(){
-
+    this.inicializateObject();
   }
 
   private initStateModal(){
@@ -144,6 +154,17 @@ export class ProductComponent implements OnInit {
     this.classStyleFormMar = "";
     this.classStyleFormSto = "";
 
+  }
+
+  deleteProduct(){
+    this._productService.deletedProduct(this.productModel_OUT.identifier.id).subscribe(
+      response =>{
+        this.toastService.show(CONSTANT.messageToast.PRODUCT_DELETED_SUCCESS, 4000, CONSTANT.Styles.Success);
+        this.getProducts(1);
+      },error =>{
+        this.toastService.show(CONSTANT.messageToast.PRODUCT_ERROR, 4000, CONSTANT.Styles.Error);
+      }
+    )
   }
 
 
@@ -217,8 +238,26 @@ export class ProductComponent implements OnInit {
       this.clearModal();
       this.buttonSaveUpdate = false;
       this.initStateModal();
-      let productUpdate = event.items;
+      this.getAllCategories();
+      this.setProperties(event.items);
+    }else if(event.operation === CONSTANT.OperationTables.delete && event.items){
+      $('#deletedProduct').modal('open');
+      this.productModel_OUT.identifier.id = event.items.id;
+
     }
+  }
+
+  private setProperties(items){
+    this.productModel_IN.dataProduct.catProd = items.category.id;
+    // this.selectItemCategory = items.category.id;
+    this.productModel_IN.dataProduct.costProd = items.cost;
+    this.productModel_IN.dataProduct.descriptProd = items.description;
+    this.productModel_IN.dataProduct.ivaProd = items.iva;
+    this.productModel_IN.dataProduct.marginProd = items.margin;
+    this.productModel_IN.dataProduct.nameProd = items.name;
+    this.productModel_IN.dataProduct.refProd = items.reference;
+    this.productModel_IN.dataProduct.stock = items.stock;
+    this.productModel_IN.identifier.id = items.id;
   }
 
   getProductsByPagination(event){
@@ -268,6 +307,7 @@ export class ProductComponent implements OnInit {
   onSubmit(createUpdateForm){
     if( this.operationType === CONSTANT.OperationTables.create){
       if(this.selectItemCategory){
+        this.productModel_IN.direccionIp.navegador = this.browser.browser;
         this.productModel_IN.dataProduct.catProd = this.categoryObject_OUT[this.selectItemCategory].id;
         this._productService.createProduct(this.productModel_IN).subscribe(
           response=>{
@@ -292,8 +332,28 @@ export class ProductComponent implements OnInit {
         this.toastService.show(CONSTANT.ResponseServers.InvalidParams, 4000, CONSTANT.Styles.Warning);
       }
 
+    }else if(this.operationType === CONSTANT.OperationTables.update){
+      if(this.selectItemCategory){
+        this.productModel_IN.dataProduct.catProd = this.categoryObject_OUT[this.selectItemCategory].id;
+      }
+      this.productModel_IN.direccionIp.navegador = this.browser.browser;
+      this._productService.updateProduct(this.productModel_IN).subscribe(
+        response =>{
+          this.responseServer = response;
+          if(this.responseServer.message !== CONSTANT.ResponseServers.InvalidParams){
+            this.productModel_OUT.identifier.id = this.responseServer.id;
+            this.toastService.show(CONSTANT.ResponseServers.Product_Success_Update, 4000, CONSTANT.Styles.Success);
+            this.getProducts(1);
+            $('#productModal').modal('close');
+            $('#imageProductModal').modal('open');
+          }else{
+            this.toastService.show(CONSTANT.ResponseServers.InvalidParams, 4000, CONSTANT.Styles.Warning);
+          }
+        },error=>{
+          this.toastService.show(CONSTANT.messageToast.PRODUCT_ERROR, 4000, CONSTANT.Styles.Error);
+        }
+      )
     }
-
   }
 
 

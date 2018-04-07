@@ -16,6 +16,7 @@ export const CONSTANT = {
   ResponseServers:{
     Category_Success:"Se ha creado la categoria con exito",
     Category_Success_Update:"Se ha actualizado correctamente la categoria",
+    Product_Success_Update:"Se ha actualizado correctamente el producto",
     Category_Success_Deleted:"La categoria se ha eliminado",
     InvalidParams:"Los parametros de entrada no son correctos",
     Category_Error:"Algo a ido mal con la categoría",
@@ -32,6 +33,7 @@ export const CONSTANT = {
   Labels:{
     AddCategory:"Añadir Categorías",
     DeleteCategory:"Eliminar Categoría",
+    DeleteProduct:"Eliminar Producto",
     ModifyCategory: "Modificar Categorías",
     Category:"Nombre Categoria",
     Description: "Descripción",
@@ -48,11 +50,14 @@ export const CONSTANT = {
     Delete: "Eliminar",
     Control_Input_Required: "El campo debe estar informado",
     Confirm_Deleted_Category: "¿Estas seguro que quieres eliminar la categoría?",
+    Confirm_Deleted_Product: "¿Estas seguro que quieres eliminar el producto?",
     ProductTitle: "Productos",
     SearchProducts: "Buscar Productos",
     AddProduct: "Añadir Productos",
+    UpdateProduct: "Actualizar Productos",
     Name: "Nombre",
     QuestionImage: "¿Desea añadir una imagen al producto creado?",
+    QuestionImageChange: "¿Desea cambiar la imagen al producto?",
     TooltipNameProduct: "Nombre del producto",
     TooltipDesProduct: "Descripción del producto",
     TooltipCostProduct: "Coste del producto",
@@ -74,6 +79,7 @@ export const CONSTANT = {
     CATEGORY_UPDATE_SUCCESS: "Se ha actualizado con exito la categoría",
     PRODUCT_UPDATE_SUCCESS: "Se ha actualizado con exito el producto",
     CATEGORY_DELETED_SUCCESS: "Se ha eliminado con exito la categoría",
+    PRODUCT_DELETED_SUCCESS: "Se ha eliminado con exito el producto",
     NO_DATA_CATEGORY:"No hay datos coincidentes",
     NO_CATEGORY_DATA:"No hay creadas categorías todavía"
   }

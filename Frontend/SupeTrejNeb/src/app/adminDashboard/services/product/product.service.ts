@@ -41,4 +41,17 @@ export class ProductService {
     let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
     return this._http.get(this.url+'filterProducts/'+ keyWords,  {headers:header})
   }
+
+  updateProduct(product_IN){
+    this.token = this._loginService.getToken();
+    let param = JSON.stringify(product_IN);
+    let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
+    return this._http.post(this.url+'updateProduct', param, {headers:header})
+  }
+
+  deletedProduct(id){
+    this.token = this._loginService.getToken();
+    let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
+    return this._http.delete(this.url+'deleteProduct/'+id,{headers:header})
+  }
 }
