@@ -1,17 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import {CONSTANT} from "../../../services/constant";
 import {Product} from "../../model/product/product.model";
+import {Product_OUT} from "../../model/product/product_OUT.model";
 import {DataBrowser} from "../../../utils/dataBrowser";
 import {ProductService} from "../../services/product/product.service";
 import {CategoryService} from "../../services/category/category.service";
 import {Category} from "../../model/category/category.model";
 import {MzToastService} from "ng2-materialize";
+import {UploadService} from "../../services/uploadFiles/upload.service";
 
 @Component({
   selector: 'product',
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.css'],
-  providers: [ProductService, DataBrowser, MzToastService, CategoryService]
+  providers: [ProductService, DataBrowser, MzToastService, CategoryService,UploadService]
 })
 export class ProductComponent implements OnInit {
 
@@ -42,6 +44,7 @@ export class ProductComponent implements OnInit {
   public headsTables:any = CONSTANT.headProduct;
   public bodyTable: any;
   public productModel_IN:Product;
+  public productModel_OUT:Product_OUT;
   public browser: any;
   public responseServer:any;
   public countProduct:number;
@@ -50,14 +53,14 @@ export class ProductComponent implements OnInit {
   public categoryObject_OUT: any;
   public categoryObject_IN : Category;
   public selectItemCategory:number;
-
+  public filesToUpload: Array<File>;
 
   public classStyleFormName:string = "";
   public invalidClassStyleFormName:string = CONSTANT.Styles.Invalid;
   public validClassStyleFormName:string = CONSTANT.Styles.Valid;
   public classStyleFormDes:string = "materialize-textarea pink-text";
-  public invalidClassStyleFormDes:string = "valid materialize-textarea pink-text";
-  public validClassStyleFormDes:string = "invalid materialize-textarea pink-text";
+  public invalidClassStyleFormDes:string = "invalid materialize-textarea pink-text";
+  public validClassStyleFormDes:string = "valid materialize-textarea pink-text";
   public classStyleFormIva:string = "";
   public invalidClassStyleFormIva:string = CONSTANT.Styles.Invalid;
   public validClassStyleFormIva:string = CONSTANT.Styles.Valid;
@@ -74,11 +77,13 @@ export class ProductComponent implements OnInit {
   public invalidClassStyleFormSto:string = CONSTANT.Styles.Invalid;
   public validClassStyleFormSto:string = CONSTANT.Styles.Valid;
 
-  constructor(private _productService:ProductService, private _getDataBrowser: DataBrowser, private toastService: MzToastService, private _categoryService: CategoryService) {
+  constructor(private _productService:ProductService, private _getDataBrowser: DataBrowser, private toastService: MzToastService, private _categoryService: CategoryService,
+      private _uploadFile:UploadService) {
     this.productModel_IN = new Product({nameProd:"", image:"",catProd:"",descriptProd:"",refProd:"",ivaProd:0,marginProd:0,stock:0,costProd:0},
       {id:""},
       {page:0},
       {direccionData:"",navegador:""});
+    this.productModel_OUT = new Product_OUT({id: ""});
     this.categoryObject_IN = new Category({
       nameCat:"",
       descriptionCat:"",
@@ -90,7 +95,35 @@ export class ProductComponent implements OnInit {
   }
 
   filterItem(){
+    if(this.searchResult.length >= 3){
+      this._productService.filterProduct(this.searchResult).subscribe(
+        response=>{
+          this.responseServer = response;
+          this.bodyTable = this.responseServer.products
+        },error=>{
+          this.toastService.show(CONSTANT.messageToast.PRODUCT_ERROR, 4000, CONSTANT.Styles.Error);
+        }
+      )
 
+    }else{
+      this.getProducts(1);
+    }
+
+  }
+
+  submitImage(){
+    if(this.filesToUpload){
+      let url = 'uploadImageProduct/' + this.productModel_OUT.identifier.id;
+      this._uploadFile.makeFileRequest(url, [], this.filesToUpload, "image")
+        .then((result:any)=>{
+          this.getProducts(1);
+          this.toastService.show(CONSTANT.messageToast.PRODUCT_UPDATE_SUCCESS, 4000, CONSTANT.Styles.Success);
+        })
+    }
+  }
+
+  fileChangeevent(fileInput: any){
+    this.filesToUpload = <Array<File>>fileInput.target.files;
   }
 
   ngOnInit() {
@@ -103,12 +136,16 @@ export class ProductComponent implements OnInit {
   }
 
   private initStateModal(){
+    this.classStyleFormName = "";
+    this.classStyleFormDes = "materialize-textarea pink-text";
+    this.classStyleFormIva = "";
+    this.classStyleFormCost = "";
+    this.classStyleFormRef = "";
+    this.classStyleFormMar = "";
+    this.classStyleFormSto = "";
 
   }
 
-  probarDesplegable(){
-    console.log(this.productModel_IN.dataProduct.catProd)
-  }
 
   validateVisualForm(value){
     switch (value){
@@ -230,12 +267,14 @@ export class ProductComponent implements OnInit {
 
   onSubmit(createUpdateForm){
     if( this.operationType === CONSTANT.OperationTables.create){
-      this.productModel_IN.dataProduct.catProd = this.categoryObject_OUT[this.selectItemCategory].id;
+      if(this.selectItemCategory){
+        this.productModel_IN.dataProduct.catProd = this.categoryObject_OUT[this.selectItemCategory].id;
         this._productService.createProduct(this.productModel_IN).subscribe(
           response=>{
             this.responseServer = response;
             if(this.responseServer.message !== CONSTANT.ResponseServers.InvalidParams){
               createUpdateForm.reset();
+              this.productModel_OUT.identifier.id = this.responseServer.id;
               this.toastService.show(CONSTANT.messageToast.PRODUCT_NEW_SUCCESS, 4000, CONSTANT.Styles.Success);
               this.getProducts(1);
               $('#productModal').modal('close');
@@ -249,6 +288,10 @@ export class ProductComponent implements OnInit {
             this.toastService.show(CONSTANT.messageToast.PRODUCT_ERROR, 4000, CONSTANT.Styles.Error);
           }
         )
+      }else{
+        this.toastService.show(CONSTANT.ResponseServers.InvalidParams, 4000, CONSTANT.Styles.Warning);
+      }
+
     }
 
   }

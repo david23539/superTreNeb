@@ -26,9 +26,11 @@ export class TableComponent implements OnInit, OnChanges {
 
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(this.bodyTableContent)
-    this.propertiesContent = Object.keys(this.bodyTableContent[0]);
-    this.pagination = Math.ceil(this.countRecord/10);
+    if(this.bodyTableContent !== undefined){
+      this.propertiesContent = Object.keys(this.bodyTableContent[0]);
+      this.pagination = Math.ceil(this.countRecord/10);
+    }
+
 
   }
   orderByIndexASC(index) {

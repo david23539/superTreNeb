@@ -72,6 +72,7 @@ export const CONSTANT = {
     CATEGORY_ERROR: "Ha ocurrido un error con la categoría",
     PRODUCT_ERROR: "Ha ocurrido un error con el producto",
     CATEGORY_UPDATE_SUCCESS: "Se ha actualizado con exito la categoría",
+    PRODUCT_UPDATE_SUCCESS: "Se ha actualizado con exito el producto",
     CATEGORY_DELETED_SUCCESS: "Se ha eliminado con exito la categoría",
     NO_DATA_CATEGORY:"No hay datos coincidentes",
     NO_CATEGORY_DATA:"No hay creadas categorías todavía"

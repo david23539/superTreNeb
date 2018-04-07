@@ -57,7 +57,7 @@ export class CategoryService {
   getCountCategies(){
     this.token = this._loginService.getToken();
     let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
-    return this._http.get(this.url+'countProducts',{headers:header})
+    return this._http.get(this.url+'getCountCategories',{headers:header})
   }
 
 }

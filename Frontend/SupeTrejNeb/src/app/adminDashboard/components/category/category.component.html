@@ -7,7 +7,13 @@
         <input id="searchPipes"  [(ngModel)]="searchResult" (keyup)="filterItem()"  type="text" >
         <label for="searchPipes">Búsqueda</label>
       </div>
-      <tableComponenets [headsTable]="headsTables" [bodyTableContent]="bodyTable" (paginationParams)="getCategoriesByPagination($event);" [countRecord]="countCategory"  (changeItem)="addUpdateCategory($event)"></tableComponenets>
+      <tableComponenets
+        [headsTable]="headsTables"
+        [bodyTableContent]=bodyTable
+        (paginationParams)="getCategoriesByPagination($event);"
+        [countRecord]="countCategory"
+        (changeItem)="addUpdateCategory($event)">
+      </tableComponenets>
     </div>
   </div>
 </div>

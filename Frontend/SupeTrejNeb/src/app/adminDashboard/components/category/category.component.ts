@@ -211,6 +211,7 @@ export class CategoryComponent implements OnInit {
 
   private getCategories(page) {
     let skiping = (page -1) *10;
+
     this.browser = this._getDataBrowser.getDataBrowser();
     this.categoryModel.pagination.page=skiping;
     this.categoryModel.direccionIp.navegador = this.browser.browser;
@@ -221,7 +222,7 @@ export class CategoryComponent implements OnInit {
           this.toastService.show(CONSTANT.messageToast.NO_CATEGORY_DATA, 4000, 'blue darken-1');
         }else{
           this.responseServer = response;
-          this.bodyTable = this.responseServer.categoryObject_IN;
+          this.bodyTable = this.responseServer.categoryObject;
           this.getCountCategories();
         }
       }, error => {

@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {GLOBAL} from "../../../services/global";
 import {LoginService} from "../../../services/service/login.service";
 
+
 @Injectable()
 export class ProductService {
 
@@ -25,7 +26,7 @@ export class ProductService {
   getCountProduct(){
     this.token = this._loginService.getToken();
     let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
-    return this._http.get(this.url+'getCountCategories',{headers:header})
+    return this._http.get(this.url+'countProducts',{headers:header})
   }
 
   createProduct(product_IN){
@@ -33,5 +34,11 @@ export class ProductService {
     let param = JSON.stringify(product_IN);
     let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
     return this._http.post(this.url+'createProduct', param, {headers:header})
+  }
+
+  filterProduct(keyWords){
+    this.token = this._loginService.getToken();
+    let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
+    return this._http.get(this.url+'filterProducts/'+ keyWords,  {headers:header})
   }
 }
