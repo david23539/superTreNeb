@@ -59,13 +59,13 @@ function updateProduct(req, res){
 		productUpdate = adapterProduct.adapterProduct(params)
 		if(validationGlobal.validateId(id) && validationProduct.validationProductDataComplete(productUpdate)){
 			productUpdate._doc._id = id
-			ProductModel.findByIdAndUpdate(id, productUpdate, (err, productUpdateStorage)=>{
+			ProductModel.findByIdAndUpdate(id, productUpdate, {new:true},(err, productUpdateStorage)=>{
 				if(err || !productUpdateStorage){
 					auditoriaController.saveLogsData(req.user.name,err, params.direccionIp.direccionData, params.direccionIp.navegador)
 					res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PRODUCT_UPDATE_ERROR})
 				}else{
 					auditoriaController.saveLogsData(req.user.name,constantFile.functions.PRODUCT_UPDATE_SUCCESS, params.direccionIp.direccionData, params.direccionIp.navegador)
-					res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.PRODUCT_UPDATE_SUCCESS})
+					res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.PRODUCT_UPDATE_SUCCESS, id:productUpdateStorage._doc._id})
 				}
 			})
 		}else{
@@ -98,7 +98,7 @@ function getProductAllPagination(req, res) {
 	const params = req.body
 	params.direccionIp.direccionData = req.connection.remoteAddress
 	if(validationGlobal.validationPage(params.pagination.page)){
-		ProductModel.find().skip(params.pagination.page).limit(10).populate({path:'stn_categoryFk'}).exec((err, products)=>{
+		ProductModel.find({stn_deleteProduct:false}).skip(params.pagination.page).limit(10).populate({path:'stn_categoryFk'}).exec((err, products)=>{
 			if(err){
 				auditoriaController.saveLogsData(req.user.name,err, params.direccionIp.direccionData, params.direccionIp.navegador)
 				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PRODUCT_GET_ERROR})
@@ -117,7 +117,7 @@ function filterProduct(req, res){
 	const keyword = req.params.key
 	if(validationGlobal.validateId(keyword)){
 
-		ProductModel.find({stn_nameProduct: {$regex: keyword, $options: 'i'}}).limit(10).populate({path:'stn_categoryFk'}).exec((err, products)=>{
+		ProductModel.find({stn_nameProduct: {$regex: keyword, $options: 'i'}, stn_deleteProduct:false}).limit(10).populate({path:'stn_categoryFk'}).exec((err, products)=>{
 			if(err){
 				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PRODUCT_GET_ERROR})
 			}else if(products.length !== 0){
@@ -132,11 +132,11 @@ function filterProduct(req, res){
 }
 
 function countProduct(req, res) {
-	ProductModel.count({},(err, count)=>{
+	ProductModel.count({stn_deleteProduct:false},(err, count)=>{
 		if(err || !count){
 			res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PRODUCT_GET_ERROR})
 		}else{
-			res.status(constantFile.httpCode.PETITION_CORRECT).send({message: count})
+			res.status(constantFile.httpCode.PETITION_CORRECT).send({count: count})
 		}
 	})
 }
