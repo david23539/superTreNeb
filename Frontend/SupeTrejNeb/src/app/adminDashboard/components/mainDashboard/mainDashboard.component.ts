@@ -1,16 +1,19 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
-
+import { Component, OnInit} from '@angular/core';
+import {GLOBAL} from "../../../services/global";
 import {CONSTANT} from "../../../services/constant";
+import {ProductService} from "../../services/product/product.service";
+import {MzToastService} from "ng2-materialize";
 
 @Component({
   selector: 'main-dashboard',
   templateUrl: './mainDashboard.component.html',
   styleUrls: ['./mainDashboard.component.css'],
+  providers:[ProductService, MzToastService],
   host:{
     '(document:keyup)':'getValueKey($event)'
   }
 })
-export class MainDashboardComponent implements OnInit, AfterViewInit {
+export class MainDashboardComponent implements OnInit {
 
   public OPEN_BOX_REGISTER = "Abrir caja registradora";
   public ADD_PRODUCT = "Añadir Producto Manual";
@@ -18,7 +21,7 @@ export class MainDashboardComponent implements OnInit, AfterViewInit {
   public INCLUDE_PRODUCT = "Incluir Producto Manualmente";
   public SEARCH_PRODUCT = "Buscar Productos";
   public CLASS_MAX = "col l12";
-  public shoppingList:any;
+  public shoppingList= [];
   public totalItemPrice: number = 0;
   public itemSelected: any;
   public payMoney:number = 0;
@@ -32,6 +35,12 @@ export class MainDashboardComponent implements OnInit, AfterViewInit {
   public addProductName :string = "";
   public addProductPrice :number = 0;
   public addProductQuantity:number = 1;
+  public date: any;
+  public searchProduct: string;
+  public responseServer: any;
+  public productsSearch:any;
+  public url = "";
+
   public modalOptions: Materialize.ModalOptions = {
     dismissible: false, // Modal can be dismissed by clicking outside of the modal
     opacity: .5, // Opacity of modal background
@@ -43,12 +52,12 @@ export class MainDashboardComponent implements OnInit, AfterViewInit {
 
 
 
-  constructor() {
-
+  constructor(private _productService:ProductService, private _toastService:MzToastService) {
+    this.url = GLOBAL.url;
     this.constant = CONSTANT.keysPress;
     this.constantToast = CONSTANT.messageToast;
     this.actionNumberKey = "";
-
+    // this.shoppingList = [{id:"",product: "", quantity: 0, unitPrice:0, finalPrice: 0, image: ""}];
   }
 
 
@@ -56,7 +65,7 @@ export class MainDashboardComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     $('.modal').modal();
     $('.tabs').tabs();
-    this.shoppingList = [{id:"0",product: "leche", quantity: 1, unitPrice:0.22, finalPrice: 0.333, image: "image"},
+    /*this.shoppingList = [{id:"0",product: "leche", quantity: 1, unitPrice:0.22, finalPrice: 0.333, image: "image"},
     {id:"1", product: "tomate", quantity: 1, unitPrice:0.4, finalPrice: 0.5, image: "image"},
     {id:"2", product: "chicles", quantity: 1, unitPrice:0.1, finalPrice: 0.3, image: "image"},
     {id:"3", product: "llave inglesa", quantity: 1, unitPrice:30, finalPrice: 31.5, image: "image"},
@@ -65,9 +74,9 @@ export class MainDashboardComponent implements OnInit, AfterViewInit {
     {id:"6", product: "sal", quantity: 1, unitPrice:1, finalPrice: 1.21, image: "image"},
     {id:"7", product: "agua", quantity: 1, unitPrice:1, finalPrice: 1, image: "image"},
     {id:"8", product: "amoniaco", quantity: 1, unitPrice:1, finalPrice: 1, image: "image"},
-    {id:"9", product: "pan", quantity: 1, unitPrice:0.6, finalPrice: 0.8, image: "image"}];
+    {id:"9", product: "pan", quantity: 1, unitPrice:0.6, finalPrice: 0.8, image: "image"}];*/
     // this.shoppingList= [];
-  this.getTotalFinalPrice(this.shoppingList);
+  // this.getTotalFinalPrice(this.shoppingList);
   }
   getTotalFinalPrice(items){
     this.totalItemPrice = 0;
@@ -82,8 +91,39 @@ export class MainDashboardComponent implements OnInit, AfterViewInit {
     this.calculateReturnPayDinamic(this.totalItemPrice)
   }
 
-  ngAfterViewInit(): void {
+  searchProductRef(){
+    if(this.searchProduct.length >=3){
+      this._productService.filterProduct(this.searchProduct).subscribe(
+        response=>{
+          this.responseServer = response;
+          this.productsSearch = this.responseServer.products;
+        },error=>{
+          this._toastService.show(CONSTANT.messageToast.PRODUCT_ERROR, 4000, CONSTANT.Styles.Error);
+        }
+      )
+    }else{
+      this.productsSearch = [];
+    }
+  }
 
+  addProductSearch(item){
+    console.log(item);
+    let cost = item.cost;
+    let marg = item.margin;
+    let iva = item.iva;
+    let costMargIv = ((cost*marg)/100)+cost;
+    costMargIv = ((costMargIv*iva)/100)+costMargIv;
+
+    const newItemToList = {
+      id: item.id,
+      product:item.name,
+      quantity: 1,
+      unitPrice:0,
+      finalPrice: costMargIv.toFixed(2)
+    };
+    this.shoppingList.push(newItemToList);
+    this.getTotalFinalPrice(this.shoppingList);
+    console.log(newItemToList);
   }
 
   addProductToList(){
@@ -122,14 +162,22 @@ export class MainDashboardComponent implements OnInit, AfterViewInit {
   }
 
   openBoxMoney(){
-
-
     const ficha=document.getElementById("openBox");
     const ventimp=window.open(' ','popimpr');
     ventimp.document.write(ficha.innerHTML);
     ventimp.document.close();
     ventimp.print();
     ventimp.close();
+  }
+
+  getDateToday(){
+    let dateFULL = new Date();
+    let day = dateFULL.getDate() + "-";
+    let month = dateFULL.getMonth()+"-";
+    let yearFull = dateFULL.getFullYear() + "   ";
+    let hour = dateFULL.getHours()+":";
+    let minutes = dateFULL.getMinutes();
+    this.date = day+month+yearFull+hour+minutes;
   }
 
   printTickets(){

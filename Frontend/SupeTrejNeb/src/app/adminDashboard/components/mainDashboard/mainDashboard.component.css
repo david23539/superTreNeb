@@ -2,6 +2,9 @@
   overflow-y: auto;
   height: 50vh;
 }
+.capitalizeText{
+  text-transform: capitalize;
+}
 .borderDown{
   border-bottom-color: #e91e63;
 

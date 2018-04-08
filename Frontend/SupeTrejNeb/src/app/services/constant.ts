@@ -21,12 +21,14 @@ export const CONSTANT = {
     InvalidParams:"Los parametros de entrada no son correctos",
     Category_Error:"Algo a ido mal con la categoría",
     No_Data_Category: "No hay coincidencias",
+    No_Data_Product: 'No existen productos',
     No_Data_Avaible:'No existen categorías'
   },
   Styles:{
     Valid:"valid pink-text",
     Invalid:"invalid pink-text",
     Error: 'red accent-2',
+    Info: 'blue accent-2',
     Success: 'teal lighten-1',
     Warning: 'orange lighten-1'
   },

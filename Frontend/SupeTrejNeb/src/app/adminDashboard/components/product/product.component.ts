@@ -299,6 +299,9 @@ export class ProductComponent implements OnInit {
     this._productService.getCountProduct().subscribe(
       response =>{
         this.responseServer = response;
+        if(this.responseServer.message === CONSTANT.ResponseServers.No_Data_Product){
+          this.toastService.show(CONSTANT.ResponseServers.No_Data_Product, 4000, CONSTANT.Styles.Info);
+        }
         this.countProduct = this.responseServer.count;
       }
     )

@@ -21,16 +21,17 @@
                 <i class="right material-icons">arrow_drop_up</i>
               </ng-template>
             </th>
-            <th>Imagen</th>
+            <!--<th>Imagen</th>-->
           </tr>
           </thead>
           <tbody>
             <tr class="heigthKeys" *ngFor="let item of shoppingList" (click)="changeRecordOfList(item)">
-              <td>{{item.product}}</td>
+              <td class="capitalizeText">{{item.product}}</td>
               <td>{{item.quantity}}</td>
               <td>{{item.finalPrice}} €</td>
-              <td>{{item.image}}</td>
+              <!--<td>{{item.image}}</td>-->
             </tr>
+
           </tbody>
         </table>
       </div>
@@ -150,7 +151,7 @@
     <button class="btn col s12 light-blue darken-4 waves-effect waves-light modal-trigger" (click)="addProductName=''; addProductPrice=''; addProductQuantity=1; " data-target="addProducts">{{ADD_PRODUCT}}</button>
     <br>
     <br>
-    <button class="btn col s12 waves-effect waves-light modal-trigger" data-target="payAndFinish">{{PAY_FINISH}}</button>
+    <button class="btn col s12 waves-effect waves-light modal-trigger" data-target="payAndFinish" (click)="getDateToday();">{{PAY_FINISH}}</button>
   </div>
 </div>
 
@@ -202,9 +203,29 @@
       <div id="searchProductForList" class="col s12 center">
         <div class="row">
           <div class="input-field col s6">
-            <input id="searchProduct" type="text" class="validate" >
+            <input id="searchProduct" type="text" [(ngModel)]="searchProduct" (keyup)="searchProductRef()" class="validate" >
             <label class="active" for="searchProduct">Buscar Producto</label>
           </div>
+          <table class="highlight striped" >
+            <thead class="pink-text fixed">
+            <tr>
+              <td>Nombre</td>
+              <td>Referencia</td>
+              <td>Stock</td>
+              <td>Cate.</td>
+              <td>image</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of productsSearch" (click)="addProductSearch(item)">
+              <td>{{item.name}}</td>
+              <td>{{item.reference}}</td>
+              <td>{{item.stock}}</td>
+              <td>{{item.category.name}}</td>
+              <td *ngIf="item.image"><img src="{{url+'getImageResize/'+item.image}}"></td>
+            </tr>
+            </tbody>
+          </table>
         </div>
       </div>
       <!--fin plantilla segunda-->
@@ -234,19 +255,33 @@
 </div>
 
 <div class="widthTicket" id="ticket" [hidden]="true">
-  <p class="widthItemTicket" *ngFor="let items of shoppingList">
-  {{items.product}}
-  {{items.finalPrice}}
-  </p>
+  <h4 class="center"> AUTOSERVICIO OLALLA</h4>
+  <h5 class="center"> PLAZA DE ESPAÑA Nº 14</h5>
+  <h5 class="center"> CIF  09203990-B</h5>
+  <h5 class="center"> {{date}}</h5>
+  <table>
+    <thead>
+      <tr>
+        <th>Producto</th>
+        <th>Precio</th>
+        <th>UND</th>
+      </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let items of shoppingList">
+      <td class="capitalizeText">{{items.product}}</td>
+      <td>{{items.finalPrice}}</td>
+      <td>{{items.quantity}}</td>
+    </tr>
+    </tbody>
+  </table>
   <p class="widthItemTicket">
-    Total: {{totalItemPrice}}
+    <b>Total: {{totalItemPrice}}</b>
   </p>
-
+  <p>Gracias por su compra</p>
+  <p>IVA INCLUIDO</p>
 </div>
 
 <div  [hidden]="true" id="openBox">
   27,112,0,100,200
-  <1B>p<00>
-  <1B><70><00>
-  ESC,p,0,100,200
 </div>
