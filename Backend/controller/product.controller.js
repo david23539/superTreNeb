@@ -133,8 +133,10 @@ function filterProduct(req, res){
 
 function countProduct(req, res) {
 	ProductModel.count({stn_deleteProduct:false},(err, count)=>{
-		if(err || !count){
+		if(err){
 			res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PRODUCT_GET_ERROR})
+		}else if(!count){
+			res.status(constantFile.httpCode.PETITION_CORRECT).send({message:constantFile.functions.NO_PRODUCT_AVAIBLE})
 		}else{
 			res.status(constantFile.httpCode.PETITION_CORRECT).send({count: count})
 		}

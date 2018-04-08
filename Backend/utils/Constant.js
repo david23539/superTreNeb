@@ -68,6 +68,7 @@ const constant ={
 		PRODUCT_GET_ERROR: 'Ha ocurrido un error al obtener los productos',
 		NO_DATA_CATEGORY:'No hay coincidencias',
 		NO_DATA_AVAIBLE:'No existen categorías',
+
 		NO_PRODUCT_AVAIBLE:'No existen productos'
 
 
