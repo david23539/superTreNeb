@@ -28,15 +28,15 @@ app.use((req,res,next)=>{
 })
 
 //rutas base
-// app.use('/', express.static('client', {redirect:false}))
+app.use('/', express.static('client', {redirect:false}))
 app.use('/api', user_routes)
 app.use('/api', person_router)
 app.use('/api', direcctionIp_router)
 app.use('/api', category_routes)
 app.use('/api', product_routes)
-// app.get('*', function(req, res, next){
-// 	res.sendFile(path.resolve('client/index.html'))
-// })
+app.get('*', function(req, res, next){
+ 	res.sendFile(path.resolve('client/index.html'))
+})
 
 
 //rutas body-parse

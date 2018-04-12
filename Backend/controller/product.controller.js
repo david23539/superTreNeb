@@ -149,7 +149,8 @@ function updateProductImage(req, res){
 		if(req.files.image){
 			const filename = serviceProduct.validateImageFile(req.files.image)
 			if(filename){
-				serviceProduct.resizeImage(req, res, constantFile.urls.PRODUCT_IMG_ORIGINAL+filename, constantFile.urls.PRODUCT_IMG_RESIZE+filename)
+
+				serviceProduct.resizeImage(req, constantFile.urls.PRODUCT_IMG_ORIGINAL+filename, constantFile.urls.PRODUCT_IMG_RESIZE+filename)
 				ProductModel.findByIdAndUpdate(productId, {stn_imageProduct:filename, stn_imageProductResize:filename}, {new:true},(err, productUpdate)=>{
 					if(err || !productUpdate){
 						auditoriaController.saveLogsData(req.user.name,err, req.connection.remoteAddress, 'image fail')
@@ -189,7 +190,7 @@ function getDetailProduct(req, res){
 
 function getImageResizeFile(req, res) {
 	const imageFile = req.params.imageFile
-	const path_file = './Backend/uploadFiles/products/resize/'+imageFile
+	const path_file = './uploadFiles/products/resize/'+imageFile
 
 	sendImageFile(path_file, res)
 }
