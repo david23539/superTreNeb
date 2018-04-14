@@ -20,6 +20,7 @@ const PersonDataSchema = Schema({
 		type:String,
 		require:true
 	},
+	stn_status: Boolean,
 	stn_image: String,
 	stn_fk_address: {type: Schema.ObjectId, ref: 'STN_Address'}
 

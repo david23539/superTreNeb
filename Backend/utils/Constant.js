@@ -53,23 +53,31 @@ const constant ={
 		EMAIL_SEND: 'El email se ha enviado',
 		CATEGORY_REGISTER_FAIL: 'Ha fallado el registro de la categoria',
 		PRODUCT_REGISTER_FAIL: 'Ha fallado el registro del producto',
+		PROVIDER_REGISTER_FAIL: 'Ha fallado el registro del proveedor',
 		EXISTS_REFERENCE_PRODUCT: 'Este producto ya existe',
 		CATEGORY_REGISTER_SUCCESS: 'Se ha creado la categoria con exito',
 		PRODUCT_REGISTER_SUCCESS: 'Se ha creado el producto con exito',
+		PROVIDER_REGISTER_SUCCESS: 'Se ha creado el proveedor con exito',
 		CATEGORY_UPDATE_SUCCESS: 'Se ha actualizado correctamente la categoria',
 		PRODUCT_UPDATE_SUCCESS: 'Se ha actualizado correctamente el producto',
+		PROVIDER_UPDATE_SUCCESS: 'Se ha actualizado correctamente el proveedor',
 		CATEGORY_UPDATE_ERROR: 'Ha ocurrido un error al actualizar la categoria',
+		PROVIDER_UPDATE_ERROR: 'Ha ocurrido un error al actualizar el proveedor',
 		PRODUCT_UPDATE_ERROR: 'Ha ocurrido un error al actualizar el producto',
 		CATEGORY_DELETE_SUCCESS: 'La categoria se ha eliminado',
+		PROVIDER_DELETE_SUCCESS: 'El proveedor se ha eliminado',
 		PRODUCT_DELETE_SUCCESS: 'El producto se ha eliminado',
 		CATEGORY_DELETE_ERROR: 'Ha ocurrido un error al eliminar la categoria',
 		PRODUCT_DELETE_ERROR: 'Ha ocurrido un error al eliminar el producto',
+		PROVIDER_DELETE_ERROR: 'Ha ocurrido un error al eliminar el proveedor',
 		CATEGORY_GET_CATEGORY_ERROR: 'Ha ocurrido un error al obtener la categoria',
 		PRODUCT_GET_ERROR: 'Ha ocurrido un error al obtener los productos',
+		PROVIDER_GET_ERROR: 'Ha ocurrido un error al obtener los proveedores',
 		NO_DATA_CATEGORY:'No hay coincidencias',
 		NO_DATA_AVAIBLE:'No existen categorías',
 
-		NO_PRODUCT_AVAIBLE:'No existen productos'
+		NO_PRODUCT_AVAIBLE:'No existen productos',
+		NO_PROVIDERS_AVAIBLE:'No existen proveedores'
 
 
 

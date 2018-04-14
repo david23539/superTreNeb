@@ -7,6 +7,7 @@ const constantFile = require('../utils/Constant')
 const auditoriaController = require('./saveLogs.controller')
 const userController = require('./user.controller')
 // const userService = require('../service/user.service')
+
 const emailService = require('../service/email.service')
 const emailAdapter = require('../adapter/email.adapter')
 const htmlrenderService = require('../service/htmlCodeVerification.service')
@@ -56,6 +57,10 @@ function sendCodeActivation(req, res) {
 	}
 }
 
+function deletePerson(personId, cb){
+	Person.findByIdAndUpdate(personId, {stn_status:false}, {new: true}, cb)
+
+}
 
 
 
@@ -64,6 +69,7 @@ function sendCodeActivation(req, res) {
 // eslint-disable-next-line no-undef
 module.exports ={
 	sendCodeActivation,
+	deletePerson
 
 	//getUserByEmailPersona
 
