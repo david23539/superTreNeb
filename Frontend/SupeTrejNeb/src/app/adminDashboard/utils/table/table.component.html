@@ -19,8 +19,13 @@
             </td>
             <td *ngFor="let propertyItem of propertiesContent">
 
-              <span *ngIf="propertyItem != 'id' && propertyItem != 'category' && propertyItem != 'image'">{{itemBody[propertyItem]}}</span>
+              <span *ngIf="propertyItem != 'contact' && propertyItem != 'responsible'
+              && propertyItem != 'id' && propertyItem != 'category' && propertyItem != 'image'
+              && propertyItem != 'address' && propertyItem != 'categoryProvider'">{{itemBody[propertyItem]}}</span>
               <span *ngIf="propertyItem === 'category'">{{itemBody[propertyItem].name}}</span>
+              <span *ngIf="propertyItem === 'address'">{{itemBody[propertyItem].location}}</span>
+              <span *ngIf="propertyItem === 'contact'">{{itemBody[propertyItem].nombre}}</span>
+              <span *ngIf=" propertyItem === 'responsible'">{{itemBody[propertyItem].nombre}}</span>
               <img *ngIf="propertyItem == 'image' && itemBody[propertyItem]" src="{{url+'getImageResize/'+itemBody[propertyItem]}}"/>
             </td>
         </tr>

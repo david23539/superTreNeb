@@ -2,6 +2,11 @@
 'use strict'
 
 const ProviderModel = require('../model/provider.model')
+const adapterCategory = require('./category.adapter')
+const adapterAddress = require('./address.adapter')
+const adapterPerson = require('./person.adapter')
+
+
 
 function adapterProvider(provider_IN){
 	const provider_OUT = new ProviderModel()
@@ -20,11 +25,11 @@ function adapterOutListProvider(providers_IN){
 	for(let item of providers_IN){
 		let provider = {
 			nameBusiness: item.stn_businessName,
-			responsible: item.stn_responsiblePerson,
-			contact: item.stn_contactPerson,
+			responsible: adapterPerson.personDataOUTAdapter(item._doc.stn_responsiblePerson),
+			contact: adapterPerson.personDataOUTAdapter(item._doc.stn_contactPerson),
 			nif: item.stn_nifBussines,
-			address: item.stn_addressFkBussiness,
-			category : item.stn_categoryFk,
+			address: adapterAddress.addressDataOUTLAdapter(item._doc.stn_addressFkBussiness),
+			categoryProvider : adapterCategory.getAllCategoriesAdapter(item._doc.stn_categoryFk),
 			id : item._doc._id
 		}
 		providers_OUT.push(provider)

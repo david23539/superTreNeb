@@ -18,8 +18,24 @@ function personDataAdapter(personaParams) {
 	return person
 }
 
+function personDataOUTAdapter(person_IN){
+	let personOUT = {
+		nombre:person_IN.stn_name,
+		apellido1:person_IN.stn_lastname1,
+		apellido2:person_IN.stn_lastname2,
+		movil:person_IN.stn_mobile,
+		telefono:person_IN.stn_telephone,
+		dni:person_IN.stn_dni,
+		email:person_IN.stn_email,
+		image:person_IN.stn_image,
+		direccion:addressAdapter.addressDataOUTLAdapter(person_IN.stn_fk_address)
+	}
+	return personOUT
+}
+
 
 // eslint-disable-next-line no-undef
 module.exports = {
-	personDataAdapter
+	personDataAdapter,
+	personDataOUTAdapter
 }
