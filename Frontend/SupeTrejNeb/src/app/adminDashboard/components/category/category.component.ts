@@ -44,6 +44,7 @@ export class CategoryComponent implements OnInit {
   public itemIdSelectDeleted:any;
   public searchResult:string;
   public countCategory:number;
+  public outsideFuncionCategory:boolean = false;
 
 
 
@@ -209,7 +210,18 @@ export class CategoryComponent implements OnInit {
 
   }
 
-  private getCategories(page) {
+  getCategoryOutSide(){
+    if(this.bodyTable){
+      this.outsideFuncionCategory = false;
+      return this.bodyTable;
+    }else{
+      this.outsideFuncionCategory = true;
+      this.getCategories(1);
+    }
+  }
+
+
+   getCategories(page) {
     let skiping = (page -1) *10;
 
     this.browser = this._getDataBrowser.getDataBrowser();
@@ -224,6 +236,11 @@ export class CategoryComponent implements OnInit {
           this.responseServer = response;
           this.bodyTable = this.responseServer.categoryObject;
           this.getCountCategories();
+          if(this.outsideFuncionCategory){
+            this.getCategoryOutSide();
+          }
+
+
         }
       }, error => {
         this.toastService.show(error.message, 4000, 'red accent-2');

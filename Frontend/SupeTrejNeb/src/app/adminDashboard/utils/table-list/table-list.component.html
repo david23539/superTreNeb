@@ -1,0 +1,26 @@
+<div class="row">
+  <div class="col s12">
+    <table class="striped centered responsive-table" >
+      <thead class="pink-text fixed">
+      <tr>
+        <th *ngFor="let itemHead of headsTable; let i = index" >
+            <span (click)="orderByIndexASC(i)">
+              {{itemHead}} <i class="right material-icons">arrow_drop_up</i>
+            </span>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let itemBody of bodyTableContent">
+        <td *ngFor="let propertyItem of propertiesContent">
+          <span>{{itemBody[propertyItem]}}</span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <ul class="pagination center" *ngIf="countRecord > 10">
+      <li  class="waves-effect" *ngFor="let number of counter(pagination); let j=index "><a  (click)="getRecordByPage(j+1);">{{j+1}}</a></li>
+      <span class="pink-text right">TOTAL {{countRecord}}</span>
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,104 @@
+<div class="row">
+  <div class="col s12 l12">
+    <div class="card-panel white">
+      <h4 class="card-title pink-text">{{TITLE}}</h4>
+      <div class="input-field pink-text s6 l6">
+        <i class="material-icons prefix">search</i>
+        <input id="searchCategory"  [(ngModel)]="searchResult" (keyup)="filterItem()"  type="text" >
+        <label for="searchCategory">{{ProviderSearch}}</label>
+      </div>
+      <tableComponenets [headsTable]="headsTables" [bodyTableContent]=bodyTable (paginationParams)="getProviderByPagination($event);" [countRecord]="countProvider"  (changeItem)="addUpdateProvider($event)"></tableComponenets>
+    </div>
+  </div>
+</div>
+
+
+<div id="providerModal" #modals class="modal">
+  <div class="modal-content">
+    <h4 class="pink-text center" *ngIf="operationType == 'create'; else updateProducts">{{ADD_PROVIDER_TITTLE}}</h4>
+    <ng-template #updateProducts>
+      <h4 class="pink-text center">{{ADD_UPDATE_TITTLE}}</h4>
+    </ng-template>
+    <div class="row">
+      <form #createUpdateForm = "ngForm" (ngSubmit)="onSubmit(createUpdateForm)">
+        <div class="row col s12">
+          <div class="input-field col s12 l6 pink-text">
+            <button class="btn waves-effect blue lighten-1 waves-light col s12" mz-tooltip [tooltip]=TOLLTIP_CATEGORIES (click)="getCategories(1)"  >{{LABEL_CATEGORIES}}
+              <i class="material-icons prefix ">local_offer</i>
+            </button>
+          </div>
+
+          <div class="input-field col s12 l6 pink-text">
+            <button class="btn waves-effect blue lighten-1 waves-light col s12" mz-tooltip [tooltip]=TOLLTIP_CONTACT  name="action" >{{LABEL_CONTACT}}
+              <i class="material-icons prefix ">person</i>
+            </button>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="input-field col s12 l6 pink-text">
+            <button class="btn waves-effect blue lighten-1 waves-light col s12" mz-tooltip [tooltip]=TOLLTIP_RESPOSIBLE  name="action" >{{LABEL_RESPONSIBLE}}
+              <i class="material-icons prefix ">person</i>
+            </button>
+          </div>
+
+          <div class="input-field col s12 l6 pink-text">
+            <button class="btn waves-effect blue lighten-1 waves-light col s12" mz-tooltip [tooltip]=TOLLTIP_ADDRESS  name="action" >{{LABEL_ADDRESS}}
+              <i class="material-icons prefix ">place</i>
+            </button>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="input-field col s12 l6 pink-text">
+            <i class="material-icons prefix ">tab</i>
+            <input id="nameProduct" placeholder="Only Words" name="nameProduct" #nameProduct="ngModel" autocomplete="false" [(ngModel)]="providerModel_IN.dataProvider.nifBusiness" mz-tooltip [tooltip]=TOLLTIP_CIF (blur)="validateVisualForm('cif')" type="text" [class]="classStyleFormCif" required>
+            <label for="nameProduct">{{CIF}}</label>
+          </div>
+
+          <div class="input-field col s12 l6 pink-text">
+            <i class="material-icons prefix ">store</i>
+            <input id="nameProvider" placeholder="Only Words" name="nameProduct" #nameProduct="ngModel" autocomplete="false" [(ngModel)]="providerModel_IN.dataProvider.reasonSocial" mz-tooltip [tooltip]=TOLLTIP_SOCIAL_REASON (blur)="validateVisualForm('name')" type="text" [class]="classStyleFormName" required>
+            <label for="nameProduct">{{NAMEPROVIDER}}</label>
+          </div>
+
+
+        </div>
+
+        <div class="row" >
+          <div class="input-field col s12" *ngIf="buttonSaveUpdate">
+            <button class="btn waves-effect waves-light col s12" type="submit" name="action" [disabled]="!createUpdateForm.form.valid">{{LABEL_SAVE_PROVIDER}}
+              <i class="material-icons right">save</i>
+            </button>
+          </div>
+
+          <div class="input-field col s12" *ngIf="!buttonSaveUpdate">
+            <button class="btn waves-effect orange lighten-1 waves-light col s12" type="submit" name="action" [disabled]="!createUpdateForm.form.valid">{{LABEL_UPDATE_PROVIDER}}
+              <i class="material-icons right">save</i>
+            </button>
+          </div>
+
+          <div class="input-field col s12">
+            <button class="btn modal-action modal-close waves-effect waves-light blue col s12" type="button" >{{LABEL_CANCEL_PROVIDER}}
+              <i class="material-icons right">close</i>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div id="imageProductModal" #modal class="modal">
+  <div class="modal-content">
+    <h4 class="pink-text center" *ngIf="operationType == 'create'; else updateProductsImage">{{QUESTIONIMAGE}}</h4>
+    <ng-template #updateProductsImage>
+      <h4 class="pink-text center">{{QUESTIONIMAGECHANGE}}</h4>
+    </ng-template>
+    <div class="row">
+      <div class="right col l6 s6">
+        <!--<table-list [headsTable]="HeadCategories" [bodyTableContent]="" ></table-list>-->
+      </div>
+    </div>
+  </div>
+</div>

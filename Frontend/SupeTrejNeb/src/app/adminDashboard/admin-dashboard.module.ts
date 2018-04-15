@@ -12,6 +12,7 @@ import { ProductComponent } from './components/product/product.component';
 import { ProviderComponent } from './components/provider/provider.component';
 
 
+
 // import { MzTabModule } from 'ng2-materialize' SE HA COMENTADO PORQUE NO SE USA AUNQUE SI QUEREMOS INCLUIR OTRO HABRA QUE IMPORTARLO AQUI E INFORMARLO EN IMPORTS
 
 @NgModule({

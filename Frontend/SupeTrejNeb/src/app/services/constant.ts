@@ -89,6 +89,7 @@ export const CONSTANT = {
   headCategory:["Nombre", "Descripción", "IVA"],
   headProduct:["Nombre", "Descripción", "Coste", "Referencia", "Iva", "Margen", "Stock","Categoría", "Imagen"],
   headProvider:["Nombre Empresa", "Persona Responsable", "Persona Contacto", "NIF", "Dirección"],
+  headListCategories:["Nombre Categoría"],
 
   messageToast:{
     NOSELECTEDITEM: "Debe seleccional un elemento antes de hacer algun cambio",
