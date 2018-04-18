@@ -37,6 +37,8 @@ export const CONSTANT = {
     AddCategory:"Añadir Categorías",
     DeleteCategory:"Eliminar Categoría",
     DeleteProduct:"Eliminar Producto",
+    CategoriesNoUsed:"Categorías sin usar",
+    CategoriesUsed:"Categorías usadas",
     ModifyCategory: "Modificar Categorías",
     Category:"Nombre Categoria",
     Description: "Descripción",

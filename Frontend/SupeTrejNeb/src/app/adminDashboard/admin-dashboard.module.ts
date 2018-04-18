@@ -7,6 +7,7 @@ import {MainDashboardComponent} from "./components/mainDashboard/mainDashboard.c
 import { BreadcumsComponent } from './utils/breadcums/breadcums.component';
 import { CategoryComponent } from './components/category/category.component';
 import { TableComponent } from './utils/table/table.component';
+import { TableListComponent} from "./utils/table-list/table-list.component";
 import { MzTooltipModule, MzSelectModule} from "ng2-materialize";
 import { ProductComponent } from './components/product/product.component';
 import { ProviderComponent } from './components/provider/provider.component';
@@ -30,6 +31,7 @@ import { ProviderComponent } from './components/provider/provider.component';
     BreadcumsComponent,
     CategoryComponent,
     TableComponent,
+    TableListComponent,
     ProductComponent,
     ProviderComponent
   ],

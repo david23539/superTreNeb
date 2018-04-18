@@ -23,7 +23,7 @@
       <form #createUpdateForm = "ngForm" (ngSubmit)="onSubmit(createUpdateForm)">
         <div class="row col s12">
           <div class="input-field col s12 l6 pink-text">
-            <button class="btn waves-effect blue lighten-1 waves-light col s12" mz-tooltip [tooltip]=TOLLTIP_CATEGORIES (click)="getCategories(1)"  >{{LABEL_CATEGORIES}}
+            <button class="btn waves-effect blue lighten-1 waves-light col s12 modal-trigger" mz-tooltip [tooltip]=TOLLTIP_CATEGORIES (click)="getCategoriesComponent()" data-target="imageProviderModal"  >{{LABEL_CATEGORIES}}
               <i class="material-icons prefix ">local_offer</i>
             </button>
           </div>
@@ -89,15 +89,21 @@
   </div>
 </div>
 
-<div id="imageProductModal" #modal class="modal">
+<div id="imageProviderModal" #modal class="modal">
   <div class="modal-content">
     <h4 class="pink-text center" *ngIf="operationType == 'create'; else updateProductsImage">{{QUESTIONIMAGE}}</h4>
     <ng-template #updateProductsImage>
       <h4 class="pink-text center">{{QUESTIONIMAGECHANGE}}</h4>
     </ng-template>
     <div class="row">
-      <div class="right col l6 s6">
-        <!--<table-list [headsTable]="HeadCategories" [bodyTableContent]="" ></table-list>-->
+      <div class="col l6 s6">
+        <h5 class="pink-text center">{{LAVEL_CATEGORY_NO_USED}}</h5>
+        <table-list [headsTable]="HeadCategories" [bodyTableContent]="categoriesAllTable" ></table-list>
+      </div>
+      <div class="col l6 s6">
+        <h5 class="pink-text center">{{LAVEL_CATEGORY_USED}}</h5>
+        <!--TODO queda por hacer que la segunda tabla carge las categorias o sea receptora de nuevas categorias-->
+        <table-list [headsTable]="HeadCategories" [bodyTableContent]="categoriesAllTable" ></table-list>
       </div>
     </div>
   </div>

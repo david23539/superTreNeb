@@ -48,8 +48,10 @@ export class ProviderComponent implements OnInit {
   public TOLLTIP_CIF:string = CONSTANT.Labels.TooltipCif;
   public TOLLTIP_SOCIAL_REASON:string = CONSTANT.Labels.TooltipReason;
   public NAMEPROVIDER:string = CONSTANT.Labels.SocialReason;
-
   public CIF:string = CONSTANT.Labels.Cif;
+  public LAVEL_CATEGORY_NO_USED = CONSTANT.Labels.CategoriesNoUsed;
+  public LAVEL_CATEGORY_USED = CONSTANT.Labels.CategoriesUsed;
+  public categoriesAllTable:any;
 
 
   constructor(private _providerService:ProviderService, private toastService: MzToastService, private categories:CategoryComponent) {
@@ -84,18 +86,14 @@ export class ProviderComponent implements OnInit {
 
   }
 
-  getCategories(page){
-    this.categories.getCategoryOutSide().subscribe(
+  getCategoriesComponent(){
+    this.categories.getCategoriesOutside().subscribe(
       response=>{
-        console.log(response)
+        this.categoriesAllTable = response.object;
       },error=>{
         console.log(error)
       }
     );
-
-
-    // this.bodyCategory = this.categories.getCategoryOutSide();
-    // console.log(this.bodyCategory);
   }
 
   onSubmit(){

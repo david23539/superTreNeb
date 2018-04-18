@@ -4,6 +4,8 @@ import {CategoryService} from "../../services/category/category.service";
 import {DataBrowser} from "../../../utils/dataBrowser";
 import {Category} from "../../model/category/category.model";
 import { MzToastService } from 'ng2-materialize';
+import {Subject} from "rxjs/Subject";
+import {Observable} from "rxjs/Observable";
 
 @Component({
   selector: 'category',
@@ -45,7 +47,7 @@ export class CategoryComponent implements OnInit {
   public searchResult:string;
   public countCategory:number;
   public outsideFuncionCategory:boolean = false;
-
+  private subject = new Subject<any>();
 
 
 
@@ -58,6 +60,17 @@ export class CategoryComponent implements OnInit {
     this.categoryModel.dataCategory.nameCat = "";
     this.categoryModel.dataCategory.descriptionCat = "";
     this.categoryModel.dataCategory.ivaCat = 0;
+  }
+
+  private setCategories(categories){
+    this.subject.next({object: categories});
+  }
+
+  getCategoriesOutside():Observable<any>{
+    if(!this.bodyTable){
+      this.getCategories(1);
+    }
+    return this.subject.asObservable();
   }
 
   validateVisualForm(value){
@@ -210,15 +223,7 @@ export class CategoryComponent implements OnInit {
 
   }
 
-  getCategoryOutSide(){
-    if(this.bodyTable){
-      this.outsideFuncionCategory = false;
-      return this.bodyTable;
-    }else{
-      this.outsideFuncionCategory = true;
-      this.getCategories(1);
-    }
-  }
+
 
 
    getCategories(page) {
@@ -236,10 +241,10 @@ export class CategoryComponent implements OnInit {
           this.responseServer = response;
           this.bodyTable = this.responseServer.categoryObject;
           this.getCountCategories();
-          if(this.outsideFuncionCategory){
+          /*if(this.outsideFuncionCategory){
             this.getCategoryOutSide();
-          }
-
+          }*/
+          this.setCategories(this.bodyTable);
 
         }
       }, error => {
