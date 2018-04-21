@@ -91,19 +91,17 @@
 
 <div id="imageProviderModal" #modal class="modal">
   <div class="modal-content">
-    <h4 class="pink-text center" *ngIf="operationType == 'create'; else updateProductsImage">{{QUESTIONIMAGE}}</h4>
-    <ng-template #updateProductsImage>
-      <h4 class="pink-text center">{{QUESTIONIMAGECHANGE}}</h4>
-    </ng-template>
     <div class="row">
       <div class="col l6 s6">
         <h5 class="pink-text center">{{LAVEL_CATEGORY_NO_USED}}</h5>
-        <table-list [headsTable]="HeadCategories" [bodyTableContent]="categoriesAllTable" ></table-list>
+        <table-list #table1 [headsTable]="HeadCategories" (changeItem)="addCategorySelected($event)" [bodyTableContent]="categoriesAllTable" ></table-list>
+        <!---->
       </div>
       <div class="col l6 s6">
         <h5 class="pink-text center">{{LAVEL_CATEGORY_USED}}</h5>
         <!--TODO queda por hacer que la segunda tabla carge las categorias o sea receptora de nuevas categorias-->
-        <table-list [headsTable]="HeadCategories" [bodyTableContent]="categoriesAllTable" ></table-list>
+        <table-list #table2 [headsTable]="HeadCategories" (changeItem)="deleteCategorySelected($event)" [bodyTableContent]="categoryUsed"></table-list>
+        <!---->
       </div>
     </div>
   </div>

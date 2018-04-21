@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {CONSTANT} from "../../../services/constant";
 import {ProviderService} from "../../services/provider/provider.service";
 import {Provider} from "../../model/provider/provider.model";
 import {MzToastService} from "ng2-materialize";
 import {CategoryComponent} from "../category/category.component";
 import {CategoryService} from "../../services/category/category.service";
+import {TableListComponent} from "../../utils/table-list/table-list.component";
 
 @Component({
   selector: 'providers',
@@ -13,6 +14,10 @@ import {CategoryService} from "../../services/category/category.service";
   providers:[ProviderService, MzToastService, CategoryComponent, CategoryService]
 })
 export class ProviderComponent implements OnInit {
+
+  @ViewChildren('table2') tableCategoryUsed: QueryList<TableListComponent>;
+  @ViewChild('table1') tableCategoryAll: TableListComponent;
+
 
   public TITLE:string = CONSTANT.Labels.ProviderTitle;
   public ProviderSearch:string = CONSTANT.Labels.SearchProvider;
@@ -51,7 +56,8 @@ export class ProviderComponent implements OnInit {
   public CIF:string = CONSTANT.Labels.Cif;
   public LAVEL_CATEGORY_NO_USED = CONSTANT.Labels.CategoriesNoUsed;
   public LAVEL_CATEGORY_USED = CONSTANT.Labels.CategoriesUsed;
-  public categoriesAllTable:any;
+  public categoriesAllTable:any =[];
+  public categoryUsed:any = [];
 
 
   constructor(private _providerService:ProviderService, private toastService: MzToastService, private categories:CategoryComponent) {
@@ -89,11 +95,49 @@ export class ProviderComponent implements OnInit {
   getCategoriesComponent(){
     this.categories.getCategoriesOutside().subscribe(
       response=>{
-        this.categoriesAllTable = response.object;
+        this.filterCategoriesByUded(response.object)
       },error=>{
         console.log(error)
       }
     );
+  }
+
+  addCategorySelected(event){
+    console.log(this.tableCategoryUsed);
+    this.tableCategoryUsed.first.bodyTableContent = event.object;
+
+
+    // this.tableCategoryUsed.bodyTableContent.push(event.object);
+    this.categoryUsed.push(event.object);
+    this.filterCategoriesByUded(this.categoriesAllTable);
+  }
+
+  deleteCategorySelected(event){
+    this.categoriesAllTable.push(event.object);
+    for(let i = 0; i < this.categoryUsed.length; i++){
+      if(event.object.id === this.categoryUsed[i].id){
+        this.categoryUsed.splice(i,1);
+      }
+    }
+  }
+
+  private filterCategoriesByUded(categories){
+    if(this.categoryUsed.length === 0){
+      // this.categoryUsed = categories;
+      this.categoriesAllTable = categories;
+    }else{
+      for(let i = 0; i < categories.length; i++){
+        for(let j=0; j < this.categoryUsed.length; j++){
+          if(categories[i].id === this.categoryUsed[j].id){
+            this.categoriesAllTable.splice(i,1);
+            break;
+          }
+        }
+      }
+      // this.categoryUsed = categories
+      // this.tableCategoryAll.bodyTableContent = categories;
+      // this.categoriesAllTable = categories;
+    }
   }
 
   onSubmit(){

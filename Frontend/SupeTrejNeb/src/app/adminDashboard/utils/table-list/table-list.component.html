@@ -12,7 +12,7 @@
       </thead>
       <tbody>
       <tr *ngFor="let itemBody of bodyTableContent">
-        <td *ngFor="let propertyItem of propertiesContent">
+        <td *ngFor="let propertyItem of propertiesContent" (click)="selectElement(itemBody)">
           <span *ngIf="propertyItem == 'name'">{{itemBody[propertyItem]}}</span>
         </td>
       </tr>

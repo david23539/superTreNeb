@@ -8,8 +8,9 @@ import {Component, EventEmitter,OnChanges, SimpleChanges, Input, OnInit, Output}
 export class TableListComponent implements OnInit, OnChanges {
 
   @Input() headsTable:any;
-  @Input() bodyTableContent: any;
+  @Input() bodyTableContent: any = [];
   @Input() countRecord:number;
+  // public bodyTableContent:any;
   public propertiesContent:any;
   public pagination:number;
   public  counter = Array;
@@ -24,8 +25,10 @@ export class TableListComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if(this.bodyTableContent !== undefined){
-      this.propertiesContent = Object.keys(this.bodyTableContent[0]);
-      this.pagination = Math.ceil(this.countRecord/10);
+      if(this.bodyTableContent.length !== 0){
+        this.propertiesContent = Object.keys(this.bodyTableContent[0]);
+        this.pagination = Math.ceil(this.countRecord/10);
+      }
     }
   }
   orderByIndexASC(index) {
@@ -42,6 +45,18 @@ export class TableListComponent implements OnInit, OnChanges {
     });
     this.bodyTableContent = [];
     this.bodyTableContent = table;
+  }
+
+  getRecordByPage(page){
+    this.paginationParams.emit({
+      page:page
+    })
+  }
+
+  selectElement(item){
+    this.changeItem.emit({
+      object: item
+    })
   }
 
 }
