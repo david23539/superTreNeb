@@ -1,0 +1,63 @@
+<div class="row">
+  <div class="col s12 l6">
+    <h5 class="pink-text center">{{LAVEL_CATEGORY_NO_USED}}</h5>
+    <table class="striped centered responsive-table" >
+      <thead class="pink-text fixed">
+      <tr>
+        <th *ngFor="let itemHead of headsTable; let i = index" >
+            <span (click)="order()">
+              {{itemHead}} <i class="right material-icons">arrow_drop_up</i>
+            </span>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of categoryObjectList ">
+        <td (click)="addCategories(item)">
+          <span >{{item.name}} </span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <ul class="pagination center" *ngIf="categoryObjectList.length > 10">
+      <li  class="waves-effect" *ngFor="let number of counter(pagination); let j=index "><a>{{j+1}}</a></li>
+      <span class="pink-text right">TOTAL {{categoryObjectList.length}}</span>
+    </ul>
+  </div>
+
+<!--       SEGUNDA TABLA                 -->
+
+
+  <div class="col s12 l6">
+    <h5 class="pink-text center">{{LAVEL_CATEGORY_USED}}</h5>
+    <table class="striped centered responsive-table" >
+      <thead class="pink-text fixed">
+      <tr>
+        <th *ngFor="let itemHead of headsTable; let i = index" >
+            <span (click)="orderByIndexASC(i)">
+              {{itemHead}} <i class="right material-icons">arrow_drop_up</i>
+            </span>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of categoryUsedList">
+        <td (click)="deletedCategories(item)">
+          <span>{{item.name}}</span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <ul class="pagination center" *ngIf="categoryUsedList.length > 10">
+      <li>1</li>
+      <span class="pink-text right">TOTAL {{categoryUsedList.length}}</span>
+    </ul>
+  </div>
+</div>
+<div class="row">
+  <div class="rigth">
+    <button class="btn waves-effect waves-light col s12"  [disabled]="categoryUsedList.length == 0">{{LABEL_SAVE_CATEGORY}}
+      <i class="material-icons right">save</i>
+    </button>
+  </div>
+</div>

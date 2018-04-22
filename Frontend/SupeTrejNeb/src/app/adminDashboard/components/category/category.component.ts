@@ -46,8 +46,9 @@ export class CategoryComponent implements OnInit {
   public itemIdSelectDeleted:any;
   public searchResult:string;
   public countCategory:number;
-  public outsideFuncionCategory:boolean = false;
+
   private subject = new Subject<any>();
+  private countSubject = new Subject<any>();
 
 
 
@@ -66,11 +67,27 @@ export class CategoryComponent implements OnInit {
     this.subject.next({object: categories});
   }
 
-  getCategoriesOutside():Observable<any>{
+  private setCountCategory(count){
+    this.countSubject.next({object: count});
+  }
+
+
+  getCategoriesOutside(browser):Observable<any>{
     if(!this.bodyTable){
-      this.getCategories(1);
+      this.getAllCategories(browser);
     }
     return this.subject.asObservable();
+  }
+
+
+
+  getOutsideCountCategory(){
+    if(this.countCategory){
+      this.getCountCategories();
+    }else{
+      return this.countSubject.asObservable();
+    }
+
   }
 
   validateVisualForm(value){
@@ -223,6 +240,15 @@ export class CategoryComponent implements OnInit {
 
   }
 
+  getAllCategories(browser){
+    this.categoryModel.direccionIp.navegador = browser;
+    this._categoryService.getAllCategories(this.categoryModel).subscribe(
+      response=>{
+        this.responseServer = response;
+        this.setCategories(this.responseServer.categoryObject);
+      }
+    )
+  }
 
 
 
@@ -241,11 +267,6 @@ export class CategoryComponent implements OnInit {
           this.responseServer = response;
           this.bodyTable = this.responseServer.categoryObject;
           this.getCountCategories();
-          /*if(this.outsideFuncionCategory){
-            this.getCategoryOutSide();
-          }*/
-          this.setCategories(this.bodyTable);
-
         }
       }, error => {
         this.toastService.show(error.message, 4000, 'red accent-2');
@@ -280,13 +301,12 @@ export class CategoryComponent implements OnInit {
       this.getCategories(event.page);
     }
   }
-
-
   private getCountCategories(){
     this._categoryService.getCountCategies().subscribe(
       response=>{
         this.responseServer = response;
         this.countCategory = this.responseServer.count;
+        this.setCountCategory(this.responseServer.count);
       },error=>{
         this.toastService.show(error.message, 4000, 'red accent-2');
       }

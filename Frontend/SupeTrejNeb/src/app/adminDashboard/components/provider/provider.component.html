@@ -23,7 +23,7 @@
       <form #createUpdateForm = "ngForm" (ngSubmit)="onSubmit(createUpdateForm)">
         <div class="row col s12">
           <div class="input-field col s12 l6 pink-text">
-            <button class="btn waves-effect blue lighten-1 waves-light col s12 modal-trigger" mz-tooltip [tooltip]=TOLLTIP_CATEGORIES (click)="getCategoriesComponent()" data-target="imageProviderModal"  >{{LABEL_CATEGORIES}}
+            <button class="btn waves-effect blue lighten-1 waves-light col s12 modal-trigger" mz-tooltip [tooltip]=TOLLTIP_CATEGORIES (click)="getCategoriesComponent(1);" data-target="imageProviderModal"  >{{LABEL_CATEGORIES}}
               <i class="material-icons prefix ">local_offer</i>
             </button>
           </div>
@@ -91,18 +91,20 @@
 
 <div id="imageProviderModal" #modal class="modal">
   <div class="modal-content">
+
     <div class="row">
-      <div class="col l6 s6">
-        <h5 class="pink-text center">{{LAVEL_CATEGORY_NO_USED}}</h5>
-        <table-list #table1 [headsTable]="HeadCategories" (changeItem)="addCategorySelected($event)" [bodyTableContent]="categoriesAllTable" ></table-list>
-        <!---->
+
+      <div class="col l12 s12">
+        <select-categories [categoryObjectList]="categoriesAllTable"></select-categories>
       </div>
+
+      <!--
       <div class="col l6 s6">
         <h5 class="pink-text center">{{LAVEL_CATEGORY_USED}}</h5>
-        <!--TODO queda por hacer que la segunda tabla carge las categorias o sea receptora de nuevas categorias-->
+        &lt;!&ndash;TODO queda por hacer que la segunda tabla carge las categorias o sea receptora de nuevas categorias&ndash;&gt;
         <table-list #table2 [headsTable]="HeadCategories" (changeItem)="deleteCategorySelected($event)" [bodyTableContent]="categoryUsed"></table-list>
-        <!---->
-      </div>
+
+      </div>-->
     </div>
   </div>
 </div>

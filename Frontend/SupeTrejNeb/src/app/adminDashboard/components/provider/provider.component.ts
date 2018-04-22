@@ -6,26 +6,27 @@ import {MzToastService} from "ng2-materialize";
 import {CategoryComponent} from "../category/category.component";
 import {CategoryService} from "../../services/category/category.service";
 import {TableListComponent} from "../../utils/table-list/table-list.component";
+import {SelectCategoriesComponent} from "../select-categories/select-categories.component";
 
 @Component({
   selector: 'providers',
   templateUrl: './provider.component.html',
   styleUrls: ['./provider.component.css'],
-  providers:[ProviderService, MzToastService, CategoryComponent, CategoryService]
+  providers:[ProviderService, MzToastService, CategoryComponent, CategoryService, SelectCategoriesComponent]
 })
 export class ProviderComponent implements OnInit {
 
-  @ViewChildren('table2') tableCategoryUsed: QueryList<TableListComponent>;
-  @ViewChild('table1') tableCategoryAll: TableListComponent;
+  /*@ViewChildren('table2') tableCategoryUsed: QueryList<TableListComponent>;
+  @ViewChild('table1') tableCategoryAll: TableListComponent;*/
 
 
   public TITLE:string = CONSTANT.Labels.ProviderTitle;
   public ProviderSearch:string = CONSTANT.Labels.SearchProvider;
   public headsTables:any = CONSTANT.headProvider;
-  public HeadCategories:any = CONSTANT.headListCategories;
+  // public HeadCategories:any = CONSTANT.headListCategories;
   public searchResult:string = "";
   public bodyTable: any;
-  public bodyCategory: any;
+  // public bodyCategory: any;
   public classStyleFormName:string = "";
   public validClassStyleFormName:string = CONSTANT.Styles.Valid;
   public invalidClassStyleFormName:string = CONSTANT.Styles.Invalid;
@@ -58,9 +59,10 @@ export class ProviderComponent implements OnInit {
   public LAVEL_CATEGORY_USED = CONSTANT.Labels.CategoriesUsed;
   public categoriesAllTable:any =[];
   public categoryUsed:any = [];
+  public countCategories:number;
 
 
-  constructor(private _providerService:ProviderService, private toastService: MzToastService, private categories:CategoryComponent) {
+  constructor(private _providerService:ProviderService, private toastService: MzToastService, private categories:CategoryComponent, private selectCategories: SelectCategoriesComponent) {
     this.providerModel_IN = new Provider(
       {reasonSocial:"",resposiblePerson:"",contactPerson:"",nifBusiness:"",localizationBussiness:"",relationatedCategories:""},
       {id:""},
@@ -85,6 +87,8 @@ export class ProviderComponent implements OnInit {
     )
   }
 
+
+
   filterItem(){
   }
 
@@ -92,36 +96,22 @@ export class ProviderComponent implements OnInit {
 
   }
 
-  getCategoriesComponent(){
-    this.categories.getCategoriesOutside().subscribe(
+  getCategoriesComponent(browser){
+    console.log("hola");
+    this.categories.getCategoriesOutside("firefox").subscribe(
       response=>{
-        this.filterCategoriesByUded(response.object)
+
+        this.categoriesAllTable = response.object;
+
       },error=>{
         console.log(error)
       }
     );
   }
 
-  addCategorySelected(event){
-    console.log(this.tableCategoryUsed);
-    this.tableCategoryUsed.first.bodyTableContent = event.object;
 
 
-    // this.tableCategoryUsed.bodyTableContent.push(event.object);
-    this.categoryUsed.push(event.object);
-    this.filterCategoriesByUded(this.categoriesAllTable);
-  }
-
-  deleteCategorySelected(event){
-    this.categoriesAllTable.push(event.object);
-    for(let i = 0; i < this.categoryUsed.length; i++){
-      if(event.object.id === this.categoryUsed[i].id){
-        this.categoryUsed.splice(i,1);
-      }
-    }
-  }
-
-  private filterCategoriesByUded(categories){
+  /*private filterCategoriesByUded(categories){
     if(this.categoryUsed.length === 0){
       // this.categoryUsed = categories;
       this.categoriesAllTable = categories;
@@ -138,7 +128,7 @@ export class ProviderComponent implements OnInit {
       // this.tableCategoryAll.bodyTableContent = categories;
       // this.categoriesAllTable = categories;
     }
-  }
+  }*/
 
   onSubmit(){
 
