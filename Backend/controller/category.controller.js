@@ -106,10 +106,9 @@ function getCategoryById(req, res){
 
 function getAllCategory(req,res){
 	const params = req.body
-	params.direccionIp.direccionData = req.connection.remoteAddress
 	CategoryModel.find({},(err,categoryData)=>{
 		if(err || !categoryData){
-			auditoriaController.saveLogsData(req.user.name,err, params.direccionIp.direccionData, params.direccionIp.navegador)
+			auditoriaController.saveLogsData(req.user.name,err, req.connection.remoteAddress, params.direccionIp.navegador)
 			res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.CATEGORY_GET_CATEGORY_ERROR})
 		}else{
 			res.status(constantFile.httpCode.PETITION_CORRECT).send({categoryObject: categoryAdapter.getAllCategoriesAdapter(categoryData)})
