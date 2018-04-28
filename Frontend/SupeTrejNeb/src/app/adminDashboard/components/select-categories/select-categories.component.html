@@ -19,9 +19,9 @@
       </tr>
       </tbody>
     </table>
-    <ul class="pagination center" *ngIf="categoryObjectList.length > 10">
-      <li  class="waves-effect" *ngFor="let number of counter(pagination); let j=index "><a>{{j+1}}</a></li>
-      <span class="pink-text right">TOTAL {{categoryObjectList.length}}</span>
+    <ul class="pagination center" *ngIf="containerCategories.length > 10">
+      <li  class="waves-effect" *ngFor="let number of counter(pagination); let j=index "><a (click)="currentPage(j+1)"><span >{{j+1}}</span></a></li>
+      <span class="pink-text right">TOTAL {{containerCategories.length}}</span>
     </ul>
   </div>
 
@@ -56,7 +56,7 @@
 </div>
 <div class="row">
   <div class="rigth">
-    <button class="btn waves-effect waves-light col s12"  [disabled]="categoryUsedList.length == 0">{{LABEL_SAVE_CATEGORY}}
+    <button class="btn waves-effect modal-close waves-light col s12" (click)="saveCategories();" [disabled]="categoryUsedList.length == 0">{{LABEL_SAVE_CATEGORY}}
       <i class="material-icons right">save</i>
     </button>
   </div>

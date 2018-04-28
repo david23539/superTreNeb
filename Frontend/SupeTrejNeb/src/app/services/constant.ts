@@ -62,8 +62,10 @@ export const CONSTANT = {
     Confirm_Deleted_Product: "¿Estas seguro que quieres eliminar el producto?",
     ProductTitle: "Productos",
     ProviderTitle: "Proveedores",
+    PersonTitle: "Personas",
     SearchProducts: "Buscar Productos",
     SearchProvider: "Buscar Proveedor",
+    SearchPerson: "Buscar Persona",
     AddProduct: "Añadir Productos",
     AddProvider: "Añadir Proveedor",
     UpdateProduct: "Actualizar Productos",
@@ -91,6 +93,7 @@ export const CONSTANT = {
   headCategory:["Nombre", "Descripción", "IVA"],
   headProduct:["Nombre", "Descripción", "Coste", "Referencia", "Iva", "Margen", "Stock","Categoría", "Imagen"],
   headProvider:["Nombre Empresa", "Persona Responsable", "Persona Contacto", "NIF", "Dirección"],
+  headPerson:["Nombre", "Apellido1", "Apellido2", "DNI", "Teléfono", "Mobil", "Email", "Imagen"],
   headListCategories:["Nombre Categoría"],
 
   messageToast:{

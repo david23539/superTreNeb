@@ -23,13 +23,13 @@
       <form #createUpdateForm = "ngForm" (ngSubmit)="onSubmit(createUpdateForm)">
         <div class="row col s12">
           <div class="input-field col s12 l6 pink-text">
-            <button class="btn waves-effect blue lighten-1 waves-light col s12 modal-trigger" mz-tooltip [tooltip]=TOLLTIP_CATEGORIES (click)="getCategoriesComponent(1);" data-target="imageProviderModal"  >{{LABEL_CATEGORIES}}
+            <button class="btn waves-effect blue lighten-1 waves-light col s12 modal-trigger" mz-tooltip [tooltip]=TOLLTIP_CATEGORIES (click)="getCategoriesComponent(1);" data-target="selectCategories"  >{{LABEL_CATEGORIES}}
               <i class="material-icons prefix ">local_offer</i>
             </button>
           </div>
 
           <div class="input-field col s12 l6 pink-text">
-            <button class="btn waves-effect blue lighten-1 waves-light col s12" mz-tooltip [tooltip]=TOLLTIP_CONTACT  name="action" >{{LABEL_CONTACT}}
+            <button class="btn waves-effect blue lighten-1 waves-light col s12 modal-trigger" mz-tooltip [tooltip]=TOLLTIP_CONTACT  name="action" (click)="getPersons();" data-target="selectContactPerson">{{LABEL_CONTACT}}
               <i class="material-icons prefix ">person</i>
             </button>
           </div>
@@ -89,22 +89,26 @@
   </div>
 </div>
 
-<div id="imageProviderModal" #modal class="modal">
+<div id="selectCategories" #modal class="modal">
   <div class="modal-content">
 
     <div class="row">
 
       <div class="col l12 s12">
-        <select-categories [categoryObjectList]="categoriesAllTable"></select-categories>
+        <select-categories [categoryObjectList]="categoriesAllTable" [categoryUsedList]="categoryUsed" (saveCategoriesSelected)="categoriesSelected($event);"></select-categories>
       </div>
+    </div>
+  </div>
+</div>
 
-      <!--
-      <div class="col l6 s6">
-        <h5 class="pink-text center">{{LAVEL_CATEGORY_USED}}</h5>
-        &lt;!&ndash;TODO queda por hacer que la segunda tabla carge las categorias o sea receptora de nuevas categorias&ndash;&gt;
-        <table-list #table2 [headsTable]="HeadCategories" (changeItem)="deleteCategorySelected($event)" [bodyTableContent]="categoryUsed"></table-list>
+<div id="selectContactPerson" #modalContactPerson class="modal">
+  <div class="modal-content">
 
-      </div>-->
+    <div class="row">
+
+      <div class="col l12 s12">
+        <!--<select-categories [categoryObjectList]="categoriesAllTable" [categoryUsedList]="categoryUsed" (saveCategoriesSelected)="categoriesSelected($event);"></select-categories>-->
+      </div>
     </div>
   </div>
 </div>

@@ -31,6 +31,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   public CATEGORIES_PAGE: String = "Categorías";
   public PRODUCT_PAGE: String = "Productos";
   public PROVIDERS_PAGE: String = "Proveedores";
+  public PERSONS_PAGE: String = "Personas";
   public classBackgraundSidenav="blue-grey lighten-2 z-depth-3";
 
   constructor(private _router:Router, private _userService:UserService, private _getDataBrowser:DataBrowser,

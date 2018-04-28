@@ -8,6 +8,7 @@ import {MainDashboardComponent} from "./components/mainDashboard/mainDashboard.c
 import {CategoryComponent} from "./components/category/category.component";
 import {ProductComponent} from "./components/product/product.component";
 import {ProviderComponent} from "./components/provider/provider.component";
+import {PersonsComponent} from "./components/persons/persons.component";
 
 
 const adminDashboardRouter: Routes = [
@@ -16,7 +17,8 @@ const adminDashboardRouter: Routes = [
       {path: 'main-dashboard', component: MainDashboardComponent},
       {path: 'category', component: CategoryComponent},
       {path: 'product', component: ProductComponent},
-      {path: 'provider', component: ProviderComponent}
+      {path: 'provider', component: ProviderComponent},
+      {path: 'persons', component: PersonsComponent},
 
 
     ]},

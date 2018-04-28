@@ -12,6 +12,7 @@ import { MzTooltipModule, MzSelectModule} from "ng2-materialize";
 import { ProductComponent } from './components/product/product.component';
 import { ProviderComponent } from './components/provider/provider.component';
 import { SelectCategoriesComponent } from './components/select-categories/select-categories.component';
+import { PersonsComponent } from './components/persons/persons.component';
 
 
 
@@ -35,7 +36,8 @@ import { SelectCategoriesComponent } from './components/select-categories/select
     TableListComponent,
     ProductComponent,
     ProviderComponent,
-    SelectCategoriesComponent
+    SelectCategoriesComponent,
+    PersonsComponent
   ],
 
   exports:[

@@ -55,11 +55,9 @@ export class ProviderComponent implements OnInit {
   public TOLLTIP_SOCIAL_REASON:string = CONSTANT.Labels.TooltipReason;
   public NAMEPROVIDER:string = CONSTANT.Labels.SocialReason;
   public CIF:string = CONSTANT.Labels.Cif;
-  public LAVEL_CATEGORY_NO_USED = CONSTANT.Labels.CategoriesNoUsed;
-  public LAVEL_CATEGORY_USED = CONSTANT.Labels.CategoriesUsed;
   public categoriesAllTable:any =[];
   public categoryUsed:any = [];
-  public countCategories:number;
+
 
 
   constructor(private _providerService:ProviderService, private toastService: MzToastService, private categories:CategoryComponent, private selectCategories: SelectCategoriesComponent) {
@@ -96,8 +94,23 @@ export class ProviderComponent implements OnInit {
 
   }
 
+  categoriesSelected(event){
+    this.providerModel_IN.dataProvider.relationatedCategories = this.prepareReturnListObject(event.objects);
+    this.categoryUsed = event.objects;
+    this.categoriesAllTable = event.result;
+  }
+
+  private prepareReturnListObject(listObject){
+    let listReturn = [];
+    for (let i = 0; i < listObject.length; i++){
+      listReturn.push(listObject[i].id);
+    }
+    return listReturn;
+
+  }
+
   getCategoriesComponent(browser){
-    console.log("hola");
+
     this.categories.getCategoriesOutside("firefox").subscribe(
       response=>{
 
@@ -109,26 +122,6 @@ export class ProviderComponent implements OnInit {
     );
   }
 
-
-
-  /*private filterCategoriesByUded(categories){
-    if(this.categoryUsed.length === 0){
-      // this.categoryUsed = categories;
-      this.categoriesAllTable = categories;
-    }else{
-      for(let i = 0; i < categories.length; i++){
-        for(let j=0; j < this.categoryUsed.length; j++){
-          if(categories[i].id === this.categoryUsed[j].id){
-            this.categoriesAllTable.splice(i,1);
-            break;
-          }
-        }
-      }
-      // this.categoryUsed = categories
-      // this.tableCategoryAll.bodyTableContent = categories;
-      // this.categoriesAllTable = categories;
-    }
-  }*/
 
   onSubmit(){
 
@@ -175,6 +168,10 @@ export class ProviderComponent implements OnInit {
       // this.productModel_OUT.identifier.id = event.items.id;
 
     }
+  }
+
+  getPersons(){
+
   }
 
   ngOnInit() {
