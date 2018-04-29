@@ -42,8 +42,9 @@ function personDataOUTAdapter(person_IN){
 		telefono:person_IN.stn_telephone,
 		dni:person_IN.stn_dni,
 		email:person_IN.stn_email,
-		image:person_IN.stn_image,
-		direccion:addressAdapter.addressDataOUTLAdapter(person_IN.stn_fk_address)
+		direccion:addressAdapter.addressDataOUTLAdapter(person_IN.stn_fk_address),
+		image:person_IN.stn_image
+
 	}
 	return personOUT
 }
@@ -55,11 +56,12 @@ function personList_OUT_Adapter(personsList_IN){
 			name: item.stn_name,
 			lastName: item.stn_lastname1,
 			lastName2: item.stn_lastname2,
-			movil: item.stn_mobile,
-			telefone: item.stn_telephone,
 			dni: item.stn_dni,
+			telefone: item.stn_telephone,
+			movil: item.stn_mobile,
 			email: item.stn_email,
 			image: item.stn_image,
+			id : item._doc._id,
 			direccion:addressAdapter.addressDataOUTLAdapter(item.stn_fk_address)
 		}
 		persons_OUT.push(person)
