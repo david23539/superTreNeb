@@ -64,6 +64,24 @@ function deletePerson(personId, cb){
 
 }
 
+function deletedPrevPerson(req, res){
+	let personId = req.params.id
+	if(validationGlobal.validateId(personId)){
+		deletePerson(personId, (err, deletePerson_OUT)=>{
+			if(err || !deletePerson_OUT){
+				auditoriaController.saveLogsData(req.user.name,err, req.connection.remoteAddress, 'deletePerson')
+				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PERSONA_DELETED_FAIL})
+			}else{
+				auditoriaController.saveLogsData(req.user.name,constantFile.functions.PERSON_DELETED_SUCCESS,  req.connection.remoteAddress, 'deletePerson')
+				res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.PERSON_DELETED_SUCCESS})
+			}
+		})
+	}else{
+		paramsIvalids(res)
+	}
+
+}
+
 
 
 function createPerson(req, res){
@@ -110,6 +128,49 @@ function updatePerson(req, res){
 }
 
 
+function getPersonByPagination(req,res){
+	const param = req.body
+	if(validationGlobal.validationPage(param.pagination.page)){
+		Person.find({stn_status:true})
+			.skip(param.pagination.page)
+			.limit(10)
+			.populate('stn_fk_address')
+			.exec((err, personList_OUT)=>{
+				if(err){
+					auditoriaController.saveLogsData(req.user.name,err, req.connection.remoteAddress, 'getPersonPaginations')
+					res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PERSON_GET_ERROR})
+				}else if(personList_OUT.length === 0){
+					res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.NO_PERSON_AVAIBLE})
+				}else{
+					res.status(constantFile.httpCode.PETITION_CORRECT).send({persons: adapterPerson.personList_OUT_Adapter(personList_OUT)})
+				}
+			})
+	}else{
+		paramsIvalids(res)
+	}
+}
+
+function filterPerson(req, res){
+	const keyword = req.params.key
+	if(validationGlobal.validateId(keyword)){
+		Person.find({stn_name:{$regex: keyword, $options: 'i'}, stn_status:true})
+			.limit(10)
+			.populate('stn_fk_address')
+			.exec((err, personList_OUT)=>{
+				if(err){
+					auditoriaController.saveLogsData(req.user.name,err, req.connection.remoteAddress, 'getPersonFilter')
+					res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PERSON_GET_ERROR})
+				}else if(personList_OUT.length === 0){
+					res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.NO_PERSON_AVAIBLE})
+				}else{
+					res.status(constantFile.httpCode.PETITION_CORRECT).send({persons: adapterPerson.personList_OUT_Adapter(personList_OUT)})
+				}
+			})
+	}else{
+		paramsIvalids(res)
+	}
+}
+
 
 function paramsIvalids(res){
 	res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.ERROR_PARAMETROS_ENTRADA})
@@ -122,7 +183,10 @@ module.exports ={
 	sendCodeActivation,
 	deletePerson,
 	createPerson,
-	updatePerson
+	updatePerson,
+	deletedPrevPerson,
+	getPersonByPagination,
+	filterPerson
 
 	//getUserByEmailPersona
 

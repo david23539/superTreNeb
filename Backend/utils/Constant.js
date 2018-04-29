@@ -55,11 +55,13 @@ const constant ={
 		PRODUCT_REGISTER_FAIL: 'Ha fallado el registro del producto',
 		PROVIDER_REGISTER_FAIL: 'Ha fallado el registro del proveedor',
 		PERSONA_REGISTER_FAIL: 'Ha fallado el registro de la persona',
+		PERSONA_DELETED_FAIL: 'Ha ocurrido un error con la persona',
 		EXISTS_REFERENCE_PRODUCT: 'Este producto ya existe',
 		CATEGORY_REGISTER_SUCCESS: 'Se ha creado la categoria con exito',
 		PRODUCT_REGISTER_SUCCESS: 'Se ha creado el producto con exito',
 		PROVIDER_REGISTER_SUCCESS: 'Se ha creado el proveedor con exito',
 		PERSON_REGISTER_SUCCESS: 'Se ha creado la persona con exito',
+		PERSON_DELETED_SUCCESS: 'Se ha eliminado la persona con exito',
 		CATEGORY_UPDATE_SUCCESS: 'Se ha actualizado correctamente la categoria',
 		PRODUCT_UPDATE_SUCCESS: 'Se ha actualizado correctamente el producto',
 		PROVIDER_UPDATE_SUCCESS: 'Se ha actualizado correctamente el proveedor',
@@ -77,11 +79,13 @@ const constant ={
 		CATEGORY_GET_CATEGORY_ERROR: 'Ha ocurrido un error al obtener la categoria',
 		PRODUCT_GET_ERROR: 'Ha ocurrido un error al obtener los productos',
 		PROVIDER_GET_ERROR: 'Ha ocurrido un error al obtener los proveedores',
+		PERSON_GET_ERROR: 'Ha ocurrido un error al obtener las personas',
 		NO_DATA_CATEGORY:'No hay coincidencias',
 		NO_DATA_AVAIBLE:'No existen categorías',
 
 		NO_PRODUCT_AVAIBLE:'No existen productos',
-		NO_PROVIDERS_AVAIBLE:'No existen proveedores'
+		NO_PROVIDERS_AVAIBLE:'No existen proveedores',
+		NO_PERSON_AVAIBLE:'No existen personas'
 
 
 

@@ -48,10 +48,30 @@ function personDataOUTAdapter(person_IN){
 	return personOUT
 }
 
+function personList_OUT_Adapter(personsList_IN){
+	let persons_OUT = []
+	for(let item of personsList_IN){
+		let person = {
+			name: item.stn_name,
+			lastName: item.stn_lastname1,
+			lastName2: item.stn_lastname2,
+			movil: item.stn_mobile,
+			telefone: item.stn_telephone,
+			dni: item.stn_dni,
+			email: item.stn_email,
+			image: item.stn_image,
+			direccion:addressAdapter.addressDataOUTLAdapter(item.stn_fk_address)
+		}
+		persons_OUT.push(person)
+	}
+	return persons_OUT
+}
+
 
 // eslint-disable-next-line no-undef
 module.exports = {
 	personDataAdapter,
 	personDataOUTAdapter,
-	personDataAdapterIN
+	personDataAdapterIN,
+	personList_OUT_Adapter
 }
