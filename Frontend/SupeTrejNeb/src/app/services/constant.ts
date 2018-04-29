@@ -23,6 +23,7 @@ export const CONSTANT = {
     No_Data_Category: "No hay coincidencias",
     No_Data_Product: 'No existen productos',
     No_Data_Provider: 'No existen proveedores',
+    No_Data_Persons: 'No existen personas',
     No_Data_Avaible:'No existen categorías'
   },
   Styles:{
@@ -35,12 +36,20 @@ export const CONSTANT = {
   },
   Labels:{
     AddCategory:"Añadir Categorías",
+    AddPerson:"Añadir Persona",
     DeleteCategory:"Eliminar Categoría",
     DeleteProduct:"Eliminar Producto",
     CategoriesNoUsed:"Categorías sin usar",
     CategoriesUsed:"Categorías usadas",
     ModifyCategory: "Modificar Categorías",
     Category:"Nombre Categoria",
+    Person:"Nombre Persona",
+    lastName:"1º Apellido",
+    lastName2:"2º Apellido",
+    dni:"DNI de la Persona",
+    email:"Email de la Persona",
+    movil:"movil de la Persona",
+    telefone:"Telefone de la Persona",
     Description: "Descripción",
     Iva:"IVA",
     Cost:"Coste",
@@ -93,7 +102,7 @@ export const CONSTANT = {
   headCategory:["Nombre", "Descripción", "IVA"],
   headProduct:["Nombre", "Descripción", "Coste", "Referencia", "Iva", "Margen", "Stock","Categoría", "Imagen"],
   headProvider:["Nombre Empresa", "Persona Responsable", "Persona Contacto", "NIF", "Dirección"],
-  headPerson:["Nombre", "Apellido1", "Apellido2", "DNI", "Teléfono", "Mobil", "Email", "Imagen"],
+  headPerson:["Nombre", "Apellido1", "Apellido2", "DNI", "Teléfono", "Mobil", "Email", "Imagen", "Población"],
   headListCategories:["Nombre Categoría"],
 
   messageToast:{
@@ -103,6 +112,7 @@ export const CONSTANT = {
     CATEGORY_ERROR: "Ha ocurrido un error con la categoría",
     PRODUCT_ERROR: "Ha ocurrido un error con el producto",
     PROVIDER_ERROR: "Ha ocurrido un error con el proveedor",
+    PERSON_ERROR: "Ha ocurrido un error con las personas",
     CATEGORY_UPDATE_SUCCESS: "Se ha actualizado con exito la categoría",
     PRODUCT_UPDATE_SUCCESS: "Se ha actualizado con exito el producto",
     CATEGORY_DELETED_SUCCESS: "Se ha eliminado con exito la categoría",
