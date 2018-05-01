@@ -12,6 +12,7 @@ function addressDataAdapter(addresParams) {
 	address.stn_floor = addresParams.piso
 	address.stn_door = addresParams.puerta
 	address.stn_directionName = addresParams.nombreCalle
+	address.stn_status = true
 	return address
 }
 
@@ -26,12 +27,31 @@ function addressDataOUTLAdapter(address_IN){
 		puerta: address_IN.stn_door,
 		nombreCalle: address_IN.stn_directionName,
 	}
-	return address_OUT;
+	return address_OUT
 
+}
+
+function addressDataListOUTAdapter(addressList_IN){
+	let adressList_OUT = []
+	for(let item of addressList_IN){
+		let address_OUT = {
+			provincia : item.stn_province,
+			location: item.stn_location,
+			tipoVia: item.stn_typeVia,
+			codigoPostal: item.stn_postalCod,
+			numero: item.stn_number,
+			piso: item.stn_floor,
+			puerta: item.stn_door,
+			nombreCalle: item.stn_directionName,
+		}
+		adressList_OUT.push(address_OUT)
+	}
+	return adressList_OUT
 }
 
 // eslint-disable-next-line no-undef
 module.exports = {
 	addressDataAdapter,
-	addressDataOUTLAdapter
+	addressDataOUTLAdapter,
+	addressDataListOUTAdapter
 }

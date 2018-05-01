@@ -17,7 +17,24 @@ function validateAllDataPerson(person_IN){
 		}
 	}
 	return !!(regexStringSpaces.test(person_IN.stn_fk_address) && (validateDataPersonEmail(params)) && regexStringSpaces.test(person_IN.stn_dni) && (checkMobilOrTelefon(person_IN)) &&
-		regexStringSpaces.test(person_IN.stn_lastname1) && regexStringSpaces.test(person_IN.stn_lastname2) && regexStringSpaces.test(person_IN.stn_name))
+		checkLastNames(person_IN) && regexStringSpaces.test(person_IN.stn_name))
+}
+
+function checkLastNames(person_IN){
+	let lastName1 = false
+	let lastName2 = false
+	if(person_IN.stn_lastname1){
+		lastName1 = !!regexStringSpaces.test(person_IN.stn_lastname1)
+	}else{
+		lastName1 = true
+	}
+	if(person_IN.stn_lastname2){
+		lastName2 = !!regexStringSpaces.test(person_IN.stn_lastname2)
+	}else{
+		lastName2 = true
+	}
+
+	return lastName1 && lastName2
 }
 
 function checkMobilOrTelefon(person_IN){
@@ -25,15 +42,11 @@ function checkMobilOrTelefon(person_IN){
 	let telefon = false
 	if(person_IN.stn_mobile){
 		mobile = !!regexNumbers.test(person_IN.stn_mobile)
-	}else{
-		mobile = true
-	}
+	}else mobile = person_IN.stn_mobile !== undefined
 
 	if(person_IN.stn_telephone){
 		telefon = !!regexNumbers.test(person_IN.stn_telephone)
-	}else{
-		telefon = true
-	}
+	}else telefon = person_IN.stn_telephone !== undefined
 
 	return mobile && telefon
 }

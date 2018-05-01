@@ -55,20 +55,26 @@ const constant ={
 		PRODUCT_REGISTER_FAIL: 'Ha fallado el registro del producto',
 		PROVIDER_REGISTER_FAIL: 'Ha fallado el registro del proveedor',
 		PERSONA_REGISTER_FAIL: 'Ha fallado el registro de la persona',
+		ADDRESS_REGISTER_FAIL: 'Ha fallado el registro de la dirección',
 		PERSONA_DELETED_FAIL: 'Ha ocurrido un error con la persona',
+		ADDRESS_DELETED_FAIL: 'Ha ocurrido un error con la direción',
 		EXISTS_REFERENCE_PRODUCT: 'Este producto ya existe',
 		CATEGORY_REGISTER_SUCCESS: 'Se ha creado la categoria con exito',
 		PRODUCT_REGISTER_SUCCESS: 'Se ha creado el producto con exito',
 		PROVIDER_REGISTER_SUCCESS: 'Se ha creado el proveedor con exito',
 		PERSON_REGISTER_SUCCESS: 'Se ha creado la persona con exito',
+		ADDRESS_REGISTER_SUCCESS: 'Se ha creado la dirección con exito',
 		PERSON_DELETED_SUCCESS: 'Se ha eliminado la persona con exito',
+		ADDRESS_DELETED_SUCCESS: 'Se ha eliminado la direccion con exito',
 		CATEGORY_UPDATE_SUCCESS: 'Se ha actualizado correctamente la categoria',
 		PRODUCT_UPDATE_SUCCESS: 'Se ha actualizado correctamente el producto',
 		PROVIDER_UPDATE_SUCCESS: 'Se ha actualizado correctamente el proveedor',
 		PERSON_UPDATE_SUCCESS: 'Se ha actualizado correctamente la persona',
+		ADDRESS_UPDATE_SUCCESS: 'Se ha actualizado correctamente la dirección',
 		CATEGORY_UPDATE_ERROR: 'Ha ocurrido un error al actualizar la categoria',
 		PROVIDER_UPDATE_ERROR: 'Ha ocurrido un error al actualizar el proveedor',
 		PERSON_UPDATE_ERROR: 'Ha ocurrido un error al actualizar la persona',
+		ADDRESS_UPDATE_ERROR: 'Ha ocurrido un error al actualizar la dirección',
 		PRODUCT_UPDATE_ERROR: 'Ha ocurrido un error al actualizar el producto',
 		CATEGORY_DELETE_SUCCESS: 'La categoria se ha eliminado',
 		PROVIDER_DELETE_SUCCESS: 'El proveedor se ha eliminado',
@@ -80,12 +86,14 @@ const constant ={
 		PRODUCT_GET_ERROR: 'Ha ocurrido un error al obtener los productos',
 		PROVIDER_GET_ERROR: 'Ha ocurrido un error al obtener los proveedores',
 		PERSON_GET_ERROR: 'Ha ocurrido un error al obtener las personas',
+		ADDRESS_GET_ERROR: 'Ha ocurrido un error al obtener las direcciones',
 		NO_DATA_CATEGORY:'No hay coincidencias',
 		NO_DATA_AVAIBLE:'No existen categorías',
 
 		NO_PRODUCT_AVAIBLE:'No existen productos',
 		NO_PROVIDERS_AVAIBLE:'No existen proveedores',
-		NO_PERSON_AVAIBLE:'No existen personas'
+		NO_PERSON_AVAIBLE:'No existen personas',
+		NO_ADDRESS_AVAIBLE:'No existen direcciones'
 
 
 

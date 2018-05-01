@@ -11,7 +11,8 @@ const AddressDataSchema = Schema({
 	stn_postalCod: String,
 	stn_number: Number,
 	stn_floor: Number,
-	stn_door:String
+	stn_door:String,
+	stn_status:Boolean
 
 })
 // eslint-disable-next-line no-undef

@@ -171,6 +171,15 @@ function filterPerson(req, res){
 	}
 }
 
+function getCountPerson(req, res){
+	Person.count({},(err, countPerson)=>{
+		if(err || !countAddress){
+			res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PERSON_GET_ERROR})
+		}else{
+			res.status(constantFile.httpCode.PETITION_CORRECT).send({count:countPerson})
+		}
+	})
+}
 
 function paramsIvalids(res){
 	res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.ERROR_PARAMETROS_ENTRADA})
@@ -186,7 +195,8 @@ module.exports ={
 	updatePerson,
 	deletedPrevPerson,
 	getPersonByPagination,
-	filterPerson
+	filterPerson,
+	getCountPerson
 
 	//getUserByEmailPersona
 
