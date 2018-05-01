@@ -3,12 +3,13 @@ import {CONSTANT} from "../../../services/constant";
 import {Person} from "../../model/person/person.model";
 import {PersonService} from "../../services/person/person.service";
 import {MzToastService} from "ng2-materialize";
+import {DataBrowser} from "../../../utils/dataBrowser";
 
 @Component({
   selector: 'persons',
   templateUrl: './persons.component.html',
   styleUrls: ['./persons.component.css'],
-  providers: [PersonService, MzToastService]
+  providers: [PersonService, MzToastService, DataBrowser]
 })
 export class PersonsComponent implements OnInit {
 
@@ -35,11 +36,22 @@ export class PersonsComponent implements OnInit {
   public operationType: string;
   public classStyleForm:string = "";
   public buttonSaveUpdate:boolean;
+  public browser: any;
 
-  constructor(private _personService:PersonService, private toastService: MzToastService) {
+  public invalidClassStyleForm:string = CONSTANT.Styles.Invalid;
+  public validClassStyleForm:string = CONSTANT.Styles.Valid;
+  public invalidClassStyleDNIForm:string = CONSTANT.Styles.Invalid;
+  public validClassStyleDNIForm:string = CONSTANT.Styles.Valid;
+  public classStyleDNIForm:string = "";
+  public invalidClassStyleEmailForm:string = CONSTANT.Styles.Invalid;
+  public validClassStyleEmailForm:string = CONSTANT.Styles.Valid;
+  public classStyleEmailForm:string = "";
+
+  constructor(private _personService:PersonService, private toastService: MzToastService, private _getDataBrowser: DataBrowser) {
     this.Person_IN = new Person({nombre:"", apellido1:"", apellido2:"", direcction:"", dni: "", email: "", movil: 0, telefono: 0},{id:""},
       {page: 0}, {navegador: ""});
     this.buttonSaveUpdate = true;
+    this.browser = this._getDataBrowser.getDataBrowser();
   }
 
   private getPerson(page){
@@ -60,6 +72,29 @@ export class PersonsComponent implements OnInit {
 
   validateVisualForm(value){
 
+    switch (value){
+      case 'name':
+        if(this.Person_IN.dataPerson.nombre == ""){
+          this.classStyleForm = this.invalidClassStyleForm;
+        }else{
+          this.classStyleForm = this.validClassStyleForm;
+        }
+        break;
+      case 'dni':
+        if(this.Person_IN.dataPerson.dni == ""){
+          this.classStyleDNIForm = this.invalidClassStyleDNIForm;
+        }else{
+          this.classStyleDNIForm = this.validClassStyleDNIForm;
+        }
+        break;
+      case 'email':
+        if(this.Person_IN.dataPerson.email == ""){
+          this.classStyleEmailForm = this.invalidClassStyleEmailForm;
+        }else{
+          this.classStyleEmailForm = this.validClassStyleEmailForm;
+        }
+        break;
+    }
   }
 
   addUpdatePerson(event){
@@ -89,7 +124,29 @@ export class PersonsComponent implements OnInit {
   }
 
   onSubmit(createUpdateForm){
-
+      if(!this.Person_IN.dataPerson.movil && !this.Person_IN.dataPerson.telefono ){
+        this.toastService.show(CONSTANT.messageToast.MOVIL_OR_TELEFONE, 4000, CONSTANT.Styles.Warning);
+      }else if(!this.Person_IN.dataPerson.direcction){
+        this.toastService.show(CONSTANT.messageToast.ADDRESS_NECESARY, 4000, CONSTANT.Styles.Warning);
+      }else if(this.operationType === CONSTANT.OperationTables.create){
+        this.Person_IN.direccionIp.navegador = this.browser.browser;
+        this._personService.createPerson(this.Person_IN).subscribe(
+          response=>{
+             this.responseServer = response;
+             if(this.responseServer.message === CONSTANT.ResponseServers.Person_Success){
+               createUpdateForm.reset();
+               this.toastService.show(CONSTANT.ResponseServers.Person_Success, 4000, CONSTANT.Styles.Success);
+               $('#createPerson').modal('close');
+             }else if(this.responseServer.message === CONSTANT.ResponseServers.InvalidParams){
+               this.toastService.show(CONSTANT.ResponseServers.InvalidParams, 4000, CONSTANT.Styles.Warning);
+             }else{
+               this.toastService.show(CONSTANT.messageToast.PERSON_ERROR, 4000, CONSTANT.Styles.Error);
+             }
+          },error=>{
+            this.toastService.show(CONSTANT.messageToast.PERSON_ERROR, 4000, CONSTANT.Styles.Error);
+          }
+        )
+      }
   }
 
   private filterCategory(){

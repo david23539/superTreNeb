@@ -27,4 +27,11 @@ export class PersonService {
     return this._http.get(this.url+'filterPerson/'+keyWords,{headers:header})
   }
 
+  createPerson(person_IN){
+    this.token = this._loginService.getToken();
+    let param = JSON.stringify(person_IN);
+    let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
+    return this._http.post(this.url+'createPerson', param, {headers:header})
+  }
+
 }

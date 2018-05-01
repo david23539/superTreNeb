@@ -15,6 +15,7 @@ export const CONSTANT = {
   },
   ResponseServers:{
     Category_Success:"Se ha creado la categoria con exito",
+    Person_Success:"Se ha creado la persona con exito",
     Category_Success_Update:"Se ha actualizado correctamente la categoria",
     Product_Success_Update:"Se ha actualizado correctamente el producto",
     Category_Success_Deleted:"La categoria se ha eliminado",
@@ -119,6 +120,8 @@ export const CONSTANT = {
     PRODUCT_DELETED_SUCCESS: "Se ha eliminado con exito el producto",
     NO_DATA_CATEGORY:"No hay datos coincidentes",
     NO_DATA_AVAIBLE:"No hay datos aun",
-    NO_CATEGORY_DATA:"No hay creadas categorías todavía"
+    NO_CATEGORY_DATA:"No hay creadas categorías todavía",
+    MOVIL_OR_TELEFONE:"Necesita informar un movil o un telefono",
+    ADDRESS_NECESARY:"Necesita informar una dirección"
   }
 };
