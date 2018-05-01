@@ -73,9 +73,11 @@ export const CONSTANT = {
     ProductTitle: "Productos",
     ProviderTitle: "Proveedores",
     PersonTitle: "Personas",
+    AddressTitle: "Direcciones",
     SearchProducts: "Buscar Productos",
     SearchProvider: "Buscar Proveedor",
     SearchPerson: "Buscar Persona",
+    SearchAddress: "Buscar Población",
     AddProduct: "Añadir Productos",
     AddProvider: "Añadir Proveedor",
     UpdateProduct: "Actualizar Productos",
@@ -104,6 +106,7 @@ export const CONSTANT = {
   headProduct:["Nombre", "Descripción", "Coste", "Referencia", "Iva", "Margen", "Stock","Categoría", "Imagen"],
   headProvider:["Nombre Empresa", "Persona Responsable", "Persona Contacto", "NIF", "Dirección"],
   headPerson:["Nombre", "Apellido1", "Apellido2", "DNI", "Teléfono", "Mobil", "Email", "Imagen", "Población"],
+  headAddress:["Provincia", "Población", "Tipo de Vía", "Código Postal", "Numero", "Piso", "Puerta", "Nombre Vía"],
   headListCategories:["Nombre Categoría"],
 
   messageToast:{

@@ -9,6 +9,7 @@ import {CategoryComponent} from "./components/category/category.component";
 import {ProductComponent} from "./components/product/product.component";
 import {ProviderComponent} from "./components/provider/provider.component";
 import {PersonsComponent} from "./components/persons/persons.component";
+import {AddressComponent} from "./components/address/address.component";
 
 
 const adminDashboardRouter: Routes = [
@@ -19,6 +20,7 @@ const adminDashboardRouter: Routes = [
       {path: 'product', component: ProductComponent},
       {path: 'provider', component: ProviderComponent},
       {path: 'persons', component: PersonsComponent},
+      {path: 'address', component: AddressComponent}
 
 
     ]},

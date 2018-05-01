@@ -13,6 +13,7 @@ import { ProductComponent } from './components/product/product.component';
 import { ProviderComponent } from './components/provider/provider.component';
 import { SelectCategoriesComponent } from './components/select-categories/select-categories.component';
 import { PersonsComponent } from './components/persons/persons.component';
+import { AddressComponent } from './components/address/address.component';
 
 
 
@@ -37,7 +38,8 @@ import { PersonsComponent } from './components/persons/persons.component';
     ProductComponent,
     ProviderComponent,
     SelectCategoriesComponent,
-    PersonsComponent
+    PersonsComponent,
+    AddressComponent
   ],
 
   exports:[
