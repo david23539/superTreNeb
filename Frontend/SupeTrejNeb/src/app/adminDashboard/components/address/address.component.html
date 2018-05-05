@@ -7,7 +7,106 @@
       <input id="searchPerson"  [(ngModel)]="searchResult" (keyup)="filterItem()"  type="text" >
       <label for="searchPerson">{{AddressSearch}}</label>
     </div>
-    <tableComponenets [headsTable]="headsTables" [bodyTableContent]=bodyTable (paginationParams)="getProviderByPagination($event);" [countRecord]="count"  (changeItem)="addUpdatePerson($event)"></tableComponenets>
+    <tableComponenets [headsTable]="headsTables" [bodyTableContent]=bodyTable (paginationParams)="getAddressesByPagination($event);" [countRecord]="count"  (changeItem)="addUpdateAddress($event)"></tableComponenets>
   </div>
 </div>
+</div>
+
+<div id="createAddress" #modals class="modal">
+  <div class="modal-content">
+    <h4 class="pink-text center">{{ADD_ADDRESS_TITTLE}}</h4>
+    <div class="row">
+      <form #createUpdateForm = "ngForm" (ngSubmit)="onSubmit(createUpdateForm)">
+        <div class="row">
+          <div class="input-field col s12 l6 pink-text">
+            <i class="material-icons prefix ">local_offer</i>
+            <input id="province"  placeholder="Solo letras" name="province" #province="ngModel" autocomplete="false" [(ngModel)]="address_IN.dataAddress.provincia" mz-tooltip [tooltip]="'Provincia'" (blur)="validateVisualForm('province')" type="text"  [class]="classStyleProvinceForm" required>
+            <label for="province">{{LABEL_PROVINCE}}</label>
+          </div>
+          <div class="input-field col s12 l6 pink-text">
+            <i class="material-icons prefix ">local_offer</i>
+            <input id="population"  placeholder="Solo letras" name="population" #population="ngModel" autocomplete="false" [(ngModel)]="address_IN.dataAddress.poblacion" mz-tooltip [tooltip]="'Población'" (blur)="validateVisualForm('population')" type="text"  [class]="classStylePopulationForm" required>
+            <label for="population">{{LABEL_POPULATION}}</label>
+          </div>
+          <div class="input-field col s12 l6 pink-text">
+            <i class="material-icons prefix ">local_offer</i>
+            <input id="typeVia"  placeholder="Solo letras" name="typeVia" #typeVia="ngModel" autocomplete="false" [(ngModel)]="address_IN.dataAddress.tipoVia" mz-tooltip [tooltip]="'Tipo de Via'" type="text">
+            <label for="typeVia">{{LABEL_TYPEVIA}}</label>
+          </div>
+
+          <div class="input-field col s12 l6 pink-text">
+            <i class="material-icons prefix ">local_offer</i>
+            <input id="PostalCode"  placeholder="Solo letras" name="PostalCode" #PostalCode="ngModel" autocomplete="false" [(ngModel)]="address_IN.dataAddress.codigoPostal" mz-tooltip [tooltip]="'Código Postal'"  type="text">
+            <label for="PostalCode">{{LABEL_POSTALCODE}}</label>
+          </div>
+
+          <div class="input-field col s12 l6 pink-text">
+            <i class="material-icons prefix ">local_offer</i>
+            <input id="number"  placeholder="Solo letras" name="number" #number="ngModel" autocomplete="false" [(ngModel)]="address_IN.dataAddress.numero" mz-tooltip [tooltip]="'Numero de Puerta'" (blur)="validateVisualForm('number')" type="number"  [class]="classStyleNumberForm"required>
+            <label for="number">{{LABEL_NUMBER}}</label>
+          </div>
+          <div class="input-field col s12 l6 pink-text">
+            <i class="material-icons prefix ">local_offer</i>
+            <input id="door"  placeholder="Solo letras" name="door" #door="ngModel" autocomplete="false" [(ngModel)]="address_IN.dataAddress.puerta" mz-tooltip [tooltip]="'Puerta'" (blur)="validateVisualForm('door')" type="text" [class]="classStyleDoorForm" required>
+            <label for="door">{{LABEL_DOOR}}</label>
+          </div>
+
+          <div class="input-field col s12 l6 pink-text">
+            <i class="material-icons prefix ">local_offer</i>
+            <input id="floor"  placeholder="Solo letras" name="floor" #floor="ngModel" autocomplete="false" [(ngModel)]="address_IN.dataAddress.piso" mz-tooltip [tooltip]="'Planta'" (blur)="validateVisualForm('floor')" type="number" [class]="classStyleFloorForm" required>
+            <label for="floor">{{LABEL_FLOOR}}</label>
+          </div>
+
+          <div class="input-field col s12 l6 pink-text">
+            <i class="material-icons prefix ">local_offer</i>
+            <input id="NameStreet"  placeholder="Solo letras" name="NameStreet" #NameStreet="ngModel" autocomplete="false" [(ngModel)]="address_IN.dataAddress.nombreCalle" mz-tooltip [tooltip]="'Nombre de la calle'" (blur)="validateVisualForm('nameStreet')" type="text"  [class]="classStyleNameStreetForm" required>
+            <label for="NameStreet">{{LABEL_NAME_STREET}}</label>
+          </div>
+        </div>
+
+        <div class="row" >
+          <div class="input-field col s12" *ngIf="buttonSaveUpdate">
+            <button class="btn waves-effect waves-light col s12" type="submit" name="action" [disabled]="!createUpdateForm.form.valid">{{LABEL_SAVE}}
+              <i class="material-icons right">save</i>
+            </button>
+          </div>
+
+          <div class="input-field col s12" *ngIf="!buttonSaveUpdate">
+            <button class="btn waves-effect orange lighten-1 waves-light col s12" type="submit" name="action" [disabled]="!createUpdateForm.form.valid">{{LABEL_UPDATE}}
+              <i class="material-icons right">save</i>
+            </button>
+          </div>
+
+          <div class="input-field col s12">
+            <button class="btn modal-action modal-close waves-effect waves-light blue col s12" type="button" >{{LABEL_CANCEL}}
+              <i class="material-icons right">close</i>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div id="deletedAddres" #deletedAddress class="modal">
+  <div class="modal-content">
+    <h4 class="pink-text center">{{DELETED_ADDRESS_TITTLE}}</h4>
+    <div class="row">
+      <div class="center pink-text col l12 s12" >
+        <h6>{{DELETED_ADDRESS_SUBTITTLE}}</h6>
+      </div>
+      <div class="modal-footer">
+        <div class="right col l12 s12">
+
+          <button class="btn modal-action modal-close waves-effect waves-light red right col l3 s12" (click)="deleteAddress()" type="button" >{{LABEL_DELETED_ADDRESS}}
+            <i class="material-icons right">remove</i>
+          </button>
+          <button class="btn modal-action modal-close waves-effect waves-light blue right col l3 s12" type="button" >{{LABEL_CANCEL_ADDRESS}}
+            <i class="material-icons right">close</i>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
 </div>

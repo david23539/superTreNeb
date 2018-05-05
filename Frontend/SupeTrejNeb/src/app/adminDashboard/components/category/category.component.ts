@@ -163,6 +163,8 @@ export class CategoryComponent implements OnInit {
     }
   }
 
+
+
   onSubmit(createUpdateForm) {
 
     this.categoryModel.direccionIp.navegador = this.browser.browser;
