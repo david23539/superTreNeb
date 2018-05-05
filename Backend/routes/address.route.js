@@ -6,7 +6,7 @@ const addressController = require('../controller/address.controller')
 const md_auth = require('../middleware/autenticate.middleware')
 
 api.post('/createAddress', md_auth.ensureAuth, addressController.createAdddress)
-api.post('/updateAddress/:id', md_auth.ensureAuth, addressController.updateAddress)
+api.put('/updateAddress/:id', md_auth.ensureAuth, addressController.updateAddress)
 api.post('/getAddressPagination', md_auth.ensureAuth, addressController.getAddressByPagination)
 api.get('/filterAddress/:key', md_auth.ensureAuth, addressController.filterAddress)
 api.get('/countAddress', md_auth.ensureAuth, addressController.getCountAddress)

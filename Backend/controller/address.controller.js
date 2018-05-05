@@ -9,7 +9,7 @@ const auditoriaController = require('./saveLogs.controller')
 
 function createAdddress(req, res){
 	let params_IN = req.body
-	let address_IN = adapterAddress.addressDataAdapter(params_IN)
+	let address_IN = adapterAddress.addressDataAdapter(params_IN.dataAddress)
 	if(validationAddress.validationCreateAddress(address_IN) && validateDireccion.validateDirection(params_IN.direccionIp) ){
 		address_IN.save((err, address_OUT)=>{
 			if(err || !address_OUT){
@@ -30,7 +30,7 @@ function updateAddress(req, res){
 	let paramsIN = req.body
 	const addreesId = req.params.id
 
-	let address_IN = adapterAddress.addressDataAdapter(paramsIN)
+	let address_IN = adapterAddress.addressDataAdapter(paramsIN.dataAddress)
 	if(validationAddress.validationCreateAddress(address_IN) && validationBrowser.validateId(addreesId) && validateDireccion.validateDirection(paramsIN.direccionIp)){
 		address_IN._doc._id = addreesId
 		Address.findByIdAndUpdate(addreesId, address_IN, {new:true}, (err, address_OUT)=>{

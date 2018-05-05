@@ -26,6 +26,7 @@ function addressDataOUTLAdapter(address_IN){
 		piso: address_IN.stn_floor,
 		puerta: address_IN.stn_door,
 		nombreCalle: address_IN.stn_directionName,
+		id: address_IN._doc._id
 	}
 	return address_OUT
 
@@ -43,6 +44,7 @@ function addressDataListOUTAdapter(addressList_IN){
 			piso: item.stn_floor,
 			puerta: item.stn_door,
 			nombreCalle: item.stn_directionName,
+			id: item._doc._id
 		}
 		adressList_OUT.push(address_OUT)
 	}
