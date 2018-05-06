@@ -90,7 +90,7 @@ function filterAddress(req, res){
 }
 
 function getCountAddress(req, res){
-	Address.count({},(err, countAddress)=>{
+	Address.count({stn_status:true},(err, countAddress)=>{
 		if(err || !countAddress){
 			res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.ADDRESS_GET_ERROR})
 		}else{

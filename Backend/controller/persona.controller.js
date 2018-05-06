@@ -87,7 +87,7 @@ function deletedPrevPerson(req, res){
 function createPerson(req, res){
 	const paramsIN = req.body
 	let person_IN = new Person
-	person_IN = adapterPerson.personDataAdapterIN(paramsIN)
+	person_IN = adapterPerson.personDataAdapterIN(paramsIN.dataPerson)
 	if(validationPerson.validateAllDataPerson(person_IN) && validateDireccion.validateDirection(paramsIN.direccionIp)){
 		person_IN.save((err, person_OUT)=>{
 			if(err || !person_OUT){
