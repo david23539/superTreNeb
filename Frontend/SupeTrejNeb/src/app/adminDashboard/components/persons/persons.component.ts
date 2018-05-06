@@ -4,17 +4,20 @@ import {Person} from "../../model/person/person.model";
 import {PersonService} from "../../services/person/person.service";
 import {MzToastService} from "ng2-materialize";
 import {DataBrowser} from "../../../utils/dataBrowser";
+import {AddressService} from "../../services/address/address.service";
+import {AddressComponent} from "../address/address.component";
 
 @Component({
   selector: 'persons',
   templateUrl: './persons.component.html',
   styleUrls: ['./persons.component.css'],
-  providers: [PersonService, MzToastService, DataBrowser]
+  providers: [PersonService, MzToastService, DataBrowser, AddressService, AddressComponent]
 })
 export class PersonsComponent implements OnInit {
 
   public TITLE:string = CONSTANT.Labels.PersonTitle;
   public ADD_PERSON_TITTLE = CONSTANT.Labels.AddPerson;
+  public SELECT_ADDRESS_TITTLE = CONSTANT.Labels.SelectAddress;
   public LABEL_PERSON = CONSTANT.Labels.Person;
   public LABEL_LASTNAME = CONSTANT.Labels.lastName;
   public LABEL_LASTNAME2 = CONSTANT.Labels.lastName2;
@@ -29,15 +32,17 @@ export class PersonsComponent implements OnInit {
   public searchResult:string = "";
   public PersonSearch:string = CONSTANT.Labels.SearchPerson;
   public headsTables:any = CONSTANT.headPerson;
+  public headsTablesAddress:any = CONSTANT.headAddress;
   public responseServer:any;
   public Person_IN:Person;
   public bodyTable:any;
+  public bodyTableAddress:any;
   public count:number;
   public operationType: string;
   public classStyleForm:string = "";
   public buttonSaveUpdate:boolean;
   public browser: any;
-
+  public responseComponent: any;
   public invalidClassStyleForm:string = CONSTANT.Styles.Invalid;
   public validClassStyleForm:string = CONSTANT.Styles.Valid;
   public invalidClassStyleDNIForm:string = CONSTANT.Styles.Invalid;
@@ -47,7 +52,7 @@ export class PersonsComponent implements OnInit {
   public validClassStyleEmailForm:string = CONSTANT.Styles.Valid;
   public classStyleEmailForm:string = "";
 
-  constructor(private _personService:PersonService, private toastService: MzToastService, private _getDataBrowser: DataBrowser) {
+  constructor(private _personService:PersonService, private toastService: MzToastService, private _getDataBrowser: DataBrowser, private addreesComponent: AddressComponent) {
     this.Person_IN = new Person({nombre:"", apellido1:"", apellido2:"", direcction:"", dni: "", email: "", movil: 0, telefono: 0},{id:""},
       {page: 0}, {navegador: ""});
     this.buttonSaveUpdate = true;
@@ -68,6 +73,26 @@ export class PersonsComponent implements OnInit {
         this.toastService.show(CONSTANT.messageToast.PERSON_ERROR, 4000, CONSTANT.Styles.Error);
       }
     )
+  }
+
+
+
+  getAddrees(page){
+
+    this.addreesComponent.getAddressByPagination(0);
+    this.addreesComponent.sendData.subscribe(
+      response=>{
+        this.responseComponent = response;
+        this.bodyTableAddress = this.responseComponent.address;
+      },error=>{
+        console.log("error");
+      }
+    );
+  }
+
+  selectAddress(event){
+    this.Person_IN.dataPerson.direcction = event.object.id;
+    $('#selectAddress').modal('close');
   }
 
   validateVisualForm(value){
@@ -113,6 +138,7 @@ export class PersonsComponent implements OnInit {
   ngOnInit() {
     this.getPerson(0);
     this.createInstanceModal();
+
   }
 
   filterItem(){
@@ -135,6 +161,7 @@ export class PersonsComponent implements OnInit {
              this.responseServer = response;
              if(this.responseServer.message === CONSTANT.ResponseServers.Person_Success){
                createUpdateForm.reset();
+               this.getPerson(0);
                this.toastService.show(CONSTANT.ResponseServers.Person_Success, 4000, CONSTANT.Styles.Success);
                $('#createPerson').modal('close');
              }else if(this.responseServer.message === CONSTANT.ResponseServers.InvalidParams){

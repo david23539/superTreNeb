@@ -121,7 +121,7 @@ export const CONSTANT = {
   headCategory:["Nombre", "Descripción", "IVA"],
   headProduct:["Nombre", "Descripción", "Coste", "Referencia", "Iva", "Margen", "Stock","Categoría", "Imagen"],
   headProvider:["Nombre Empresa", "Persona Responsable", "Persona Contacto", "NIF", "Dirección"],
-  headPerson:["Nombre", "Apellido1", "Apellido2", "DNI", "Teléfono", "Mobil", "Email", "Imagen", "Población"],
+  headPerson:["Nombre", "Apellido1", "Apellido2", "DNI", "Teléfono", "Móvil", "Email", "Imagen", "Población"],
   headAddress:["Provincia", "Población", "Tipo de Vía", "Código Postal", "Numero", "Piso", "Puerta", "Nombre Vía"],
   headListCategories:["Nombre Categoría"],
 

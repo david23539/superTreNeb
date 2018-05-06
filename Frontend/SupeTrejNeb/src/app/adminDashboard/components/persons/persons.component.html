@@ -60,7 +60,7 @@
         </div>
         <div class="row">
           <div class="input-field col s12 l12">
-            <button class="btn waves-effect waves-light col s12" type="button">{{LABEL_ADDRESS}}
+            <button class="btn waves-effect waves-light col s12 modal-trigger" data-target="selectAddress" (click)="getAddrees(0)" type="button">{{LABEL_ADDRESS}}
               <i class="material-icons right">save</i>
             </button>
           </div>
@@ -88,3 +88,13 @@
     </div>
   </div>
 </div>
+
+<div id="selectAddress" #modalAddress class="modal">
+  <div class="modal-content">
+    <h4 class="pink-text center">{{SELECT_ADDRESS_TITTLE}}</h4>
+    <div class="row">
+      <table-list [headsTable]="headsTablesAddress" [bodyTableContent]="bodyTableAddress" (changeItem)="selectAddress($event)"></table-list>
+    </div>
+  </div>
+</div>
+

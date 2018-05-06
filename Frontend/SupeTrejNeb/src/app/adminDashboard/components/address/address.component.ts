@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {CONSTANT} from "../../../services/constant";
 import {Address} from "../../model/address/address.model";
 import {DataBrowser} from "../../../utils/dataBrowser";
 import {AddressService} from "../../services/address/address.service";
 import {MzToastService} from "ng2-materialize";
+
+
 
 @Component({
   selector: 'address',
@@ -40,7 +42,7 @@ export class AddressComponent implements OnInit {
   public address_IN: Address;
   public browser: any;
   public responseServer:any;
-
+  public observable:any;
   public invalidClassStyleNumberForm:string = CONSTANT.Styles.Invalid;
   public validClassStyleNumberForm:string = CONSTANT.Styles.Valid;
   public classStyleNumberForm:string = "";
@@ -61,10 +63,15 @@ export class AddressComponent implements OnInit {
   public classStyleNameStreetForm:string = "";
   public itemIdSelectDeleted:string;
 
+  @Output() sendData = new EventEmitter();
+
   constructor(private _getDataBrowser: DataBrowser, private _addressService:AddressService, private toastService: MzToastService) {
     this.initializateAddress();
     this.browser = this._getDataBrowser.getDataBrowser();
   }
+
+
+
 
   private initializateAddress(){
     this.address_IN = new Address({provincia:"", poblacion:"",tipoVia:"",codigoPostal:"",numero:0,piso:0,puerta:"",nombreCalle:""},
@@ -86,6 +93,12 @@ export class AddressComponent implements OnInit {
         this.toastService.show(CONSTANT.messageToast.ADDRESS_ERROR, 4000, CONSTANT.Styles.Error);
     }
     )
+  }
+
+  private sendAddress(){
+    this.sendData.emit({
+      address: this.bodyTable,
+    })
   }
 
   private createInstanceModal(){
@@ -119,7 +132,7 @@ export class AddressComponent implements OnInit {
   }
 
   getAddressesByPagination(event){
-
+    this.getAddressByPagination(event.page - 1);
   }
 
   validateVisualForm(value){
@@ -178,13 +191,15 @@ export class AddressComponent implements OnInit {
         if(this.responseServer.message === CONSTANT.ResponseServers.No_Data_Address){
           this.toastService.show(CONSTANT.messageToast.NO_DATA_AVAIBLE, 4000, CONSTANT.Styles.Info);
         }else{
-          this.bodyTable = this.responseServer.address
+          this.bodyTable = this.responseServer.address;
+          this.sendAddress();
         }
       },error =>{
         this.toastService.show(CONSTANT.messageToast.ADDRESS_ERROR, 4000, CONSTANT.Styles.Error);
       }
     )
   }
+
 
   onSubmit(createUpdateForm){
     if(this.operationType === CONSTANT.OperationTables.create){
