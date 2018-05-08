@@ -5,14 +5,20 @@ import {Provider} from "../../model/provider/provider.model";
 import {MzToastService} from "ng2-materialize";
 import {CategoryComponent} from "../category/category.component";
 import {CategoryService} from "../../services/category/category.service";
-import {TableListComponent} from "../../utils/table-list/table-list.component";
 import {SelectCategoriesComponent} from "../select-categories/select-categories.component";
+import {PersonsComponent} from "../persons/persons.component";
+import {PersonService} from "../../services/person/person.service";
+import {AddressComponent} from "../address/address.component";
+import {AddressService} from "../../services/address/address.service";
+
 
 @Component({
   selector: 'providers',
   templateUrl: './provider.component.html',
   styleUrls: ['./provider.component.css'],
-  providers:[ProviderService, MzToastService, CategoryComponent, CategoryService, SelectCategoriesComponent]
+  providers:[ProviderService, MzToastService, CategoryComponent,
+    CategoryService, SelectCategoriesComponent, PersonService, PersonsComponent, AddressService,
+    AddressComponent]
 })
 export class ProviderComponent implements OnInit {
 
@@ -54,13 +60,21 @@ export class ProviderComponent implements OnInit {
   public TOLLTIP_CIF:string = CONSTANT.Labels.TooltipCif;
   public TOLLTIP_SOCIAL_REASON:string = CONSTANT.Labels.TooltipReason;
   public NAMEPROVIDER:string = CONSTANT.Labels.SocialReason;
+  public SELECT_PERSON_LABEL = CONSTANT.Labels.SelectPerson;
   public CIF:string = CONSTANT.Labels.Cif;
   public categoriesAllTable:any =[];
+  public personContactAllList_OUT:any = [];
+  public personResponsibleAllList_OUT:any = [];
+  public headPersonTable:any = CONSTANT.headPerson;
   public categoryUsed:any = [];
 
 
 
-  constructor(private _providerService:ProviderService, private toastService: MzToastService, private categories:CategoryComponent, private selectCategories: SelectCategoriesComponent) {
+  constructor(private _providerService:ProviderService,
+              private toastService: MzToastService,
+              private categories:CategoryComponent,
+              private selectCategories: SelectCategoriesComponent,
+              private _personController: PersonsComponent) {
     this.providerModel_IN = new Provider(
       {reasonSocial:"",resposiblePerson:"",contactPerson:"",nifBusiness:"",localizationBussiness:"",relationatedCategories:""},
       {id:""},
@@ -92,6 +106,16 @@ export class ProviderComponent implements OnInit {
 
   getProviderByPagination(event){
 
+  }
+
+  selectPersonContact(event){
+    this.providerModel_IN.dataProvider.contactPerson = event.object.id;
+    $('#selectContactPerson').modal('close');
+  }
+
+  selectPersonResposible(event){
+    this.providerModel_IN.dataProvider.resposiblePerson = event.object.id;
+    $('#selectResponsiblePerson').modal('close');
   }
 
   categoriesSelected(event){
@@ -171,6 +195,22 @@ export class ProviderComponent implements OnInit {
   }
 
   getPersons(){
+
+    if(this.personContactAllList_OUT.length != 0){
+      this.personResponsibleAllList_OUT = this.personContactAllList_OUT;
+    }else if(this.personResponsibleAllList_OUT.length != 0){
+      this.personContactAllList_OUT = this.personResponsibleAllList_OUT;
+    }else if(this.personResponsibleAllList_OUT.length == 0 && this.personContactAllList_OUT.length == 0){
+      this._personController.getPerson(0);
+      this._personController.sendPerson.subscribe(
+        response=>{
+          this.personContactAllList_OUT = response.persons;
+          this.personResponsibleAllList_OUT = response.persons;
+        },error=>{
+          console.log(error);
+        }
+      )
+    }
 
   }
 

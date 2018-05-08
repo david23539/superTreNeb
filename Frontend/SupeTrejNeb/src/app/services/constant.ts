@@ -43,6 +43,7 @@ export const CONSTANT = {
     AddCategory:"Añadir Categorías",
     AddPerson:"Añadir Persona",
     AddAddress:"Añadir Dirección",
+    SelectPerson:"Seleccione Persona",
     DeleteCategory:"Eliminar Categoría",
     DeleteAddress:"Eliminar Dirección",
     DeleteProduct:"Eliminar Producto",

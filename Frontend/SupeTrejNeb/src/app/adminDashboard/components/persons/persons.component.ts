@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {CONSTANT} from "../../../services/constant";
 import {Person} from "../../model/person/person.model";
 import {PersonService} from "../../services/person/person.service";
@@ -52,6 +52,8 @@ export class PersonsComponent implements OnInit {
   public validClassStyleEmailForm:string = CONSTANT.Styles.Valid;
   public classStyleEmailForm:string = "";
 
+  @Output() sendPerson = new EventEmitter();
+
   constructor(private _personService:PersonService, private toastService: MzToastService, private _getDataBrowser: DataBrowser, private addreesComponent: AddressComponent) {
     this.Person_IN = new Person({nombre:"", apellido1:"", apellido2:"", direcction:"", dni: "", email: "", movil: 0, telefono: 0},{id:""},
       {page: 0}, {navegador: ""});
@@ -59,7 +61,7 @@ export class PersonsComponent implements OnInit {
     this.browser = this._getDataBrowser.getDataBrowser();
   }
 
-  private getPerson(page){
+  public getPerson(page){
     this.Person_IN.pagination.page = page*10;
     this._personService.getPersonPagination(this.Person_IN).subscribe(
       response=>{
@@ -68,6 +70,7 @@ export class PersonsComponent implements OnInit {
           this.toastService.show(CONSTANT.messageToast.NO_DATA_AVAIBLE, 4000, CONSTANT.Styles.Info);
         }else{
           this.bodyTable = this.responseServer.persons;
+          this.emitPersons(this.bodyTable);
         }
       },error=>{
         this.toastService.show(CONSTANT.messageToast.PERSON_ERROR, 4000, CONSTANT.Styles.Error);
@@ -75,6 +78,11 @@ export class PersonsComponent implements OnInit {
     )
   }
 
+  private emitPersons(listPerson_IN){
+    this.sendPerson.emit({
+      persons: listPerson_IN
+    })
+  }
 
 
   getAddrees(page){

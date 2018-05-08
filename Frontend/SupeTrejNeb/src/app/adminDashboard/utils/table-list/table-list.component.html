@@ -13,7 +13,9 @@
       <tbody>
       <tr *ngFor="let itemBody of bodyTableContent">
         <td *ngFor="let propertyItem of propertiesContent" (click)="selectElement(itemBody)">
-          <span *ngIf="propertyItem !== 'id'">{{itemBody[propertyItem]}}</span>
+          <span *ngIf="propertyItem === 'direccion'">{{itemBody[propertyItem].location}}</span>
+          <span *ngIf="propertyItem !== 'id' && propertyItem !== 'direccion'">{{itemBody[propertyItem]}}</span>
+
           <!--<span>{{itemBody[propertyItem]}}</span>-->
         </td>
       </tr>

@@ -37,7 +37,7 @@
 
         <div class="row">
           <div class="input-field col s12 l6 pink-text">
-            <button class="btn waves-effect blue lighten-1 waves-light col s12" mz-tooltip [tooltip]=TOLLTIP_RESPOSIBLE  name="action" >{{LABEL_RESPONSIBLE}}
+            <button class="btn waves-effect blue lighten-1 waves-light col s12 modal-trigger" mz-tooltip [tooltip]=TOLLTIP_RESPOSIBLE  name="action" (click)="getPersons();" data-target="selectResponsiblePerson">{{LABEL_RESPONSIBLE}}
               <i class="material-icons prefix ">person</i>
             </button>
           </div>
@@ -103,11 +103,23 @@
 
 <div id="selectContactPerson" #modalContactPerson class="modal">
   <div class="modal-content">
-
+    <h4 class="pink-text center">{{SELECT_PERSON_LABEL}}</h4>
     <div class="row">
 
       <div class="col l12 s12">
-        <!--<select-categories [categoryObjectList]="categoriesAllTable" [categoryUsedList]="categoryUsed" (saveCategoriesSelected)="categoriesSelected($event);"></select-categories>-->
+        <table-list [bodyTableContent]="personContactAllList_OUT" [headsTable]="headPersonTable" (changeItem)="selectPersonContact($event);"></table-list>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="selectResponsiblePerson" #modalResponsiblePerson class="modal">
+  <div class="modal-content">
+    <h4 class="pink-text center">{{SELECT_PERSON_LABEL}}</h4>
+    <div class="row">
+
+      <div class="col l12 s12">
+        <table-list [bodyTableContent]="personResponsibleAllList_OUT" [headsTable]="headPersonTable" (changeItem)="selectPersonResposible($event);"></table-list>
       </div>
     </div>
   </div>
