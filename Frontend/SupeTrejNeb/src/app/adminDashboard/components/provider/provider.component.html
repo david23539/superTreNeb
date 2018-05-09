@@ -43,7 +43,7 @@
           </div>
 
           <div class="input-field col s12 l6 pink-text">
-            <button class="btn waves-effect blue lighten-1 waves-light col s12" mz-tooltip [tooltip]=TOLLTIP_ADDRESS  name="action" >{{LABEL_ADDRESS}}
+            <button class="btn waves-effect blue lighten-1 waves-light col s12 modal-trigger" mz-tooltip [tooltip]=TOLLTIP_ADDRESS  name="action" data-target="selectAddress" (click)="getAddress();">{{LABEL_ADDRESS}}selectAddress
               <i class="material-icons prefix ">place</i>
             </button>
           </div>
@@ -120,6 +120,18 @@
 
       <div class="col l12 s12">
         <table-list [bodyTableContent]="personResponsibleAllList_OUT" [headsTable]="headPersonTable" (changeItem)="selectPersonResposible($event);"></table-list>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="selectAddress" #modalAddress class="modal">
+  <div class="modal-content">
+    <h4 class="pink-text center">{{SELECT_ADDRESS_LABEL}}</h4>
+    <div class="row">
+
+      <div class="col l12 s12">
+        <table-list [bodyTableContent]="addressAllList_OUT" [headsTable]="headAddressTable" (changeItem)="selectAddress($event);"></table-list>
       </div>
     </div>
   </div>

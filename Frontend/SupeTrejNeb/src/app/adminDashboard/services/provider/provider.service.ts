@@ -21,6 +21,15 @@ export class ProviderService {
     return this._http.post(this.url+'getProviders', param, {headers:header})
   }
 
+  createProvider(provider_IN){
+    this.token = this._loginService.getToken();
+    let param = JSON.stringify(provider_IN);
+    let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
+    return this._http.post(this.url+'createProvider', param, {headers:header})
+  }
+
+
+
 
 
 }

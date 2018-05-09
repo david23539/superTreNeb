@@ -17,6 +17,7 @@ export const CONSTANT = {
     Category_Success:"Se ha creado la categoria con exito",
     Direction_Success:"Se ha creado la dirección con exito",
     Person_Success:"Se ha creado la persona con exito",
+    Provider_Success:"Se ha creado el proveedor con exito",
     Category_Success_Update:"Se ha actualizado correctamente la categoria",
     Product_Success_Update:"Se ha actualizado correctamente el producto",
     Address_Success_Update:"Se ha actualizado correctamente la dirección",
@@ -129,6 +130,7 @@ export const CONSTANT = {
   messageToast:{
     NOSELECTEDITEM: "Debe seleccional un elemento antes de hacer algun cambio",
     CATEGORY_NEW_SUCCESS: "Se ha creado con exito la categoría",
+    PROVIDER_NEW_SUCCESS: "Se ha creado con exito el proveedor",
     PRODUCT_NEW_SUCCESS: "Se ha creado con exito el producto",
     ADDRESS_NEW_SUCCESS: "Se ha creado la dirección con exito",
     ADDRESS_UPDATE_SUCCESS: "Se ha actualizado la dirección con exito",

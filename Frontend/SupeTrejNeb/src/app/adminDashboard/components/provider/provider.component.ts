@@ -10,6 +10,7 @@ import {PersonsComponent} from "../persons/persons.component";
 import {PersonService} from "../../services/person/person.service";
 import {AddressComponent} from "../address/address.component";
 import {AddressService} from "../../services/address/address.service";
+import {DataBrowser} from "../../../utils/dataBrowser";
 
 
 @Component({
@@ -18,7 +19,7 @@ import {AddressService} from "../../services/address/address.service";
   styleUrls: ['./provider.component.css'],
   providers:[ProviderService, MzToastService, CategoryComponent,
     CategoryService, SelectCategoriesComponent, PersonService, PersonsComponent, AddressService,
-    AddressComponent]
+    AddressComponent, DataBrowser]
 })
 export class ProviderComponent implements OnInit {
 
@@ -61,12 +62,16 @@ export class ProviderComponent implements OnInit {
   public TOLLTIP_SOCIAL_REASON:string = CONSTANT.Labels.TooltipReason;
   public NAMEPROVIDER:string = CONSTANT.Labels.SocialReason;
   public SELECT_PERSON_LABEL = CONSTANT.Labels.SelectPerson;
+  public SELECT_ADDRESS_LABEL = CONSTANT.Labels.SelectAddress;
   public CIF:string = CONSTANT.Labels.Cif;
   public categoriesAllTable:any =[];
   public personContactAllList_OUT:any = [];
   public personResponsibleAllList_OUT:any = [];
+  public addressAllList_OUT:any = [];
   public headPersonTable:any = CONSTANT.headPerson;
+  public headAddressTable:any = CONSTANT.headAddress;
   public categoryUsed:any = [];
+  public browser: any;
 
 
 
@@ -74,12 +79,15 @@ export class ProviderComponent implements OnInit {
               private toastService: MzToastService,
               private categories:CategoryComponent,
               private selectCategories: SelectCategoriesComponent,
-              private _personController: PersonsComponent) {
+              private _personController: PersonsComponent,
+              private _addressController: AddressComponent,
+              private _getDataBrowser: DataBrowser) {
     this.providerModel_IN = new Provider(
       {reasonSocial:"",resposiblePerson:"",contactPerson:"",nifBusiness:"",localizationBussiness:"",relationatedCategories:""},
       {id:""},
       {page:0},
-      {navegador:""})
+      {navegador:""});
+    this.browser = this._getDataBrowser.getDataBrowser();
   }
 
 
@@ -99,7 +107,21 @@ export class ProviderComponent implements OnInit {
     )
   }
 
+  getAddress(){
+    this._addressController.getAddressByPagination(0);
+    this._addressController.sendData.subscribe(
+      response=>{
+       this.addressAllList_OUT = response.address;
+      },error=>{
+        console.log(error);
+      }
+    )
+  }
 
+  selectAddress(event){
+    this.providerModel_IN.dataProvider.localizationBussiness = event.object.id;
+    $('#selectAddress').modal('close');
+  }
 
   filterItem(){
   }
@@ -147,8 +169,36 @@ export class ProviderComponent implements OnInit {
   }
 
 
-  onSubmit(){
+  onSubmit(createUpdateForm){
+    if(this.operationType === CONSTANT.OperationTables.create){
+      if(this.checkValidateData){
+        this.providerModel_IN.direccionIp.navegador = this.browser.browser;
+        this._providerService.createProvider(this.providerModel_IN).subscribe(
+          response=>{
+            this.responseServer = response;
+            if(this.responseServer.message === CONSTANT.ResponseServers.InvalidParams){
+              this.toastService.show(CONSTANT.ResponseServers.InvalidParams, 4000, CONSTANT.Styles.Warning);
+            }else if(this.responseServer.message === CONSTANT.ResponseServers.Provider_Success){
+              this.toastService.show(CONSTANT.messageToast.PROVIDER_NEW_SUCCESS, 4000, CONSTANT.Styles.Success);
+              createUpdateForm.reset();
+              $('#providerModal').modal('close');
+              this.getProvider(0);
 
+            }
+          },error=> {
+            this.toastService.show(CONSTANT.messageToast.PROVIDER_ERROR, 4000, CONSTANT.Styles.Error);
+        }
+        )
+      }else{
+        this.toastService.show(CONSTANT.ResponseServers.InvalidParams, 4000, CONSTANT.Styles.Warning);
+      }
+    }
+
+  }
+
+  private checkValidateData(){
+    return !!(this.providerModel_IN.dataProvider.relationatedCategories.length != 0 && this.providerModel_IN.dataProvider.resposiblePerson
+      && this.providerModel_IN.dataProvider.contactPerson && this.providerModel_IN.dataProvider.localizationBussiness);
   }
 
   validateVisualForm(value){
