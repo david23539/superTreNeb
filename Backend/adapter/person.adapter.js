@@ -42,7 +42,7 @@ function personDataOUTAdapter(person_IN){
 		telefono:person_IN.stn_telephone,
 		dni:person_IN.stn_dni,
 		email:person_IN.stn_email,
-		direccion:addressAdapter.addressDataOUTLAdapter(person_IN.stn_fk_address),
+		direccion:addressAdapter.addressDataOUTLAdapter(person_IN._doc.stn_fk_address),
 		image:person_IN.stn_image
 
 	}

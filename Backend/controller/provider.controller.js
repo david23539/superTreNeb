@@ -92,8 +92,18 @@ function getProvidersByPagination(req, res){
 		ProviderModel.find({stn_status:true})
 			.skip(param.pagination.page)
 			.limit(10)
-			.populate('stn_responsiblePerson')
-			.populate('stn_contactPerson')
+			.populate({
+				path:'stn_responsiblePerson',
+				populate:{
+					path: 'stn_fk_address'
+				}
+			})
+			.populate({
+                path:'stn_contactPerson',
+                populate:{
+                    path: 'stn_fk_address'
+                }
+            })
 			.populate('stn_categoryFk')
 			.populate('stn_addressFkBussiness')
 			.exec((err, provider_OUT)=>{
