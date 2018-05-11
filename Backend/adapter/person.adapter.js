@@ -43,7 +43,8 @@ function personDataOUTAdapter(person_IN){
 		dni:person_IN.stn_dni,
 		email:person_IN.stn_email,
 		direccion:addressAdapter.addressDataOUTLAdapter(person_IN._doc.stn_fk_address),
-		image:person_IN.stn_image
+		image:person_IN.stn_image,
+		id:person_IN._doc._id
 
 	}
 	return personOUT

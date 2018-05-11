@@ -99,11 +99,11 @@ function getProvidersByPagination(req, res){
 				}
 			})
 			.populate({
-                path:'stn_contactPerson',
-                populate:{
-                    path: 'stn_fk_address'
-                }
-            })
+				path:'stn_contactPerson',
+				populate:{
+					path: 'stn_fk_address'
+				}
+			})
 			.populate('stn_categoryFk')
 			.populate('stn_addressFkBussiness')
 			.exec((err, provider_OUT)=>{
@@ -127,8 +127,18 @@ function filterProvider(req, res){
 	if(validationGlobal.validateId(keyword)){
 		ProviderModel.find({stn_businessName:{$regex: keyword, $options: 'i'}, stn_status:true})
 			.limit(10)
-			.populate('stn_responsiblePerson')
-			.populate('stn_contactPerson')
+			.populate({
+				path:'stn_responsiblePerson',
+				populate:{
+					path: 'stn_fk_address'
+				}
+			})
+			.populate({
+				path:'stn_contactPerson',
+				populate:{
+					path: 'stn_fk_address'
+				}
+			})
 			.populate('stn_categoryFk')
 			.populate('stn_addressFkBussiness')
 			.exec((err, providers_OUT)=>{
@@ -144,6 +154,18 @@ function filterProvider(req, res){
 	}else{
 		paramsIvalids(res)
 	}
+}
+
+function countProvider(req, res) {
+	ProviderModel.count({stn_status:true},(err, count)=>{
+		if(err){
+			res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PROVIDER_GET_ERROR})
+		}else if(!count){
+			res.status(constantFile.httpCode.PETITION_CORRECT).send({message:constantFile.functions.NO_PROVIDERS_AVAIBLE})
+		}else{
+			res.status(constantFile.httpCode.PETITION_CORRECT).send({count: count})
+		}
+	})
 }
 
 
@@ -163,5 +185,6 @@ module.exports={
 	updateProvider,
 	deleteProvider,
 	getProvidersByPagination,
-	filterProvider
+	filterProvider,
+	countProvider
 }

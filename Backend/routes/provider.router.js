@@ -11,6 +11,7 @@ const md_auth = require('../middleware/autenticate.middleware')
 api.post('/createProvider', md_auth.ensureAuth, providerController.createProvider)
 api.post('/getProviders', md_auth.ensureAuth, providerController.getProvidersByPagination)
 api.post('/updateProvider/:id', md_auth.ensureAuth, providerController.updateProvider)
+api.get('/countProvider', md_auth.ensureAuth, providerController.countProvider)
 api.get('/filterProvider/:key', md_auth.ensureAuth, providerController.filterProvider)
 api.delete('/deleteProvider/:id', md_auth.ensureAuth, providerController.deleteProvider)
 
