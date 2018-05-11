@@ -82,6 +82,7 @@ export class ProviderComponent implements OnInit {
               private _personController: PersonsComponent,
               private _addressController: AddressComponent,
               private _getDataBrowser: DataBrowser) {
+
     this.providerModel_IN = new Provider(
       {reasonSocial:"",resposiblePerson:"",contactPerson:"",nifBusiness:"",localizationBussiness:"",relationatedCategories:""},
       {id:""},
@@ -100,7 +101,19 @@ export class ProviderComponent implements OnInit {
           this.toastService.show(CONSTANT.messageToast.NO_DATA_AVAIBLE, 4000, CONSTANT.Styles.Info);
         }else{
         this.bodyTable = this.responseServer.providers;
+        this.getCountProvider();
         }
+      },error=>{
+        this.toastService.show(CONSTANT.messageToast.PROVIDER_ERROR, 4000, CONSTANT.Styles.Error);
+      }
+    )
+  }
+
+  private getCountProvider(){
+    this._providerService.countProviders().subscribe(
+      response=>{
+        this.responseServer = response;
+        this.countProvider = this.responseServer.count;
       },error=>{
         this.toastService.show(CONSTANT.messageToast.PROVIDER_ERROR, 4000, CONSTANT.Styles.Error);
       }
@@ -124,10 +137,34 @@ export class ProviderComponent implements OnInit {
   }
 
   filterItem(){
+    if(this.searchResult && this.searchResult.length < 3) {
+      this.getProvider(0);
+    }else{
+      this.getProviderFilter();
+    }
   }
 
   getProviderByPagination(event){
+    this.getProvider(event.page - 1);
+  }
 
+  private getProviderFilter(){
+    this._providerService.filterProvider(this.searchResult).subscribe(
+      response=>{
+        this.responseServer = response;
+        if(this.responseServer.message === CONSTANT.ResponseServers.No_Data_Provider) {
+          this.toastService.show(CONSTANT.messageToast.NO_DATA_AVAIBLE, 4000, CONSTANT.Styles.Info);
+        }else if(this.responseServer.message === CONSTANT.ResponseServers.InvalidParams){
+            this.toastService.show(CONSTANT.ResponseServers.InvalidParams, 4000, CONSTANT.Styles.Warning);
+
+        }else{
+          this.bodyTable = this.responseServer.providers;
+
+        }
+      },error=>{
+        console.log(error);
+      }
+    )
   }
 
   selectPersonContact(event){
@@ -192,6 +229,28 @@ export class ProviderComponent implements OnInit {
       }else{
         this.toastService.show(CONSTANT.ResponseServers.InvalidParams, 4000, CONSTANT.Styles.Warning);
       }
+    }else if(this.operationType === CONSTANT.OperationTables.update){
+      this.providerModel_IN.direccionIp.navegador = this.browser.browser;
+      if(this.checkValidateData()){
+        this._providerService.updateProvider(this.providerModel_IN).subscribe(
+          response=>{
+            this.responseServer = response;
+            if(this.responseServer.message === CONSTANT.ResponseServers.InvalidParams){
+              this.toastService.show(CONSTANT.ResponseServers.InvalidParams, 4000, CONSTANT.Styles.Warning);
+            }else{
+              this.toastService.show(CONSTANT.messageToast.PROVIDER_UPDATE_SUCCESS, 4000, CONSTANT.Styles.Success);
+              createUpdateForm.reset();
+              $('#providerModal').modal('close');
+              this.getProvider(0);
+            }
+
+          },error=>{
+            this.toastService.show(CONSTANT.messageToast.PROVIDER_ERROR, 4000, CONSTANT.Styles.Error);
+          }
+        )
+      }else{
+        this.toastService.show(CONSTANT.ResponseServers.InvalidParams, 4000, CONSTANT.Styles.Warning);
+      }
     }
 
   }
@@ -232,16 +291,29 @@ export class ProviderComponent implements OnInit {
     }else if(event.operation === CONSTANT.OperationTables.update && event.items){
       this.operationType = CONSTANT.OperationTables.update;
       $('#providerModal').modal('open');
-      // this.clearModal();
       this.buttonSaveUpdate = false;
-      // this.initStateModal();
-      // this.getAllCategories();
-      // this.setProperties(event.items);
+      this.providerModel_IN.dataProvider.localizationBussiness = event.items.address.id;
+      this.providerModel_IN.dataProvider.resposiblePerson = event.items.responsible.id;
+      this.providerModel_IN.dataProvider.contactPerson = event.items.contact.id;
+      this.providerModel_IN.dataProvider.nifBusiness = event.items.nif;
+      this.providerModel_IN.dataProvider.reasonSocial = event.items.nameBusiness;
+      this.providerModel_IN.dataProvider.relationatedCategories = this.setterCategoriesSelected(event.items.categoryProvider);
+      this.categoryUsed = event.items.categoryProvider;
+      this.providerModel_IN.identifier.id = event.items.id;
+
     }else if(event.operation === CONSTANT.OperationTables.delete && event.items){
       // $('#deletedProduct').modal('open');
       // this.productModel_OUT.identifier.id = event.items.id;
 
     }
+  }
+
+   private setterCategoriesSelected(categories_IN){
+    let categories_Id = [];
+    for(let item of categories_IN){
+      categories_Id.push(item.id);
+    }
+    return categories_Id;
   }
 
   getPersons(){

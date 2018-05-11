@@ -140,6 +140,7 @@ export const CONSTANT = {
     PERSON_ERROR: "Ha ocurrido un error con las personas",
     ADDRESS_ERROR: "Ha ocurrido un error con la Dirección",
     CATEGORY_UPDATE_SUCCESS: "Se ha actualizado con exito la categoría",
+    PROVIDER_UPDATE_SUCCESS: "Se ha actualizado con exito el proveedor",
     PRODUCT_UPDATE_SUCCESS: "Se ha actualizado con exito el producto",
     CATEGORY_DELETED_SUCCESS: "Se ha eliminado con exito la categoría",
     PRODUCT_DELETED_SUCCESS: "Se ha eliminado con exito el producto",

@@ -28,8 +28,25 @@ export class ProviderService {
     return this._http.post(this.url+'createProvider', param, {headers:header})
   }
 
+  updateProvider(provider_IN){
+    this.token = this._loginService.getToken();
+    let identifier = provider_IN.identifier.id;
+    let param = JSON.stringify(provider_IN);
+    let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
+    return this._http.post(this.url+'updateProvider/'+identifier, param, {headers:header})
+  }
 
+  countProviders(){
+    this.token = this._loginService.getToken();
+    let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
+    return this._http.get(this.url+'countProvider', {headers:header})
+  }
 
+  filterProvider(param_IN){
+    this.token = this._loginService.getToken();
+    let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
+    return this._http.get(this.url+'filterProvider/'+param_IN, {headers:header})
+  }
 
 
 }
