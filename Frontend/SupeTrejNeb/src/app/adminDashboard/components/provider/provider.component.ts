@@ -63,6 +63,11 @@ export class ProviderComponent implements OnInit {
   public NAMEPROVIDER:string = CONSTANT.Labels.SocialReason;
   public SELECT_PERSON_LABEL = CONSTANT.Labels.SelectPerson;
   public SELECT_ADDRESS_LABEL = CONSTANT.Labels.SelectAddress;
+  public DELETED_PROVIDER_TITTLE = CONSTANT.Labels.DeleteProvider;
+  public DELETED_PROVIDER_SUBTITTLE = CONSTANT.Labels.Confirm_Deleted_Provider;
+  public LABEL_DELETED_PROVIDER = CONSTANT.Labels.Delete;
+
+
   public CIF:string = CONSTANT.Labels.Cif;
   public categoriesAllTable:any =[];
   public personContactAllList_OUT:any = [];
@@ -137,7 +142,7 @@ export class ProviderComponent implements OnInit {
   }
 
   filterItem(){
-    if(this.searchResult && this.searchResult.length < 3) {
+    if((this.searchResult || this.searchResult == '') && this.searchResult.length < 3) {
       this.getProvider(0);
     }else{
       this.getProviderFilter();
@@ -156,13 +161,12 @@ export class ProviderComponent implements OnInit {
           this.toastService.show(CONSTANT.messageToast.NO_DATA_AVAIBLE, 4000, CONSTANT.Styles.Info);
         }else if(this.responseServer.message === CONSTANT.ResponseServers.InvalidParams){
             this.toastService.show(CONSTANT.ResponseServers.InvalidParams, 4000, CONSTANT.Styles.Warning);
-
         }else{
           this.bodyTable = this.responseServer.providers;
 
         }
       },error=>{
-        console.log(error);
+        this.toastService.show(CONSTANT.messageToast.PROVIDER_ERROR, 4000, CONSTANT.Styles.Error);
       }
     )
   }
@@ -302,8 +306,9 @@ export class ProviderComponent implements OnInit {
       this.providerModel_IN.identifier.id = event.items.id;
 
     }else if(event.operation === CONSTANT.OperationTables.delete && event.items){
-      // $('#deletedProduct').modal('open');
-      // this.productModel_OUT.identifier.id = event.items.id;
+
+      $('#deletedProvider').modal('open');
+      this.providerModel_IN.identifier.id = event.items.id;
 
     }
   }
@@ -335,6 +340,21 @@ export class ProviderComponent implements OnInit {
     }
 
   }
+
+  deleteProvider(){
+    if(this.providerModel_IN.identifier.id){
+      this._providerService.deletedProvider(this.providerModel_IN.identifier.id).subscribe(
+        response=>{
+          this.toastService.show(CONSTANT.messageToast.PROVIDER_DELETED_SUCCESS, 4000, CONSTANT.Styles.Success);
+          this.getProvider(0)
+        },error=>{
+          this.toastService.show(CONSTANT.messageToast.PROVIDER_ERROR, 4000, CONSTANT.Styles.Error);
+        }
+      )
+    }
+  }
+
+
 
   ngOnInit() {
     $('.modal').modal();

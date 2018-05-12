@@ -14,7 +14,10 @@
 
 <div id="createPerson" #modals class="modal">
   <div class="modal-content">
-    <h4 class="pink-text center">{{ADD_PERSON_TITTLE}}</h4>
+    <h4 class="pink-text center" *ngIf="operationType == 'create'; else updatePersons">{{ADD_PERSON_TITTLE}}</h4>
+    <ng-template #updatePersons>
+      <h4 class="pink-text center">{{ADD_UPDATE_PERSON}}</h4>
+    </ng-template>
     <div class="row">
       <form #createUpdateForm = "ngForm" (ngSubmit)="onSubmit(createUpdateForm)">
         <div class="row">
@@ -79,12 +82,36 @@
           </div>
 
           <div class="input-field col s12">
-            <button class="btn modal-action modal-close waves-effect waves-light blue col s12" type="button" >{{LABEL_CANCEL}}
+            <button class="btn modal-action modal-close waves-effect waves-light blue col s12" (click)="createUpdateForm.reset()" type="button" >{{LABEL_CANCEL}}
               <i class="material-icons right">close</i>
             </button>
           </div>
         </div>
       </form>
+    </div>
+  </div>
+</div>
+
+<div id="deletedPerson" #modalDeltedPerson class="modal">
+  <div class="modal-content">
+    <h4 class="pink-text center">{{DELETED_PERSON_TITTLE}}</h4>
+    <div class="row">
+      <div class="center pink-text col l12 s12" >
+        <h6>{{DELETED_PERSON_SUBTITTLE}}</h6>
+      </div>
+      <div class="modal-footer">
+        <div class="right col l12 s12">
+
+          <button class="btn modal-action modal-close waves-effect waves-light red right col l3 s12" (click)="deletePerson()" type="button" >{{LABEL_DELETED_PERSON}}
+            <i class="material-icons right">remove</i>
+          </button>
+          <button class="btn modal-action modal-close waves-effect waves-light blue right col l3 s12" type="button" >{{LABEL_CANCEL}}
+            <i class="material-icons right">close</i>
+          </button>
+        </div>
+
+      </div>
+
     </div>
   </div>
 </div>
@@ -97,4 +124,7 @@
     </div>
   </div>
 </div>
+
+
+
 

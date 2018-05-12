@@ -48,5 +48,11 @@ export class ProviderService {
     return this._http.get(this.url+'filterProvider/'+param_IN, {headers:header})
   }
 
+  deletedProvider(id){
+    this.token = this._loginService.getToken();
+    let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
+    return this._http.delete(this.url+'deleteProvider/'+id,{headers:header})
+  }
+
 
 }

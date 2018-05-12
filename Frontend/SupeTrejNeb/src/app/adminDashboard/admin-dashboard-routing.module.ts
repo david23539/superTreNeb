@@ -20,7 +20,7 @@ const adminDashboardRouter: Routes = [
       {path: 'product', component: ProductComponent},
       {path: 'provider', component: ProviderComponent},
       {path: 'persons', component: PersonsComponent},
-      {path: 'address', component: AddressComponent}
+      {path: 'addresses', component: AddressComponent}
 
 
     ]},

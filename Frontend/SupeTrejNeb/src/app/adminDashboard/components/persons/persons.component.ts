@@ -29,6 +29,14 @@ export class PersonsComponent implements OnInit {
   public LABEL_SAVE = CONSTANT.Labels.Save;
   public LABEL_UPDATE = CONSTANT.Labels.Update;
   public LABEL_CANCEL = CONSTANT.Labels.Cancel;
+  public ADD_UPDATE_PERSON = CONSTANT.Labels.UpdatePerson;
+  public DELETED_PERSON_TITTLE = CONSTANT.Labels.DeletePerson;
+  public DELETED_PERSON_SUBTITTLE = CONSTANT.Labels.Confirm_Deleted_Person;
+  public LABEL_DELETED_PERSON = CONSTANT.Labels.Delete;
+
+
+
+
   public searchResult:string = "";
   public PersonSearch:string = CONSTANT.Labels.SearchPerson;
   public headsTables:any = CONSTANT.headPerson;
@@ -135,7 +143,30 @@ export class PersonsComponent implements OnInit {
       this.operationType = CONSTANT.OperationTables.create;
       $('#createPerson').modal('open');
       this.buttonSaveUpdate = true;
+    }else if(event.operation === CONSTANT.OperationTables.update && event.items){
+      $('#createPerson').modal('open');
+      this.buttonSaveUpdate = false;
+      this.operationType = CONSTANT.OperationTables.update;
+      this.setterPersonUpdate(event.items);
+    }else if(event.operation === CONSTANT.OperationTables.delete && event.items){
+      $('#deletedPerson').modal('open');
+      this.Person_IN.identifier.id = event.items.id;
+
     }
+  }
+
+
+
+  private setterPersonUpdate(personSelect_IN){
+    this.Person_IN.dataPerson.direcction = personSelect_IN.direccion.id;
+    this.Person_IN.dataPerson.telefono = personSelect_IN.telefone;
+    this.Person_IN.dataPerson.movil = personSelect_IN.movil;
+    this.Person_IN.dataPerson.apellido2 = personSelect_IN.lastName2;
+    this.Person_IN.dataPerson.apellido1 = personSelect_IN.lastName;
+    this.Person_IN.dataPerson.email = personSelect_IN.email;
+    this.Person_IN.dataPerson.dni = personSelect_IN.dni;
+    this.Person_IN.dataPerson.nombre = personSelect_IN.name;
+    this.Person_IN.identifier.id = personSelect_IN.id;
 
   }
 
@@ -158,30 +189,70 @@ export class PersonsComponent implements OnInit {
   }
 
   onSubmit(createUpdateForm){
-      if(!this.Person_IN.dataPerson.movil && !this.Person_IN.dataPerson.telefono ){
+
+      if (!this.Person_IN.dataPerson.movil && !this.Person_IN.dataPerson.telefono) {
         this.toastService.show(CONSTANT.messageToast.MOVIL_OR_TELEFONE, 4000, CONSTANT.Styles.Warning);
-      }else if(!this.Person_IN.dataPerson.direcction){
+      } else if (!this.Person_IN.dataPerson.direcction) {
         this.toastService.show(CONSTANT.messageToast.ADDRESS_NECESARY, 4000, CONSTANT.Styles.Warning);
-      }else if(this.operationType === CONSTANT.OperationTables.create){
+      } else if (this.operationType === CONSTANT.OperationTables.create) {
         this.Person_IN.direccionIp.navegador = this.browser.browser;
         this._personService.createPerson(this.Person_IN).subscribe(
+          response => {
+            this.responseServer = response;
+            if (this.responseServer.message === CONSTANT.ResponseServers.Person_Success) {
+              createUpdateForm.reset();
+              this.getPerson(0);
+              this.toastService.show(CONSTANT.ResponseServers.Person_Success, 4000, CONSTANT.Styles.Success);
+              $('#createPerson').modal('close');
+            } else if (this.responseServer.message === CONSTANT.ResponseServers.InvalidParams) {
+              this.toastService.show(CONSTANT.ResponseServers.InvalidParams, 4000, CONSTANT.Styles.Warning);
+            } else {
+              this.toastService.show(CONSTANT.messageToast.PERSON_ERROR, 4000, CONSTANT.Styles.Error);
+            }
+          }, error => {
+            this.toastService.show(CONSTANT.messageToast.PERSON_ERROR, 4000, CONSTANT.Styles.Error);
+          }
+        )
+      }else if(this.operationType = CONSTANT.OperationTables.update){
+        this.Person_IN.direccionIp.navegador = this.browser.browser;
+        this._personService.updatePerson(this.Person_IN).subscribe(
           response=>{
-             this.responseServer = response;
-             if(this.responseServer.message === CONSTANT.ResponseServers.Person_Success){
-               createUpdateForm.reset();
-               this.getPerson(0);
-               this.toastService.show(CONSTANT.ResponseServers.Person_Success, 4000, CONSTANT.Styles.Success);
-               $('#createPerson').modal('close');
-             }else if(this.responseServer.message === CONSTANT.ResponseServers.InvalidParams){
-               this.toastService.show(CONSTANT.ResponseServers.InvalidParams, 4000, CONSTANT.Styles.Warning);
-             }else{
-               this.toastService.show(CONSTANT.messageToast.PERSON_ERROR, 4000, CONSTANT.Styles.Error);
-             }
+            this.responseServer = response;
+            if (this.responseServer.message === CONSTANT.ResponseServers.InvalidParams) {
+              this.toastService.show(CONSTANT.ResponseServers.InvalidParams, 4000, CONSTANT.Styles.Warning);
+            }else{
+              this.toastService.show(CONSTANT.ResponseServers.Person_Success, 4000, CONSTANT.Styles.Success);
+              $('#createPerson').modal('close');
+              createUpdateForm.reset();
+              this.getPerson(0);
+            }
+
           },error=>{
             this.toastService.show(CONSTANT.messageToast.PERSON_ERROR, 4000, CONSTANT.Styles.Error);
           }
         )
       }
+
+  }
+
+  deletePerson(){
+    if(this.Person_IN.identifier.id){
+      this._personService.deletedPerson(this.Person_IN.identifier.id).subscribe(
+        response=>{
+          this.responseServer = response;
+          if (this.responseServer.message === CONSTANT.ResponseServers.InvalidParams) {
+            this.toastService.show(CONSTANT.ResponseServers.InvalidParams, 4000, CONSTANT.Styles.Warning);
+          }else{
+            this.toastService.show(CONSTANT.messageToast.PERSON_DELETED_SUCCESS, 4000, CONSTANT.Styles.Success);
+            this.getPerson(0);
+          }
+        },error=>{
+          this.toastService.show(CONSTANT.messageToast.PERSON_ERROR, 4000, CONSTANT.Styles.Error);
+        }
+      )
+    }else{
+      this.toastService.show(CONSTANT.messageToast.PERSON_ERROR, 4000, CONSTANT.Styles.Error);
+    }
   }
 
   private filterCategory(){

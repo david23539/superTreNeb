@@ -34,4 +34,18 @@ export class PersonService {
     return this._http.post(this.url+'createPerson', param, {headers:header})
   }
 
+  updatePerson(person_IN){
+    this.token = this._loginService.getToken();
+    let identifier = person_IN.identifier.id;
+    let param = JSON.stringify(person_IN);
+    let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
+    return this._http.post(this.url+'updatePerson/'+ identifier, param, {headers:header})
+  }
+
+  deletedPerson(id){
+    this.token = this._loginService.getToken();
+    let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
+    return this._http.delete(this.url+'deletedPerson/'+id,{headers:header})
+  }
+
 }
