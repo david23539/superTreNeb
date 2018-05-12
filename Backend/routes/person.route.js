@@ -11,6 +11,7 @@ api.post('/updatePerson/:id', md_auth.ensureAuth, personController.updatePerson)
 api.post('/getPersonPagination', md_auth.ensureAuth, personController.getPersonByPagination)
 api.get('/filterPerson/:key', md_auth.ensureAuth, personController.filterPerson)
 api.get('/countPersons', md_auth.ensureAuth, personController.getCountPerson)
+api.get('/getProviderPerson', md_auth.ensureAuth, personController.checkProviderByPerson)
 api.delete('/deletedPerson/:id', md_auth.ensureAuth, personController.deletedPrevPerson)
 
 

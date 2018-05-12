@@ -8,6 +8,7 @@ const constantFile = require('../utils/Constant')
 const validationGlobal = require('../Validation/global.validation')
 const auditoriaController = require('./saveLogs.controller')
 const userController = require('./user.controller')
+const providerController = require('./provider.controller')
 // const userService = require('../service/user.service')
 
 const emailService = require('../service/email.service')
@@ -109,7 +110,7 @@ function updatePerson(req, res){
 	let paramsIN = req.body
 	const personId = req.params.id
 	let person_IN = new Person()
-	person_IN = adapterPerson.personDataAdapterIN(paramsIN)
+	person_IN = adapterPerson.personDataAdapterIN(paramsIN.dataPerson)
 	if(validationPerson.validateAllDataPerson(person_IN) && validationGlobal.validateId(personId) && validateDireccion.validateDirection(paramsIN.direccionIp)){
 		person_IN._doc._id = personId
 		Person.findByIdAndUpdate(personId, person_IN, {new:true}, (err, person_OUT)=>{
@@ -127,6 +128,23 @@ function updatePerson(req, res){
 
 }
 
+function checkProviderByPerson(req, res){
+	const personId = req.params.id
+	if(validationGlobal.validateId(personId)){
+		providerController.searchProviderByPersonId(personId, (err, providersList_OUT)=>{
+			if(err){
+				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PERSON_ERROR})
+			}else if(providersList_OUT.length === 0){
+				res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.NO_PROVIDERS_AVAIBLE})
+			}else{
+				res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.PROVIDERS_AVAIBLE})
+			}
+		})
+	}else{
+		paramsIvalids(res)
+
+	}
+}
 
 function getPersonByPagination(req,res){
 	const param = req.body
@@ -196,7 +214,8 @@ module.exports ={
 	deletedPrevPerson,
 	getPersonByPagination,
 	filterPerson,
-	getCountPerson
+	getCountPerson,
+	checkProviderByPerson
 
 	//getUserByEmailPersona
 

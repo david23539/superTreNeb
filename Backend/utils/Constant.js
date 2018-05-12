@@ -74,6 +74,7 @@ const constant ={
 		CATEGORY_UPDATE_ERROR: 'Ha ocurrido un error al actualizar la categoria',
 		PROVIDER_UPDATE_ERROR: 'Ha ocurrido un error al actualizar el proveedor',
 		PERSON_UPDATE_ERROR: 'Ha ocurrido un error al actualizar la persona',
+		PERSON_ERROR: 'Ha ocurrido un error con la persona',
 		ADDRESS_UPDATE_ERROR: 'Ha ocurrido un error al actualizar la dirección',
 		PRODUCT_UPDATE_ERROR: 'Ha ocurrido un error al actualizar el producto',
 		CATEGORY_DELETE_SUCCESS: 'La categoria se ha eliminado',
@@ -92,6 +93,7 @@ const constant ={
 
 		NO_PRODUCT_AVAIBLE:'No existen productos',
 		NO_PROVIDERS_AVAIBLE:'No existen proveedores',
+		PROVIDERS_AVAIBLE:'Existen proveedores relacionados',
 		NO_PERSON_AVAIBLE:'No existen personas',
 		NO_ADDRESS_AVAIBLE:'No existen direcciones'
 

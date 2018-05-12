@@ -54,7 +54,7 @@ function updateProvider(req, res){
 
 function deleteProvider(req, res){
 	const providerId = req.params.id
-	if(validationGlobal.validationId(providerId)){
+	if(validationGlobal.validateId(providerId)){
 		ProviderModel.findById(providerId).populate('stn_responsiblePerson').populate('stn_contactPerson').exec((err, provider_OUT)=>{
 			if(err || !provider_OUT){
 				errorDeleted(req, err, res)
@@ -84,6 +84,11 @@ function deleteProvider(req, res){
 	}else{
 		paramsIvalids(res)
 	}
+}
+
+function searchProviderByPersonId(Person_ID, cb) {
+	ProviderModel.find({$and:[{$or:{stn_responsiblePerson:Person_ID}},{$or:{stn_contactPerson:Person_ID}}]}, cb)
+
 }
 
 function getProvidersByPagination(req, res){
@@ -186,5 +191,6 @@ module.exports={
 	deleteProvider,
 	getProvidersByPagination,
 	filterProvider,
-	countProvider
+	countProvider,
+	searchProviderByPersonId
 }
