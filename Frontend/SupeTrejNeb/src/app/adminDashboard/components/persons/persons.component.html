@@ -23,7 +23,7 @@
         <div class="row">
           <div class="input-field col s12 l4 pink-text">
             <i class="material-icons prefix ">local_offer</i>
-            <input id="namePerson"  placeholder="Solo letras" name="namePerson" #namePerson="ngModel" autocomplete="false" [(ngModel)]="Person_IN.dataPerson.nombre" mz-tooltip [tooltip]="'Nombre de la persona'" (blur)="validateVisualForm('name')" type="text"  [class]="classStyleForm" required>
+            <input id="namePerson"  placeholder="Solo letras" name="namePerson" #namePerson="ngModel" autocomplete="false" [(ngModel)]="Person_IN.dataPerson.nombre" mz-tooltip [tooltip]="'Nombre de la persona'" (blur)="validateVisualForm('name')" type="text"  [class]="classStyleForm"  required>
             <label for="namePerson">{{LABEL_PERSON}}</label>
           </div>
           <div class="input-field col s12 l4 pink-text">
@@ -157,7 +157,46 @@
   </div>
 </div>
 
+<div id="imagePersonModal" #modalImagePersonModal class="modal">
+  <div class="modal-content">
+    <h4 class="pink-text center" *ngIf="operationType == 'create'; else updatePersonImage">{{QUESTIONIMAGE}}</h4>
+    <ng-template #updatePersonImage>
+      <h4 class="pink-text center">{{QUESTIONIMAGECHANGE}}</h4>
+    </ng-template>
+    <div class="row">
+      <div class="col l12 s12">
+        <button class="btn modal-action  modal-close waves-effect waves-green btn-flat" >{{NO}}
+          <i class="material-icons right">close</i>
+        </button>
+        <button class="btn modal-action modal-trigger modal-close waves-effect waves-green btn-flat " (click)="openModalSelectImage()" >{{YES}}
+          <i class="material-icons right">check</i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
+<div id="imageUploadProductModal" #modalImageUploadProductModal class="modal">
+  <div class="modal-content">
+    <h4 class="pink-text center">Elegir una imagen</h4>
+    <div class="row">
+      <div class="file-field input-field">
+        <div class="btn">
+          <span>File</span>
+          <input type="file" accept="image/x-png,image/gif,image/jpeg" (change)="fileChangeevent($event)">
+        </div>
+        <div class="file-path-wrapper">
+          <input id="file"  class="file-path validate">
+        </div>
+      </div>
+      <div class="right col l12 s12">
+        <button class="btn modal-action modal-close waves-effect waves-light blue left col l3 s12" (click)="submitImage()" type="button" >Cargar
+          <i class="material-icons right">file_upload</i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 <div id="selectAddress" #modalAddress class="modal">

@@ -7,12 +7,13 @@ import {DataBrowser} from "../../../utils/dataBrowser";
 import {AddressService} from "../../services/address/address.service";
 import {AddressComponent} from "../address/address.component";
 import {ReasignedPersonModel} from "../../model/person/reasignedPerson.model";
+import {UploadService} from "../../services/uploadFiles/upload.service";
 
 @Component({
   selector: 'persons',
   templateUrl: './persons.component.html',
   styleUrls: ['./persons.component.css'],
-  providers: [PersonService, MzToastService, DataBrowser, AddressService, AddressComponent]
+  providers: [PersonService, MzToastService, DataBrowser, AddressService, AddressComponent, UploadService]
 })
 export class PersonsComponent implements OnInit {
 
@@ -41,6 +42,13 @@ export class PersonsComponent implements OnInit {
   public LABEL_NEW_PERSON = CONSTANT.Labels.NewPerson;
   public MENSAJE_RELATIONS_INFO = CONSTANT.Labels.Message_Info_Relation_Provider;
   public MENSSAGE_INFO_UPDATE = "";
+  public QUESTIONIMAGE:string = CONSTANT.Labels.QuestionImage;
+  public QUESTIONIMAGECHANGE:string = CONSTANT.Labels.QuestionImageChange;
+  public NO:string = CONSTANT.Labels.No;
+  public YES:string = CONSTANT.Labels.Yes;
+  public filesToUpload: Array<File>;
+
+
 
 
   public personDataOld:string = "";
@@ -71,10 +79,12 @@ export class PersonsComponent implements OnInit {
   public classStyleEmailForm:string = "";
 
 
+
   @Output() sendPerson = new EventEmitter();
   public relations: { cont: number; resp: number };
 
-  constructor(private _personService:PersonService, private toastService: MzToastService, private _getDataBrowser: DataBrowser, private addreesComponent: AddressComponent) {
+  constructor(private _personService:PersonService, private toastService: MzToastService, private _getDataBrowser: DataBrowser, private addreesComponent: AddressComponent,
+  private _uploadFile:UploadService) {
     this.Person_IN = new Person({nombre:"", apellido1:"", apellido2:"", direcction:"", dni: "", email: "", movil: 0, telefono: 0},{id:""},
       {page: 0}, {navegador: ""});
     this.buttonSaveUpdate = true;
@@ -104,6 +114,21 @@ export class PersonsComponent implements OnInit {
     this.sendPerson.emit({
       persons: listPerson_IN
     })
+  }
+
+  submitImage(){
+    if(this.filesToUpload){
+      let url = 'uploadImagePerson/' + this.Person_IN.identifier.id;
+      this._uploadFile.makeFileRequest(url, [], this.filesToUpload, "image")
+        .then((result:any)=>{
+          this.getPerson(0);
+          this.toastService.show(CONSTANT.messageToast.PRODUCT_UPDATE_SUCCESS, 4000, CONSTANT.Styles.Success);
+        })
+    }
+  }
+
+  fileChangeevent(fileInput: any){
+    this.filesToUpload = <Array<File>>fileInput.target.files;
   }
 
   getPersonOld(){
@@ -227,6 +252,7 @@ export class PersonsComponent implements OnInit {
               this.getPerson(0);
               this.toastService.show(CONSTANT.ResponseServers.Person_Success, 4000, CONSTANT.Styles.Success);
               $('#createPerson').modal('close');
+              $('#imagePersonModal').modal('open');
             } else if (this.responseServer.message === CONSTANT.ResponseServers.InvalidParams) {
               this.toastService.show(CONSTANT.ResponseServers.InvalidParams, 4000, CONSTANT.Styles.Warning);
             } else {
@@ -248,6 +274,7 @@ export class PersonsComponent implements OnInit {
               $('#createPerson').modal('close');
               createUpdateForm.reset();
               this.getPerson(0);
+              $('#imagePersonModal').modal('open');
             }
 
           },error=>{
@@ -262,6 +289,10 @@ export class PersonsComponent implements OnInit {
     this.personDataNew = event.object.name + " " + event.object.lastName + " " + event.object.lastName2;
     this.ReasignedPerson_IN.dataReasignedPerson.personaNueva = event.object.id;
 
+  }
+
+  openModalSelectImage(){
+    $('#imageUploadProductModal').modal('open');
   }
 
   deletePerson(){
