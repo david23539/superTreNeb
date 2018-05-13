@@ -22,6 +22,7 @@ const PersonDataSchema = Schema({
 	},
 	stn_status: Boolean,
 	stn_image: String,
+    stn_imagePersonResize: String,
 	stn_fk_address: {type: Schema.ObjectId, ref: 'STN_Address'}
 
 })

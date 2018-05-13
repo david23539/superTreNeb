@@ -10,6 +10,7 @@ const auditoriaController = require('./saveLogs.controller')
 const userController = require('./user.controller')
 const providerController = require('./provider.controller')
 const adapterProvider = require('../adapter/provider.adapter')
+const serviceProduct = require('../service/product.service')
 
 
 // const userService = require('../service/user.service')
@@ -259,6 +260,34 @@ function getCountPerson(req, res){
 	})
 }
 
+function updatePersonImage(req, res){
+    const personId = req.params.id
+    if(validationGlobal.validateId(personId)){
+        if(req.files.image){
+            const filename = serviceProduct.validateImageFile(req.files.image)
+            if(filename){
+
+                serviceProduct.resizeImage(req, constantFile.urls.PRODUCT_IMG_ORIGINAL+filename, constantFile.urls.PRODUCT_IMG_RESIZE+filename)
+                Person.findByIdAndUpdate(personId, {stn_image:filename, stn_imagePersonResize:filename}, {new:true},(err, personUpdate)=>{
+                    if(err || !personUpdate){
+                        auditoriaController.saveLogsData(req.user.name,err, req.connection.remoteAddress, 'image fail')
+                        res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PERSON_GET_ERROR})
+                    }else{
+                        res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.PERSON_UPDATE_SUCCESS})
+                    }
+                })
+            }else{
+                paramsIvalids(res)
+            }
+
+        }else{
+            paramsIvalids(res)
+        }
+    }else{
+        paramsIvalids(res)
+    }
+}
+
 function paramsIvalids(res){
 	res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.ERROR_PARAMETROS_ENTRADA})
 }
@@ -277,6 +306,7 @@ module.exports ={
 	getCountPerson,
 	checkProviderByPerson,
 	reassigmentsPersonOfProvider,
+    updatePersonImage
 
 
 	//getUserByEmailPersona

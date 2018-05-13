@@ -190,7 +190,8 @@ function getDetailProduct(req, res){
 
 function getImageResizeFile(req, res) {
 	const imageFile = req.params.imageFile
-	const path_file = './uploadFiles/products/resize/'+imageFile
+	// const path_file = './uploadFiles/products/resize/'+imageFile   //para linux
+	const path_file = './Backend/uploadFiles/products/resize/'+imageFile   //para windows
 
 	sendImageFile(path_file, res)
 }

@@ -130,10 +130,10 @@ const constant ={
 	},
 	urls:{
 		CHANGE_IP:'/../template/changeIp.html',
-		PRODUCT_IMG_ORIGINAL:'./uploadFiles/products/original/',
-		// PRODUCT_IMG_ORIGINAL:'./Backend/uploadFiles/products/original/',
-		// PRODUCT_IMG_RESIZE:'./Backend/uploadFiles/products/resize/'
-		PRODUCT_IMG_RESIZE:'./uploadFiles/products/resize/'
+		// PRODUCT_IMG_ORIGINAL:'./uploadFiles/products/original/', para linux
+		PRODUCT_IMG_ORIGINAL:'./Backend/uploadFiles/products/original/', //para Windows
+		PRODUCT_IMG_RESIZE:'./Backend/uploadFiles/products/resize/' //para windows
+		// PRODUCT_IMG_RESIZE:'./uploadFiles/products/resize/' para linux
 	}
 }
 module.exports = constant
