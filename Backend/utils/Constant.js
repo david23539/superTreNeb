@@ -124,7 +124,9 @@ const constant ={
 		SUCCESS_REGISTER_USER: 'Se ha registrado con exito el usuario ',
 		SUCCESS_REGISTER_IP: 'Se ha registrado con exito la ip ',
 		SUCCESS_COUNT_IP: 'Se ha restablecido el contador de intentos por ip a 0 ',
-		INFO_IP: 'con ip '
+		INFO_IP: 'con ip ',
+		PROVIDER_RELATION_RESPONSIBLE:'numero de registros de personas Responsables cambiados ',
+		PROVIDER_RELATION_CONTACT:'numero de registros de personas de Contacto cambiados '
 	},
 	urls:{
 		CHANGE_IP:'/../template/changeIp.html',

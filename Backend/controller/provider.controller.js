@@ -87,8 +87,31 @@ function deleteProvider(req, res){
 }
 
 function searchProviderByPersonId(Person_ID, cb) {
-	ProviderModel.find({$and:[{$or:{stn_responsiblePerson:Person_ID}},{$or:{stn_contactPerson:Person_ID}}]}, cb)
+	ProviderModel.find({$and:[{$or:[{stn_responsiblePerson:Person_ID}, {stn_contactPerson:Person_ID}]}]})
+		.limit(10)
+		.populate({
+			path:'stn_responsiblePerson',
+		})
+		.populate({
+			path:'stn_contactPerson',
+		})
+		.exec(cb)
+}
 
+function reassigmentPersonToProvider(PersonNew_ID, PersonOld_ID, cb){
+	let conditions = {stn_responsiblePerson:PersonOld_ID, stn_status:true},
+		update = {stn_responsiblePerson:PersonNew_ID},
+		options = {multi:true}
+	ProviderModel.update(conditions, update, options).exec(cb)
+
+
+}
+
+function reassigmentContactPersonToProvider(PersonNew_ID, PersonOld_ID, cb){
+	let conditions = {stn_contactPerson:PersonOld_ID, stn_status:true},
+		update = {stn_contactPerson:PersonNew_ID},
+		options = {multi:true}
+	ProviderModel.update(conditions, update, options).exec(cb)
 }
 
 function getProvidersByPagination(req, res){
@@ -192,5 +215,8 @@ module.exports={
 	getProvidersByPagination,
 	filterProvider,
 	countProvider,
-	searchProviderByPersonId
+	searchProviderByPersonId,
+	reassigmentPersonToProvider,
+	reassigmentContactPersonToProvider
+
 }

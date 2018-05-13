@@ -9,6 +9,9 @@ const validationGlobal = require('../Validation/global.validation')
 const auditoriaController = require('./saveLogs.controller')
 const userController = require('./user.controller')
 const providerController = require('./provider.controller')
+const adapterProvider = require('../adapter/provider.adapter')
+
+
 // const userService = require('../service/user.service')
 
 const emailService = require('../service/email.service')
@@ -64,6 +67,8 @@ function deletePerson(personId, cb){
 	Person.findByIdAndUpdate(personId, {stn_status:false}, {new: true}, cb)
 
 }
+
+
 
 function deletedPrevPerson(req, res){
 	let personId = req.params.id
@@ -137,12 +142,67 @@ function checkProviderByPerson(req, res){
 			}else if(providersList_OUT.length === 0){
 				res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.NO_PROVIDERS_AVAIBLE})
 			}else{
-				res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.PROVIDERS_AVAIBLE})
+				res.status(constantFile.httpCode.PETITION_CORRECT).send({providerList: adapterProvider.adapterOUTListByPerson(providersList_OUT)})
 			}
 		})
 	}else{
 		paramsIvalids(res)
 
+	}
+}
+
+function reassigmentsPersonOfProvider(req, res){
+	let params_IN = req.body
+	if(validationGlobal.validateId(params_IN.dataReasignedPerson.personaAntigua) && validationGlobal.validateId(params_IN.dataReasignedPerson.personaNueva) && validateDireccion.validateDirection(params_IN.direccionIp)){
+		providerController.reassigmentPersonToProvider(params_IN.dataReasignedPerson.personaNueva,params_IN.dataReasignedPerson.personaAntigua, (err, numAffected)=>{
+			if(err){
+				auditoriaController.saveLogsData(req.user.name,err, req.connection.remoteAddress, params_IN.direccionIp.navegador)
+				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PERSON_ERROR})
+				sendInformationUpdateProvider(res)
+			}else if(numAffected.nModified === 0){
+				auditoriaController.saveLogsData(req.user.name,constantFile.messageLog.PROVIDER_RELATION_RESPONSIBLE+ numAffected, req.connection.remoteAddress, params_IN.direccionIp.navegador)
+				privateUpdateProviderByPersonContact(numAffected, params_IN, res, req)
+			}else{
+				auditoriaController.saveLogsData(req.user.name,constantFile.messageLog.PROVIDER_RELATION_RESPONSIBLE+ numAffected, req.connection.remoteAddress, params_IN.direccionIp.navegador)
+				privateUpdateProviderByPersonContact(numAffected, params_IN, res, req)
+			}
+		})
+
+	}else{
+		paramsIvalids(res)
+	}
+
+}
+
+function privateUpdateProviderByPersonContact(responsibleAffected, params_IN, res, req){
+	providerController.reassigmentContactPersonToProvider(params_IN.dataReasignedPerson.personaNueva,params_IN.dataReasignedPerson.personaAntigua, (err, numContAffected)=>{
+		if(err){
+			auditoriaController.saveLogsData(req.user.name,err, req.connection.remoteAddress, params_IN.direccionIp.navegador)
+			sendInformationUpdateProvider(res)
+
+		}else if(numContAffected.nModified === 0){
+			auditoriaController.saveLogsData(req.user.name,constantFile.messageLog.PROVIDER_RELATION_CONTACT+ numContAffected, req.connection.remoteAddress, params_IN.direccionIp.navegador)
+			let message = {
+				responsible:responsibleAffected,
+				contact:numContAffected
+			}
+			sendInformationUpdateProvider(res, message, false)
+		}else{
+			auditoriaController.saveLogsData(req.user.name,constantFile.messageLog.PROVIDER_RELATION_CONTACT+ numContAffected, req.connection.remoteAddress, params_IN.direccionIp.navegador)
+			let message = {
+				responsible:responsibleAffected,
+				contact:numContAffected
+			}
+			sendInformationUpdateProvider(res, message, false)
+		}
+	})
+}
+
+function sendInformationUpdateProvider(res, message, error = true){
+	if(error){
+		res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PERSON_ERROR})
+	}else{
+		res.status(constantFile.httpCode.PETITION_CORRECT).send({affectedResponsible: message.responsible.n, affectedContact: message.contact.n})
 	}
 }
 
@@ -191,7 +251,7 @@ function filterPerson(req, res){
 
 function getCountPerson(req, res){
 	Person.count({},(err, countPerson)=>{
-		if(err || !countAddress){
+		if(err || !countPerson){
 			res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PERSON_GET_ERROR})
 		}else{
 			res.status(constantFile.httpCode.PETITION_CORRECT).send({count:countPerson})
@@ -215,7 +275,9 @@ module.exports ={
 	getPersonByPagination,
 	filterPerson,
 	getCountPerson,
-	checkProviderByPerson
+	checkProviderByPerson,
+	reassigmentsPersonOfProvider,
+
 
 	//getUserByEmailPersona
 

@@ -37,7 +37,21 @@ function adapterOutListProvider(providers_IN){
 	return providers_OUT
 }
 
+function adapterOUTListByPerson(providers_IN){
+	let providers_OUT = []
+	for(let item of providers_IN){
+		let provider = {
+			contact: item._doc.stn_contactPerson._doc._id,
+			responsible: item._doc.stn_responsiblePerson._doc._id,
+			id:item._doc._id
+		}
+		providers_OUT.push(provider)
+	}
+	return providers_OUT
+}
+
 module.exports={
 	adapterProvider,
-	adapterOutListProvider
+	adapterOutListProvider,
+	adapterOUTListByPerson
 }
