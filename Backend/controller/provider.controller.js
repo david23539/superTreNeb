@@ -55,30 +55,12 @@ function updateProvider(req, res){
 function deleteProvider(req, res){
 	const providerId = req.params.id
 	if(validationGlobal.validateId(providerId)){
-		ProviderModel.findById(providerId).populate('stn_responsiblePerson').populate('stn_contactPerson').exec((err, provider_OUT)=>{
-			if(err || !provider_OUT){
-				errorDeleted(req, err, res)
+		ProviderModel.findByIdAndUpdate(providerId, {stn_status:false}, {new:true}, (errDeleted, providerDeleted_OUT)=>{
+			if(errDeleted || !providerDeleted_OUT){
+				errorDeleted(req, errDeleted, res)
 			}else{
-				PersonController.deletePerson(provider_OUT._doc.stn_responsiblePerson.id, (err, person_OUT1)=>{
-					if(err || !person_OUT1){
-						errorDeleted(req, err, res)
-					}else{
-						PersonController.deletePerson(provider_OUT._doc.stn_contactPerson.id, (err, person_OUT2)=>{
-							if(err || !person_OUT2){
-								errorDeleted(req, err, res)
-							}else{
-								ProviderModel.findByIdAndUpdate(providerId, {stn_status:false}, {new:true}, (errDeleted, providerDeleted_OUT)=>{
-									if(errDeleted || !providerDeleted_OUT){
-										errorDeleted(req, err, res)
-									}else{
-										auditoriaController.saveLogsData(req.user.name,constantFile.functions.PROVIDER_DELETE_SUCCESS, req.connection.remoteAddress, 'deleteProviders')
-										res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.PROVIDER_DELETE_SUCCESS})
-									}
-								})
-							}
-						})
-					}
-				})
+				auditoriaController.saveLogsData(req.user.name,constantFile.functions.PROVIDER_DELETE_SUCCESS, req.connection.remoteAddress, 'deleteProviders')
+				res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.PROVIDER_DELETE_SUCCESS})
 			}
 		})
 	}else{
@@ -87,8 +69,7 @@ function deleteProvider(req, res){
 }
 
 function searchProviderByPersonId(Person_ID, cb) {
-	ProviderModel.find({$and:[{$or:[{stn_responsiblePerson:Person_ID}, {stn_contactPerson:Person_ID}]}]})
-		.limit(10)
+	ProviderModel.find({$and:[{$or:[{stn_responsiblePerson:Person_ID}, {stn_contactPerson:Person_ID}]}, {stn_status:true}]})
 		.populate({
 			path:'stn_responsiblePerson',
 		})

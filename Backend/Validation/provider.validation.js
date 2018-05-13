@@ -5,6 +5,7 @@ const regexStringWhithSpaces = new RegExp(constantFile.regex.STRINGS_WITH_SPACES
 const regexString = new RegExp(constantFile.regex.STRINGS)
 
 function validateProvider(provider_IN){
+
 	return ((provider_IN.stn_businessName && regexStringWhithSpaces.test(provider_IN.stn_businessName)) && validatePersonsProviders(provider_IN) &&
 		(provider_IN.stn_nifBussines && regexString.test(provider_IN.stn_nifBussines)) && validateAddressProvider(provider_IN) && validateCategoriesProvider(provider_IN))
 }
