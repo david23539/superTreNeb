@@ -102,10 +102,10 @@
       <div class="modal-footer">
         <div class="right col l12 s12">
 
-          <button class="btn modal-action modal-close waves-effect waves-light red right col l3 s12" (click)="deletePerson()" type="button" >{{LABEL_DELETED_PERSON}}
+          <button class="btn modal-action modal-close waves-effect waves-red btn-flat" (click)="deletePerson()" type="button" >{{LABEL_DELETED_PERSON}}
             <i class="material-icons right">remove</i>
           </button>
-          <button class="btn modal-action modal-close waves-effect waves-light blue right col l3 s12" type="button" >{{LABEL_CANCEL}}
+          <button class="btn modal-action modal-close waves-effect waves-blue btn-flat" type="button" >{{LABEL_CANCEL}}
             <i class="material-icons right">close</i>
           </button>
         </div>
@@ -115,6 +115,50 @@
     </div>
   </div>
 </div>
+
+<div id="relationProvider" #modalRelationProvider class="modal">
+  <div class="modal-content">
+    <h4 class="pink-text center">{{EXIST_RELATIONS_PROVIDERS}}</h4>
+    <h6 class="pink-text center">{{MENSAJE_RELATIONS_INFO}}</h6>
+    <h6 class="pink-text center">{{message_relations}}</h6>
+  </div>
+  <div class="modal-footer">
+    <div class="right col l12 s12">
+
+      <button  class="btn modal-action modal-close waves-effect waves-blue btn-flat">{{LABEL_CANCEL}}</button>
+      <button  class="btn modal-action modal-trigger modal-close waves-effect waves-green btn-flat " data-target="selectListNewPerson" (click)="getPersonOld()">{{REASSIGN_PERSON}}</button>
+    </div>
+
+  </div>
+</div>
+
+<div id="selectListNewPerson" #modalSelectListNewPerson class="modal">
+  <div class="modal-content">
+    <h4 class="pink-text center">{{SELECT_NEW_PERSON}}</h4>
+  </div>
+  <div class="row">
+    <div class="input-field col s12 l6 pink-text">
+      <input id="oldPerson"  placeholder="Solo letras" name="oldPerson" #oldPerson="ngModel" autocomplete="false" [(ngModel)]="personDataOld" mz-tooltip [tooltip]="'Antigua persona'" type="text" >
+      <label for="oldPerson">{{LABEL_OLD_PERSON}}</label>
+    </div>
+    <div class="input-field col s12 l6 pink-text">
+      <input id="newPerson"  placeholder="Solo letras" name="newPerson" #newPerson="ngModel" autocomplete="false" [(ngModel)]="personDataNew" mz-tooltip [tooltip]="'Nueva Persona'"  type="text">
+      <label for="newPerson">{{LABEL_NEW_PERSON}}</label>
+    </div>
+  </div>
+  <div class="row">
+    <table-list [headsTable]="headsTables" [bodyTableContent]="bodyTable" (changeItem)="selectPerson($event)"></table-list>
+  </div>
+  <div class="modal-footer">
+    <div class="right col l12 s12">
+      <button  class="btn modal-action modal-close waves-effect waves-blue btn-flat">{{LABEL_CANCEL}}</button>
+      <button  class="btn modal-action waves-effect waves-yellow btn-flat" (click)="reassignPerson()">{{LABEL_UPDATE}}</button>
+    </div>
+  </div>
+</div>
+
+
+
 
 <div id="selectAddress" #modalAddress class="modal">
   <div class="modal-content">

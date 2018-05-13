@@ -6,6 +6,7 @@ import {MzToastService} from "ng2-materialize";
 import {DataBrowser} from "../../../utils/dataBrowser";
 import {AddressService} from "../../services/address/address.service";
 import {AddressComponent} from "../address/address.component";
+import {ReasignedPersonModel} from "../../model/person/reasignedPerson.model";
 
 @Component({
   selector: 'persons',
@@ -29,14 +30,23 @@ export class PersonsComponent implements OnInit {
   public LABEL_SAVE = CONSTANT.Labels.Save;
   public LABEL_UPDATE = CONSTANT.Labels.Update;
   public LABEL_CANCEL = CONSTANT.Labels.Cancel;
+  public REASSIGN_PERSON= CONSTANT.Labels.Reassign;
   public ADD_UPDATE_PERSON = CONSTANT.Labels.UpdatePerson;
   public DELETED_PERSON_TITTLE = CONSTANT.Labels.DeletePerson;
   public DELETED_PERSON_SUBTITTLE = CONSTANT.Labels.Confirm_Deleted_Person;
   public LABEL_DELETED_PERSON = CONSTANT.Labels.Delete;
+  public EXIST_RELATIONS_PROVIDERS = CONSTANT.Labels.Relation_Provider;
+  public SELECT_NEW_PERSON = CONSTANT.Labels.SelectPerson;
+  public LABEL_OLD_PERSON = CONSTANT.Labels.OldPerson;
+  public LABEL_NEW_PERSON = CONSTANT.Labels.NewPerson;
+  public MENSAJE_RELATIONS_INFO = CONSTANT.Labels.Message_Info_Relation_Provider;
+  public MENSSAGE_INFO_UPDATE = "";
 
 
-
-
+  public personDataOld:string = "";
+  public personDataNew:string = "";
+  private ReasignedPerson_IN: ReasignedPersonModel;
+  public message_relations:string = "";
   public searchResult:string = "";
   public PersonSearch:string = CONSTANT.Labels.SearchPerson;
   public headsTables:any = CONSTANT.headPerson;
@@ -60,13 +70,17 @@ export class PersonsComponent implements OnInit {
   public validClassStyleEmailForm:string = CONSTANT.Styles.Valid;
   public classStyleEmailForm:string = "";
 
+
   @Output() sendPerson = new EventEmitter();
+  public relations: { cont: number; resp: number };
 
   constructor(private _personService:PersonService, private toastService: MzToastService, private _getDataBrowser: DataBrowser, private addreesComponent: AddressComponent) {
     this.Person_IN = new Person({nombre:"", apellido1:"", apellido2:"", direcction:"", dni: "", email: "", movil: 0, telefono: 0},{id:""},
       {page: 0}, {navegador: ""});
     this.buttonSaveUpdate = true;
     this.browser = this._getDataBrowser.getDataBrowser();
+    this.ReasignedPerson_IN = new ReasignedPersonModel({personaAntigua:"", personaNueva:""}, {navegador:this.browser.browser})
+
   }
 
   public getPerson(page){
@@ -92,6 +106,10 @@ export class PersonsComponent implements OnInit {
     })
   }
 
+  getPersonOld(){
+    this.personDataOld = this.Person_IN.dataPerson.nombre + ' ' +
+      this.Person_IN.dataPerson.apellido1 + ' ' + this.Person_IN.dataPerson.apellido2
+  }
 
   getAddrees(page){
 
@@ -151,6 +169,11 @@ export class PersonsComponent implements OnInit {
     }else if(event.operation === CONSTANT.OperationTables.delete && event.items){
       $('#deletedPerson').modal('open');
       this.Person_IN.identifier.id = event.items.id;
+      this.Person_IN.dataPerson.nombre = event.items.name;
+      this.Person_IN.dataPerson.apellido1 = event.items.lastName;
+      this.Person_IN.dataPerson.apellido2 = event.items.lastName2;
+      this.ReasignedPerson_IN.dataReasignedPerson.personaAntigua = this.Person_IN.identifier.id;
+
 
     }
   }
@@ -235,24 +258,85 @@ export class PersonsComponent implements OnInit {
 
   }
 
+  selectPerson(event){
+    this.personDataNew = event.object.name + " " + event.object.lastName + " " + event.object.lastName2;
+    this.ReasignedPerson_IN.dataReasignedPerson.personaNueva = event.object.id;
+
+  }
+
   deletePerson(){
     if(this.Person_IN.identifier.id){
-      this._personService.deletedPerson(this.Person_IN.identifier.id).subscribe(
+      this._personService.checkProviderByPerson(this.Person_IN.identifier.id).subscribe(
         response=>{
           this.responseServer = response;
-          if (this.responseServer.message === CONSTANT.ResponseServers.InvalidParams) {
-            this.toastService.show(CONSTANT.ResponseServers.InvalidParams, 4000, CONSTANT.Styles.Warning);
-          }else{
-            this.toastService.show(CONSTANT.messageToast.PERSON_DELETED_SUCCESS, 4000, CONSTANT.Styles.Success);
-            this.getPerson(0);
+          if(this.responseServer.message === CONSTANT.ResponseServers.No_Data_Provider){
+            this.deletedPersonContinue();
+          }else if(this.responseServer.providerList.length !== 0){
+            this.relations = this.findRelationProvider(this.responseServer.providerList);
+            this.message_relations = CONSTANT.Labels.Message_1 + this.relations.resp + CONSTANT.Labels.Message_2 + this.relations.cont;
+             $('#relationProvider').modal('open');
           }
         },error=>{
           this.toastService.show(CONSTANT.messageToast.PERSON_ERROR, 4000, CONSTANT.Styles.Error);
         }
       )
+
     }else{
       this.toastService.show(CONSTANT.messageToast.PERSON_ERROR, 4000, CONSTANT.Styles.Error);
     }
+  }
+
+  reassignPerson(){
+    if((this.ReasignedPerson_IN.dataReasignedPerson.personaNueva && this.ReasignedPerson_IN.dataReasignedPerson.personaAntigua) && (this.ReasignedPerson_IN.dataReasignedPerson.personaNueva !== this.ReasignedPerson_IN.dataReasignedPerson.personaAntigua)){
+      this._personService.reasignedPersons(this.ReasignedPerson_IN).subscribe(
+        response=>{
+          this.responseServer = response;
+          if(this.responseServer.message === CONSTANT.ResponseServers.InvalidParams){
+            this.toastService.show(CONSTANT.ResponseServers.InvalidParams, 4000, CONSTANT.Styles.Warning);
+          }
+          let contactAffected = this.responseServer.affectedContact;
+          let responsibleAffected = this.responseServer.affectedResponsible;
+          this.MENSSAGE_INFO_UPDATE = "Se han modificado "+ contactAffected+ " contactos y " + responsibleAffected+ " responsables";
+          $('#selectListNewPerson').modal('close');
+          this.toastService.show(this.MENSSAGE_INFO_UPDATE, 4000, CONSTANT.Styles.Success);
+          this.deletePerson();
+        },error=>{
+          this.toastService.show(CONSTANT.messageToast.PERSON_ERROR, 4000, CONSTANT.Styles.Error);
+        }
+      )
+    }else{
+      this.toastService.show(CONSTANT.ResponseServers.InvalidParams, 4000, CONSTANT.Styles.Warning);
+    }
+  }
+
+  private findRelationProvider(providerList_IN){
+    let contact:number = 0;
+    let responsible:number = 0;
+    for(let item of providerList_IN){
+      if (item.contact === this.Person_IN.identifier.id){
+        contact++;
+      }else if(item.responsible === this.Person_IN.identifier.id){
+        responsible++;
+      }
+    }
+
+    return {cont: contact, resp:responsible}
+  }
+
+  private deletedPersonContinue() {
+    this._personService.deletedPerson(this.Person_IN.identifier.id).subscribe(
+      response => {
+        this.responseServer = response;
+        if (this.responseServer.message === CONSTANT.ResponseServers.InvalidParams) {
+          this.toastService.show(CONSTANT.ResponseServers.InvalidParams, 4000, CONSTANT.Styles.Warning);
+        } else {
+          this.toastService.show(CONSTANT.messageToast.PERSON_DELETED_SUCCESS, 4000, CONSTANT.Styles.Success);
+          this.getPerson(0);
+        }
+      }, error => {
+        this.toastService.show(CONSTANT.messageToast.PERSON_ERROR, 4000, CONSTANT.Styles.Error);
+      }
+    )
   }
 
   private filterCategory(){

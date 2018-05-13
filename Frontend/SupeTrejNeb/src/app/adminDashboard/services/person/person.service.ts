@@ -48,4 +48,17 @@ export class PersonService {
     return this._http.delete(this.url+'deletedPerson/'+id,{headers:header})
   }
 
+  checkProviderByPerson(perosnId){
+    this.token = this._loginService.getToken();
+    let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
+    return this._http.get(this.url+'getProviderPerson/'+perosnId,{headers:header})
+  }
+
+  reasignedPersons(reasignedPerson_IN){
+    this.token = this._loginService.getToken();
+    let param = JSON.stringify(reasignedPerson_IN);
+    let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
+    return this._http.post(this.url+'reasignedPersons', param, {headers:header})
+  }
+
 }
