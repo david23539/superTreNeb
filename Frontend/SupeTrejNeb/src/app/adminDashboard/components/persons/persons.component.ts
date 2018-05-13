@@ -315,7 +315,8 @@ export class PersonsComponent implements OnInit {
     for(let item of providerList_IN){
       if (item.contact === this.Person_IN.identifier.id){
         contact++;
-      }else if(item.responsible === this.Person_IN.identifier.id){
+      }
+      if(item.responsible === this.Person_IN.identifier.id){
         responsible++;
       }
     }
