@@ -62,8 +62,8 @@ function personList_OUT_Adapter(personsList_IN){
 			movil: item.stn_mobile,
 			email: item.stn_email,
 			image: item.stn_imagePersonResize,
-			id : item._doc._id,
-			direccion:addressAdapter.addressDataOUTLAdapter(item.stn_fk_address)
+			direccion:addressAdapter.addressDataOUTLAdapter(item.stn_fk_address),
+            id : item._doc._id,
 		}
 		persons_OUT.push(person)
 	}
