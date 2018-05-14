@@ -7,8 +7,7 @@
       <li><a data-target="slide-out" (click)="sidenav.opened = !sidenav.opened" class="show-on-large hide-on-med-and-down sidenav-trigger"><i class="material-icons">menu</i></a></li>
       <li><a id="menu"  class="waves-effect waves-light btn btn-floating blue-grey darken-1 z-depth-0"><i class="material-icons">help_outline</i></a></li>
       <li class="hide-on-med-and-down"><a href="#"><i class="material-icons">notifications</i></a></li>
-      <li class="hide-on-med-and-down"><a href="#"><i class="material-icons">search</i></a></li>
-      <li class="hide-on-med-and-down"><a href="#"><i class="material-icons">settings</i></a></li>
+
       <!--<li><a href="#" data-target="slide-out" class="hide-on-med-and-down sidenav-trigger"><i class="material-icons blue-grey-text">menu</i></a></li>-->
     </ul>
   </div>
@@ -31,7 +30,7 @@
         <a href="#"><i class="material-icons black-text">account_circle</i></a>
       </div>
       <ng-template #imageUrl>
-        <!--<a href="#"><img src="{{url + 'get-image-file/'+ n.image}}" alt="imageProfile"> </a> LLAMAR A LA FUNCION QUE OBTIENE LOS DATOS DE LAS PERSONA-->
+        <img  src="{{url+'getImageResize/'+ IMAGE}}"/>
       </ng-template>
       <a href="#"><span class="white-text name">{{NAME}}</span></a>
       <a href="#"><span class="white-text name">{{LASTNAME}}</span></a>
@@ -91,7 +90,7 @@
     <div class="container">
       © 2018 Copyright David
     <div class="right">
-      ver. 1.3.4 Beta
+      ver. 1.4.5 Beta
     </div>
     </div>
   </div>

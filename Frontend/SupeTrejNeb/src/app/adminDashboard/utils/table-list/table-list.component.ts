@@ -47,9 +47,9 @@ export class TableListComponent implements OnInit, OnChanges {
     this.bodyTableContent = table;
   }
 
-  getRecordByPage(page){
+  getRecordByPage(event){
     this.paginationParams.emit({
-      page:page
+      page:event
     })
   }
 

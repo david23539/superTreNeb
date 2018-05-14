@@ -11,6 +11,7 @@ import {PersonService} from "../../services/person/person.service";
 import {AddressComponent} from "../address/address.component";
 import {AddressService} from "../../services/address/address.service";
 import {DataBrowser} from "../../../utils/dataBrowser";
+import {UploadService} from "../../services/uploadFiles/upload.service";
 
 
 @Component({
@@ -19,7 +20,7 @@ import {DataBrowser} from "../../../utils/dataBrowser";
   styleUrls: ['./provider.component.css'],
   providers:[ProviderService, MzToastService, CategoryComponent,
     CategoryService, SelectCategoriesComponent, PersonService, PersonsComponent, AddressService,
-    AddressComponent, DataBrowser]
+    AddressComponent, DataBrowser, UploadService]
 })
 export class ProviderComponent implements OnInit {
 
@@ -77,6 +78,7 @@ export class ProviderComponent implements OnInit {
   public headAddressTable:any = CONSTANT.headAddress;
   public categoryUsed:any = [];
   public browser: any;
+  public countAddress:number;
 
 
 
@@ -125,15 +127,20 @@ export class ProviderComponent implements OnInit {
     )
   }
 
-  getAddress(){
-    this._addressController.getAddressByPagination(0);
+  getAddress(page = 0){
+    this._addressController.getAddressByPagination(page);
     this._addressController.sendData.subscribe(
       response=>{
        this.addressAllList_OUT = response.address;
+       this.countAddress = response.count;
       },error=>{
         console.log(error);
       }
     )
+  }
+
+  getAddressPagination(event){
+    this.getAddress(event.page -1 )
   }
 
   selectAddress(event){

@@ -43,7 +43,7 @@
           </div>
 
           <div class="input-field col s12 l6 pink-text">
-            <button class="btn waves-effect blue lighten-1 waves-light col s12 modal-trigger" mz-tooltip [tooltip]=TOLLTIP_ADDRESS  name="action" data-target="selectAddress" (click)="getAddress();">{{LABEL_ADDRESS}}selectAddress
+            <button class="btn waves-effect blue lighten-1 waves-light col s12 modal-trigger" mz-tooltip [tooltip]=TOLLTIP_ADDRESS  name="action" data-target="selectAddress" (click)="getAddress();">{{LABEL_ADDRESS}}
               <i class="material-icons prefix ">place</i>
             </button>
           </div>
@@ -131,7 +131,7 @@
     <div class="row">
 
       <div class="col l12 s12">
-        <table-list [bodyTableContent]="addressAllList_OUT" [headsTable]="headAddressTable" (changeItem)="selectAddress($event);"></table-list>
+        <table-list [bodyTableContent]="addressAllList_OUT" [headsTable]="headAddressTable" (paginationParams)="getAddressPagination($event)" [countRecord]="countAddress" (changeItem)="selectAddress($event);"></table-list>
       </div>
     </div>
   </div>

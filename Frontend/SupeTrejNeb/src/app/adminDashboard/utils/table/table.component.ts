@@ -17,11 +17,13 @@ export class TableComponent implements OnInit, OnChanges {
   public  counter = Array;
   public url = "";
   @Output() changeItem = new EventEmitter();
+  @Output() selectItem = new EventEmitter();
   @Output() paginationParams = new EventEmitter();
 
   constructor() {
     this.url = GLOBAL.url
   }
+
 
 
 
@@ -67,9 +69,15 @@ export class TableComponent implements OnInit, OnChanges {
     })
   }
 
-  getRecordByPage(page){
-      this.paginationParams.emit({
-        page:page
+  selectElement(item){
+    this.selectItem.emit({
+      object: item
+    })
+  }
+
+  getRecordByPage(event){
+    this.paginationParams.emit({
+        page:event
       })
   }
 

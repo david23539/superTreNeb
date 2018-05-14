@@ -80,7 +80,7 @@ export class AddressComponent implements OnInit {
   ngOnInit() {
     this.createInstanceModal();
     this.getAddressByPagination(0);
-    this.countAddress();
+    // this.countAddress();
   }
 
 
@@ -89,6 +89,8 @@ export class AddressComponent implements OnInit {
       response =>{
         this.responseServer = response;
         this.count = this.responseServer.count
+        this.sendAddress();
+
       },error=>{
         this.toastService.show(CONSTANT.messageToast.ADDRESS_ERROR, 4000, CONSTANT.Styles.Error);
     }
@@ -98,6 +100,7 @@ export class AddressComponent implements OnInit {
   private sendAddress(){
     this.sendData.emit({
       address: this.bodyTable,
+      count: this.count
     })
   }
 
@@ -192,7 +195,7 @@ export class AddressComponent implements OnInit {
           this.toastService.show(CONSTANT.messageToast.NO_DATA_AVAIBLE, 4000, CONSTANT.Styles.Info);
         }else{
           this.bodyTable = this.responseServer.address;
-          this.sendAddress();
+          this.countAddress();
         }
       },error =>{
         this.toastService.show(CONSTANT.messageToast.ADDRESS_ERROR, 4000, CONSTANT.Styles.Error);

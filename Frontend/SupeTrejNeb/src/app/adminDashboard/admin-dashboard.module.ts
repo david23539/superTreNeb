@@ -8,7 +8,7 @@ import { BreadcumsComponent } from './utils/breadcums/breadcums.component';
 import { CategoryComponent } from './components/category/category.component';
 import { TableComponent } from './utils/table/table.component';
 import { TableListComponent} from "./utils/table-list/table-list.component";
-import { MzTooltipModule, MzSelectModule} from "ng2-materialize";
+import { MzTooltipModule, MzSelectModule, MzPaginationModule} from "ng2-materialize";
 import { ProductComponent } from './components/product/product.component';
 import { ProviderComponent } from './components/provider/provider.component';
 import { SelectCategoriesComponent } from './components/select-categories/select-categories.component';
@@ -26,7 +26,8 @@ import { AddressComponent } from './components/address/address.component';
     HttpClientModule,
     AdminDashboardRoutingModule,
     MzTooltipModule,
-    MzSelectModule
+    MzSelectModule,
+    MzPaginationModule
 
   ],
   declarations: [

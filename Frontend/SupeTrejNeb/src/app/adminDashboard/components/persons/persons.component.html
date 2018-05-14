@@ -7,7 +7,7 @@
         <input id="searchPerson"  [(ngModel)]="searchResult" (keyup)="filterItem()"  type="text" >
         <label for="searchPerson">{{PersonSearch}}</label>
       </div>
-      <tableComponenets [headsTable]="headsTables" [bodyTableContent]=bodyTable (paginationParams)="getProviderByPagination($event);" [countRecord]="count"  (changeItem)="addUpdatePerson($event)"></tableComponenets>
+      <tableComponenets [headsTable]="headsTables" [bodyTableContent]=bodyTable (selectItem)="showInfo($event)" (paginationParams)="getProviderByPagination($event);" [countRecord]="count"  (changeItem)="addUpdatePerson($event)"></tableComponenets>
     </div>
   </div>
 </div>
@@ -203,7 +203,57 @@
   <div class="modal-content">
     <h4 class="pink-text center">{{SELECT_ADDRESS_TITTLE}}</h4>
     <div class="row">
-      <table-list [headsTable]="headsTablesAddress" [bodyTableContent]="bodyTableAddress" (changeItem)="selectAddress($event)"></table-list>
+      <table-list [headsTable]="headsTablesAddress" [bodyTableContent]="bodyTableAddress" [countRecord]="countAddress" (paginationParams)="getAddreesPagination($event)" (changeItem)="selectAddress($event)"></table-list>
+    </div>
+  </div>
+</div>
+
+<div id="viewInfo" #modalViewInfo class="modal">
+  <div class="modal-content">
+    <h4 class="pink-text center">{{VIEW_TITTLE}}</h4>
+    <div class="row">
+      <div class="col l6">
+        <div class="card">
+          <div class="card-image waves-effect waves-block waves-light">
+            <img *ngIf="infoPerson && infoPerson.image" class="activator" src="{{url+'getImageOriginal/'+ infoPerson.image}}"/>
+          </div>
+          <div class="card-content">
+            <span *ngIf="infoPerson" class="card-title activator grey-text text-darken-4" >{{infoPerson.name}}<i class="material-icons right">more_vert</i></span>
+          </div>
+          <div class="card-reveal">
+            <span class="card-title grey-text text-darken-4">Más Información<i class="material-icons right">close</i></span>
+            <p>En el listado aparece toda la información</p>
+          </div>
+        </div>
+
+      </div>
+      <div class="col l6 s12" *ngIf="infoPerson">
+        <ul class="collection with-header">
+          <li class="collection-header pink-text"><h4>Persona</h4></li>
+          <li class="collection-item"><b>Nombre:</b> {{infoPerson.name}}</li>
+          <li class="collection-item"><b>P.Apellido:</b> {{infoPerson.lastName}}</li>
+          <li class="collection-item"><b>S.Apellido:</b> {{infoPerson.lastName2}}</li>
+          <li class="collection-item"><b>Email:</b> {{infoPerson.email}}</li>
+          <li class="collection-item"><b>DNI:</b> {{infoPerson.dni}}</li>
+        </ul>
+        <ul class="collection with-header">
+          <li class="collection-header pink-text"><h4>Dirección</h4></li>
+          <li class="collection-item"><b>Población:</b> {{infoPerson.direccion.location}}</li>
+          <li class="collection-item"><b>Provincia:</b> {{infoPerson.direccion.provincia}}</li>
+          <li class="collection-item"><b>Nombre Vía:</b> {{infoPerson.direccion.nombreCalle}}</li>
+          <li class="collection-item"><b>C.Postal:</b> {{infoPerson.direccion.codigoPostal}}</li>
+          <li class="collection-item"><b>Número:</b> {{infoPerson.direccion.numero}}</li>
+          <li class="collection-item"><b>Piso:</b> {{infoPerson.direccion.piso}}</li>
+          <li class="collection-item"><b>Puerta:</b> {{infoPerson.direccion.puerta}}</li>
+          <li class="collection-item"><b>Tipo Vía:</b>{{infoPerson.direccion.tipoVia}}</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <div class="right col l12 s12">
+      <button  class="btn modal-action modal-close waves-effect waves-blue btn-flat">{{LABEL_CLOSE}}</button>
     </div>
   </div>
 </div>

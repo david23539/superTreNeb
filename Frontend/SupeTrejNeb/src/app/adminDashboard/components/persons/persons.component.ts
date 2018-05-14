@@ -8,6 +8,7 @@ import {AddressService} from "../../services/address/address.service";
 import {AddressComponent} from "../address/address.component";
 import {ReasignedPersonModel} from "../../model/person/reasignedPerson.model";
 import {UploadService} from "../../services/uploadFiles/upload.service";
+import {GLOBAL} from "../../../services/global";
 
 @Component({
   selector: 'persons',
@@ -20,6 +21,7 @@ export class PersonsComponent implements OnInit {
   public TITLE:string = CONSTANT.Labels.PersonTitle;
   public ADD_PERSON_TITTLE = CONSTANT.Labels.AddPerson;
   public SELECT_ADDRESS_TITTLE = CONSTANT.Labels.SelectAddress;
+  public VIEW_TITTLE = CONSTANT.Labels.InfoRecord;
   public LABEL_PERSON = CONSTANT.Labels.Person;
   public LABEL_LASTNAME = CONSTANT.Labels.lastName;
   public LABEL_LASTNAME2 = CONSTANT.Labels.lastName2;
@@ -31,6 +33,7 @@ export class PersonsComponent implements OnInit {
   public LABEL_SAVE = CONSTANT.Labels.Save;
   public LABEL_UPDATE = CONSTANT.Labels.Update;
   public LABEL_CANCEL = CONSTANT.Labels.Cancel;
+  public LABEL_CLOSE = CONSTANT.Labels.Close;
   public REASSIGN_PERSON= CONSTANT.Labels.Reassign;
   public ADD_UPDATE_PERSON = CONSTANT.Labels.UpdatePerson;
   public DELETED_PERSON_TITTLE = CONSTANT.Labels.DeletePerson;
@@ -47,6 +50,7 @@ export class PersonsComponent implements OnInit {
   public NO:string = CONSTANT.Labels.No;
   public YES:string = CONSTANT.Labels.Yes;
   public filesToUpload: Array<File>;
+  public infoPerson :any;
 
 
 
@@ -64,6 +68,7 @@ export class PersonsComponent implements OnInit {
   public bodyTable:any;
   public bodyTableAddress:any;
   public count:number;
+  public countAddress:number;
   public operationType: string;
   public classStyleForm:string = "";
   public buttonSaveUpdate:boolean;
@@ -82,12 +87,13 @@ export class PersonsComponent implements OnInit {
 
   @Output() sendPerson = new EventEmitter();
   public relations: { cont: number; resp: number };
-
+  public url = "";
   constructor(private _personService:PersonService, private toastService: MzToastService, private _getDataBrowser: DataBrowser, private addreesComponent: AddressComponent,
-  private _uploadFile:UploadService) {
+  private _uploadFile:UploadService, ) {
     this.Person_IN = new Person({nombre:"", apellido1:"", apellido2:"", direcction:"", dni: "", email: "", movil: 0, telefono: 0},{id:""},
       {page: 0}, {navegador: ""});
     this.buttonSaveUpdate = true;
+    this.url = GLOBAL.url;
     this.browser = this._getDataBrowser.getDataBrowser();
     this.ReasignedPerson_IN = new ReasignedPersonModel({personaAntigua:"", personaNueva:""}, {navegador:this.browser.browser})
 
@@ -136,17 +142,22 @@ export class PersonsComponent implements OnInit {
       this.Person_IN.dataPerson.apellido1 + ' ' + this.Person_IN.dataPerson.apellido2
   }
 
-  getAddrees(page){
+  getAddrees(page = 0){
 
-    this.addreesComponent.getAddressByPagination(0);
+    this.addreesComponent.getAddressByPagination(page);
     this.addreesComponent.sendData.subscribe(
       response=>{
         this.responseComponent = response;
         this.bodyTableAddress = this.responseComponent.address;
+        this.countAddress = this.responseComponent.count;
       },error=>{
         console.log("error");
       }
     );
+  }
+
+  getAddreesPagination(event){
+    this.getAddrees(event.page - 1);
   }
 
   selectAddress(event){
@@ -252,6 +263,7 @@ export class PersonsComponent implements OnInit {
               this.getPerson(0);
               this.toastService.show(CONSTANT.ResponseServers.Person_Success, 4000, CONSTANT.Styles.Success);
               $('#createPerson').modal('close');
+              this.Person_IN.identifier.id = this.responseServer.id;
               $('#imagePersonModal').modal('open');
             } else if (this.responseServer.message === CONSTANT.ResponseServers.InvalidParams) {
               this.toastService.show(CONSTANT.ResponseServers.InvalidParams, 4000, CONSTANT.Styles.Warning);
@@ -282,6 +294,12 @@ export class PersonsComponent implements OnInit {
           }
         )
       }
+
+  }
+
+  showInfo(event){
+    this.infoPerson = event.object;
+    $('#viewInfo').modal('open');
 
   }
 

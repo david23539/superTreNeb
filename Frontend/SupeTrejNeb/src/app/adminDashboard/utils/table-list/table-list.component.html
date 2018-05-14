@@ -22,7 +22,8 @@
       </tbody>
     </table>
     <ul class="pagination center" *ngIf="countRecord > 10">
-      <li  class="waves-effect" *ngFor="let number of counter(pagination); let j=index "><a  (click)="getRecordByPage(j+1);">{{j+1}}</a></li>
+      <mz-pagination (pageChange)="getRecordByPage($event)" [currentPage]="1" [itemsPerPage]="10" [enableFirstAndLastPageButtons]="true" [totalItems]="countRecord"></mz-pagination>
+      <!--<li  class="waves-effect" *ngFor="let number of counter(pagination); let j=index "><a  (click)="getRecordByPage(j+1);">{{j+1}}</a></li>-->
       <span class="pink-text right">TOTAL {{countRecord}}</span>
     </ul>
   </div>

@@ -17,7 +17,7 @@
                 <i (click)="updateElement(itemBody)" class="material-icons">edit</i>
                 <i (click)="deleteElement(itemBody)" class="material-icons">delete</i>
             </td>
-            <td *ngFor="let propertyItem of propertiesContent">
+            <td *ngFor="let propertyItem of propertiesContent" (click)="selectElement(itemBody)">
 
               <span *ngIf="propertyItem != 'contact' && propertyItem != 'responsible'
               && propertyItem != 'id' && propertyItem != 'category' && propertyItem != 'image'
@@ -32,7 +32,7 @@
       </tbody>
     </table>
     <ul class="pagination center" *ngIf="countRecord > 10">
-      <li  class="waves-effect" *ngFor="let number of counter(pagination); let j=index "><a  (click)="getRecordByPage(j+1);">{{j+1}}</a></li>
+      <mz-pagination (pageChange)="getRecordByPage($event)" [currentPage]="1" [itemsPerPage]="10" [enableFirstAndLastPageButtons]="true" [totalItems]="countRecord"></mz-pagination>
       <span class="pink-text right">TOTAL {{countRecord}}</span>
     </ul>
   </div>
