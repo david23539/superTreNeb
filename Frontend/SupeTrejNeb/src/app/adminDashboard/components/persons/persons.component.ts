@@ -373,6 +373,7 @@ export class PersonsComponent implements OnInit {
     return {cont: contact, resp:responsible}
   }
 
+
   private deletedPersonContinue() {
     this._personService.deletedPerson(this.Person_IN.identifier.id).subscribe(
       response => {
