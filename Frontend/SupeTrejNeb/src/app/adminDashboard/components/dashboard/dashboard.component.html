@@ -30,7 +30,7 @@
         <a href="#"><i class="material-icons black-text">account_circle</i></a>
       </div>
       <ng-template #imageUrl>
-        <img  src="{{url+'getImageResize/'+ IMAGE}}"/>
+        <img class="circle avatar" src="{{url+'getImageResize/'+ IMAGE}}"/>
       </ng-template>
       <a href="#"><span class="white-text name">{{NAME}}</span></a>
       <a href="#"><span class="white-text name">{{LASTNAME}}</span></a>
@@ -66,6 +66,10 @@
       <mz-sidenav-link>
         <a [routerLink]="['/dashboard/addresses']" ><i class="material-icons">directions</i>{{ADDRESS_PAGE}}</a>
       </mz-sidenav-link>
+      <mz-sidenav-divider></mz-sidenav-divider>
+      <mz-sidenav-link>
+        <a [routerLink]="['/dashboard/billing']" ><i class="material-icons">euro_symbol</i>{{BILLING_PAGE}}</a>
+      </mz-sidenav-link>
    </mz-sidenav>
 
 
@@ -90,7 +94,7 @@
     <div class="container">
       © 2018 Copyright David
     <div class="right">
-      ver. 1.4.5 Beta
+      ver. 1.5.5 Beta
     </div>
     </div>
   </div>

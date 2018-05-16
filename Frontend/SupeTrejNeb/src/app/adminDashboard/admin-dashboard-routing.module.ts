@@ -10,6 +10,9 @@ import {ProductComponent} from "./components/product/product.component";
 import {ProviderComponent} from "./components/provider/provider.component";
 import {PersonsComponent} from "./components/persons/persons.component";
 import {AddressComponent} from "./components/address/address.component";
+import {BillingComponent} from "./components/bils/billing/billing.component";
+import {BillingAutoComponent} from "./components/bils/billing-auto/billing-auto.component";
+import {BillingManualComponent} from "./components/bils/billing-manual/billing-manual.component";
 
 
 const adminDashboardRouter: Routes = [
@@ -20,8 +23,10 @@ const adminDashboardRouter: Routes = [
       {path: 'product', component: ProductComponent},
       {path: 'provider', component: ProviderComponent},
       {path: 'persons', component: PersonsComponent},
-      {path: 'addresses', component: AddressComponent}
-
+      {path: 'addresses', component: AddressComponent},
+      {path: 'billing', component: BillingComponent},
+      {path: 'billing/auto', component: BillingAutoComponent},
+      {path: 'billing/manual', component: BillingManualComponent}
 
     ]},
 ];
