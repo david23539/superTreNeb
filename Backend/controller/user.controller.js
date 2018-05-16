@@ -202,7 +202,7 @@ function login(req, res){
 				}else if(!person) {
 					userAuxiliar.userNoExist(res)
 				}else{
-					User.findOne({stn_person: person, stn_state:true}, (err, userStorage) => {
+					User.findOne({stn_person: person._doc._id, stn_state:true}, (err, userStorage) => {
 						if (getData(err, userStorage, params.usuario.password, serviceUser.comparePassword)) {
 							if(params.getToken){
 								auditoriaController.saveLogsData(userStorage._doc.stn_username, constantFile.functions.USER_LOGIN_SUCCESS_TOKEN,params.direccionIp.direccionData, params.direccionIp.navegador)
