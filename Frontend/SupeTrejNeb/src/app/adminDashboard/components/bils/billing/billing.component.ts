@@ -16,6 +16,9 @@ export class BillingComponent implements OnInit {
   public countProduct:number;
   public SELECT_BILL:string = CONSTANT.Labels.SelectedBill;
   public LABEL_CANCEL_MODE_BILLS:string = CONSTANT.Labels.Cancel;
+  public LABEL_BILLS_AUTO:string = CONSTANT.Labels.BillAuto;
+  public LABEL_BILLS_MANUAL:string = CONSTANT.Labels.BillManual;
+  public LABEL_BILLS_CREATE:string = CONSTANT.Labels.Create;
 
 
   public operationType:string = "";

@@ -1,3 +1,55 @@
-<p>
-  billing-auto works!
-</p>
+<div class="row">
+  <div class="col s12 l12">
+    <div class="card-panel white">
+      <h4 class="card-title pink-text"><b>{{TITLE}}</b></h4>
+      <table-list [headsTable]="headsTables" [bodyTableContent]="bodyTable"></table-list>
+      <div class="row">
+
+      </div>
+
+
+
+
+
+
+    </div>
+
+
+  </div>
+</div>
+<div class="fixed-action-btn btn-float-bill">
+  <button mz-button [flat]="false" [large]="true" class="blue" [float]="true">
+    <i class="material-icons">settings</i>
+  </button>
+  <ul>
+    <li>
+      <button mz-button [flat]="false"  class="red" mz-tooltip [tooltip]="'Guardar y Cerrar'" [float]="true">
+        <i class="material-icons">save_alt</i>
+      </button>
+    </li>
+    <li>
+      <button mz-button [flat]="false" mz-tooltip [tooltip]="'Guardar sin cerrar'" class="green" [float]="true">
+        <i class="material-icons">save</i>
+      </button>
+    </li>
+
+    <li>
+      <button mz-button [flat]="false" mz-tooltip [tooltip]="'Eliminar elemento'" class="red" [float]="true">
+        <i class="material-icons">delete</i>
+      </button>
+    </li>
+    <li>
+      <button mz-button [flat]="false" mz-tooltip [tooltip]="'Editar elemento'" class="yellow darken-1" [float]="true">
+        <i class="material-icons">mode_edit</i>
+      </button>
+    </li>
+    <li>
+      <button mz-button [flat]="false" mz-tooltip [tooltip]="'Añadir elemento'" class="green" [float]="true">
+        <i class="material-icons">add</i>
+      </button>
+    </li>
+
+
+
+  </ul>
+</div>

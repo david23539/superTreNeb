@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col s12 l12">
     <div class="card-panel white">
-      <h4 class="card-title pink-text">{{TITLE}}</h4>
+      <h4 class="card-title pink-text"><b>{{TITLE}}</b></h4>
       <div class="input-field pink-text s6 l6">
         <i class="material-icons prefix">search</i>
         <input id="searchCategory"  [(ngModel)]="searchResult" (keyup)="filterItem()"  type="text" >
@@ -16,35 +16,34 @@
   <div class="modal-content">
     <h5 class="pink-text center">{{SELECT_BILL}}</h5>
     <div class="row">
-      <div class="col l6 s12">
+      <div class="col l6 s12" >
         <mz-card
-          class="blue-grey darken-1 white-text"
           [hoverable]="true" >
 
-          <mz-card-title>
-            Factura Automática
+          <mz-card-title  class="pink-text">
+            <b>{{LABEL_BILLS_AUTO}}</b>
           </mz-card-title>
           <mz-card-content>
             Este tipo de factura esta pensada para agilizar el trabajo de facturación
           </mz-card-content>
           <mz-card-action>
-            <a class="modal-close" [routerLink]="['/dashboard/billing/auto']"  >This is a link</a>
+            <button [routerLink]="['/dashboard/billing/auto']"  class="btn btn-bill-flat modal-close waves-effect waves-blue btn-flat">{{LABEL_BILLS_CREATE}}</button>
           </mz-card-action>
         </mz-card>
       </div>
       <div class="col l6 s12">
         <mz-card
-          class="blue-grey darken-1 white-text"
+
           [hoverable]="true" >
 
-          <mz-card-title>
-            Factura Manual
+          <mz-card-title class="pink-text">
+            <b>{{LABEL_BILLS_MANUAL}}</b>
           </mz-card-title>
           <mz-card-content>
             Este tipo de factura esta pensada para personalizar al máximo las facturas
           </mz-card-content>
           <mz-card-action>
-            <a class="modal-close" [routerLink]="['/dashboard/billing/manual']"  >This is a link</a>
+            <button [routerLink]="['/dashboard/billing/manual']"  class="btn btn-bill-flat modal-close waves-effect waves-blue btn-flat">{{LABEL_BILLS_CREATE}}</button>
           </mz-card-action>
         </mz-card>
       </div>
@@ -52,7 +51,7 @@
 
     <div class="modal-footer">
       <div class="right col l12 s12">
-        <button  class="btn modal-action modal-close waves-effect waves-blue btn-flat">{{LABEL_CANCEL_MODE_BILLS}}</button>
+        <button class="btn modal-action modal-close waves-effect waves-blue btn-flat">{{LABEL_CANCEL_MODE_BILLS}}</button>
       </div>
     </div>
   </div>

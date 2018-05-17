@@ -8,7 +8,7 @@ import { BreadcumsComponent } from './utils/breadcums/breadcums.component';
 import { CategoryComponent } from './components/category/category.component';
 import { TableComponent } from './utils/table/table.component';
 import { TableListComponent} from "./utils/table-list/table-list.component";
-import { MzTooltipModule, MzSelectModule, MzPaginationModule, MzCardModule} from "ng2-materialize";
+import { MzTooltipModule, MzSelectModule, MzButtonModule, MzPaginationModule, MzCardModule} from "ng2-materialize";
 import { ProductComponent } from './components/product/product.component';
 import { ProviderComponent } from './components/provider/provider.component';
 import { SelectCategoriesComponent } from './components/select-categories/select-categories.component';
@@ -31,7 +31,8 @@ import { BillingAutoComponent } from './components/bils/billing-auto/billing-aut
     MzTooltipModule,
     MzSelectModule,
     MzPaginationModule,
-    MzCardModule
+    MzCardModule,
+    MzButtonModule
   ],
   declarations: [
     MainDashboardComponent,
