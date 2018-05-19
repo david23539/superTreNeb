@@ -251,7 +251,7 @@ function filterPerson(req, res){
 }
 
 function getCountPerson(req, res){
-	Person.count({},(err, countPerson)=>{
+	Person.count({stn_status:true},(err, countPerson)=>{
 		if(err || !countPerson){
 			res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PERSON_GET_ERROR})
 		}else{

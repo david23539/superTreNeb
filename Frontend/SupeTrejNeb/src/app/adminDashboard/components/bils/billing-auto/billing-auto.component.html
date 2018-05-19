@@ -4,19 +4,126 @@
       <h4 class="card-title pink-text"><b>{{TITLE}}</b></h4>
       <table-list [headsTable]="headsTables" [bodyTableContent]="bodyTable"></table-list>
       <div class="row">
+        <form #createUpdateForm = "ngForm" (ngSubmit)="onSubmit(createUpdateForm)">
+          <!--Bloque izquierdo-->
+          <div class="row">
+            <div class="col s12 l6">
+              <div class="col l12 s12">
+                <!--Campo de texto-->
+                <div class="col s10 l10 input-field pink-text">
+                  <input id="personClient" placeholder="Cliente"   name="personClient" #personClient="ngModel" readonly [disabled]="true" autocomplete="false" [(ngModel)]="client" mz-tooltip [tooltip]="'Cliente'"  type="text"  class="validate" required>
+                  <label class="active" for="personClient">Cliente</label>
+                </div>
 
+                <!--Lupa-->
+                <div class="col s2 l2" *ngIf="!client; else dropClient">
+                  <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill" (click)="getClient();" [float]="true">
+                    <i class="material-icons pink-text">search</i>
+                  </button>
+                </div>
+                <ng-template #dropClient>
+                  <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill" (click)="client = ''" [float]="true">
+                    <i class="material-icons pink-text">delete</i>
+                  </button>
+                </ng-template>
+              </div>
+
+
+              <div class="col l6 s6">
+                <div class="col s12 l12 switch pink-text">
+                  <label>
+                    Con IVA
+                    <input type="checkbox">
+                    <span class="lever"></span>
+                    Sin IVA
+                  </label>
+                </div>
+              </div>
+
+              <div class="col l6 s6">
+                <div class="col s7 l7 input-field pink-text">
+                  <input id="quantityProduct"  placeholder="Solo numeros" name="quantityProduct" #quantityProduct="ngModel"  autocomplete="false" [(ngModel)]="quantity" mz-tooltip [tooltip]="'Cantidad'"  type="number"  class="validate" required>
+                  <label class="active" for="quantityProduct">Cantidad</label>
+                </div>
+                <div class="col s2 l2" *ngIf="quantity">
+                  <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill"  [float]="true">
+                    <i class="material-icons pink-text">delete</i>
+                  </button>
+                </div>
+              </div>
+
+
+            </div>
+            <!--Bloque derecho-->
+            <div class="col s12 l6">
+              <!--Proveedor-->
+              <div class="col l12 s12">
+                <!--Campo de texto-->
+                <div class="col s10 l10 input-field pink-text">
+                  <input id="providerClient" placeholder="Proveedor" name="providerClient" #providerClient="ngModel" readonly [disabled]="true" autocomplete="false" [(ngModel)]="provider" mz-tooltip [tooltip]="'Proveedor'"  type="text"  class="validate" required>
+                  <label class="active" for="providerClient">Proveedor</label>
+                </div>
+                <!--Lupa-->
+                <div class="col s2 l2" *ngIf="!provider; else providerClients">
+                  <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill" (click)="getProviders();" [float]="true">
+                    <i class="material-icons pink-text">search</i>
+                  </button>
+                </div>
+                <ng-template #providerClients>
+                  <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill" (click)="provider = ''" [float]="true">
+                    <i class="material-icons pink-text">delete</i>
+                  </button>
+                </ng-template>
+              </div>
+
+              <!--categoria-->
+              <div class="col l12 s12">
+                <!--Campo de texto-->
+                <div class="col s10 l10 input-field pink-text">
+                  <input id="categoryClient" placeholder="Categoría"  name="categoryClient" #categoryClient="ngModel" readonly [disabled]="true" autocomplete="false" [(ngModel)]="categories" mz-tooltip [tooltip]="'Categoria'"  type="text"  class="validate" required>
+                  <label class="active" for="categoryClient">Categoría</label>
+                </div>
+                <!--Lupa-->
+                <div class="col s2 l2" *ngIf="!categories; else dropCategories">
+                  <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill"  [float]="true">
+                    <i class="material-icons pink-text">search</i>
+                  </button>
+                </div>
+                <ng-template #dropCategories>
+                  <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill" (click)="categories = ''" [float]="true">
+                    <i class="material-icons pink-text">delete</i>
+                  </button>
+                </ng-template>
+              </div>
+
+              <!--Producto-->
+              <div class="col l12 s12">
+                <!--Campo de texto-->
+                <div class="col s10 l10 input-field pink-text">
+                  <input id="productClient" placeholder="Productos"  name="productClient" #productClient="ngModel" readonly [disabled]="true" autocomplete="false" [(ngModel)]="products" mz-tooltip [tooltip]="'productos'"  type="text"  class="validate" required>
+                  <label class="active" for="productClient">Productos</label>
+                </div>
+                <!--Lupa-->
+                <div class="col s2 l2" *ngIf="!products; else dropProducts">
+                  <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill"  [float]="true">
+                    <i class="material-icons pink-text">search</i>
+                  </button>
+                </div>
+                <ng-template #dropProducts>
+                  <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill" (click)="products = ''" [float]="true">
+                    <i class="material-icons pink-text">delete</i>
+                  </button>
+                </ng-template>
+              </div>
+
+            </div>
+          </div>
+        </form>
       </div>
-
-
-
-
-
-
     </div>
-
-
   </div>
 </div>
+
 <div class="fixed-action-btn btn-float-bill">
   <button mz-button [flat]="false" [large]="true" class="blue" [float]="true">
     <i class="material-icons">settings</i>
@@ -52,4 +159,44 @@
 
 
   </ul>
+</div>
+
+<div id="selectClient" #selectClient class="modal">
+  <div class="modal-content">
+    <h4 class="pink-text center">{{SELECT_CLIENT}}</h4>
+    <div class="row">
+
+      <table-list [bodyTableContent]="bodyClient" [headsTable]="headClient" (changeItem)="selectClients($event)" (paginationParams)="getClientPagination($event)" [countRecord]="countClient"></table-list>
+
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="right col l12 s12">
+
+      <button class="btn btn-bill-flat modal-close waves-effect waves-blue btn-flat" type="button" >{{LABEL_CANCEL}}
+        <i class="material-icons right">close</i>
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<div id="selectProvider" #selectProvider class="modal">
+  <div class="modal-content">
+    <h4 class="pink-text center">{{SELECT_PROVIDER}}</h4>
+    <div class="row">
+
+      <table-list [bodyTableContent]="bodyProvider" [headsTable]="headProvider" (changeItem)="selectProviders($event)" (paginationParams)="getClientPagination($event)" [countRecord]="countProvider"></table-list>
+
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="right col l12 s12">
+
+      <button class="btn btn-bill-flat modal-close waves-effect waves-blue btn-flat" type="button" >{{LABEL_CANCEL}}
+        <i class="material-icons right">close</i>
+      </button>
+    </div>
+
+  </div>
 </div>

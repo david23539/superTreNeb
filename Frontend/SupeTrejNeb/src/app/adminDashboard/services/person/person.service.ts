@@ -61,4 +61,10 @@ export class PersonService {
     return this._http.post(this.url+'reasignedPersons', param, {headers:header})
   }
 
+  countPersons(){
+    this.token = this._loginService.getToken();
+    let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
+    return this._http.get(this.url+'countPersons',{headers:header})
+  }
+
 }

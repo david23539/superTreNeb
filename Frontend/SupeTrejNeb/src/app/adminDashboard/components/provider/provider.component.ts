@@ -1,4 +1,4 @@
-import {Component, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {CONSTANT} from "../../../services/constant";
 import {ProviderService} from "../../services/provider/provider.service";
 import {Provider} from "../../model/provider/provider.model";
@@ -24,17 +24,18 @@ import {UploadService} from "../../services/uploadFiles/upload.service";
 })
 export class ProviderComponent implements OnInit {
 
-  /*@ViewChildren('table2') tableCategoryUsed: QueryList<TableListComponent>;
-  @ViewChild('table1') tableCategoryAll: TableListComponent;*/
 
+
+
+  @Output() sendProviders = new EventEmitter();
 
   public TITLE:string = CONSTANT.Labels.ProviderTitle;
   public ProviderSearch:string = CONSTANT.Labels.SearchProvider;
   public headsTables:any = CONSTANT.headProvider;
-  // public HeadCategories:any = CONSTANT.headListCategories;
+
   public searchResult:string = "";
   public bodyTable: any;
-  // public bodyCategory: any;
+
   public classStyleFormName:string = "";
   public validClassStyleFormName:string = CONSTANT.Styles.Valid;
   public invalidClassStyleFormName:string = CONSTANT.Styles.Invalid;
@@ -121,10 +122,18 @@ export class ProviderComponent implements OnInit {
       response=>{
         this.responseServer = response;
         this.countProvider = this.responseServer.count;
+        this.emitProvider();
       },error=>{
         this.toastService.show(CONSTANT.messageToast.PROVIDER_ERROR, 4000, CONSTANT.Styles.Error);
       }
     )
+  }
+
+  private emitProvider(){
+    this.sendProviders.emit({
+      providers: this.bodyTable,
+      count:this.countProvider
+    })
   }
 
   getAddress(page = 0){
@@ -170,6 +179,7 @@ export class ProviderComponent implements OnInit {
             this.toastService.show(CONSTANT.ResponseServers.InvalidParams, 4000, CONSTANT.Styles.Warning);
         }else{
           this.bodyTable = this.responseServer.providers;
+          this.emitProvider();
 
         }
       },error=>{

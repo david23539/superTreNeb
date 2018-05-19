@@ -30,6 +30,28 @@
 
 
 */
+input[type=checkbox]:checked:not(:disabled) ~ .lever:active::before, input[type=checkbox]:checked:not(:disabled).tabbed:focus ~ .lever::before {
+  background-color: rgba(160, 63, 63, 0.15);
+}
+
+.switch label input[type=checkbox]:checked+.lever{
+  background-color:#ef96b4;
+}
+.switch label input[type=checkbox]:checked+.lever:after {
+  background-color: #E91E63;
+}
+
+.btn-float-bill{
+  bottom: 12vh;
+}
+.btn-search-bill{
+  top: 3vh;
+}
+
+.btn-search-bill:hover{
+  background-color: white;
+}
+
 .borderDown {
   border-bottom-color: #e91e63;
 }

@@ -108,7 +108,7 @@ export class PersonsComponent implements OnInit {
           this.toastService.show(CONSTANT.messageToast.NO_DATA_AVAIBLE, 4000, CONSTANT.Styles.Info);
         }else{
           this.bodyTable = this.responseServer.persons;
-          this.emitPersons(this.bodyTable);
+          this.getCountPersons();
         }
       },error=>{
         this.toastService.show(CONSTANT.messageToast.PERSON_ERROR, 4000, CONSTANT.Styles.Error);
@@ -116,9 +116,23 @@ export class PersonsComponent implements OnInit {
     )
   }
 
-  private emitPersons(listPerson_IN){
+  private getCountPersons(){
+    this._personService.countPersons().subscribe(
+      response=>{
+        this.responseServer = response;
+        this.count = this.responseServer.count;
+        this.emitPersons();
+      },error=>{
+        this.toastService.show(CONSTANT.messageToast.PERSON_ERROR, 4000, CONSTANT.Styles.Error);
+
+      }
+    )
+  }
+
+  private emitPersons(){
     this.sendPerson.emit({
-      persons: listPerson_IN
+      persons: this.bodyTable,
+      count:this.count
     })
   }
 

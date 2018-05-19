@@ -10,6 +10,7 @@ export class BillingComponent implements OnInit {
 
   public TITLE:string = CONSTANT.Labels.BillsTitle;
   public searchResult:string = "";
+
   public billSearch: string = CONSTANT.Labels.SearchBills;
   public headsTables:any = CONSTANT.headBills;
   public bodyTable: any;

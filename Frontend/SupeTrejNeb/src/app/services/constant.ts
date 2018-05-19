@@ -45,6 +45,8 @@ export const CONSTANT = {
     AddPerson:"Añadir Persona",
     AddAddress:"Añadir Dirección",
     SelectPerson:"Seleccione Persona",
+    SelectClient:"Seleccione Cliente",
+    SelectProvider:"Seleccione Proveedor",
     OldPerson:"Persona Antigua",
     NewPerson:"Persona Nueva",
     DeleteCategory:"Eliminar Categoría",

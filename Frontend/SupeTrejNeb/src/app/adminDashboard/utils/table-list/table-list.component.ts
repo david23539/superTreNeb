@@ -1,4 +1,5 @@
 import {Component, EventEmitter,OnChanges, SimpleChanges, Input, OnInit, Output} from '@angular/core';
+import {GLOBAL} from "../../../services/global";
 
 @Component({
   selector: 'table-list',
@@ -18,7 +19,9 @@ export class TableListComponent implements OnInit, OnChanges {
   @Output() changeItem = new EventEmitter();
   @Output() paginationParams = new EventEmitter();
 
-  constructor() { }
+  constructor() {
+    this.url = GLOBAL.url
+  }
 
   ngOnInit() {
   }

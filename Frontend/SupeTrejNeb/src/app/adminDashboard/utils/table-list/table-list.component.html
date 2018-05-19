@@ -13,8 +13,15 @@
       <tbody>
       <tr *ngFor="let itemBody of bodyTableContent">
         <td *ngFor="let propertyItem of propertiesContent" (click)="selectElement(itemBody)">
-          <span *ngIf="propertyItem === 'direccion'">{{itemBody[propertyItem].location}}</span>
-          <span *ngIf="propertyItem !== 'id' && propertyItem !== 'direccion'">{{itemBody[propertyItem]}}</span>
+          <span *ngIf="propertyItem != 'contact' && propertyItem != 'responsible'
+              && propertyItem != 'id' && propertyItem != 'category' && propertyItem != 'image'
+              && propertyItem != 'address' && propertyItem != 'categoryProvider' && propertyItem != 'direccion'">{{itemBody[propertyItem]}}</span>
+          <span *ngIf="propertyItem === 'category'">{{itemBody[propertyItem].name}}</span>
+          <span *ngIf="propertyItem === 'address' || propertyItem === 'direccion'">{{itemBody[propertyItem].location}}</span>
+          <span *ngIf="propertyItem === 'contact'">{{itemBody[propertyItem].nombre}}</span>
+          <span *ngIf=" propertyItem === 'responsible'">{{itemBody[propertyItem].nombre}}</span>
+          <img *ngIf="propertyItem == 'image' && itemBody[propertyItem]" src="{{url+'getImageResize/'+itemBody[propertyItem]}}"/>
+
 
           <!--<span>{{itemBody[propertyItem]}}</span>-->
         </td>
