@@ -5,6 +5,7 @@ const validationGlobal = require('../Validation/global.validation');
 const ProviderModel = require('../model/provider.model');
 const auditoriaController = require('./saveLogs.controller');
 const CategoriesModel = require('../model/category.model');
+const categoryAdapter = require('../adapter/category.adapter');
 
 
 let max = 0;
@@ -35,8 +36,8 @@ function privatePrepareCategories(categoriesId_IN, res){
     for(let item of categoriesId_IN){
         CategoriesModel.findById(item, (err, category_OUT)=>{
             if(err || !category_OUT){
-                res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.CATEGORY_GET_CATEGORY_ERROR})
-                return;
+                privateReturnErrorList(res);
+                break;
             }else{
                 dataCategories.push(category_OUT);
                 if(max === dataCategories.length){
@@ -48,8 +49,12 @@ function privatePrepareCategories(categoriesId_IN, res){
 }
 
 function privateReturnListCategories(categories_IN, res){
-    res.status(constantFile.httpCode.PETITION_CORRECT).send({categories: categories_IN})
+    res.status(constantFile.httpCode.PETITION_CORRECT).send({categories: categoryAdapter.getAllCategoriesAdapter(categories_IN)})
 
+}
+
+function privateReturnErrorList(res){
+    res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.CATEGORY_GET_CATEGORY_ERROR})
 }
 
 function paramsIvalids(res){
@@ -58,4 +63,4 @@ function paramsIvalids(res){
 
 module.exports ={
     getCategoriesByProvider
-}
+};
