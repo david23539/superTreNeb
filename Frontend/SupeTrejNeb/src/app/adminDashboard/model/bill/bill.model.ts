@@ -1,7 +1,8 @@
 export class BillData{
   constructor(
-    public dataBill:{
-      idProvider:string
+    public data:{
+      idProvider:string,
+      nameProvider:string
 
     }
 

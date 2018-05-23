@@ -92,6 +92,7 @@ const constant ={
 		NO_DATA_AVAIBLE:'No existen categorías',
 
 		NO_PRODUCT_AVAIBLE:'No existen productos',
+		NO_CATEGORY_AVAIBLE:'No existen categorías',
 		NO_PROVIDERS_AVAIBLE:'No existen proveedores',
 		PROVIDERS_AVAIBLE:'Existen proveedores relacionados',
 		NO_PERSON_AVAIBLE:'No existen personas',

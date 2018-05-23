@@ -43,8 +43,11 @@ export class BillingAutoComponent implements OnInit {
   public products:string = "";
   public quantity:number;
 
+  public fullListBill_IN:any = [];
+  public nameListBill_IN:any = [];
+
   constructor(private _providerComponent:ProviderComponent, private _categoryComponent:CategoryComponent, private _personComponent:PersonsComponent, private toastService: MzToastService) {
-    this.billData = new BillData({idProvider:""});
+    this.billData = new BillData({idProvider:"", nameProvider:""});
   }
 
   ngOnInit() {
@@ -100,8 +103,11 @@ export class BillingAutoComponent implements OnInit {
 
   selectProviders(event){
     let dataProvider = event.object;
-    this.billData.dataBill.idProvider = dataProvider.id;
+    this.billData.data.idProvider = dataProvider.id;
+    this.billData.data.nameProvider = dataProvider.nameBusiness;
     this.provider = dataProvider.nameBusiness;
+
     $('#selectProvider').modal('close');
   }
+
 }

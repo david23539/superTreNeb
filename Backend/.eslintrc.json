@@ -5,7 +5,8 @@
 
     "env": {
         "amd": true,
-        "es6": true
+        "es6": true,
+        "node": true
     },
     "extends": [
     "plugin:security/recommended",
@@ -28,8 +29,8 @@
             "single"
         ],
         "semi": [
-            "error",
-            "never"
+            1,
+            "always"
         ],
         "no-console": 0
     }
