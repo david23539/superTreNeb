@@ -53,6 +53,7 @@ function privateReturnListCategories(categories_IN, res){
 
 }
 
+
 function privateReturnErrorList(res){
     res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.CATEGORY_GET_CATEGORY_ERROR})
 }
