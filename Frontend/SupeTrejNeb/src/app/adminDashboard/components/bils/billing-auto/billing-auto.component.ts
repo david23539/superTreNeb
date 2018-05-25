@@ -27,27 +27,32 @@ export class BillingAutoComponent implements OnInit {
   public bodyTable: any;
   public bodyClient:any;
   public bodyProvider:any;
+  public bodyCategory:any;
   public billData:BillData;
   public headClient:any = CONSTANT.headPerson;
   public headProvider:any = CONSTANT.headProvider;
+  public headCategories:any = CONSTANT.headCategory;
   public countClient:number;
   public countProvider:number;
+  public countCategories:number;
   public responseComponent: any;
 
   public SELECT_CLIENT:string = CONSTANT.Labels.SelectClient;
   public SELECT_PROVIDER:string = CONSTANT.Labels.SelectProvider;
+  public SELECT_CATEGORIES:string = CONSTANT.Labels.SelectionCategories;
   public LABEL_CANCEL = CONSTANT.Labels.Cancel;
   public client:string = "";
   public provider:string = "";
   public categories:string = "";
   public products:string = "";
   public quantity:number;
+  private browser:any;
 
   public fullListBill_IN:any = [];
   public nameListBill_IN:any = [];
 
   constructor(private _providerComponent:ProviderComponent, private _categoryComponent:CategoryComponent, private _personComponent:PersonsComponent, private toastService: MzToastService) {
-    this.billData = new BillData({idProvider:"", nameProvider:""});
+    this.billData = new BillData({idProvider:"", nameProvider:"", idCategory:"", nameCategory:""});
   }
 
   ngOnInit() {
@@ -95,6 +100,22 @@ export class BillingAutoComponent implements OnInit {
     )
   }
 
+  getCategories(){
+    if(!this.provider){
+      this._categoryComponent.getCategoriesOutside(this.browser).subscribe(
+        response=>{
+          $('#selectCategories').modal('open');
+
+          this.bodyCategory = response.object;
+        },error=>{
+          this.toastService.show(CONSTANT.messageToast.CATEGORY_ERROR, 4000, CONSTANT.Styles.Error);
+        }
+      )
+    }else {
+
+    }
+  }
+
   selectClients(event){
     let dataClient = event.object;
     this.client = dataClient.name +" "+dataClient.lastName + " " +dataClient.lastName2;
@@ -108,6 +129,15 @@ export class BillingAutoComponent implements OnInit {
     this.provider = dataProvider.nameBusiness;
 
     $('#selectProvider').modal('close');
+  }
+
+  selectCategory(event){
+    let dataCategory = event.object;
+    this.billData.data.idCategory = dataCategory.id;
+    this.billData.data.nameCategory = dataCategory.name;
+    this.categories = dataCategory.name;
+    $('#selectCategories').modal('close');
+
   }
 
 }

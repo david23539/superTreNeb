@@ -85,7 +85,7 @@
                 </div>
                 <!--Lupa-->
                 <div class="col s2 l2" *ngIf="!categories; else dropCategories">
-                  <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill"  [float]="true">
+                  <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill" (click)="getCategories();" [float]="true">
                     <i class="material-icons pink-text">search</i>
                   </button>
                 </div>
@@ -187,6 +187,26 @@
     <div class="row">
 
       <table-list [bodyTableContent]="bodyProvider" [headsTable]="headProvider" (changeItem)="selectProviders($event)" (paginationParams)="getClientPagination($event)" [countRecord]="countProvider"></table-list>
+
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="right col l12 s12">
+
+      <button class="btn btn-bill-flat modal-close waves-effect waves-blue btn-flat" type="button" >{{LABEL_CANCEL}}
+        <i class="material-icons right">close</i>
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<div id="selectCategories" #selectCategories class="modal">
+  <div class="modal-content">
+    <h4 class="pink-text center">{{SELECT_CATEGORIES}}</h4>
+    <div class="row">
+
+      <table-list [bodyTableContent]="bodyCategory" [headsTable]="headCategories" (changeItem)="selectCategory($event)" (paginationParams)="getClientPagination($event)" [countRecord]="countCategories"></table-list>
 
     </div>
   </div>
