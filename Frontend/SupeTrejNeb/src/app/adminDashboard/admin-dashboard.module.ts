@@ -49,7 +49,7 @@ import { BillingAutoComponent } from './components/bils/billing-auto/billing-aut
     AddressComponent,
     BillingComponent,
     BillingManualComponent,
-    BillingAutoComponent
+    BillingAutoComponent,
   ],
 
   exports:[

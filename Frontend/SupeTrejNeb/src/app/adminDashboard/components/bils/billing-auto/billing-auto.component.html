@@ -15,7 +15,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let itemBody of bodyTableFull; let i = index" (click)="selectedRow(i)" [class]="i==indexSelected?selectRow:''">
+            <tr *ngFor="let itemBody of bodyTableFull; let i = index " (click)="selectedRow(i)" [class]="i==indexSelected?selectRow:''">
               <td>
                 <span>{{itemBody.nameProd}}</span>
               </td>
@@ -34,6 +34,10 @@
             </tr>
             </tbody>
           </table>
+          <ul class="pagination center" *ngIf="bodyTableFull.length > 5">
+            <mz-pagination (pageChange)="getRecordByPage($event)" [currentPage]="1" [itemsPerPage]="5" [enableFirstAndLastPageButtons]="true" [totalItems]="bodyTableFull.length"></mz-pagination>
+            <span class="pink-text right">TOTAL {{countRecord}}</span>
+          </ul>
         </div>
       </div>
       <div class="row">
@@ -174,15 +178,11 @@
     </li>
 
     <li>
-      <button mz-button [flat]="false" mz-tooltip [tooltip]="'Eliminar elemento'" class="red" [float]="true">
+      <button mz-button [flat]="false" mz-tooltip [tooltip]="'Eliminar elemento'" (click)="deletedProduct()" class="yellow darken-1" [float]="true">
         <i class="material-icons">delete</i>
       </button>
     </li>
-    <li>
-      <button mz-button [flat]="false" mz-tooltip [tooltip]="'Editar elemento'" class="yellow darken-1" [float]="true">
-        <i class="material-icons">mode_edit</i>
-      </button>
-    </li>
+
     <li>
       <button mz-button [flat]="false" mz-tooltip [tooltip]="'Añadir elemento'" class="green" (click)="addProduct()" [float]="true">
         <i class="material-icons">add</i>

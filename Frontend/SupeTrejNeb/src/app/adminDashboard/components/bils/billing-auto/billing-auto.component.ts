@@ -242,6 +242,7 @@ export class BillingAutoComponent implements OnInit {
           pricProd:this.dataBill.data.product.price
 
         };
+
         this.bodyTableFull.push(dataProducts);
         this.products = "";
         this.categories = "";
@@ -251,6 +252,15 @@ export class BillingAutoComponent implements OnInit {
         this.toastService.show(CONSTANT.messageToast.PRODUCT_QUANTITY_ERROR, 4000, CONSTANT.Styles.Warning);
       }
     }
+  }
+
+  deletedProduct(){
+    this.bodyTableFull.splice(this.indexSelected,1);
+    this.indexSelected = -1;
+  }
+
+  getRecordByPage(event){
+
   }
 
   selectedRow(index){
