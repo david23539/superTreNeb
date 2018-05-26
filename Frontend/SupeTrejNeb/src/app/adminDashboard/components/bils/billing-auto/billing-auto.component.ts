@@ -11,48 +11,60 @@ import {AddressComponent} from "../../address/address.component";
 import {AddressService} from "../../../services/address/address.service";
 import {UploadService} from "../../../services/uploadFiles/upload.service";
 import {MzToastService} from "ng2-materialize";
+import {DataBrowser} from "../../../../utils/dataBrowser";
+import {BillService} from "../../../services/bill/bill.service";
 import {BillData} from "../../../model/bill/bill.model";
+import {ProductService} from "../../../services/product/product.service";
+import {ProductComponent} from "../../product/product.component";
 
 @Component({
   selector: 'app-billing-auto',
   templateUrl: './billing-auto.component.html',
   styleUrls: ['./billing-auto.component.css'],
   providers: [ProviderComponent, ProviderService, CategoryComponent, CategoryService, SelectCategoriesComponent,
-  PersonService, PersonsComponent, AddressComponent,AddressService, UploadService, MzToastService]
+  PersonService, PersonsComponent, AddressComponent,AddressService, UploadService, MzToastService, DataBrowser, BillService,
+  ProductService, ProductComponent]
 })
 export class BillingAutoComponent implements OnInit {
 
   public TITLE:string = CONSTANT.Labels.BillAuto;
   public headsTables:any = CONSTANT.headBillsAutoManual;
-  public bodyTable: any;
+  public bodyTable = [];
+  public bodyTableFull = [];
   public bodyClient:any;
   public bodyProvider:any;
   public bodyCategory:any;
-  public billData:BillData;
+  public bodyProduct:any;
   public headClient:any = CONSTANT.headPerson;
   public headProvider:any = CONSTANT.headProvider;
   public headCategories:any = CONSTANT.headCategory;
+  public headProduct:any = CONSTANT.headProduct;
   public countClient:number;
   public countProvider:number;
   public countCategories:number;
+  public countProduct:number;
   public responseComponent: any;
-
+  public responseService: any;
+  public dataBill :BillData;
   public SELECT_CLIENT:string = CONSTANT.Labels.SelectClient;
   public SELECT_PROVIDER:string = CONSTANT.Labels.SelectProvider;
   public SELECT_CATEGORIES:string = CONSTANT.Labels.SelectionCategories;
+  public SELECT_PRODUCT:string = CONSTANT.Labels.SelectProduct;
   public LABEL_CANCEL = CONSTANT.Labels.Cancel;
   public client:string = "";
   public provider:string = "";
   public categories:string = "";
   public products:string = "";
-  public quantity:number;
+  public quantity:number = 1;
   private browser:any;
+  public selectRow = "";
+  public indexSelected:number;
 
-  public fullListBill_IN:any = [];
-  public nameListBill_IN:any = [];
 
-  constructor(private _providerComponent:ProviderComponent, private _categoryComponent:CategoryComponent, private _personComponent:PersonsComponent, private toastService: MzToastService) {
-    this.billData = new BillData({idProvider:"", nameProvider:"", idCategory:"", nameCategory:""});
+  constructor(private _providerComponent:ProviderComponent, private _categoryComponent:CategoryComponent, private _personComponent:PersonsComponent, private toastService: MzToastService,
+              private _getDataBrowser: DataBrowser, private _billService:BillService, private _productComponent:ProductComponent) {
+    this.browser = this._getDataBrowser.getDataBrowser();
+    this.dataBill = new BillData({idCategory:"",nameCategory: "",idProvider:"",nameProvider:"",product:{category:"",description:"",iva:0,id:"",name:"", cost:0,margin:0, price:0, quantity:1}});
   }
 
   ngOnInit() {
@@ -85,6 +97,10 @@ export class BillingAutoComponent implements OnInit {
    )
   }
 
+  selectItem(index){
+
+  }
+
   getProviders(){
     $('#selectProvider').modal('open');
 
@@ -112,7 +128,54 @@ export class BillingAutoComponent implements OnInit {
         }
       )
     }else {
+      this._billService.selectCategoriesByProvider(this.dataBill.data.idProvider).subscribe(
+        response=>{
+          this.responseService = response;
+          if(this.responseService.message === CONSTANT.ResponseServers.InvalidParams){
+            this.toastService.show(CONSTANT.ResponseServers.InvalidParams, 4000, CONSTANT.Styles.Warning);
+          }else if(this.responseService.message === CONSTANT.ResponseServers.No_Data_Avaible){
+            this.toastService.show(CONSTANT.messageToast.NO_DATA_AVAIBLE, 4000, CONSTANT.Styles.Info);
+          }else{
+            $('#selectCategories').modal('open');
+            this.bodyCategory = this.responseService.categories;
+          }
+        },error=>{
+          this.toastService.show(CONSTANT.messageToast.BILL_ERROR, 4000, CONSTANT.Styles.Error);
+        }
+      )
+    }
+  }
 
+  getProducts(){
+    if(!this.categories){
+      let pagination = {page:1};
+      this._productComponent.getProductsByPagination(pagination);
+      this._productComponent.sendProduct.subscribe(
+        response=>{
+          this.responseComponent = response;
+          $('#selectProduct').modal('open');
+          this.bodyProduct = this.responseComponent.products;
+          this.countProduct = this.responseComponent.count;
+        },error=>{
+          this.toastService.show(CONSTANT.messageToast.PRODUCT_ERROR, 4000, CONSTANT.Styles.Error);
+        }
+      )
+    }else{
+      this._billService.selectProductByCategory(this.dataBill.data.idCategory).subscribe(
+        response=>{
+          this.responseService = response;
+          if(this.responseService.message === CONSTANT.ResponseServers.InvalidParams){
+            this.toastService.show(CONSTANT.ResponseServers.InvalidParams, 4000, CONSTANT.Styles.Warning);
+          }else if(this.responseService.message === CONSTANT.ResponseServers.No_Data_Product){
+            this.toastService.show(CONSTANT.messageToast.NO_DATA_AVAIBLE, 4000, CONSTANT.Styles.Info);
+          }else{
+            $('#selectProduct').modal('open');
+            this.bodyProduct = this.responseService.products;
+          }
+        },error=>{
+          this.toastService.show(CONSTANT.messageToast.PRODUCT_ERROR, 4000, CONSTANT.Styles.Error);
+        }
+      )
     }
   }
 
@@ -124,20 +187,78 @@ export class BillingAutoComponent implements OnInit {
 
   selectProviders(event){
     let dataProvider = event.object;
-    this.billData.data.idProvider = dataProvider.id;
-    this.billData.data.nameProvider = dataProvider.nameBusiness;
+    this.dataBill.data.nameProvider = dataProvider.nameBusiness;
+    this.dataBill.data.idProvider = dataProvider.id;
     this.provider = dataProvider.nameBusiness;
-
+    this.categories = "";
+    this.products = "";
     $('#selectProvider').modal('close');
   }
 
   selectCategory(event){
     let dataCategory = event.object;
-    this.billData.data.idCategory = dataCategory.id;
-    this.billData.data.nameCategory = dataCategory.name;
+    this.dataBill.data.nameCategory = dataCategory.name;
+    this.dataBill.data.idCategory = dataCategory.id;
     this.categories = dataCategory.name;
+    this.products = "";
     $('#selectCategories').modal('close');
 
+  }
+
+  selectionProduct(event){
+    let dataProduct = event.object;
+    this.dataBill.data.product.category = dataProduct.category.id;
+    this.dataBill.data.product.description = dataProduct.description;
+    this.dataBill.data.product.id = dataProduct.id;
+    this.dataBill.data.product.iva = dataProduct.iva;
+    this.dataBill.data.product.name = dataProduct.name;
+    this.dataBill.data.product.cost = dataProduct.cost;
+    this.dataBill.data.product.margin = dataProduct.margin;
+    this.products = dataProduct.name;
+    this.calculatePrice();
+
+    $('#selectProduct').modal('close');
+
+  }
+
+  private calculatePrice(){
+
+    let priceWithIva  = this.dataBill.data.product.cost + (this.dataBill.data.product.cost * this.dataBill.data.product.iva)/100;
+    this.dataBill.data.product.price = priceWithIva + (priceWithIva * this.dataBill.data.product.margin)/100;
+  };
+
+  addProduct(){
+    if(this.products){
+      if(this.quantity !== 0){
+        this.dataBill.data.product.quantity= this.quantity;
+        let dataProducts = {
+          idProv : this.dataBill.data.idProvider,
+          namProv: this.dataBill.data.nameProvider,
+          idCat: this.dataBill.data.idCategory,
+          namCat: this.dataBill.data.idCategory,
+          nameProd: this.dataBill.data.product.name,
+          descProd: this.dataBill.data.product.description,
+          quanProd: this.quantity,
+          pricProd:this.dataBill.data.product.price
+
+        };
+        this.bodyTableFull.push(dataProducts);
+        this.products = "";
+        this.categories = "";
+        this.provider = "";
+        this.quantity = 1;
+      }else{
+        this.toastService.show(CONSTANT.messageToast.PRODUCT_QUANTITY_ERROR, 4000, CONSTANT.Styles.Warning);
+      }
+    }
+  }
+
+  selectedRow(index){
+
+    this.indexSelected = index;
+    if(this.selectRow === ''){
+      this.selectRow = 'pink';
+    }
   }
 
 }

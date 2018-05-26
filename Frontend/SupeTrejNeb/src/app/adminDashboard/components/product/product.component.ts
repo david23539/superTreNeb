@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {CONSTANT} from "../../../services/constant";
 import {Product} from "../../model/product/product.model";
 import {Product_OUT} from "../../model/product/product_OUT.model";
@@ -61,7 +61,7 @@ export class ProductComponent implements OnInit {
   public categoryObject_IN : Category;
   public selectItemCategory:number;
   public filesToUpload: Array<File>;
-
+  @Output() sendProduct = new EventEmitter();
   public classStyleFormName:string = "";
   public invalidClassStyleFormName:string = CONSTANT.Styles.Invalid;
   public validClassStyleFormName:string = CONSTANT.Styles.Valid;
@@ -279,6 +279,13 @@ export class ProductComponent implements OnInit {
     }
   }
 
+  private emitProduct(){
+    this.sendProduct.emit({
+      products: this.bodyTable,
+      count: this.countProduct
+    })
+  }
+
   private getProducts(page){
     let skiping = (page -1) *10;
     this.browser = this._getDataBrowser.getDataBrowser();
@@ -301,8 +308,10 @@ export class ProductComponent implements OnInit {
         this.responseServer = response;
         if(this.responseServer.message === CONSTANT.ResponseServers.No_Data_Product){
           this.toastService.show(CONSTANT.ResponseServers.No_Data_Product, 4000, CONSTANT.Styles.Info);
+        }else{
+          this.countProduct = this.responseServer.count;
+          this.emitProduct();
         }
-        this.countProduct = this.responseServer.count;
       }
     )
   }

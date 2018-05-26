@@ -2,7 +2,7 @@
 
 const ProductModel = require('../model/product.model')
 const constantFile = require('../utils/Constant')
-const adapterProduct = require('../adapter/product.adapter')
+const adapterProduct = require('../adapter/product.adapter');
 const validationProduct = require('../Validation/product.validation')
 const validationGlobal = require('../Validation/global.validation')
 const auditoriaController = require('./saveLogs.controller')
@@ -100,12 +100,12 @@ function getProductAllPagination(req, res) {
 	if(validationGlobal.validationPage(params.pagination.page)){
 		ProductModel.find({stn_deleteProduct:false}).skip(params.pagination.page).limit(10).populate({path:'stn_categoryFk'}).exec((err, products)=>{
 			if(err){
-				auditoriaController.saveLogsData(req.user.name,err, params.direccionIp.direccionData, params.direccionIp.navegador)
-				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PRODUCT_GET_ERROR})
+				auditoriaController.saveLogsData(req.user.name,err, params.direccionIp.direccionData, params.direccionIp.navegador);
+				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PRODUCT_GET_ERROR});
 			}else if(products.length === 0){
-				res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.NO_PRODUCT_AVAIBLE})
+				res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.NO_PRODUCT_AVAIBLE});
 			}else{
-				res.status(constantFile.httpCode.PETITION_CORRECT).send({products: adapterProduct.AdapterListProduct_OUT(products)})
+				res.status(constantFile.httpCode.PETITION_CORRECT).send({products: adapterProduct.AdapterListProduct_OUT(products)});
 			}
 		})
 	}else{

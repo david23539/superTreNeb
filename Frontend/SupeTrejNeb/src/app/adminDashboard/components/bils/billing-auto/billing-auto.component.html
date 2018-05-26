@@ -2,7 +2,40 @@
   <div class="col s12 l12">
     <div class="card-panel white">
       <h4 class="card-title pink-text"><b>{{TITLE}}</b></h4>
-      <table-list [headsTable]="headsTables" [bodyTableContent]="bodyTable"></table-list>
+      <div class="row">
+        <div class="col s12">
+          <table class="striped centered responsive-table" >
+            <thead class="pink-text fixed">
+            <tr>
+              <th><span>Producto</span></th>
+              <th><span>Descripción</span></th>
+              <th><span>Cantidad</span></th>
+              <th><span>Precio</span></th>
+              <th><span>Precio Total</span></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let itemBody of bodyTableFull; let i = index" (click)="selectedRow(i)" [class]="i==indexSelected?selectRow:''">
+              <td>
+                <span>{{itemBody.nameProd}}</span>
+              </td>
+              <td>
+                <span>{{itemBody.descProd}}</span>
+              </td>
+              <td>
+                <span>{{itemBody.quanProd}}</span>
+              </td>
+              <td>
+                <span>{{itemBody.pricProd.toFixed(2)}}</span>
+              </td>
+              <td>
+                <span>{{(itemBody.pricProd * itemBody.quanProd).toFixed(2)}}</span>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
       <div class="row">
         <form #createUpdateForm = "ngForm" (ngSubmit)="onSubmit(createUpdateForm)">
           <!--Bloque izquierdo-->
@@ -46,7 +79,7 @@
                   <label class="active" for="quantityProduct">Cantidad</label>
                 </div>
                 <div class="col s2 l2" *ngIf="quantity">
-                  <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill"  [float]="true">
+                  <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill" (click)="quantity=1" [float]="true">
                     <i class="material-icons pink-text">delete</i>
                   </button>
                 </div>
@@ -70,7 +103,7 @@
                   </button>
                 </div>
                 <ng-template #providerClients>
-                  <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill" (click)="provider = ''" [float]="true">
+                  <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill" (click)="provider = ''; categories = ''" [float]="true">
                     <i class="material-icons pink-text">delete</i>
                   </button>
                 </ng-template>
@@ -105,7 +138,7 @@
                 </div>
                 <!--Lupa-->
                 <div class="col s2 l2" *ngIf="!products; else dropProducts">
-                  <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill"  [float]="true">
+                  <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill" (click)="getProducts();" [float]="true">
                     <i class="material-icons pink-text">search</i>
                   </button>
                 </div>
@@ -151,7 +184,7 @@
       </button>
     </li>
     <li>
-      <button mz-button [flat]="false" mz-tooltip [tooltip]="'Añadir elemento'" class="green" [float]="true">
+      <button mz-button [flat]="false" mz-tooltip [tooltip]="'Añadir elemento'" class="green" (click)="addProduct()" [float]="true">
         <i class="material-icons">add</i>
       </button>
     </li>
@@ -207,6 +240,26 @@
     <div class="row">
 
       <table-list [bodyTableContent]="bodyCategory" [headsTable]="headCategories" (changeItem)="selectCategory($event)" (paginationParams)="getClientPagination($event)" [countRecord]="countCategories"></table-list>
+
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="right col l12 s12">
+
+      <button class="btn btn-bill-flat modal-close waves-effect waves-blue btn-flat" type="button" >{{LABEL_CANCEL}}
+        <i class="material-icons right">close</i>
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<div id="selectProduct" #selectProduct class="modal">
+  <div class="modal-content">
+    <h4 class="pink-text center">{{SELECT_PRODUCT}}</h4>
+    <div class="row">
+
+      <table-list [bodyTableContent]="bodyProduct" [headsTable]="headProduct" (changeItem)="selectionProduct($event)" (paginationParams)="getClientPagination($event)" [countRecord]="countProduct"></table-list>
 
     </div>
   </div>

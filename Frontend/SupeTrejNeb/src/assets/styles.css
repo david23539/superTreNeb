@@ -30,6 +30,11 @@
 
 
 */
+
+.select-item:active{
+  background-color: #e91e63 !important;
+}
+
 input[type=checkbox]:checked:not(:disabled) ~ .lever:active::before, input[type=checkbox]:checked:not(:disabled).tabbed:focus ~ .lever::before {
   background-color: rgba(160, 63, 63, 0.15);
 }
