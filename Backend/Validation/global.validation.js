@@ -1,18 +1,18 @@
-'use strict'
-const constantFile = require('../utils/Constant')
+'use strict';
+const constantFile = require('../utils/Constant');
 
-const regexString = new RegExp(constantFile.regex.STRINGS_WITH_SPACES)
+const regexString = new RegExp(constantFile.regex.STRINGS_WITH_SPACES);
 
 function validateId(id){
     if(!id){
-        return false
+        return false;
     }else{
-        return regexString.test(id)
+        return regexString.test(id);
     }
 }
 
 function validationPage(page){
-    return regexString.test(page)
+    return regexString.test(page);
 }
 
 module.exports = {

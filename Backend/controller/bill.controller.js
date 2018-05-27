@@ -9,10 +9,33 @@ const CategoriesModel = require('../model/category.model');
 const categoryAdapter = require('../adapter/category.adapter');
 const ProductModel = require('../model/product.model');
 const adapterProduct = require('../adapter/product.adapter');
+// const BillModel = require('../model/bill.model');
+const adapterBill = require('../adapter/bill.adapter');
+const validationBill = require('../Validation/bill.validation');
+const validationBrowser = require('../Validation/global.validation');
 
 
 
 let max = 0;
+
+function createBill(req, res){
+    let params_IN = req.body;
+    let billModel_In = adapterBill.adapterBill_IN(params_IN);
+    if((validationBill.validationBillData_IN(billModel_In)) && (validationBrowser.validateId(params_IN.direccionIp.navegador))){
+		billModel_In.save((err, bill_OUT)=>{
+// eslint-disable-next-line no-mixed-spaces-and-tabs
+		   if(err || !bill_OUT){
+				auditoriaController.saveLogsData(req.user.name,err, req.connection.remoteAddress, params_IN.direccionIp.navegador);
+				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.BILL_ERROR});
+           }else{
+				auditoriaController.saveLogsData(req.user.name,constantFile.functions.BILL_SUCCESS, req.connection.remoteAddress, params_IN.direccionIp.navegador);
+				res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.BILL_SUCCESS});
+			}
+        });
+    }else{
+		paramsIvalids(res);
+    }
+}
 
 function getCategoriesByProvider(req, res){
     let params_IN = req.params.idProvider;
@@ -87,5 +110,6 @@ function getProductsByCategory(req, res){
 
 module.exports ={
     getCategoriesByProvider,
-	getProductsByCategory
+	getProductsByCategory,
+	createBill
 };

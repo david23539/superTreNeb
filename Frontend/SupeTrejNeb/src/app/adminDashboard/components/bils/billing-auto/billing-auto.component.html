@@ -67,14 +67,26 @@
 
 
               <div class="col l6 s6">
-                <div class="col s12 l12 switch pink-text">
+                <div class="col s6 l6 switch pink-text">
                   <label>
-                    Con IVA
-                    <input type="checkbox">
+                    <span>IVA</span>
+                    <input type="checkbox" (change)="checkIva?checkIva=false:checkIva=true">
                     <span class="lever"></span>
-                    Sin IVA
                   </label>
                 </div>
+                <div class="col s6 l6 switch pink-text">
+                  <label>
+                    <span *ngIf="!checkPay; else whitPay">Impagada</span>
+                    <ng-template #whitPay> <span>Pagada</span></ng-template>
+                    <input type="checkbox" (change)="checkPay?checkPay=false:checkPay=true">
+                    <span class="lever"></span>
+                  </label>
+                </div>
+                <div class="col s12 l6 input-field pink-text" *ngIf="checkIva">
+                  <input id="iva"  name="iva" #iva="ngModel"  autocomplete="false" [(ngModel)]="ivaBill" mz-tooltip [tooltip]="'iva'"  type="number"  class="validate" required>
+                  <label class="active" for="iva">IVA</label>
+                </div>
+
               </div>
 
               <div class="col l6 s6">
@@ -88,7 +100,6 @@
                   </button>
                 </div>
               </div>
-
 
             </div>
             <!--Bloque derecho-->
@@ -172,7 +183,7 @@
       </button>
     </li>
     <li>
-      <button mz-button [flat]="false" mz-tooltip [tooltip]="'Guardar sin cerrar'" class="green" [float]="true">
+      <button *ngIf="!checkPay" mz-button [flat]="false" mz-tooltip [tooltip]="'Guardar sin cerrar'" (click)="saveNoClosing();" class="green" [float]="true">
         <i class="material-icons">save</i>
       </button>
     </li>

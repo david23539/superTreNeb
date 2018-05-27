@@ -1,19 +1,19 @@
-'use strict'
+'use strict';
 
-const Address = require('../model/addressData.model')
+const Address = require('../model/addressData.model');
 
 function addressDataAdapter(addresParams) {
-	let address = new Address()
-	address.stn_province = addresParams.provincia
-	address.stn_location = addresParams.poblacion
-	address.stn_typeVia = addresParams.tipoVia
-	address.stn_postalCod = addresParams.codigoPostal
-	address.stn_number = addresParams.numero
-	address.stn_floor = addresParams.piso
-	address.stn_door = addresParams.puerta
-	address.stn_directionName = addresParams.nombreCalle
-	address.stn_status = true
-	return address
+	let address = new Address();
+	address.stn_province = addresParams.provincia;
+	address.stn_location = addresParams.poblacion;
+	address.stn_typeVia = addresParams.tipoVia;
+	address.stn_postalCod = addresParams.codigoPostal;
+	address.stn_number = addresParams.numero;
+	address.stn_floor = addresParams.piso;
+	address.stn_door = addresParams.puerta;
+	address.stn_directionName = addresParams.nombreCalle;
+	address.stn_status = true;
+	return address;
 }
 
 function addressDataOUTLAdapter(address_IN){
@@ -27,13 +27,13 @@ function addressDataOUTLAdapter(address_IN){
 		puerta: address_IN.stn_door,
 		nombreCalle: address_IN.stn_directionName,
 		id: address_IN._doc._id
-	}
-	return address_OUT
+	};
+	return address_OUT;
 
 }
 
 function addressDataListOUTAdapter(addressList_IN){
-	let adressList_OUT = []
+	let adressList_OUT = [];
 	for(let item of addressList_IN){
 		let address_OUT = {
 			provincia : item.stn_province,
@@ -45,10 +45,10 @@ function addressDataListOUTAdapter(addressList_IN){
 			puerta: item.stn_door,
 			nombreCalle: item.stn_directionName,
 			id: item._doc._id
-		}
-		adressList_OUT.push(address_OUT)
+		};
+		adressList_OUT.push(address_OUT);
 	}
-	return adressList_OUT
+	return adressList_OUT;
 }
 
 // eslint-disable-next-line no-undef
@@ -56,4 +56,4 @@ module.exports = {
 	addressDataAdapter,
 	addressDataOUTLAdapter,
 	addressDataListOUTAdapter
-}
+};

@@ -84,6 +84,8 @@ const constant ={
 		PRODUCT_DELETE_ERROR: 'Ha ocurrido un error al eliminar el producto',
 		PROVIDER_DELETE_ERROR: 'Ha ocurrido un error al eliminar el proveedor',
 		CATEGORY_GET_CATEGORY_ERROR: 'Ha ocurrido un error al obtener la categoria',
+		BILL_ERROR: 'Ha ocurrido al crear la factura',
+		BILL_SUCCESS: 'Se ha creado la factura',
 		PRODUCT_GET_ERROR: 'Ha ocurrido un error al obtener los productos',
 		PROVIDER_GET_ERROR: 'Ha ocurrido un error al obtener los proveedores',
 		PERSON_GET_ERROR: 'Ha ocurrido un error al obtener las personas',

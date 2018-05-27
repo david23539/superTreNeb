@@ -25,4 +25,11 @@ export class BillService{
     return this._http.get(this.url+'getProductByCategory/'+categoryId_IN,{headers:header})
   }
 
+  createBill(Bill_IN){
+    this.token = this._loginService.getToken();
+    let param = JSON.stringify(Bill_IN);
+    let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
+    return this._http.post(this.url+'createBill', param, {headers:header})
+  }
+
 }

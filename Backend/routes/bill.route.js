@@ -7,6 +7,7 @@ const md_auth = require('../middleware/autenticate.middleware');
 
 api.get('/getCategoriesByProvider/:idProvider', md_auth.ensureAuth, billController.getCategoriesByProvider);
 api.get('/getProductByCategory/:idCategory', md_auth.ensureAuth, billController.getProductsByCategory);
+api.post('/createBill', md_auth.ensureAuth, billController.createBill);
 
 
 

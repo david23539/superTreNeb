@@ -16,6 +16,7 @@ import {BillService} from "../../../services/bill/bill.service";
 import {BillData} from "../../../model/bill/bill.model";
 import {ProductService} from "../../../services/product/product.service";
 import {ProductComponent} from "../../product/product.component";
+import {BillAutoModel} from "../../../model/bill/billAuto.model";
 
 @Component({
   selector: 'app-billing-auto',
@@ -32,6 +33,9 @@ export class BillingAutoComponent implements OnInit {
   public bodyTable = [];
   public bodyTableFull = [];
   public bodyClient:any;
+  public checkIva:Boolean;
+  public checkPay:Boolean =false;
+  public ivaBill:number;
   public bodyProvider:any;
   public bodyCategory:any;
   public bodyProduct:any;
@@ -46,6 +50,7 @@ export class BillingAutoComponent implements OnInit {
   public responseComponent: any;
   public responseService: any;
   public dataBill :BillData;
+  public dataBillAuto : BillAutoModel;
   public SELECT_CLIENT:string = CONSTANT.Labels.SelectClient;
   public SELECT_PROVIDER:string = CONSTANT.Labels.SelectProvider;
   public SELECT_CATEGORIES:string = CONSTANT.Labels.SelectionCategories;
@@ -65,6 +70,7 @@ export class BillingAutoComponent implements OnInit {
               private _getDataBrowser: DataBrowser, private _billService:BillService, private _productComponent:ProductComponent) {
     this.browser = this._getDataBrowser.getDataBrowser();
     this.dataBill = new BillData({idCategory:"",nameCategory: "",idProvider:"",nameProvider:"",product:{category:"",description:"",iva:0,id:"",name:"", cost:0,margin:0, price:0, quantity:1}});
+    this.dataBillAuto = new BillAutoModel({bodyBill:"", cerrado:false, cierreDateBill:new Date(), ivaBill:0, nombreClient:"", pagado:false, tipoBill:""}, {id:""}, {page:0},{navegador:""});
   }
 
   ngOnInit() {
@@ -261,6 +267,50 @@ export class BillingAutoComponent implements OnInit {
 
   getRecordByPage(event){
 
+  }
+
+  saveNoClosing(){
+    if(this.bodyTableFull.length === 0 ){
+      this.toastService.show(CONSTANT.messageToast.BILL_EMPTY_ERROR, 4000, CONSTANT.Styles.Warning);
+    }else if(!this.client){
+      this.toastService.show(CONSTANT.messageToast.CLIENT_EMPTY_ERROR, 4000, CONSTANT.Styles.Warning);
+    }else{
+      this.createBill();
+      this._billService.createBill(this.dataBillAuto).subscribe(
+        response=>{
+          this.responseService = response;
+          if(this.responseService.message === CONSTANT.ResponseServers.InvalidParams) {
+            this.toastService.show(CONSTANT.ResponseServers.InvalidParams, 4000, CONSTANT.Styles.Warning);
+          }else{
+            this.toastService.show(CONSTANT.messageToast.BILL_CREATE_SUCCESS, 4000, CONSTANT.Styles.Success);
+            this.resetData();
+          }
+        },error=>{
+          this.toastService.show(CONSTANT.messageToast.PERSON_ERROR, 4000, CONSTANT.Styles.Error);
+        }
+      )
+    }
+  }
+
+  private resetData(){
+    this.bodyTableFull = [];
+    this.client = "";
+    this.quantity = 1;
+    this.products  = "";
+    this.provider = "";
+    this.categories = "";
+
+  }
+
+  private createBill(cierre = null){
+    this.dataBillAuto.data.tipoBill = CONSTANT.Labels.BillAuto;
+    this.dataBillAuto.data.pagado = this.checkPay;
+    this.dataBillAuto.data.ivaBill = this.ivaBill;
+    this.dataBillAuto.data.nombreClient = this.client;
+    this.dataBillAuto.data.cierreDateBill = cierre;
+    this.dataBillAuto.data.cerrado = !!cierre;
+    this.dataBillAuto.data.bodyBill = JSON.stringify(this.bodyTableFull);
+    this.dataBillAuto.direccionIp.navegador = this.browser.browser;
   }
 
   selectedRow(index){
