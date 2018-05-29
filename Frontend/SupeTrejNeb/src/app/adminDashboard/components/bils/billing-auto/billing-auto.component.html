@@ -41,7 +41,7 @@
         </div>
       </div>
       <div class="row">
-        <form #createUpdateForm = "ngForm" (ngSubmit)="onSubmit(createUpdateForm)">
+        <form #createUpdateForm = "ngForm">
           <!--Bloque izquierdo-->
           <div class="row">
             <div class="col s12 l6">
@@ -178,12 +178,12 @@
   </button>
   <ul>
     <li>
-      <button mz-button [flat]="false"  class="red" mz-tooltip [tooltip]="'Guardar y Cerrar'" [float]="true">
+      <button mz-button [flat]="false"  class="red" mz-tooltip [tooltip]="'Guardar y Cerrar'" (click)="saveBill(true);" [float]="true">
         <i class="material-icons">save_alt</i>
       </button>
     </li>
     <li>
-      <button *ngIf="!checkPay" mz-button [flat]="false" mz-tooltip [tooltip]="'Guardar sin cerrar'" (click)="saveNoClosing();" class="green" [float]="true">
+      <button *ngIf="!checkPay" mz-button [flat]="false" mz-tooltip [tooltip]="'Guardar sin cerrar'" (click)="saveBill();" class="green" [float]="true">
         <i class="material-icons">save</i>
       </button>
     </li>

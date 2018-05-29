@@ -17,6 +17,7 @@ import {BillData} from "../../../model/bill/bill.model";
 import {ProductService} from "../../../services/product/product.service";
 import {ProductComponent} from "../../product/product.component";
 import {BillAutoModel} from "../../../model/bill/billAuto.model";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-billing-auto',
@@ -67,7 +68,7 @@ export class BillingAutoComponent implements OnInit {
 
 
   constructor(private _providerComponent:ProviderComponent, private _categoryComponent:CategoryComponent, private _personComponent:PersonsComponent, private toastService: MzToastService,
-              private _getDataBrowser: DataBrowser, private _billService:BillService, private _productComponent:ProductComponent) {
+              private _getDataBrowser: DataBrowser, private _billService:BillService, private _productComponent:ProductComponent, private _router:Router) {
     this.browser = this._getDataBrowser.getDataBrowser();
     this.dataBill = new BillData({idCategory:"",nameCategory: "",idProvider:"",nameProvider:"",product:{category:"",description:"",iva:0,id:"",name:"", cost:0,margin:0, price:0, quantity:1}});
     this.dataBillAuto = new BillAutoModel({bodyBill:"", cerrado:false, cierreDateBill:new Date(), ivaBill:0, nombreClient:"", pagado:false, tipoBill:""}, {id:""}, {page:0},{navegador:""});
@@ -81,13 +82,8 @@ export class BillingAutoComponent implements OnInit {
     $('.modal').modal();
   }
 
-  onSubmit(){
 
-  }
 
-  addUpdateProductBillAuto(event){
-
-  }
 
   getClient(){
     $('#selectClient').modal('open');
@@ -103,9 +99,6 @@ export class BillingAutoComponent implements OnInit {
    )
   }
 
-  selectItem(index){
-
-  }
 
   getProviders(){
     $('#selectProvider').modal('open');
@@ -269,37 +262,31 @@ export class BillingAutoComponent implements OnInit {
 
   }
 
-  saveNoClosing(){
+  saveBill(cierre = null){
     if(this.bodyTableFull.length === 0 ){
       this.toastService.show(CONSTANT.messageToast.BILL_EMPTY_ERROR, 4000, CONSTANT.Styles.Warning);
     }else if(!this.client){
       this.toastService.show(CONSTANT.messageToast.CLIENT_EMPTY_ERROR, 4000, CONSTANT.Styles.Warning);
     }else{
-      this.createBill();
+      if(cierre){
+        this.createBill(new Date());
+      }else{
+        this.createBill();
+      }
       this._billService.createBill(this.dataBillAuto).subscribe(
-        response=>{
+        response => {
           this.responseService = response;
-          if(this.responseService.message === CONSTANT.ResponseServers.InvalidParams) {
+          if (this.responseService.message === CONSTANT.ResponseServers.InvalidParams) {
             this.toastService.show(CONSTANT.ResponseServers.InvalidParams, 4000, CONSTANT.Styles.Warning);
-          }else{
+          } else {
             this.toastService.show(CONSTANT.messageToast.BILL_CREATE_SUCCESS, 4000, CONSTANT.Styles.Success);
-            this.resetData();
+            this._router.navigate(['/dashboard/billing']);
           }
-        },error=>{
+        }, error => {
           this.toastService.show(CONSTANT.messageToast.PERSON_ERROR, 4000, CONSTANT.Styles.Error);
         }
       )
     }
-  }
-
-  private resetData(){
-    this.bodyTableFull = [];
-    this.client = "";
-    this.quantity = 1;
-    this.products  = "";
-    this.provider = "";
-    this.categories = "";
-
   }
 
   private createBill(cierre = null){

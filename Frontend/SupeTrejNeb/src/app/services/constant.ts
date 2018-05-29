@@ -147,7 +147,7 @@ export const CONSTANT = {
   },
   headCategory:["Nombre", "Descripción", "IVA"],
   headProduct:["Nombre", "Descripción", "Coste", "Referencia", "Iva", "Margen", "Stock","Categoría", "Imagen"],
-  headBills:["Cliente", "Producto", "Estado", "Tipo", "Fecha Creación","Importe"],
+  headBills:["Cliente", "Estado", "Tipo", "Fecha Creación","Fecha de Cierre","Importe"],
   headBillsAutoManual:["Producto", "Descripción", "Cantidad","Precio", "Precio Total"],
   headProvider:["Nombre Empresa", "Persona Responsable", "Persona Contacto", "NIF", "Dirección"],
   headPerson:["Nombre", "Apellido1", "Apellido2", "DNI", "Teléfono", "Móvil", "Email", "Imagen", "Población"],
