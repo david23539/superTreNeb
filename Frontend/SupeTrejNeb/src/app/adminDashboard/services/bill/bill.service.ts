@@ -32,4 +32,11 @@ export class BillService{
     return this._http.post(this.url+'createBill', param, {headers:header})
   }
 
+  getBills(Params_IN){
+    this.token = this._loginService.getToken();
+    let param = JSON.stringify(Params_IN);
+    let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
+    return this._http.post(this.url+'getBills', param, {headers:header})
+  }
+
 }

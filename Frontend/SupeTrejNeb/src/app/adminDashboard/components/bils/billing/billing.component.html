@@ -7,7 +7,7 @@
         <input id="searchCategory"  [(ngModel)]="searchResult" (keyup)="filterItem()"  type="text" >
         <label for="searchCategory">{{billSearch}}</label>
       </div>
-      <tableComponenets [headsTable]="headsTables" [bodyTableContent]=bodyTable (paginationParams)="getProductsByPagination($event);" [countRecord]="countProduct"  (changeItem)="addUpdateProduct($event)"></tableComponenets>
+      <tableComponenets [headsTable]="headsTables" [bodyTableContent]=bodyTable (paginationParams)="getProductsByPagination($event);" [countRecord]="countBill"  (changeItem)="addUpdateProduct($event)"></tableComponenets>
     </div>
   </div>
 </div>

@@ -30,7 +30,8 @@ export const CONSTANT = {
     No_Data_Provider: 'No existen proveedores',
     No_Data_Persons: 'No existen personas',
     No_Data_Avaible:'No existen categorías',
-    No_Data_Address:'No existen direcciones'
+    No_Data_Address:'No existen direcciones',
+    No_Data_Bill:'No existen facturas'
   },
   Styles:{
     Valid:"valid pink-text",

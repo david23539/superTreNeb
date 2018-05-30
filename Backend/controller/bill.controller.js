@@ -9,10 +9,12 @@ const CategoriesModel = require('../model/category.model');
 const categoryAdapter = require('../adapter/category.adapter');
 const ProductModel = require('../model/product.model');
 const adapterProduct = require('../adapter/product.adapter');
-// const BillModel = require('../model/bill.model');
+const BillModel = require('../model/bill.model');
 const adapterBill = require('../adapter/bill.adapter');
 const validationBill = require('../Validation/bill.validation');
 const validationBrowser = require('../Validation/global.validation');
+
+
 
 
 
@@ -108,8 +110,44 @@ function getProductsByCategory(req, res){
 
 }
 
+function getAllBill(req, res){
+    let params_IN = req.body;
+    if(validationBrowser.validationPage(params_IN.pagination.page) && validationBrowser.validateId(params_IN.direccionIp.navegador)){
+        BillModel.find({stn_status:true})
+			.skip(params_IN.pagination.page)
+			.limit(10)
+            .exec((err, bills_OUT)=>{
+               if(err){
+                   auditoriaController.saveLogsData(req.user.name,err, req.connection.remoteAddress, params_IN.direccionIp.navegador);
+                   res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.BILLS_GET_ERROR});
+               }else if(bills_OUT.length === 0){
+                   auditoriaController.saveLogsData(req.user.name,constantFile.functions.NO_BILLS_AVAIBLE, req.connection.remoteAddress, params_IN.direccionIp.navegador);
+                   res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.NO_BILLS_AVAIBLE});
+               }else{
+				   countBills((err, countBill)=>{
+				       if(err || !countBill){
+						   auditoriaController.saveLogsData(req.user.name,err, req.connection.remoteAddress, params_IN.direccionIp.navegador);
+						   res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.BILLS_GET_ERROR});
+                       }else{
+				           res.status(constantFile.httpCode.PETITION_CORRECT).send({bills: adapterBill.adapterBill_OUT(bills_OUT), count:countBill});
+                       }
+                   });
+               }
+            });
+    }else{
+		paramsIvalids(res);
+    }
+
+}
+
+function countBills(cb){
+	BillModel.count({stn_status:true}, cb);
+}
+
+
 module.exports ={
     getCategoriesByProvider,
 	getProductsByCategory,
-	createBill
+	createBill,
+	getAllBill
 };

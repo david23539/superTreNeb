@@ -84,6 +84,7 @@ const constant ={
 		PRODUCT_DELETE_ERROR: 'Ha ocurrido un error al eliminar el producto',
 		PROVIDER_DELETE_ERROR: 'Ha ocurrido un error al eliminar el proveedor',
 		CATEGORY_GET_CATEGORY_ERROR: 'Ha ocurrido un error al obtener la categoria',
+		BILLS_GET_ERROR: 'Ha ocurrido un error al obtener las facturas',
 		BILL_ERROR: 'Ha ocurrido al crear la factura',
 		BILL_SUCCESS: 'Se ha creado la factura',
 		PRODUCT_GET_ERROR: 'Ha ocurrido un error al obtener los productos',
@@ -94,6 +95,7 @@ const constant ={
 		NO_DATA_AVAIBLE:'No existen categorías',
 
 		NO_PRODUCT_AVAIBLE:'No existen productos',
+		NO_BILLS_AVAIBLE:'No existen facturas',
 		NO_CATEGORY_AVAIBLE:'No existen categorías',
 		NO_PROVIDERS_AVAIBLE:'No existen proveedores',
 		PROVIDERS_AVAIBLE:'Existen proveedores relacionados',
