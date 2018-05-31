@@ -17,7 +17,7 @@ import {BillData} from "../../../model/bill/bill.model";
 import {ProductService} from "../../../services/product/product.service";
 import {ProductComponent} from "../../product/product.component";
 import {BillAutoModel} from "../../../model/bill/billAuto.model";
-import {Router} from "@angular/router";
+import {Router, ActivatedRoute, Params} from "@angular/router";
 
 @Component({
   selector: 'app-billing-auto',
@@ -67,7 +67,7 @@ export class BillingAutoComponent implements OnInit {
   public indexSelected:number;
 
 
-  constructor(private _providerComponent:ProviderComponent, private _categoryComponent:CategoryComponent, private _personComponent:PersonsComponent, private toastService: MzToastService,
+  constructor(private _route: ActivatedRoute, private _providerComponent:ProviderComponent, private _categoryComponent:CategoryComponent, private _personComponent:PersonsComponent, private toastService: MzToastService,
               private _getDataBrowser: DataBrowser, private _billService:BillService, private _productComponent:ProductComponent, private _router:Router) {
     this.browser = this._getDataBrowser.getDataBrowser();
     this.dataBill = new BillData({idCategory:"",nameCategory: "",idProvider:"",nameProvider:"",product:{category:"",description:"",iva:0,id:"",name:"", cost:0,margin:0, price:0, quantity:1}});
@@ -76,13 +76,25 @@ export class BillingAutoComponent implements OnInit {
 
   ngOnInit() {
     this.createInstanceModal();
+    this.checkBillEdit();
+  }
+
+  private checkBillEdit(){
+
+    this._route.params.forEach((params:Params)=>{
+      let id = params['bill'];
+      if(id)
+      this.getDetailsBillById(id);
+    });
   }
 
   private createInstanceModal(){
     $('.modal').modal();
   }
 
-
+  private getDetailsBillById(id){
+    alert('este es el id ' + id);
+  };
 
 
   getClient(){

@@ -13,10 +13,15 @@
       </thead>
       <tbody>
         <tr *ngFor="let itemBody of bodyTableContent">
-            <td>
+            <td *ngIf="itemBody.status !== 'Pagada' && itemBody.status !== 'Cerrada' ;else downloads">
                 <i (click)="updateElement(itemBody)" class="material-icons">edit</i>
                 <i (click)="deleteElement(itemBody)" class="material-icons">delete</i>
             </td>
+            <ng-template #downloads>
+              <td>
+                <i (click)="downloadElement(itemBody.id)" class="material-icons">get_app</i>
+              </td>
+            </ng-template>
             <td *ngFor="let propertyItem of propertiesContent" (click)="selectElement(itemBody)">
 
               <span *ngIf="propertyItem != 'contact' && propertyItem != 'responsible'

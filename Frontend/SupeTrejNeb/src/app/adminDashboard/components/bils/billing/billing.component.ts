@@ -4,6 +4,7 @@ import {BillService} from "../../../services/bill/bill.service";
 import {DataBrowser} from "../../../../utils/dataBrowser";
 import {BillDataModel} from "../../../model/bill/billData.model";
 import {MzToastService} from "ng2-materialize";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-billing',
@@ -27,14 +28,9 @@ export class BillingComponent implements OnInit {
   public LABEL_BILLS_MANUAL:string = CONSTANT.Labels.BillManual;
   public LABEL_BILLS_CREATE:string = CONSTANT.Labels.Create;
   private responseServer :any;
-
-
   public operationType:string = "";
 
-
-
-
-  constructor(private _billService:BillService, private _getDataBrowser: DataBrowser, private toastService: MzToastService) {
+  constructor(private _route: ActivatedRoute, private _router:Router, private _billService:BillService, private _getDataBrowser: DataBrowser, private toastService: MzToastService) {
     this.browser = this._getDataBrowser.getDataBrowser();
     this.billData = new BillDataModel({page: 0},{navegador:""});
   }
@@ -68,14 +64,17 @@ export class BillingComponent implements OnInit {
     )
   }
 
-  getProductsByPagination(event){
+  getBillsByPagination(event){
       this.getBills(event.page - 1);
   }
 
-  addUpdateProduct(event){
+  addUpdateBill(event){
     if (event.operation === CONSTANT.OperationTables.create) {
       this.operationType = CONSTANT.OperationTables.create;
       $('#selectBillModel').modal('open');
+    }else if(event.operation === CONSTANT.OperationTables.update){
+      this.operationType = CONSTANT.OperationTables.update;
+      this._router.navigate(['/dashboard/billing/auto',{bill:event.items.id}]);
     }
   }
 }

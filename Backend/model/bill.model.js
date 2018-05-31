@@ -9,7 +9,7 @@ const BillSchema = Schema({
 	stn_dataBill:{type: String, require:true},
 	stn_type:{type: String, require:true},
 	stn_dateCreation:{type: Date, require:true},
-	stn_dateClosed:{type: Date, require:false},
+	stn_dateLastModify:{type: Date, require:false},
 	stn_payStatus:{type: Boolean, require:true},
 	stn_closed:{type: Boolean, require:true},
 	stn_status:{type: Boolean, require:true}

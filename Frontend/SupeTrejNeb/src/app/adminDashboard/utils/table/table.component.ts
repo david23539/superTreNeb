@@ -68,6 +68,12 @@ export class TableComponent implements OnInit, OnChanges {
       items: item
     })
   }
+  downloadElement(id){
+    this.changeItem.emit({
+      operation: "download",
+      items: id
+    })
+  }
 
   selectElement(item){
     this.selectItem.emit({
