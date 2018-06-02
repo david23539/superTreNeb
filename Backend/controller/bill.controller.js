@@ -22,21 +22,44 @@ let max = 0;
 
 function createBill(req, res){
     let params_IN = req.body;
-    let billModel_In = adapterBill.adapterBill_IN(params_IN);
-    if((validationBill.validationBillData_IN(billModel_In)) && (validationBrowser.validateId(params_IN.direccionIp.navegador))){
-		billModel_In.save((err, bill_OUT)=>{
+    if(!params_IN.identifier.id) {
+		let billModel_In = adapterBill.adapterBill_IN(params_IN);
+		if ((validationBill.validationBillData_IN(billModel_In)) && (validationBrowser.validateId(params_IN.direccionIp.navegador))) {
+			billModel_In.save((err, bill_OUT) => {
 // eslint-disable-next-line no-mixed-spaces-and-tabs
-		   if(err || !bill_OUT){
-				auditoriaController.saveLogsData(req.user.name,err, req.connection.remoteAddress, params_IN.direccionIp.navegador);
-				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.BILL_ERROR});
-           }else{
-				auditoriaController.saveLogsData(req.user.name,constantFile.functions.BILL_SUCCESS, req.connection.remoteAddress, params_IN.direccionIp.navegador);
-				res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.BILL_SUCCESS});
+				if (err || !bill_OUT) {
+					auditoriaController.saveLogsData(req.user.name, err, req.connection.remoteAddress, params_IN.direccionIp.navegador);
+					res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.BILL_ERROR});
+				} else {
+					auditoriaController.saveLogsData(req.user.name, constantFile.functions.BILL_SUCCESS, req.connection.remoteAddress, params_IN.direccionIp.navegador);
+					res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.BILL_SUCCESS});
+				}
+			});
+		} else {
+			paramsIvalids(res);
+		}
+	}else{
+    	updateBill(req, res, params_IN);
+	}
+}
+
+function updateBill(req, res, params_IN){
+	let billModel_In = adapterBill.adapterBill_IN(params_IN);
+	if ((validationBill.validationBillData_IN(billModel_In)) && (validationBrowser.validateId(params_IN.direccionIp.navegador)) && (validationBrowser.validateId(params_IN.identifier.id))) {
+		billModel_In._doc._id = params_IN.identifier.id;
+		BillModel.findByIdAndUpdate(params_IN.identifier.id, billModel_In, {new:true}, (err, billUpdate_OUT)=>{
+			if(err || !billUpdate_OUT){
+				auditoriaController.saveLogsData(req.user.name, err, req.connection.remoteAddress, params_IN.direccionIp.navegador);
+				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.BILL_UPDATE_ERROR});
+			}else{
+				auditoriaController.saveLogsData(req.user.name, constantFile.functions.BILL_UPDATE_SUCCESS, req.connection.remoteAddress, params_IN.direccionIp.navegador);
+				res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.BILL_UPDATE_SUCCESS});
 			}
-        });
-    }else{
+		});
+	}else{
 		paramsIvalids(res);
-    }
+	}
+
 }
 
 function getCategoriesByProvider(req, res){
@@ -57,6 +80,44 @@ function getCategoriesByProvider(req, res){
 
     }
 
+}
+
+function deleteBill(req, res){
+	let params_IN = req.params.idBill;
+	if(validationBrowser.validateId(params_IN)){
+		BillModel.findByIdAndUpdate(params_IN, {stn_status:false},{new:true},(err, billDeleted_OUT)=>{
+			if(err || !billDeleted_OUT){
+				auditoriaController.saveLogsData(req.user.name,err, req.connection.remoteAddress, 'deletedBillError');
+				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.BILLS_DELETED_ERROR});
+			}else{
+				auditoriaController.saveLogsData(req.user.name, constantFile.functions.BILL_DELETED_SUCCESS, req.connection.remoteAddress, 'deletedBillSuccess');
+				res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.BILL_DELETED_SUCCESS});
+			}
+		});
+	}else{
+		paramsIvalids(res);
+	}
+}
+
+function filterBill(req, res){
+	const keyword = req.params.key;
+	if(validationGlobal.validateId(keyword)){
+		BillModel.find({stn_nameClient:{$regex: keyword, $options: 'i'}, stn_status:true})
+			.limit(10)
+			.exec((err, bills_OUT)=>{
+				if(err){
+					auditoriaController.saveLogsData(req.user.name,err, req.connection.remoteAddress, 'getBillFilterError');
+					res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.BILLS_GET_ERROR});
+				}else if(bills_OUT.length === 0){
+					auditoriaController.saveLogsData(req.user.name,constantFile.functions.NO_BILLS_AVAIBLE, req.connection.remoteAddress, 'getFilterBillSuccessEmpty');
+					res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.NO_BILLS_AVAIBLE});
+				}else{
+					res.status(constantFile.httpCode.PETITION_CORRECT).send({bills: adapterBill.adapterListBill_OUT(bills_OUT)});
+				}
+			});
+	}else{
+		paramsIvalids(res);
+	}
 }
 
 function privatePrepareCategories(categoriesId_IN, res){
@@ -129,7 +190,7 @@ function getAllBill(req, res){
 						   auditoriaController.saveLogsData(req.user.name,err, req.connection.remoteAddress, params_IN.direccionIp.navegador);
 						   res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.BILLS_GET_ERROR});
                        }else{
-				           res.status(constantFile.httpCode.PETITION_CORRECT).send({bills: adapterBill.adapterBill_OUT(bills_OUT), count:countBill});
+				           res.status(constantFile.httpCode.PETITION_CORRECT).send({bills: adapterBill.adapterListBill_OUT(bills_OUT), count:countBill});
                        }
                    });
                }
@@ -138,6 +199,22 @@ function getAllBill(req, res){
 		paramsIvalids(res);
     }
 
+}
+
+function getBillById(req, res){
+	const params_IN = req.params.idBill;
+	if(validationBrowser.validateId(params_IN)){
+		BillModel.findById(params_IN).where({stn_status:true}).exec((err, bill_OUT)=>{
+			if(err || !bill_OUT){
+				auditoriaController.saveLogsData(req.user.name,err, req.connection.remoteAddress, 'getBillById');
+				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.BILLS_GET_ERROR});
+			}else{
+				res.status(constantFile.httpCode.PETITION_CORRECT).send({bills: adapterBill.adapterBill_OUT(bill_OUT)});
+			}
+		});
+	}else{
+		paramsIvalids(res);
+	}
 }
 
 function countBills(cb){
@@ -149,5 +226,8 @@ module.exports ={
     getCategoriesByProvider,
 	getProductsByCategory,
 	createBill,
-	getAllBill
+	getAllBill,
+	getBillById,
+	deleteBill,
+	filterBill
 };

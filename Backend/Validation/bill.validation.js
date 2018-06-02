@@ -7,7 +7,7 @@ const regexNumbersAndDecimal = new RegExp(constantFile.regex.NUMBERS_AND_DECIMAL
 
 function validationBillData_IN(BillModel_IN){
 	return (BillModel_IN.stn_nameClient && regexString.test(BillModel_IN.stn_nameClient)) && privateAnalizeBodyBill(BillModel_IN.stn_dataBill) && (BillModel_IN.stn_type && regexString.test(BillModel_IN.stn_type))
-	&& BillModel_IN.stn_dateCreation && (BillModel_IN.stn_payStatus===true || BillModel_IN.stn_payStatus===false) && (BillModel_IN.stn_closed===true || BillModel_IN.stn_closed===false)
+	&& (BillModel_IN.stn_payStatus===true || BillModel_IN.stn_payStatus===false) && (BillModel_IN.stn_closed===true || BillModel_IN.stn_closed===false)
 		&& (BillModel_IN.stn_status===true || BillModel_IN.stn_status===false) && (regexNumbers.test(BillModel_IN.stn_ivaBill));
 }
 

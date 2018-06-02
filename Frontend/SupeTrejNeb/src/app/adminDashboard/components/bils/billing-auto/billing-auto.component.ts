@@ -65,13 +65,16 @@ export class BillingAutoComponent implements OnInit {
   private browser:any;
   public selectRow = "";
   public indexSelected:number;
+  public updateInvoice: boolean = false;
+  public statusUpdateInvoice:boolean;
+
 
 
   constructor(private _route: ActivatedRoute, private _providerComponent:ProviderComponent, private _categoryComponent:CategoryComponent, private _personComponent:PersonsComponent, private toastService: MzToastService,
               private _getDataBrowser: DataBrowser, private _billService:BillService, private _productComponent:ProductComponent, private _router:Router) {
     this.browser = this._getDataBrowser.getDataBrowser();
     this.dataBill = new BillData({idCategory:"",nameCategory: "",idProvider:"",nameProvider:"",product:{category:"",description:"",iva:0,id:"",name:"", cost:0,margin:0, price:0, quantity:1}});
-    this.dataBillAuto = new BillAutoModel({bodyBill:"", cerrado:false, cierreDateBill:new Date(), ivaBill:0, nombreClient:"", pagado:false, tipoBill:""}, {id:""}, {page:0},{navegador:""});
+    this.dataBillAuto = new BillAutoModel({bodyBill:"", cerrado:false, cierreDateBill:new Date(), ivaBill:0, nombreClient:"", pagado:false, tipoBill:"",update:false}, {id:""}, {page:0},{navegador:""});
   }
 
   ngOnInit() {
@@ -83,8 +86,12 @@ export class BillingAutoComponent implements OnInit {
 
     this._route.params.forEach((params:Params)=>{
       let id = params['bill'];
-      if(id)
-      this.getDetailsBillById(id);
+      this.statusUpdateInvoice = (params['status'] === 'Cerrada');
+      if(id){
+        this.updateInvoice = true;
+        this.dataBillAuto.data.update = true;
+        this.getDetailsBillById(id);
+      }
     });
   }
 
@@ -93,9 +100,17 @@ export class BillingAutoComponent implements OnInit {
   }
 
   private getDetailsBillById(id){
-    alert('este es el id ' + id);
+    this._billService.getBillById(id).subscribe(
+      response=>{
+        this.responseService = response;
+        this.dataBillAuto.identifier.id = this.responseService.bills.id;
+        this.client = this.responseService.bills.client;
+        this.bodyTableFull = this.responseService.bills.data;
+      },error=>{
+        this.toastService.show(CONSTANT.messageToast.BILL_ERROR, 4000, CONSTANT.Styles.Error);
+      }
+    )
   };
-
 
   getClient(){
     $('#selectClient').modal('open');
@@ -274,39 +289,38 @@ export class BillingAutoComponent implements OnInit {
 
   }
 
-  saveBill(cierre = null){
+  saveBill(cierre){
     if(this.bodyTableFull.length === 0 ){
       this.toastService.show(CONSTANT.messageToast.BILL_EMPTY_ERROR, 4000, CONSTANT.Styles.Warning);
     }else if(!this.client){
       this.toastService.show(CONSTANT.messageToast.CLIENT_EMPTY_ERROR, 4000, CONSTANT.Styles.Warning);
     }else{
-      if(cierre){
-        this.createBill(new Date());
-      }else{
-        this.createBill();
-      }
+      this.createBill(new Date(), cierre);
       this._billService.createBill(this.dataBillAuto).subscribe(
         response => {
           this.responseService = response;
           if (this.responseService.message === CONSTANT.ResponseServers.InvalidParams) {
             this.toastService.show(CONSTANT.ResponseServers.InvalidParams, 4000, CONSTANT.Styles.Warning);
-          } else {
+          } else if(this.responseService.message === CONSTANT.ResponseServers.Bill_Success_Update){
+            this.toastService.show(CONSTANT.messageToast.BILL_UPDATE_SUCCESS, 4000, CONSTANT.Styles.Success);
+            this._router.navigate(['/dashboard/billing']);
+          }else{
             this.toastService.show(CONSTANT.messageToast.BILL_CREATE_SUCCESS, 4000, CONSTANT.Styles.Success);
             this._router.navigate(['/dashboard/billing']);
           }
         }, error => {
-          this.toastService.show(CONSTANT.messageToast.PERSON_ERROR, 4000, CONSTANT.Styles.Error);
+          this.toastService.show(CONSTANT.messageToast.BILL_ERROR, 4000, CONSTANT.Styles.Error);
         }
       )
     }
   }
 
-  private createBill(cierre = null){
+  private createBill(fcierre, cierre){
     this.dataBillAuto.data.tipoBill = CONSTANT.Labels.BillAuto;
     this.dataBillAuto.data.pagado = this.checkPay;
     this.dataBillAuto.data.ivaBill = this.ivaBill;
     this.dataBillAuto.data.nombreClient = this.client;
-    this.dataBillAuto.data.cierreDateBill = cierre;
+    this.dataBillAuto.data.cierreDateBill = fcierre;
     this.dataBillAuto.data.cerrado = !!cierre;
     this.dataBillAuto.data.bodyBill = JSON.stringify(this.bodyTableFull);
     this.dataBillAuto.direccionIp.navegador = this.browser.browser;

@@ -13,9 +13,9 @@
       </thead>
       <tbody>
         <tr *ngFor="let itemBody of bodyTableContent">
-            <td *ngIf="itemBody.status !== 'Pagada' && itemBody.status !== 'Cerrada' ;else downloads">
+            <td *ngIf="itemBody.status !== 'Pagada' ;else downloads">
                 <i (click)="updateElement(itemBody)" class="material-icons">edit</i>
-                <i (click)="deleteElement(itemBody)" class="material-icons">delete</i>
+                <i *ngIf="itemBody.status !== 'Cerrada'" (click)="deleteElement(itemBody)" class="material-icons">delete</i>
             </td>
             <ng-template #downloads>
               <td>

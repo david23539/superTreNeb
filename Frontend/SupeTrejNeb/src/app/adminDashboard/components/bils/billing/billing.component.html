@@ -56,3 +56,27 @@
     </div>
   </div>
 </div>
+
+<div id="deletedBill" #modalDeletedBill class="modal">
+  <div class="modal-content">
+    <h4 class="pink-text center">{{DELETED_BILL_TITTLE}}</h4>
+    <div class="row">
+      <div class="center pink-text col l12 s12" >
+        <h6>{{DELETED_BILL_SUBTITTLE}}</h6>
+      </div>
+      <div class="modal-footer">
+        <div class="right col l12 s12">
+
+          <button class="btn modal-action modal-close waves-effect waves-red btn-flat" (click)="deleteBill()" type="button" >{{LABEL_DELETED_BILL}}
+            <i class="material-icons right">remove</i>
+          </button>
+          <button class="btn modal-action modal-close waves-effect waves-blue btn-flat" type="button" >{{LABEL_CANCEL}}
+            <i class="material-icons right">close</i>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>

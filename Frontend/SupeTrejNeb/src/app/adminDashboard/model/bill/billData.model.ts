@@ -5,7 +5,11 @@ export class BillDataModel{
     },
     public direccionIp: {
       navegador: string
+    },
+    public identifier:{
+      id:string
     }
+
 
   ){}
 }

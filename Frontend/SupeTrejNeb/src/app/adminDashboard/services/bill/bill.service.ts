@@ -39,4 +39,22 @@ export class BillService{
     return this._http.post(this.url+'getBills', param, {headers:header})
   }
 
+  getBillById(Params_IN){
+    this.token = this._loginService.getToken();
+    let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
+    return this._http.get(this.url+'getUniqueBill/'+Params_IN,{headers:header})
+  }
+
+  deletedBill(id){
+    this.token = this._loginService.getToken();
+    let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
+    return this._http.delete(this.url+'deletedBills/'+id,{headers:header})
+  }
+
+  filderedBill(keyWords){
+    this.token = this._loginService.getToken();
+    let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
+    return this._http.get(this.url+'filterBill/'+keyWords,{headers:header})
+  }
+
 }

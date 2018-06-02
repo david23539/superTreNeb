@@ -9,7 +9,9 @@ function adapterBill_IN(billParams_IN){
 	billModel_IN.stn_ivaBill = billParams_IN.data.ivaBill?billParams_IN.data.ivaBill:0;
 	billModel_IN.stn_dataBill = billParams_IN.data.bodyBill;
 	billModel_IN.stn_type = billParams_IN.data.tipoBill;
-	billModel_IN.stn_dateCreation = new Date();
+	if(!billParams_IN.data.update){
+		billModel_IN.stn_dateCreation = new Date();
+	}
 	billModel_IN.stn_dateLastModify = billParams_IN.data.cierreDateBill;
 	billModel_IN.stn_payStatus = billParams_IN.data.pagado;
 	billModel_IN.stn_closed = billParams_IN.data.cerrado;
@@ -17,7 +19,7 @@ function adapterBill_IN(billParams_IN){
 	return billModel_IN;
 }
 
-function adapterBill_OUT(billList_IN){
+function adapterListBill_OUT(billList_IN){
 	let adaptationBills = [];
 	for(let item of billList_IN){
 		let bill = {
@@ -32,6 +34,15 @@ function adapterBill_OUT(billList_IN){
 		adaptationBills.push(bill);
 	}
 	return adaptationBills;
+}
+
+function adapterBill_OUT(bill_IN){
+	let bill = {
+		data : JSON.parse(bill_IN._doc.stn_dataBill),
+		client: bill_IN._doc.stn_nameClient,
+		id: bill_IN._doc._id
+	};
+	return bill;
 }
 
 function privateCalculatePrice(data, iva=null){
@@ -49,5 +60,6 @@ function privateCalculatePrice(data, iva=null){
 
 module.exports = {
 	adapterBill_IN,
+	adapterListBill_OUT,
 	adapterBill_OUT
 };

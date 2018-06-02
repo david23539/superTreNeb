@@ -7,7 +7,8 @@ export class BillAutoModel{
       tipoBill:string,
       cierreDateBill:Date,
       pagado:Boolean,
-      cerrado:Boolean
+      cerrado:Boolean,
+      update:Boolean
     },
     public identifier:{
       id:string

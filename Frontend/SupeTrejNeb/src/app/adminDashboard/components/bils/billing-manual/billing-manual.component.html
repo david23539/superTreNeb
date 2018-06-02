@@ -1,3 +1,198 @@
-<p>
-  billing-manual works!
-</p>
+<div class="row">
+  <div class="col s12 l12">
+    <div class="card-panel white">
+      <h4 class="card-title pink-text"><b>{{TITLE}}</b></h4>
+      <div class="row">
+        <div class="col s12">
+          <table class="striped centered responsive-table" >
+            <thead class="pink-text fixed">
+            <tr>
+              <th><span>Producto</span></th>
+              <th><span>Descripción</span></th>
+              <th><span>Cantidad</span></th>
+              <th><span>Precio</span></th>
+              <th><span>Precio Total</span></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let itemBody of bodyTableFull; let i = index " (click)="selectedRow(i)" [class]="i==indexSelected?selectRow:''">
+              <td>
+                <span>{{itemBody.nameProd}}</span>
+              </td>
+              <td>
+                <span>{{itemBody.descProd}}</span>
+              </td>
+              <td>
+                <span>{{itemBody.quanProd}}</span>
+              </td>
+              <td>
+                <span>{{itemBody.pricProd}}</span>
+              </td>
+              <td>
+                <span>{{(itemBody.pricProd * itemBody.quanProd)}}</span>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <ul class="pagination center" *ngIf="bodyTableFull.length > 5">
+            <mz-pagination (pageChange)="getRecordByPage($event)" [currentPage]="1" [itemsPerPage]="5" [enableFirstAndLastPageButtons]="true" [totalItems]="bodyTableFull.length"></mz-pagination>
+            <span class="pink-text right">TOTAL {{countRecord}}</span>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+
+        <form #createUpdateForm = "ngForm">
+          <!--Bloque izquierdo-->
+          <div class="row">
+            <div class="col s12 l6">
+              <div class="col l12 s12">
+                <!--Campo de texto-->
+                <div class="col s10 l10 input-field pink-text">
+                  <input id="personClient" placeholder="Cliente"  name="personClient" #personClient="ngModel" autocomplete="false" [(ngModel)]="client" mz-tooltip [tooltip]="'Cliente'"  type="text"  class="validate" required>
+                  <label class="active" for="personClient">Cliente</label>
+                </div>
+
+                <!--Lupa-->
+                <div class="col s2 l2" *ngIf="!client; else dropClient">
+                  <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill" [disabled]="updateInvoice || statusUpdateInvoice" (click)="getClient();" [float]="true">
+                    <i class="material-icons pink-text">search</i>
+                  </button>
+                </div>
+                <ng-template #dropClient>
+                  <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill" (click)="client = ''" [disabled]="updateInvoice || statusUpdateInvoice" [float]="true">
+                    <i class="material-icons pink-text">delete</i>
+                  </button>
+                </ng-template>
+              </div>
+
+
+              <div class="col l6 s6">
+                <div class="col s6 l6 switch pink-text">
+                  <label>
+                    <span>IVA</span>
+                    <input type="checkbox" [disabled]="statusUpdateInvoice" (change)="checkIva?checkIva=false:checkIva=true">
+                    <span class="lever"></span>
+                  </label>
+                </div>
+                <div class="col s6 l6 switch pink-text">
+                  <label>
+                    <span *ngIf="!checkPay; else whitPay">Impagada</span>
+                    <ng-template #whitPay> <span>Pagada</span></ng-template>
+                    <input type="checkbox"  (change)="checkPay?checkPay=false:checkPay=true">
+                    <span class="lever"></span>
+                  </label>
+                </div>
+                <div class="col s12 l6 input-field pink-text" *ngIf="checkIva">
+                  <input id="iva"  name="iva" #iva="ngModel" [disabled]="statusUpdateInvoice"  autocomplete="false" [(ngModel)]="ivaBill" mz-tooltip [tooltip]="'iva'"  type="number"  class="validate" required>
+                  <label class="active" for="iva">IVA</label>
+                </div>
+
+              </div>
+
+              <div class="col l6 s6">
+                <div class="col s7 l7 input-field pink-text">
+                  <input id="quantityProduct" [disabled]="statusUpdateInvoice" placeholder="Solo numeros" name="quantityProduct" #quantityProduct="ngModel"  autocomplete="false" [(ngModel)]="quantity" mz-tooltip [tooltip]="'Cantidad'"  type="number"  class="validate" required>
+                  <label class="active" for="quantityProduct">Cantidad</label>
+                </div>
+                <div class="col s2 l2" *ngIf="quantity">
+                  <button mz-button  [flat]="true"  [large]="false" [disabled]="statusUpdateInvoice" class="btn-search-bill" (click)="quantity=1" [float]="true">
+                    <i class="material-icons pink-text">delete</i>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+            <!--Bloque derecho-->
+            <div class="col s12 l6">
+              <!--Producto-->
+              <div class="col l12 s12">
+                <!--Campo de texto-->
+                <div class="col s5 l5 input-field pink-text">
+                  <input id="productClient" placeholder="Concepto"  name="productClient" #productClient="ngModel"  autocomplete="false" [(ngModel)]="dataBill.data.product.name" mz-tooltip [tooltip]="'productos'"  type="text"  class="validate" required>
+                  <label class="active" for="productClient">Concepto</label>
+                </div>
+                <div class="col s5 l5 input-field pink-text">
+                  <input id="price" placeholder="Precio"  name="price" #price="ngModel"  autocomplete="false" [(ngModel)]="dataBill.data.product.price" mz-tooltip [tooltip]="'precio'"  type="number"  class="validate" required>
+                  <label class="active" for="price">PVP</label>
+                </div>
+                <div class="input-field col s10 l10">
+                  <textarea id="descripcion" class="materialize-textarea" name="descripcionProduct" #descripcionProduct="ngModel" [(ngModel)]="dataBill.data.product.description" mz-tooltip [tooltip]="'descripción'"></textarea>
+                  <label for="descripcion">{{LABEL_DESCRIPTION}}</label>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="fixed-action-btn btn-float-bill">
+  <button mz-button [flat]="false" [large]="true" class="blue" [float]="true">
+    <i class="material-icons">settings</i>
+  </button>
+  <ul>
+    <li *ngIf="!updateInvoice">
+      <button mz-button [flat]="false"  class="red" mz-tooltip [tooltip]="'Guardar y Cerrar'" (click)="saveBill(true);" [float]="true">
+        <i class="material-icons">save_alt</i>
+      </button>
+    </li>
+    <li *ngIf="!updateInvoice">
+      <button *ngIf="!checkPay" mz-button [flat]="false" mz-tooltip [tooltip]="'Guardar sin cerrar'"  (click)="saveBill();" class="green" [float]="true">
+        <i class="material-icons">save</i>
+      </button>
+    </li>
+
+    <li *ngIf="updateInvoice">
+      <button mz-button [flat]="false" mz-tooltip [tooltip]="'Actualizar y cerrar'" (click)="saveBill(true);"  class="blue" [float]="true">
+        <i class="material-icons">save_alt</i>
+      </button>
+    </li>
+
+    <li *ngIf="updateInvoice">
+      <button *ngIf="!checkPay" mz-button [flat]="false" mz-tooltip [tooltip]="'Actualizar sin cerrar'" [disabled]="statusUpdateInvoice" (click)="saveBill();" class="blue" [float]="true">
+        <i class="material-icons">save</i>
+      </button>
+    </li>
+
+    <li>
+      <button mz-button [flat]="false" mz-tooltip [tooltip]="'Eliminar elemento'" (click)="deletedProduct()" [disabled]="statusUpdateInvoice" class="yellow darken-1" [float]="true">
+        <i class="material-icons">delete</i>
+      </button>
+    </li>
+
+    <li>
+      <button mz-button [flat]="false" mz-tooltip [tooltip]="'Añadir elemento'" class="green" (click)="addProduct()" [disabled]="statusUpdateInvoice" [float]="true">
+        <i class="material-icons">add</i>
+      </button>
+    </li>
+
+
+
+  </ul>
+</div>
+
+<div id="selectClient" #selectClient class="modal">
+  <div class="modal-content">
+    <h4 class="pink-text center">{{SELECT_CLIENT}}</h4>
+    <div class="row">
+
+      <table-list [bodyTableContent]="bodyClient" [headsTable]="headClient" (changeItem)="selectClients($event)" (paginationParams)="getClientPagination($event)" [countRecord]="countClient"></table-list>
+
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="right col l12 s12">
+
+      <button class="btn btn-bill-flat modal-close waves-effect waves-blue btn-flat" type="button" >{{LABEL_CANCEL}}
+        <i class="material-icons right">close</i>
+      </button>
+    </div>
+
+  </div>
+</div>

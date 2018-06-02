@@ -48,18 +48,18 @@
               <div class="col l12 s12">
                 <!--Campo de texto-->
                 <div class="col s10 l10 input-field pink-text">
-                  <input id="personClient" placeholder="Cliente"   name="personClient" #personClient="ngModel" readonly [disabled]="true" autocomplete="false" [(ngModel)]="client" mz-tooltip [tooltip]="'Cliente'"  type="text"  class="validate" required>
+                  <input id="personClient" placeholder="Cliente"  name="personClient" #personClient="ngModel" readonly [disabled]="true" autocomplete="false" [(ngModel)]="client" mz-tooltip [tooltip]="'Cliente'"  type="text"  class="validate" required>
                   <label class="active" for="personClient">Cliente</label>
                 </div>
 
                 <!--Lupa-->
                 <div class="col s2 l2" *ngIf="!client; else dropClient">
-                  <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill" (click)="getClient();" [float]="true">
+                  <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill" [disabled]="updateInvoice || statusUpdateInvoice" (click)="getClient();" [float]="true">
                     <i class="material-icons pink-text">search</i>
                   </button>
                 </div>
                 <ng-template #dropClient>
-                  <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill" (click)="client = ''" [float]="true">
+                  <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill" (click)="client = ''" [disabled]="updateInvoice || statusUpdateInvoice" [float]="true">
                     <i class="material-icons pink-text">delete</i>
                   </button>
                 </ng-template>
@@ -70,7 +70,7 @@
                 <div class="col s6 l6 switch pink-text">
                   <label>
                     <span>IVA</span>
-                    <input type="checkbox" (change)="checkIva?checkIva=false:checkIva=true">
+                    <input type="checkbox" [disabled]="statusUpdateInvoice" (change)="checkIva?checkIva=false:checkIva=true">
                     <span class="lever"></span>
                   </label>
                 </div>
@@ -78,12 +78,12 @@
                   <label>
                     <span *ngIf="!checkPay; else whitPay">Impagada</span>
                     <ng-template #whitPay> <span>Pagada</span></ng-template>
-                    <input type="checkbox" (change)="checkPay?checkPay=false:checkPay=true">
+                    <input type="checkbox"  (change)="checkPay?checkPay=false:checkPay=true">
                     <span class="lever"></span>
                   </label>
                 </div>
                 <div class="col s12 l6 input-field pink-text" *ngIf="checkIva">
-                  <input id="iva"  name="iva" #iva="ngModel"  autocomplete="false" [(ngModel)]="ivaBill" mz-tooltip [tooltip]="'iva'"  type="number"  class="validate" required>
+                  <input id="iva"  name="iva" #iva="ngModel" [disabled]="statusUpdateInvoice"  autocomplete="false" [(ngModel)]="ivaBill" mz-tooltip [tooltip]="'iva'"  type="number"  class="validate" required>
                   <label class="active" for="iva">IVA</label>
                 </div>
 
@@ -91,11 +91,11 @@
 
               <div class="col l6 s6">
                 <div class="col s7 l7 input-field pink-text">
-                  <input id="quantityProduct"  placeholder="Solo numeros" name="quantityProduct" #quantityProduct="ngModel"  autocomplete="false" [(ngModel)]="quantity" mz-tooltip [tooltip]="'Cantidad'"  type="number"  class="validate" required>
+                  <input id="quantityProduct" [disabled]="statusUpdateInvoice" placeholder="Solo numeros" name="quantityProduct" #quantityProduct="ngModel"  autocomplete="false" [(ngModel)]="quantity" mz-tooltip [tooltip]="'Cantidad'"  type="number"  class="validate" required>
                   <label class="active" for="quantityProduct">Cantidad</label>
                 </div>
                 <div class="col s2 l2" *ngIf="quantity">
-                  <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill" (click)="quantity=1" [float]="true">
+                  <button mz-button  [flat]="true"  [large]="false" [disabled]="statusUpdateInvoice" class="btn-search-bill" (click)="quantity=1" [float]="true">
                     <i class="material-icons pink-text">delete</i>
                   </button>
                 </div>
@@ -113,12 +113,12 @@
                 </div>
                 <!--Lupa-->
                 <div class="col s2 l2" *ngIf="!provider; else providerClients">
-                  <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill" (click)="getProviders();" [float]="true">
+                  <button mz-button  [flat]="true"  [large]="false" [disabled]="statusUpdateInvoice" class="btn-search-bill" (click)="getProviders();" [float]="true">
                     <i class="material-icons pink-text">search</i>
                   </button>
                 </div>
                 <ng-template #providerClients>
-                  <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill" (click)="provider = ''; categories = ''" [float]="true">
+                  <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill" [disabled]="statusUpdateInvoice" (click)="provider = ''; categories = ''" [float]="true">
                     <i class="material-icons pink-text">delete</i>
                   </button>
                 </ng-template>
@@ -133,12 +133,12 @@
                 </div>
                 <!--Lupa-->
                 <div class="col s2 l2" *ngIf="!categories; else dropCategories">
-                  <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill" (click)="getCategories();" [float]="true">
+                  <button mz-button  [flat]="true"  [large]="false" [disabled]="statusUpdateInvoice" class="btn-search-bill" (click)="getCategories();" [float]="true">
                     <i class="material-icons pink-text">search</i>
                   </button>
                 </div>
                 <ng-template #dropCategories>
-                  <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill" (click)="categories = ''" [float]="true">
+                  <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill" [disabled]="statusUpdateInvoice" (click)="categories = ''" [float]="true">
                     <i class="material-icons pink-text">delete</i>
                   </button>
                 </ng-template>
@@ -153,12 +153,12 @@
                 </div>
                 <!--Lupa-->
                 <div class="col s2 l2" *ngIf="!products; else dropProducts">
-                  <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill" (click)="getProducts();" [float]="true">
+                  <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill" [disabled]="statusUpdateInvoice" (click)="getProducts();" [float]="true">
                     <i class="material-icons pink-text">search</i>
                   </button>
                 </div>
                 <ng-template #dropProducts>
-                  <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill" (click)="products = ''" [float]="true">
+                  <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill" [disabled]="statusUpdateInvoice" (click)="products = ''" [float]="true">
                     <i class="material-icons pink-text">delete</i>
                   </button>
                 </ng-template>
@@ -177,25 +177,37 @@
     <i class="material-icons">settings</i>
   </button>
   <ul>
-    <li>
+    <li *ngIf="!updateInvoice">
       <button mz-button [flat]="false"  class="red" mz-tooltip [tooltip]="'Guardar y Cerrar'" (click)="saveBill(true);" [float]="true">
         <i class="material-icons">save_alt</i>
       </button>
     </li>
-    <li>
-      <button *ngIf="!checkPay" mz-button [flat]="false" mz-tooltip [tooltip]="'Guardar sin cerrar'" (click)="saveBill();" class="green" [float]="true">
+    <li *ngIf="!updateInvoice">
+      <button *ngIf="!checkPay" mz-button [flat]="false" mz-tooltip [tooltip]="'Guardar sin cerrar'"  (click)="saveBill();" class="green" [float]="true">
+        <i class="material-icons">save</i>
+      </button>
+    </li>
+
+    <li *ngIf="updateInvoice">
+      <button mz-button [flat]="false" mz-tooltip [tooltip]="'Actualizar y cerrar'" (click)="saveBill(true);"  class="blue" [float]="true">
+        <i class="material-icons">save_alt</i>
+      </button>
+    </li>
+
+    <li *ngIf="updateInvoice">
+      <button *ngIf="!checkPay" mz-button [flat]="false" mz-tooltip [tooltip]="'Actualizar sin cerrar'" [disabled]="statusUpdateInvoice" (click)="saveBill();" class="blue" [float]="true">
         <i class="material-icons">save</i>
       </button>
     </li>
 
     <li>
-      <button mz-button [flat]="false" mz-tooltip [tooltip]="'Eliminar elemento'" (click)="deletedProduct()" class="yellow darken-1" [float]="true">
+      <button mz-button [flat]="false" mz-tooltip [tooltip]="'Eliminar elemento'" (click)="deletedProduct()" [disabled]="statusUpdateInvoice" class="yellow darken-1" [float]="true">
         <i class="material-icons">delete</i>
       </button>
     </li>
 
     <li>
-      <button mz-button [flat]="false" mz-tooltip [tooltip]="'Añadir elemento'" class="green" (click)="addProduct()" [float]="true">
+      <button mz-button [flat]="false" mz-tooltip [tooltip]="'Añadir elemento'" class="green" (click)="addProduct()" [disabled]="statusUpdateInvoice" [float]="true">
         <i class="material-icons">add</i>
       </button>
     </li>
