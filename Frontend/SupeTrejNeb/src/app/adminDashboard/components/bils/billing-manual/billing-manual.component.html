@@ -49,7 +49,7 @@
               <div class="col l12 s12">
                 <!--Campo de texto-->
                 <div class="col s10 l10 input-field pink-text">
-                  <input id="personClient" placeholder="Cliente"  name="personClient" #personClient="ngModel" autocomplete="false" [(ngModel)]="client" mz-tooltip [tooltip]="'Cliente'"  type="text"  class="validate" required>
+                  <input id="personClient" placeholder="Cliente"  name="personClient" #personClient="ngModel" [disabled]="updateInvoice || statusUpdateInvoice" autocomplete="false" [(ngModel)]="client" mz-tooltip [tooltip]="'Cliente'"  type="text"  class="validate" required>
                   <label class="active" for="personClient">Cliente</label>
                 </div>
 
@@ -109,15 +109,15 @@
               <div class="col l12 s12">
                 <!--Campo de texto-->
                 <div class="col s5 l5 input-field pink-text">
-                  <input id="productClient" placeholder="Concepto"  name="productClient" #productClient="ngModel"  autocomplete="false" [(ngModel)]="dataBill.data.product.name" mz-tooltip [tooltip]="'productos'"  type="text"  class="validate" required>
+                  <input id="productClient" placeholder="Concepto" [disabled]="statusUpdateInvoice" name="productClient" #productClient="ngModel"  autocomplete="false" [(ngModel)]="dataBill.data.product.name" mz-tooltip [tooltip]="'productos'"  type="text"  class="validate" required>
                   <label class="active" for="productClient">Concepto</label>
                 </div>
                 <div class="col s5 l5 input-field pink-text">
-                  <input id="price" placeholder="Precio"  name="price" #price="ngModel"  autocomplete="false" [(ngModel)]="dataBill.data.product.price" mz-tooltip [tooltip]="'precio'"  type="number"  class="validate" required>
+                  <input id="price" placeholder="Precio"  name="price" #price="ngModel" [disabled]="statusUpdateInvoice" autocomplete="false" [(ngModel)]="dataBill.data.product.price" mz-tooltip [tooltip]="'precio'"  type="number"  class="validate" required>
                   <label class="active" for="price">PVP</label>
                 </div>
-                <div class="input-field col s10 l10">
-                  <textarea id="descripcion" class="materialize-textarea" name="descripcionProduct" #descripcionProduct="ngModel" [(ngModel)]="dataBill.data.product.description" mz-tooltip [tooltip]="'descripción'"></textarea>
+                <div class="input-field col s10 l10 pink-text">
+                  <textarea id="descripcion" class="materialize-textarea" name="descripcionProduct" [disabled]="statusUpdateInvoice" #descripcionProduct="ngModel" [(ngModel)]="dataBill.data.product.description" mz-tooltip [tooltip]="'descripción'"></textarea>
                   <label for="descripcion">{{LABEL_DESCRIPTION}}</label>
                 </div>
               </div>

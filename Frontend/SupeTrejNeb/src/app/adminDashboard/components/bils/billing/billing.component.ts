@@ -104,7 +104,11 @@ export class BillingComponent implements OnInit {
       $('#selectBillModel').modal('open');
     }else if(event.operation === CONSTANT.OperationTables.update){
       this.operationType = CONSTANT.OperationTables.update;
-      this._router.navigate(['/dashboard/billing/auto',{bill:event.items.id, status: event.items.status}]);
+      if(event.items.type === CONSTANT.Labels.BillAuto){
+        this._router.navigate(['/dashboard/billing/auto',{bill:event.items.id, status: event.items.status}]);
+      }else{
+        this._router.navigate(['/dashboard/billing/manual',{bill:event.items.id, status: event.items.status}]);
+      }
     }else if(event.operation === CONSTANT.OperationTables.delete){
       this.operationType = CONSTANT.OperationTables.delete;
       this.billData.identifier.id = event.items.id;

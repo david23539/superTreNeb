@@ -9,7 +9,7 @@ import {UploadService} from "../../../services/uploadFiles/upload.service";
 import {BillData} from "../../../model/bill/bill.model";
 import {BillService} from "../../../services/bill/bill.service";
 import {BillAutoModel} from "../../../model/bill/billAuto.model";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Params, Router} from "@angular/router";
 import {DataBrowser} from "../../../../utils/dataBrowser";
 
 @Component({
@@ -50,7 +50,7 @@ export class BillingManualComponent implements OnInit {
 
 
 
-  constructor(private _personComponent:PersonsComponent, private toastService: MzToastService, private _billService:BillService, private _router:Router, private _getDataBrowser: DataBrowser,) {
+  constructor(private _route: ActivatedRoute, private _personComponent:PersonsComponent, private toastService: MzToastService, private _billService:BillService, private _router:Router, private _getDataBrowser: DataBrowser,) {
     this.dataBillAuto = new BillAutoModel({bodyBill:"", cerrado:false, cierreDateBill:new Date(), ivaBill:0, nombreClient:"", pagado:false, tipoBill:"",update:false}, {id:""}, {page:0},{navegador:""});
     this.browser = this._getDataBrowser.getDataBrowser();
   }
@@ -63,9 +63,35 @@ export class BillingManualComponent implements OnInit {
   ngOnInit() {
     $('.modal').modal();
     this.intanciateObjectDataBill();
-
+    this.checkBillEdit();
 
   }
+
+  private checkBillEdit(){
+
+    this._route.params.forEach((params:Params)=>{
+      let id = params['bill'];
+      this.statusUpdateInvoice = (params['status'] === 'Cerrada');
+      if(id){
+        this.updateInvoice = true;
+        this.dataBillAuto.data.update = true;
+        this.getDetailsBillById(id);
+      }
+    });
+  }
+
+  private getDetailsBillById(id){
+    this._billService.getBillById(id).subscribe(
+      response=>{
+        this.responseService = response;
+        this.dataBillAuto.identifier.id = this.responseService.bills.id;
+        this.client = this.responseService.bills.client;
+        this.bodyTableFull = this.responseService.bills.data;
+      },error=>{
+        this.toastService.show(CONSTANT.messageToast.BILL_ERROR, 4000, CONSTANT.Styles.Error);
+      }
+    )
+  };
 
   getClient(){
     $('#selectClient').modal('open');
