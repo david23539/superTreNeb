@@ -65,18 +65,6 @@ export class MainDashboardComponent implements OnInit {
   ngOnInit() {
     $('.modal').modal();
     $('.tabs').tabs();
-    /*this.shoppingList = [{id:"0",product: "leche", quantity: 1, unitPrice:0.22, finalPrice: 0.333, image: "image"},
-    {id:"1", product: "tomate", quantity: 1, unitPrice:0.4, finalPrice: 0.5, image: "image"},
-    {id:"2", product: "chicles", quantity: 1, unitPrice:0.1, finalPrice: 0.3, image: "image"},
-    {id:"3", product: "llave inglesa", quantity: 1, unitPrice:30, finalPrice: 31.5, image: "image"},
-    {id:"4", product: "chorizo", quantity: 1, unitPrice:5, finalPrice: 5.5, image: "image"},
-    {id:"5", product: "salchichon", quantity: 1, unitPrice:6, finalPrice: 6.5, image: "image"},
-    {id:"6", product: "sal", quantity: 1, unitPrice:1, finalPrice: 1.21, image: "image"},
-    {id:"7", product: "agua", quantity: 1, unitPrice:1, finalPrice: 1, image: "image"},
-    {id:"8", product: "amoniaco", quantity: 1, unitPrice:1, finalPrice: 1, image: "image"},
-    {id:"9", product: "pan", quantity: 1, unitPrice:0.6, finalPrice: 0.8, image: "image"}];*/
-    // this.shoppingList= [];
-  // this.getTotalFinalPrice(this.shoppingList);
   }
   getTotalFinalPrice(items){
     this.totalItemPrice = 0;
@@ -107,7 +95,7 @@ export class MainDashboardComponent implements OnInit {
   }
 
   addProductSearch(item){
-    console.log(item);
+
     let cost = item.cost;
     let marg = item.margin;
     let iva = item.iva;
@@ -123,7 +111,6 @@ export class MainDashboardComponent implements OnInit {
     };
     this.shoppingList.push(newItemToList);
     this.getTotalFinalPrice(this.shoppingList);
-    console.log(newItemToList);
   }
 
   addProductToList(){
@@ -148,7 +135,13 @@ export class MainDashboardComponent implements OnInit {
   }
 
   getValueKey(content){
-    this.calculateActions(content.key)
+    if(content.key.length === 1 || content.key === this.constant.ENTER || content.key === this.constant.SUM
+    || content.key === this.constant.REST || content.key === this.constant.DELETEITEM || content.key === this.constant.MULTIPLICATION){
+      this.calculateActions(content.key)
+    }else{
+      this.getProductByScannerBar(content.key);
+    }
+
   }
 
 
@@ -198,13 +191,29 @@ export class MainDashboardComponent implements OnInit {
 
   }
 
+  getProductByScannerBar(code){
+    this._productService.getProductByCode(code).subscribe(
+      response=>{
+        this.responseServer = response;
+        if(this.responseServer.message === CONSTANT.ResponseServers.InvalidParams){
+          this._toastService.show(CONSTANT.messageToast.PARAMS_INVALID, 4000, CONSTANT.Styles.Warning);
+        }else if(this.responseServer.message === CONSTANT.ResponseServers.No_Data_Product){
+          this._toastService.show(CONSTANT.messageToast.NO_DATA_AVAIBLE, 4000, CONSTANT.Styles.Info);
+        }else{
+          this.addProductSearch(this.responseServer.products);
+        }
+      },error=>{
+        this._toastService.show(CONSTANT.messageToast.PRODUCT_ERROR, 4000, CONSTANT.Styles.Error);
+      }
+    )
+  }
 
   calculateActions(value){
-    // console.log(value);
+
     let quantityItem = 0;
     if((value.charCodeAt(0)>=48 && value.charCodeAt(0)<=57) || (value.charCodeAt(0)==46 || value.charCodeAt(0)==44)){
       this.actionNumberKey +=value;
-      // console.log(this.actionNumberKey);
+
     }
 
     if(value == this.constant.ENTER && this.actionNumberKey){

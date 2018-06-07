@@ -32,8 +32,23 @@ function privateValidationProductDataOpcionalComplete(product){
     }
 }
 
+function validationCodeProduct(code){
+    let CodRef = code.trim();
+    if("number" === typeof(CodRef)){
+       return regexNumbers.test(CodRef);
+    }else if("string" === typeof(CodRef)){
+        let num = isNaN(parseInt(CodRef)) ? 0 : parseInt(CodRef);
+        if(num !== 0){
+           return regexNumbers.test(CodRef);
+        }else{
+            return false;
+        }
+    }
+}
+
 
 
 module.exports = {
-    validationProductDataComplete
+    validationProductDataComplete,
+    validationCodeProduct
 }

@@ -190,6 +190,7 @@ export const CONSTANT = {
     DELETED_BILL_ERROR:"Ha ocurrido un error al eliminar la factura",
     NO_CATEGORY_DATA:"No hay creadas categorías todavía",
     MOVIL_OR_TELEFONE:"Necesita informar un movil o un telefono",
-    ADDRESS_NECESARY:"Necesita informar una dirección"
+    ADDRESS_NECESARY:"Necesita informar una dirección",
+    PARAMS_INVALID:"Los parámetros de entrada no son correctos"
   }
 };

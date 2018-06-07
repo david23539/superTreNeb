@@ -54,4 +54,10 @@ export class ProductService {
     let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
     return this._http.delete(this.url+'deleteProduct/'+id,{headers:header})
   }
+
+  getProductByCode(code){
+    this.token = this._loginService.getToken();
+    let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
+    return this._http.get(this.url+'getProductByCode/'+ code,  {headers:header})
+  }
 }

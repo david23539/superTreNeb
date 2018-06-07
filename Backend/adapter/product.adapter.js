@@ -36,6 +36,22 @@ function AdapterProduct_OUT(product){
 	};
 
 }
+
+function AdapterProductByCode(product){
+    let product_OUT = {};
+    return  product_OUT = {
+        name: product.stn_nameProduct,
+        description: product.stn_descriptionProduct,
+        cost: product.stn_costProduct,
+        reference: product.stn_referenceProduct,
+        iva: product.stn_ivaProduct,
+        image: product.stn_imageProduct,
+        margin: product.stn_marginProduct,
+        stock: product.stn_stockProduct,
+        id : product._doc._id
+    };
+}
+
 function AdapterListProduct_OUT(products){
 	let products_OUT = [];
 	for(let item of products){
@@ -60,5 +76,6 @@ function AdapterListProduct_OUT(products){
 module.exports = {
 	adapterProduct,
 	AdapterProduct_OUT,
-	AdapterListProduct_OUT
+	AdapterListProduct_OUT,
+    AdapterProductByCode
 };
