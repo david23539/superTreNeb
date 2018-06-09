@@ -3,6 +3,7 @@ import {GLOBAL} from "../../../services/global";
 import {CONSTANT} from "../../../services/constant";
 import {ProductService} from "../../services/product/product.service";
 import {MzToastService} from "ng2-materialize";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'main-dashboard',
@@ -40,6 +41,7 @@ export class MainDashboardComponent implements OnInit {
   public responseServer: any;
   public productsSearch:any;
   public url = "";
+  public barCode:any;
 
   public modalOptions: Materialize.ModalOptions = {
     dismissible: false, // Modal can be dismissed by clicking outside of the modal
@@ -52,7 +54,7 @@ export class MainDashboardComponent implements OnInit {
 
 
 
-  constructor(private _productService:ProductService, private _toastService:MzToastService) {
+  constructor(private _productService:ProductService, private _toastService:MzToastService, private _route: ActivatedRoute, private _router:Router) {
     this.url = GLOBAL.url;
     this.constant = CONSTANT.keysPress;
     this.constantToast = CONSTANT.messageToast;
@@ -99,8 +101,8 @@ export class MainDashboardComponent implements OnInit {
     let cost = item.cost;
     let marg = item.margin;
     let iva = item.iva;
-    let costMargIv = ((cost*marg)/100)+cost;
-    costMargIv = ((costMargIv*iva)/100)+costMargIv;
+    let costIva = cost + ((cost * iva)/100);
+    let costMargIv = costIva +((costIva * marg)/100);
 
     const newItemToList = {
       id: item.id,
@@ -138,7 +140,8 @@ export class MainDashboardComponent implements OnInit {
     if(content.key.length === 1 || content.key === this.constant.ENTER || content.key === this.constant.SUM
     || content.key === this.constant.REST || content.key === this.constant.DELETEITEM || content.key === this.constant.MULTIPLICATION){
       this.calculateActions(content.key)
-    }else{
+    }else if(content.key.length >= 7 && content.key.length <= 13){
+      this.barCode = content.key;
       this.getProductByScannerBar(content.key);
     }
 
@@ -192,6 +195,7 @@ export class MainDashboardComponent implements OnInit {
   }
 
   getProductByScannerBar(code){
+    this.barCode = code;//TODO eliminar cuando sea necesario y este implementado el lector de codigos de barras
     this._productService.getProductByCode(code).subscribe(
       response=>{
         this.responseServer = response;
@@ -199,6 +203,7 @@ export class MainDashboardComponent implements OnInit {
           this._toastService.show(CONSTANT.messageToast.PARAMS_INVALID, 4000, CONSTANT.Styles.Warning);
         }else if(this.responseServer.message === CONSTANT.ResponseServers.No_Data_Product){
           this._toastService.show(CONSTANT.messageToast.NO_DATA_AVAIBLE, 4000, CONSTANT.Styles.Info);
+          $('#addNewProduct').modal('open');
         }else{
           this.addProductSearch(this.responseServer.products);
         }
@@ -206,6 +211,10 @@ export class MainDashboardComponent implements OnInit {
         this._toastService.show(CONSTANT.messageToast.PRODUCT_ERROR, 4000, CONSTANT.Styles.Error);
       }
     )
+  }
+
+  goToNewProduct(){
+    this._router.navigate(['/dashboard/product',{codeBar:this.barCode}]);
   }
 
   calculateActions(value){

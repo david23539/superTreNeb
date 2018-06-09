@@ -87,6 +87,7 @@ export const CONSTANT = {
     Margin: "Margen",
     Ref:"Referencia",
     Stock:"Stock",
+    StockMin:"Stock Minimo",
     Save:"Guardar",
     Yes: "Si",
     No: "No",
@@ -149,8 +150,10 @@ export const CONSTANT = {
     TooltipIvaProduct: "Iva del producto"
 
   },
+  hotkeys:["Control","Shift","Enter","ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Backspace", "Enter", "Alt", "Tab", "CapsLock", "NumLock", "Pause", "ScrollLock", "PrintScreen",
+    "ContextMenu", "Control", "AltGraph", "Insert", "Home", "PageUp", "PageDown", "End", "Delete"],
   headCategory:["Nombre", "Descripción", "IVA"],
-  headProduct:["Nombre", "Descripción", "Coste", "Referencia", "Iva", "Margen", "Stock","Categoría", "Imagen"],
+  headProduct:["Nombre", "Descripción", "Coste", "Referencia", "Iva", "Margen", "Stock","Stock Min.","Categoría", "Imagen"],
   headBills:["Cliente", "Estado", "Tipo", "Fecha Creación","F.Cierre, F.Modificación, F.Pago","Importe"],
   headBillsAutoManual:["Producto", "Descripción", "Cantidad","Precio", "Precio Total"],
   headProvider:["Nombre Empresa", "Persona Responsable", "Persona Contacto", "NIF", "Dirección"],

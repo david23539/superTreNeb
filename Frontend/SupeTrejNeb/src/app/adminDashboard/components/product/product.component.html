@@ -41,7 +41,7 @@
             <label for="nameProduct">{{NAME}}</label>
           </div>
         </div>
-
+        <button type="button" (click)="codebar()">Referencia</button>
         <div class="row">
           <div class="input-field col s12 l6 pink-text">
             <i class="material-icons prefix ">description</i>
@@ -68,9 +68,14 @@
         </div>
 
         <div class="row">
-          <div class="input-field col s12 l6 pink-text">
+          <div class="input-field col s12 l3 pink-text">
             <input id="stockProduct" name="stockProduct" #stockProduct="ngModel" mz-tooltip [tooltip]=TOLLTIP_STOCK_PRODUCT autocomplete="false" [(ngModel)]="productModel_IN.dataProduct.stock" type="number" (blur)="validateVisualForm('stock')" [class]="classStyleFormSto" required>
             <label for="stockProduct">{{STOCK}}</label>
+          </div>
+
+          <div class="input-field col s12 l3 pink-text">
+            <input id="stockProductMin" name="stockProductMin" #stockProductMin="ngModel" mz-tooltip [tooltip]=TOLLTIP_STOCK_PRODUCT autocomplete="false" [(ngModel)]="productModel_IN.dataProduct.stockMin" type="number" (blur)="validateVisualForm('stock')" [class]="classStyleFormSto" required>
+            <label for="stockProductMin">Stock Mínimo</label>
           </div>
 
           <div class="input-field col s12 l6 pink-text">

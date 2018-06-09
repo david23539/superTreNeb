@@ -11,6 +11,7 @@ const fs = require('fs')
 const path = require('path')
 
 
+
 function createProduct(req, res){
 	const params = req.body
 	let product = new ProductModel()
@@ -46,8 +47,26 @@ function createProduct(req, res){
 	}
 }
 
+function checkStockProduct(req, res){//todo funcion que devuelve todos los productos con los id obtenido por parametros
+	let product_IN = req.body;
+	if(validationProduct.checkIdsProduct(product_IN)){
+		ProductModel.find().where('_id').in(product_IN.ids).populate({path:'stn_categoryFk'}).exec((err, productsList_OUT)=>{
+			if(err){
+				console.log(err);
+			}
+
+			if(productsList_OUT.length > 0){
+				res.status(constantFile.httpCode.PETITION_CORRECT).send({products: adapterProduct.AdapterListProduct_OUT(productsList_OUT)});
+			}
+		});
+
+	}else{
+		paramsIvalids(res);
+	}
+}
+
 function checkReferenceProduct(reference, cb){
-	ProductModel.find({stn_referenceProduct:reference}, cb)
+	ProductModel.find({stn_referenceProduct:reference, stn_deleteProduct:false}, cb);
 }
 
 function updateProduct(req, res){
@@ -193,16 +212,16 @@ function getProductByCode(req, res){
 	if(validationProduct.validationCodeProduct(params_IN)){
 		ProductModel.findOne({stn_referenceProduct:params_IN, stn_deleteProduct: false}, (err, product_OUT)=>{
 			if(err){
-                res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PRODUCT_GET_ERROR})
+                res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PRODUCT_GET_ERROR});
 
             }else if(!product_OUT){
-                res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.NO_PRODUCT_AVAIBLE})
+                res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.NO_PRODUCT_AVAIBLE});
 			}else{
-                res.status(constantFile.httpCode.PETITION_CORRECT).send({products: adapterProduct.AdapterProductByCode(product_OUT)})
+                res.status(constantFile.httpCode.PETITION_CORRECT).send({products: adapterProduct.AdapterProductByCode(product_OUT)});
 			}
-		})
+		});
 	}else{
-		paramsIvalids(res)
+		paramsIvalids(res);
 	}
 }
 
@@ -249,5 +268,6 @@ module.exports ={
 	getDetailProduct,
 	getImageResizeFile,
 	getImageOriginalFile,
-    getProductByCode
+    getProductByCode,
+	checkStockProduct
 };

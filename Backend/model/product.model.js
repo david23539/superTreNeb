@@ -13,6 +13,7 @@ const ProductSchema = Schema({
 	stn_imageProductResize: String,
 	stn_marginProduct: Number,
 	stn_stockProduct: Number,
+	stn_stockProductMin: Number,
 	stn_deleteProduct: Boolean,
 	stn_categoryFk: {type: Schema.ObjectId, ref: 'STN_Category'}
 })

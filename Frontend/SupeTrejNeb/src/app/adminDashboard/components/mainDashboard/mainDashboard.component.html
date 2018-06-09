@@ -42,12 +42,12 @@
           <div class="col l12 s12 heigthPanelCalculator black pink-text">
             <div class="row">
               <div class="left">Pagado:</div>
-              <div class="right">{{payMoney}} €</div>
+              <div class="right">{{payMoney.toFixed(2)}} €</div>
             </div>
             <div class="divider"></div>
             <div class="row">
               <div class="left">Devolución:</div>
-              <div class="right">{{returnPay}} €</div>
+              <div class="right">{{returnPay.toFixed(2)}} €</div>
             </div>
           </div>
         </div>
@@ -132,7 +132,7 @@
       </div>
     </div>
 </div>
-<button (click)="getProductByScannerBar(215)">BuscarProducto</button>
+<button (click)="getProductByScannerBar(12345678)">BuscarProducto</button>
 
 <div class="row">
   <div class="col l8 s12">
@@ -141,7 +141,7 @@
         TOTAL:
       </div>
       <div class="right sizeText">
-        {{totalItemPrice}} <i class="material-icons pink-text">euro_symbol</i>
+        {{totalItemPrice.toFixed(2)}} <i class="material-icons pink-text">euro_symbol</i>
       </div>
     </div>
   </div>
@@ -285,4 +285,19 @@
 
 <div  [hidden]="true" id="openBox">
   27,112,0,100,200
+</div>
+
+<div id="addNewProduct" class="modal">
+  <div class="modal-content">
+
+    <div >
+      ¿Añadir producto nuevo?
+    </div>
+
+  </div>
+
+  <div class="modal-footer">
+    <button  class="btn modal-action modal-close waves-effect waves-green btn-flat">Cancelar</button>
+    <button  class="btn modal-action modal-close waves-effect waves-green btn-flat" (click)="goToNewProduct();">Aceptar</button>
+  </div>
 </div>

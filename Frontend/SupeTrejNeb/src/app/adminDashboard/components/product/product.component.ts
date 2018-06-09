@@ -8,12 +8,16 @@ import {CategoryService} from "../../services/category/category.service";
 import {Category} from "../../model/category/category.model";
 import {MzToastService} from "ng2-materialize";
 import {UploadService} from "../../services/uploadFiles/upload.service";
+import {ActivatedRoute, Params} from "@angular/router";
 
 @Component({
   selector: 'product',
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.css'],
-  providers: [ProductService, DataBrowser, MzToastService, CategoryService,UploadService]
+  providers: [ProductService, DataBrowser, MzToastService, CategoryService,UploadService],
+  host:{
+    '(document:keyup)':'getValueKey($event)'
+  }
 })
 export class ProductComponent implements OnInit {
 
@@ -46,6 +50,7 @@ export class ProductComponent implements OnInit {
   public MARG:string =CONSTANT.Labels.Margin;
   public CATEGORY:string =CONSTANT.Labels.Category;
   public STOCK:string =CONSTANT.Labels.Stock;
+  public STOCKMINI:string =CONSTANT.Labels.StockMin;
   public searchResult:string = "";
   public ProductSearch: string = CONSTANT.Labels.SearchProducts;
   public headsTables:any = CONSTANT.headProduct;
@@ -84,7 +89,7 @@ export class ProductComponent implements OnInit {
   public invalidClassStyleFormSto:string = CONSTANT.Styles.Invalid;
   public validClassStyleFormSto:string = CONSTANT.Styles.Valid;
 
-  constructor(private _productService:ProductService, private _getDataBrowser: DataBrowser, private toastService: MzToastService, private _categoryService: CategoryService,
+  constructor(private _route: ActivatedRoute, private _productService:ProductService, private _getDataBrowser: DataBrowser, private toastService: MzToastService, private _categoryService: CategoryService,
       private _uploadFile:UploadService) {
     this.inicializateObject();
     this.productModel_OUT = new Product_OUT({id: ""});
@@ -95,10 +100,27 @@ export class ProductComponent implements OnInit {
   }
 
   private inicializateObject(){
-    this.productModel_IN = new Product({nameProd:"", image:"",catProd:"",descriptProd:"",refProd:"",ivaProd:0,marginProd:0,stock:0,costProd:0},
+    this.productModel_IN = new Product({nameProd:"", image:"",catProd:"",descriptProd:"",refProd:"",ivaProd:0,marginProd:0,stock:0,stockMin:0,costProd:0},
       {id:""},
       {page:0},
       {direccionData:"",navegador:""});
+  }
+
+  getValueKey(content){
+
+    let returnKey = CONSTANT.hotkeys.find((elemet)=>{
+      return elemet == content.key;
+    });
+    if(!returnKey && content.key.length >= 7 && content.key.length <= 13){
+      this.productModel_IN.dataProduct.refProd = content.key;
+    }
+  }
+
+  codebar(){//TODO Eliminar la funcion cuando este implementado el tpv ya que esta asociado al boton de BuscarProducto provisional
+    let codes = {
+      key : "1234567"
+    };
+    this.getValueKey(codes);
   }
 
   changeIva(){
@@ -139,7 +161,10 @@ export class ProductComponent implements OnInit {
   ngOnInit() {
     $('.modal').modal();
     this.getProducts(1)
+    this.checkCodeBar();
   }
+
+
 
   private clearModal(){
     this.inicializateObject();
@@ -222,7 +247,19 @@ export class ProductComponent implements OnInit {
     }
 
   }
+  private checkCodeBar(){
+    this._route.params.forEach((params:Params)=>{
+      let code = params['codeBar'];
 
+      if(code){
+        let event = {
+          operation: CONSTANT.OperationTables.create
+        };
+        this.addUpdateProduct(event);
+        this.productModel_IN.dataProduct.refProd = code;
+      }
+    });
+  }
   addUpdateProduct(event){
     if (event.operation === CONSTANT.OperationTables.create) {
       this.operationType = CONSTANT.OperationTables.create;

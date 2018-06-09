@@ -9,6 +9,7 @@ export class Product{
       image:string,
       marginProd:number,
       stock:number,
+      stockMin:number,
       catProd:string
     },
     public identifier:{

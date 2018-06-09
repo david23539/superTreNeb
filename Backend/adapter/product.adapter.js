@@ -13,11 +13,14 @@ function adapterProduct(params){
 	product.stn_imageProduct = params.dataProduct.image;
 	product.stn_marginProduct = params.dataProduct.marginProd;
 	product.stn_stockProduct = params.dataProduct.stock;
+	product.stn_stockProductMin = params.dataProduct.stockMin;
 	product.stn_categoryFk = params.dataProduct.catProd;
 	product.stn_deleteProduct = false;
 	return product;
 
 }
+
+
 
 function AdapterProduct_OUT(product){
 // eslint-disable-next-line no-unused-vars
@@ -31,6 +34,7 @@ function AdapterProduct_OUT(product){
 		image: product.stn_imageProduct,
 		margin: product.stn_marginProduct,
 		stock: product.stn_stockProduct,
+		stockMin: product.stn_stockProductMin,
 		category : adapterCategory.getCategoryByIdAdapter(product._doc.stn_categoryFk),
 		id : product._doc._id
 	};
@@ -48,6 +52,7 @@ function AdapterProductByCode(product){
         image: product.stn_imageProduct,
         margin: product.stn_marginProduct,
         stock: product.stn_stockProduct,
+        stockMin: product.stn_stockProductMin,
         id : product._doc._id
     };
 }
@@ -63,6 +68,7 @@ function AdapterListProduct_OUT(products){
 			iva: item.stn_ivaProduct,
 			margin: item.stn_marginProduct,
 			stock: item.stn_stockProduct,
+			stockMin: item.stn_stockProductMin,
 			category : adapterCategory.getCategoryByIdAdapter(item._doc.stn_categoryFk),
 			image: item.stn_imageProductResize,
 			id : item._doc._id
