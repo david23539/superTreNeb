@@ -237,7 +237,8 @@ function getImageResizeFile(req, res) {
 
 function getImageOriginalFile(req, res) {
 	const imageFile = req.params.imageFile
-	const path_file = './Backend/uploadFiles/products/original/'+imageFile
+	// const path_file = './uploadFiles/products/original/'+imageFile //para linux
+	const path_file = './Backend/uploadFiles/products/original/'+imageFile //para windows
 
 	sendImageFile(path_file, res)
 }

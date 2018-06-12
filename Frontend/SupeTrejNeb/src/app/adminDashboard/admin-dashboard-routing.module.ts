@@ -25,8 +25,8 @@ const adminDashboardRouter: Routes = [
       {path: 'persons', component: PersonsComponent},
       {path: 'addresses', component: AddressComponent},
       {path: 'billing', component: BillingComponent},
-      {path: 'billing/auto', component: BillingAutoComponent},
-      {path: 'billing/manual', component: BillingManualComponent}
+      {path: 'billingAuto', component: BillingAutoComponent},
+      {path: 'billingManual', component: BillingManualComponent}
 
     ]},
 ];

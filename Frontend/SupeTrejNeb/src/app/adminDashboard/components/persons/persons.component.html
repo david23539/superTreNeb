@@ -7,7 +7,7 @@
         <input id="searchPerson"  [(ngModel)]="searchResult" (keyup)="filterItem()"  type="text" >
         <label for="searchPerson">{{PersonSearch}}</label>
       </div>
-      <tableComponenets [headsTable]="headsTables" [bodyTableContent]=bodyTable (selectItem)="showInfo($event)" (paginationParams)="getProviderByPagination($event);" [countRecord]="count"  (changeItem)="addUpdatePerson($event)"></tableComponenets>
+      <tableComponenets [headsTable]="headsTables" [bodyTableContent]=bodyTable (selectItem)="showInfo($event)" (paginationParams)="getPersonByPagination($event);" [countRecord]="count"  (changeItem)="addUpdatePerson($event)"></tableComponenets>
     </div>
   </div>
 </div>

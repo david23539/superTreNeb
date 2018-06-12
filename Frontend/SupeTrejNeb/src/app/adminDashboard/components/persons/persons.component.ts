@@ -116,6 +116,10 @@ export class PersonsComponent implements OnInit {
     )
   }
 
+  getPersonByPagination(event){
+
+  }
+
   private getCountPersons(){
     this._personService.countPersons().subscribe(
       response=>{

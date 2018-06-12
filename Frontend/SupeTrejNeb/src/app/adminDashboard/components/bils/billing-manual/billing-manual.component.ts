@@ -80,6 +80,9 @@ export class BillingManualComponent implements OnInit {
     });
   }
 
+
+
+
   private getDetailsBillById(id){
     this._billService.getBillById(id).subscribe(
       response=>{

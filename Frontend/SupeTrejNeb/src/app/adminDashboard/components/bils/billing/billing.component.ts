@@ -105,9 +105,9 @@ export class BillingComponent implements OnInit {
     }else if(event.operation === CONSTANT.OperationTables.update){
       this.operationType = CONSTANT.OperationTables.update;
       if(event.items.type === CONSTANT.Labels.BillAuto){
-        this._router.navigate(['/dashboard/billing/auto',{bill:event.items.id, status: event.items.status}]);
+        this._router.navigate(['/dashboard/billingAuto',{bill:event.items.id, status: event.items.status}]);
       }else{
-        this._router.navigate(['/dashboard/billing/manual',{bill:event.items.id, status: event.items.status}]);
+        this._router.navigate(['/dashboard/billingManual',{bill:event.items.id, status: event.items.status}]);
       }
     }else if(event.operation === CONSTANT.OperationTables.delete){
       this.operationType = CONSTANT.OperationTables.delete;

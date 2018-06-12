@@ -222,7 +222,7 @@
     <h4 class="pink-text center">{{SELECT_CLIENT}}</h4>
     <div class="row">
 
-      <table-list [bodyTableContent]="bodyClient" [headsTable]="headClient" (changeItem)="selectClients($event)" (paginationParams)="getClientPagination($event)" [countRecord]="countClient"></table-list>
+      <table-list [bodyTableContent]="bodyClient" [headsTable]="headClient" (changeItem)="selectClients($event)"  [countRecord]="countClient"></table-list>
 
     </div>
   </div>
@@ -242,7 +242,7 @@
     <h4 class="pink-text center">{{SELECT_PROVIDER}}</h4>
     <div class="row">
 
-      <table-list [bodyTableContent]="bodyProvider" [headsTable]="headProvider" (changeItem)="selectProviders($event)" (paginationParams)="getClientPagination($event)" [countRecord]="countProvider"></table-list>
+      <table-list [bodyTableContent]="bodyProvider" [headsTable]="headProvider" (changeItem)="selectProviders($event)"  [countRecord]="countProvider"></table-list>
 
     </div>
   </div>
@@ -262,7 +262,7 @@
     <h4 class="pink-text center">{{SELECT_CATEGORIES}}</h4>
     <div class="row">
 
-      <table-list [bodyTableContent]="bodyCategory" [headsTable]="headCategories" (changeItem)="selectCategory($event)" (paginationParams)="getClientPagination($event)" [countRecord]="countCategories"></table-list>
+      <table-list [bodyTableContent]="bodyCategory" [headsTable]="headCategories" (changeItem)="selectCategory($event)"  [countRecord]="countCategories"></table-list>
 
     </div>
   </div>
@@ -282,7 +282,7 @@
     <h4 class="pink-text center">{{SELECT_PRODUCT}}</h4>
     <div class="row">
 
-      <table-list [bodyTableContent]="bodyProduct" [headsTable]="headProduct" (changeItem)="selectionProduct($event)" (paginationParams)="getClientPagination($event)" [countRecord]="countProduct"></table-list>
+      <table-list [bodyTableContent]="bodyProduct" [headsTable]="headProduct" (changeItem)="selectionProduct($event)"  [countRecord]="countProduct"></table-list>
 
     </div>
   </div>

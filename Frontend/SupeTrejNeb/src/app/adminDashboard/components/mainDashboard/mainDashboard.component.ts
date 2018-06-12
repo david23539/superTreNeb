@@ -33,8 +33,8 @@ export class MainDashboardComponent implements OnInit {
   public finalPriceAsc:Boolean = true;
   public quantityAsc:Boolean = true;
   public productAsc:Boolean = true;
-  public addProductName :string = "";
-  public addProductPrice :number = 0;
+  // public addProductName = "Varios";
+  public addProductPrice :any;
   public addProductQuantity:number = 1;
   public date: any;
   public searchProduct: string;
@@ -59,10 +59,15 @@ export class MainDashboardComponent implements OnInit {
     this.constant = CONSTANT.keysPress;
     this.constantToast = CONSTANT.messageToast;
     this.actionNumberKey = "";
+    this.addProductPrice = "";
     // this.shoppingList = [{id:"",product: "", quantity: 0, unitPrice:0, finalPrice: 0, image: ""}];
   }
 
-
+  clearPrice(){
+    if(this.addProductPrice === 0){
+      this.addProductPrice = '';
+    }
+  }
 
   ngOnInit() {
     $('.modal').modal();
@@ -73,11 +78,11 @@ export class MainDashboardComponent implements OnInit {
     for(let item of items){
       this.totalItemPrice += item.finalPrice * item.quantity;
     }
-
+/*
     let numerro = this.totalItemPrice.toString();
     let primeras  = numerro.indexOf(".");
     let numeroFinal = numerro.substr(0, primeras+3);
-    this.totalItemPrice = parseFloat(numeroFinal);
+    this.totalItemPrice = parseFloat(numeroFinal);*/
     this.calculateReturnPayDinamic(this.totalItemPrice)
   }
 
@@ -117,10 +122,10 @@ export class MainDashboardComponent implements OnInit {
 
   addProductToList(){
     const numberElementOfList = this.shoppingList.length;
-    if(this.addProductName && this.addProductPrice){
+    if(this.addProductPrice){
       const newItemToList = {
         id: numberElementOfList+1,
-        product:this.addProductName,
+        product:"Balanza",
         quantity: this.addProductQuantity,
         unitPrice:0,
         finalPrice: this.addProductPrice
