@@ -15,6 +15,7 @@ function adapterProduct(params){
 	product.stn_stockProduct = params.dataProduct.stock;
 	product.stn_stockProductMin = params.dataProduct.stockMin;
 	product.stn_categoryFk = params.dataProduct.catProd;
+	product.stn_favorite = params.dataProduct.favorite;
 	product.stn_deleteProduct = false;
 	return product;
 
@@ -36,6 +37,7 @@ function AdapterProduct_OUT(product){
 		stock: product.stn_stockProduct,
 		stockMin: product.stn_stockProductMin,
 		category : adapterCategory.getCategoryByIdAdapter(product._doc.stn_categoryFk),
+		favorite: product.stn_favorite,
 		id : product._doc._id
 	};
 
@@ -53,6 +55,7 @@ function AdapterProductByCode(product){
         margin: product.stn_marginProduct,
         stock: product.stn_stockProduct,
         stockMin: product.stn_stockProductMin,
+        favorite: product.stn_favorite,
         id : product._doc._id
     };
 }
@@ -71,6 +74,7 @@ function AdapterListProduct_OUT(products){
 			stockMin: item.stn_stockProductMin,
 			category : adapterCategory.getCategoryByIdAdapter(item._doc.stn_categoryFk),
 			image: item.stn_imageProductResize,
+            favorite: item.stn_favorite,
 			id : item._doc._id
 		};
 		products_OUT.push(product);

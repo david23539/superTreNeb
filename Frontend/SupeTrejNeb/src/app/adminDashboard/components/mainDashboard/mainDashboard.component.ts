@@ -11,7 +11,9 @@ import {ActivatedRoute, Router} from "@angular/router";
   styleUrls: ['./mainDashboard.component.css'],
   providers:[ProductService, MzToastService],
   host:{
-    '(document:keyup)':'getValueKey($event)'
+    '(document:keyup)':'getValueKey($event)',
+    '(document:keypress)':'prueba($event)',
+    '(document:click)':'closedContextMenu()',
   }
 })
 export class MainDashboardComponent implements OnInit {
@@ -42,6 +44,12 @@ export class MainDashboardComponent implements OnInit {
   public productsSearch:any;
   public url = "";
   public barCode:any;
+  public codeProduct:string = "";
+  public entra:boolean = false;
+  public contextmenu = true;
+  public contextmenuX = 0;
+  public contextmenuY = 0;
+  public arrays = [];
 
   public modalOptions: Materialize.ModalOptions = {
     dismissible: false, // Modal can be dismissed by clicking outside of the modal
@@ -60,18 +68,41 @@ export class MainDashboardComponent implements OnInit {
     this.constantToast = CONSTANT.messageToast;
     this.actionNumberKey = "";
     this.addProductPrice = "";
-    // this.shoppingList = [{id:"",product: "", quantity: 0, unitPrice:0, finalPrice: 0, image: ""}];
+    console.log(this.arrays.length);
   }
 
+  prueba(evento){
+    let result = CONSTANT.hotkeys.find((elemento)=>{
+      return elemento == evento.key;
+    });
+    if(!result){
+      this.codeProduct += evento.key;
+      this.entra = true;
+
+    }else{
+      let code = {
+        key : this.codeProduct
+      };
+      this.entra = false;
+      this.getValueKey(code);
+      console.log(this.codeProduct);
+      this.codeProduct = "";
+    }
+  }
   clearPrice(){
     if(this.addProductPrice === 0){
       this.addProductPrice = '';
     }
   }
 
+  closedContextMenu(){
+    this.contextmenu = true;
+  }
+
   ngOnInit() {
     $('.modal').modal();
     $('.tabs').tabs();
+    this.getProductFavorite();
   }
   getTotalFinalPrice(items){
     this.totalItemPrice = 0;
@@ -84,6 +115,18 @@ export class MainDashboardComponent implements OnInit {
     let numeroFinal = numerro.substr(0, primeras+3);
     this.totalItemPrice = parseFloat(numeroFinal);*/
     this.calculateReturnPayDinamic(this.totalItemPrice)
+  }
+
+  private getProductFavorite(){
+    this._productService.getProductFavorites().subscribe(
+      response=>{
+        this.responseServer = response;
+        this.arrays = this.responseServer.products;
+        console.log(this.responseServer.products)
+      },error=>{
+        this._toastService.show(CONSTANT.messageToast.PRODUCT_ERROR, 4000, CONSTANT.Styles.Error);
+      }
+    )
   }
 
   searchProductRef(){
@@ -142,7 +185,7 @@ export class MainDashboardComponent implements OnInit {
   }
 
   getValueKey(content){
-    if(content.key.length === 1 || content.key === this.constant.ENTER || content.key === this.constant.SUM
+    if(content.key.length === 1 || content.key === "Control" || content.key === this.constant.SUM
     || content.key === this.constant.REST || content.key === this.constant.DELETEITEM || content.key === this.constant.MULTIPLICATION){
       this.calculateActions(content.key)
     }else if(content.key.length >= 7 && content.key.length <= 13){
@@ -225,12 +268,14 @@ export class MainDashboardComponent implements OnInit {
   calculateActions(value){
 
     let quantityItem = 0;
-    if((value.charCodeAt(0)>=48 && value.charCodeAt(0)<=57) || (value.charCodeAt(0)==46 || value.charCodeAt(0)==44)){
-      this.actionNumberKey +=value;
-
+    if(!this.entra){
+      if((value.charCodeAt(0)>=48 && value.charCodeAt(0)<=57) || (value.charCodeAt(0)==46 || value.charCodeAt(0)==44)){
+        this.actionNumberKey +=value;
+      }
     }
 
-    if(value == this.constant.ENTER && this.actionNumberKey){
+
+    if(value == "Control" && this.actionNumberKey){
       this.payMoney = parseFloat(this.actionNumberKey);
       this.calculateReturnPayDinamic(this.totalItemPrice);
       this.actionNumberKey = "";
@@ -264,6 +309,7 @@ export class MainDashboardComponent implements OnInit {
 
     }
   }
+
 
   orderTableByColums(colums){
     let beforeItem;

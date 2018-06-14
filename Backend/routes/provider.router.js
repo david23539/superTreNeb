@@ -4,9 +4,7 @@ const express = require('express')
 const api = express.Router()
 const providerController = require('../controller/provider.controller')
 const md_auth = require('../middleware/autenticate.middleware')
-// const multipart = require('connect-multiparty')
-// const md_upload = multipart({uploadDir:'./Backend/uploadFiles/products/original'})
-// const md_upload = multipart({uploadDir:'./uploadFiles/products/original'})
+
 
 api.post('/createProvider', md_auth.ensureAuth, providerController.createProvider)
 api.post('/getProviders', md_auth.ensureAuth, providerController.getProvidersByPagination)

@@ -24,7 +24,7 @@
             </ng-template>
             <td *ngFor="let propertyItem of propertiesContent" (click)="selectElement(itemBody)">
 
-              <span *ngIf="propertyItem != 'contact' && propertyItem != 'responsible'
+              <span *ngIf="propertyItem != 'contact' && propertyItem != 'favorite' && propertyItem != 'responsible'
               && propertyItem != 'id' && propertyItem != 'category' && propertyItem != 'image'
               && propertyItem != 'address' && propertyItem != 'categoryProvider' && propertyItem != 'direccion'">{{itemBody[propertyItem]}}</span>
               <span *ngIf="propertyItem === 'category'">{{itemBody[propertyItem].name}}</span>

@@ -10,6 +10,7 @@ export class Product{
       marginProd:number,
       stock:number,
       stockMin:number,
+      favorite:boolean,
       catProd:string
     },
     public identifier:{

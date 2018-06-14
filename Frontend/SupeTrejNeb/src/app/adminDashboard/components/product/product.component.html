@@ -50,20 +50,24 @@
           </div>
 
           <div class="input-field col s12 l6 pink-text">
-            <input id="ivaProd" name="ivaProd" #ivaProd="ngModel" mz-tooltip [tooltip]=TOLLTIP_IVA_PRODUCT autocomplete="false" [(ngModel)]="productModel_IN.dataProduct.ivaProd" type="number" (blur)="validateVisualForm('iva')" [class]="classStyleFormIva" required>
+            <input id="ivaProd" name="ivaProd" #ivaProd="ngModel" mz-tooltip (keyup)="calculateTotal()" [tooltip]=TOLLTIP_IVA_PRODUCT autocomplete="false" [(ngModel)]="productModel_IN.dataProduct.ivaProd" type="number" (blur)="validateVisualForm('iva')" [class]="classStyleFormIva" required>
             <label for="ivaProd">{{IVA}}</label>
           </div>
         </div>
 
         <div class="row">
           <div class="input-field col s12 l6 pink-text">
-            <input id="costProd" name="costProd" #costProd="ngModel" mz-tooltip [tooltip]=TOLLTIP_COST_PRODUCT autocomplete="false" [(ngModel)]="productModel_IN.dataProduct.costProd" type="number" (blur)="validateVisualForm('cost')" [class]="classStyleFormCost" required>
+            <input id="costProd" name="costProd" #costProd="ngModel" mz-tooltip (keyup)="calculateTotal()" [tooltip]=TOLLTIP_COST_PRODUCT autocomplete="false" [(ngModel)]="productModel_IN.dataProduct.costProd" type="number" (blur)="validateVisualForm('cost')" [class]="classStyleFormCost" required>
             <label for="costProd">{{COST}}</label>
           </div>
 
-          <div class="input-field col s12 l6 pink-text">
-            <input id="marginProd" name="marginProd" #marginProd="ngModel" mz-tooltip [tooltip]=TOLLTIP_MARGIN_PRODUCT autocomplete="false" [(ngModel)]="productModel_IN.dataProduct.marginProd" type="number" (blur)="validateVisualForm('margi')" [class]="classStyleFormMar" required>
+          <div class="input-field col s12 l3 pink-text">
+            <input id="marginProd" name="marginProd" #marginProd="ngModel" mz-tooltip (keyup)="calculateTotal()" [tooltip]=TOLLTIP_MARGIN_PRODUCT autocomplete="false" [(ngModel)]="productModel_IN.dataProduct.marginProd" type="number" (blur)="validateVisualForm('margi')" [class]="classStyleFormMar" required>
             <label for="marginProd">{{MARG}}</label>
+          </div>
+          <div class="input-field col s12 l3 pink-text">
+            <input id="totalProd" name="totalProd" #totalProd="ngModel" mz-tooltip [(ngModel)]="quantityTotalProd" type="number">
+            <label for="totalProd">Total</label>
           </div>
         </div>
 
@@ -78,7 +82,15 @@
             <label for="stockProductMin">Stock Mínimo</label>
           </div>
 
-          <div class="input-field col s12 l6 pink-text">
+          <div class="col s12 l3 switch pink-text">
+            <label>
+              <span>Favorito</span>
+              <input type="checkbox" [checked]="productModel_IN.dataProduct.favorite" (change)="productModel_IN.dataProduct.favorite?productModel_IN.dataProduct.favorite=false:productModel_IN.dataProduct.favorite=true">
+              <span class="lever"></span>
+            </label>
+          </div>
+
+          <div class="input-field col s12 l3 pink-text">
             <i class="material-icons prefix ">local_offer</i>
             <input id="refProduct" placeholder="Only Numbers" name="refProduct" #refProduct="ngModel" autocomplete="false" [(ngModel)]="productModel_IN.dataProduct.refProd" mz-tooltip [tooltip]=TOLLTIP_REF_PRODUCT (blur)="validateVisualForm('ref')" type="text" [class]="classStyleFormRef" required>
             <label for="refProduct">{{REF}}</label>

@@ -15,6 +15,7 @@ const ProductSchema = Schema({
 	stn_stockProduct: Number,
 	stn_stockProductMin: Number,
 	stn_deleteProduct: Boolean,
+	stn_favorite:Boolean,
 	stn_categoryFk: {type: Schema.ObjectId, ref: 'STN_Category'}
 })
 // eslint-disable-next-line no-undef

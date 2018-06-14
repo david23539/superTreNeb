@@ -16,7 +16,8 @@ import {ActivatedRoute, Params} from "@angular/router";
   styleUrls: ['./product.component.css'],
   providers: [ProductService, DataBrowser, MzToastService, CategoryService,UploadService],
   host:{
-    '(document:keyup)':'getValueKey($event)'
+    '(document:keyup)':'getValueKey($event)',
+    '(document:keypress)':'prueba($event)',
   }
 })
 export class ProductComponent implements OnInit {
@@ -88,6 +89,8 @@ export class ProductComponent implements OnInit {
   public classStyleFormSto:string = "";
   public invalidClassStyleFormSto:string = CONSTANT.Styles.Invalid;
   public validClassStyleFormSto:string = CONSTANT.Styles.Valid;
+  public codeProduct:string = "";
+  public quantityTotalProd = 0;
 
   constructor(private _route: ActivatedRoute, private _productService:ProductService, private _getDataBrowser: DataBrowser, private toastService: MzToastService, private _categoryService: CategoryService,
       private _uploadFile:UploadService) {
@@ -99,8 +102,22 @@ export class ProductComponent implements OnInit {
       ivaCat:0},{id:""},{page:0},{direccionData:"",navegador:this.browser});
   }
 
+  prueba(evento){
+      let result = CONSTANT.hotkeys.find((elemento)=>{
+        return elemento == evento.key;
+      });
+    if(!result){
+      this.codeProduct += evento.key;
+    }else{
+      let code = {
+        key : this.codeProduct
+      };
+      this.getValueKey(code);
+      console.log(this.codeProduct);
+    }
+  }
   private inicializateObject(){
-    this.productModel_IN = new Product({nameProd:"", image:"",catProd:"",descriptProd:"",refProd:"",ivaProd:0,marginProd:0,stock:0,stockMin:0,costProd:0},
+    this.productModel_IN = new Product({nameProd:"", image:"",catProd:"",descriptProd:"",refProd:"",ivaProd:0,marginProd:0,stock:0,stockMin:0,favorite:false,costProd:0},
       {id:""},
       {page:0},
       {direccionData:"",navegador:""});
@@ -114,6 +131,13 @@ export class ProductComponent implements OnInit {
     if(!returnKey && content.key.length >= 7 && content.key.length <= 13){
       this.productModel_IN.dataProduct.refProd = content.key;
     }
+  }
+
+  calculateTotal(){
+
+    let costIva = this.productModel_IN.dataProduct.costProd + ((this.productModel_IN.dataProduct.costProd * this.productModel_IN.dataProduct.ivaProd)/100);
+    this.quantityTotalProd = costIva + ((costIva * this.productModel_IN.dataProduct.marginProd)/100);
+    this.quantityTotalProd.toFixed(2);
   }
 
   codebar(){//TODO Eliminar la funcion cuando este implementado el tpv ya que esta asociado al boton de BuscarProducto provisional
@@ -294,6 +318,7 @@ export class ProductComponent implements OnInit {
     this.productModel_IN.dataProduct.nameProd = items.name;
     this.productModel_IN.dataProduct.refProd = items.reference;
     this.productModel_IN.dataProduct.stock = items.stock;
+    this.productModel_IN.dataProduct.favorite = items.favorite;
     this.productModel_IN.identifier.id = items.id;
   }
 

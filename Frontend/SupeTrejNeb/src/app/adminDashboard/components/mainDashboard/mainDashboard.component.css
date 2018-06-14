@@ -9,6 +9,10 @@
   border-bottom-color: #e91e63;
 
 }
+
+.contexmenu{
+  position: absolute;
+}
 .heigthPanelCalculator{
   height: 10vh;
   width: 100%;
@@ -17,9 +21,13 @@
   height: 10vh;
 }
 .heigthKeys{
-  height: 5vh;
+  height: 8vh;
   border-bottom: #e91e63 1px solid;
   /*border: 1px solid black;*/
+}
+.heigthCells{
+  height: 3vh;
+  border-bottom: #e91e63 1px solid;
 }
 .neverScroll{
   overflow: hidden;

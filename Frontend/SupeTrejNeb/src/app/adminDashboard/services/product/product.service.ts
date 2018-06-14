@@ -49,6 +49,13 @@ export class ProductService {
     return this._http.post(this.url+'updateProduct', param, {headers:header})
   }
 
+  getProductFavorites(){
+    this.token = this._loginService.getToken();
+    let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
+    return this._http.get(this.url+'getProductFavorites',  {headers:header})
+
+  }
+
   deletedProduct(id){
     this.token = this._loginService.getToken();
     let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
