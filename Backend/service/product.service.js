@@ -6,10 +6,10 @@ const fs = require('fs')
 
 function validateImageFile(file){
 	const file_path = file.path
-	// const file_split = file_path.split('/')// para linux
-	const file_split = file_path.split('\\') //para windows
-	// const file_name = file_split[3] //para linux
-	const file_name = file_split[4] //para windows
+	const file_split = file_path.split('/')// para linux
+	// const file_split = file_path.split('\\') //para windows
+	const file_name = file_split[3] //para linux
+	// const file_name = file_split[4] //para windows
 
 	// eslint-disable-next-line no-useless-escape
 	const ext_split = file_name.split('.')

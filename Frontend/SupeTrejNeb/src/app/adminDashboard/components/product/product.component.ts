@@ -112,8 +112,10 @@ export class ProductComponent implements OnInit {
       let code = {
         key : this.codeProduct
       };
+      this.codeProduct = "";
       this.getValueKey(code);
-      console.log(this.codeProduct);
+
+
     }
   }
   private inicializateObject(){

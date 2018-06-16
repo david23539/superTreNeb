@@ -12,8 +12,7 @@ import {ActivatedRoute, Router} from "@angular/router";
   providers:[ProductService, MzToastService],
   host:{
     '(document:keyup)':'getValueKey($event)',
-    '(document:keypress)':'prueba($event)',
-    '(document:click)':'closedContextMenu()',
+    '(document:keypress)':'prueba($event)'
   }
 })
 export class MainDashboardComponent implements OnInit {
@@ -85,7 +84,7 @@ export class MainDashboardComponent implements OnInit {
       };
       this.entra = false;
       this.getValueKey(code);
-      console.log(this.codeProduct);
+      console.log("keypress" + this.codeProduct);
       this.codeProduct = "";
     }
   }
@@ -151,7 +150,7 @@ export class MainDashboardComponent implements OnInit {
     let iva = item.iva;
     let costIva = cost + ((cost * iva)/100);
     let costMargIv = costIva +((costIva * marg)/100);
-
+    let exists = false;
     const newItemToList = {
       id: item.id,
       product:item.name,
@@ -159,8 +158,25 @@ export class MainDashboardComponent implements OnInit {
       unitPrice:0,
       finalPrice: costMargIv.toFixed(2)
     };
-    this.shoppingList.push(newItemToList);
-    this.getTotalFinalPrice(this.shoppingList);
+    for(let elemt of this.shoppingList){
+      if(elemt.id === newItemToList.id){
+        elemt.quantity ++;
+        exists = true;
+      }
+    }
+    /*let result = this.shoppingList.find((elemt)=>{
+      return elemt.id == newItemToList.id;
+    });*/
+    if(exists){
+      this.getTotalFinalPrice(this.shoppingList);
+    }else{
+      this.shoppingList.push(newItemToList);
+      this.getTotalFinalPrice(this.shoppingList);
+
+    }
+
+
+
   }
 
   addProductToList(){
@@ -173,8 +189,14 @@ export class MainDashboardComponent implements OnInit {
         unitPrice:0,
         finalPrice: this.addProductPrice
       };
-      this.shoppingList.push(newItemToList);
-      this.getTotalFinalPrice(this.shoppingList);
+      let result = this.shoppingList.find((elemt)=>{
+        return elemt.id == newItemToList;
+      });
+      if(!result){
+        this.shoppingList.push(newItemToList);
+        this.getTotalFinalPrice(this.shoppingList);
+      }
+
     }
   }
 
@@ -185,9 +207,10 @@ export class MainDashboardComponent implements OnInit {
   }
 
   getValueKey(content){
-    if(content.key.length === 1 || content.key === "Control" || content.key === this.constant.SUM
+    console.log(content);
+    if((content.key.length === 1 && content.code.indexOf("Numpad")!== -1) || content.key === "Control" || content.key === this.constant.SUM
     || content.key === this.constant.REST || content.key === this.constant.DELETEITEM || content.key === this.constant.MULTIPLICATION){
-      this.calculateActions(content.key)
+      this.calculateActions(content.key, true)
     }else if(content.key.length >= 7 && content.key.length <= 13){
       this.barCode = content.key;
       this.getProductByScannerBar(content.key);
@@ -265,13 +288,14 @@ export class MainDashboardComponent implements OnInit {
     this._router.navigate(['/dashboard/product',{codeBar:this.barCode}]);
   }
 
-  calculateActions(value){
+  calculateActions(value, scanner = false){
 
     let quantityItem = 0;
-    if(!this.entra){
-      if((value.charCodeAt(0)>=48 && value.charCodeAt(0)<=57) || (value.charCodeAt(0)==46 || value.charCodeAt(0)==44)){
-        this.actionNumberKey +=value;
+    if((value.charCodeAt(0)>=48 && value.charCodeAt(0)<=57) || (value.charCodeAt(0)==46 || value.charCodeAt(0)==44)){
+      if(!scanner){
+        this.actionNumberKey = "";
       }
+      this.actionNumberKey +=value;
     }
 
 
