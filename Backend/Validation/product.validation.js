@@ -33,10 +33,11 @@ function privateValidationProductDataOpcionalComplete(product){
     }
 }
 
-function checkIdsProduct(productsId){
-	for(let idProduct of productsId.ids){
-		let result = regexString.test(idProduct);
-		if(!result){
+function checkListStockProduct(products){
+	for(let idProduct of products){
+		let result = regexString.test(idProduct.id);
+		let resultQuan = regexNumbers.test(idProduct.quantity);
+		if(!result || !resultQuan){
 			return false;
 		}
 	}
@@ -62,5 +63,5 @@ function validationCodeProduct(code){
 module.exports = {
     validationProductDataComplete,
     validationCodeProduct,
-	checkIdsProduct
+    checkListStockProduct
 };

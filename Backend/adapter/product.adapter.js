@@ -82,10 +82,32 @@ function AdapterListProduct_OUT(products){
 	return products_OUT;
 }
 
+function AdapListProdWithoutCat_OUT(products){
+    let products_OUT = [];
+    for(let item of products){
+        let product = {
+            name: item.stn_nameProduct,
+            description: item.stn_descriptionProduct,
+            cost: item.stn_costProduct,
+            reference: item.stn_referenceProduct,
+            iva: item.stn_ivaProduct,
+            margin: item.stn_marginProduct,
+            stock: item.stn_stockProduct,
+            stockMin: item.stn_stockProductMin,
+            image: item.stn_imageProductResize,
+            favorite: item.stn_favorite,
+            id : item._doc._id
+        };
+        products_OUT.push(product);
+    }
+    return products_OUT;
+}
+
 // eslint-disable-next-line no-undef
 module.exports = {
 	adapterProduct,
 	AdapterProduct_OUT,
 	AdapterListProduct_OUT,
-    AdapterProductByCode
+    AdapterProductByCode,
+    AdapListProdWithoutCat_OUT
 };

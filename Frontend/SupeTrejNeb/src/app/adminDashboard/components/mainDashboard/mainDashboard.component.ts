@@ -66,8 +66,7 @@ export class MainDashboardComponent implements OnInit {
     this.constant = CONSTANT.keysPress;
     this.constantToast = CONSTANT.messageToast;
     this.actionNumberKey = "";
-    this.addProductPrice = "";
-    console.log(this.arrays.length);
+    this.addProductPrice = null;
   }
 
   prueba(evento){
@@ -84,7 +83,6 @@ export class MainDashboardComponent implements OnInit {
       };
       this.entra = false;
       this.getValueKey(code);
-      console.log("keypress" + this.codeProduct);
       this.codeProduct = "";
     }
   }
@@ -121,7 +119,6 @@ export class MainDashboardComponent implements OnInit {
       response=>{
         this.responseServer = response;
         this.arrays = this.responseServer.products;
-        console.log(this.responseServer.products)
       },error=>{
         this._toastService.show(CONSTANT.messageToast.PRODUCT_ERROR, 4000, CONSTANT.Styles.Error);
       }
@@ -207,8 +204,7 @@ export class MainDashboardComponent implements OnInit {
   }
 
   getValueKey(content){
-    console.log(content);
-    if((content.key.length === 1 && content.code.indexOf("Numpad")!== -1) || content.key === "Control" || content.key === this.constant.SUM
+    if((content.key.length === 1 && content.code && content.code.indexOf("Numpad")!== -1) || content.key === "Control" || content.key === this.constant.SUM
     || content.key === this.constant.REST || content.key === this.constant.DELETEITEM || content.key === this.constant.MULTIPLICATION){
       this.calculateActions(content.key, true)
     }else if(content.key.length >= 7 && content.key.length <= 13){
@@ -218,6 +214,26 @@ export class MainDashboardComponent implements OnInit {
 
   }
 
+  checkStock(){
+    let prepareShopList = [];
+    for(let item of this.shoppingList){
+      if('string' === typeof(item.id))
+        prepareShopList.push({id:item.id, quantity:item.quantity})
+    }
+    this._productService.checkStockProduct(prepareShopList).subscribe(
+      response=>{
+        this.responseServer = response;
+        if (this.responseServer.message === CONSTANT.ResponseServers.InvalidParams) {
+          this._toastService.show(CONSTANT.messageToast.PARAMS_INVALID, 4000, CONSTANT.Styles.Warning);
+        }else{//TODO queda crear las notificaciones
+          this._toastService.show("calculado los stocks", 4000, CONSTANT.Styles.Success);
+        }
+      },error=>{
+        this._toastService.show(CONSTANT.messageToast.PRODUCT_ERROR, 4000, CONSTANT.Styles.Error);
+
+      }
+    );
+  }
 
   deleteItemShoppingList(itemDelete){
     for (let i = 0; i < this.shoppingList.length; i++){
@@ -225,6 +241,15 @@ export class MainDashboardComponent implements OnInit {
         this.shoppingList.splice(i, 1);
         this.getTotalFinalPrice(this.shoppingList);
       }
+    }
+  }
+
+  addProduct(event){
+
+    if(event.code === 'Enter' || event.code === 'NumpadEnter'){
+      this.addProductToList();
+      this.actionNumberKey ="";
+      $('#addProducts').modal('close');
     }
   }
 
@@ -266,22 +291,24 @@ export class MainDashboardComponent implements OnInit {
   }
 
   getProductByScannerBar(code){
-    this.barCode = code;//TODO eliminar cuando sea necesario y este implementado el lector de codigos de barras
-    this._productService.getProductByCode(code).subscribe(
-      response=>{
-        this.responseServer = response;
-        if(this.responseServer.message === CONSTANT.ResponseServers.InvalidParams){
-          this._toastService.show(CONSTANT.messageToast.PARAMS_INVALID, 4000, CONSTANT.Styles.Warning);
-        }else if(this.responseServer.message === CONSTANT.ResponseServers.No_Data_Product){
-          this._toastService.show(CONSTANT.messageToast.NO_DATA_AVAIBLE, 4000, CONSTANT.Styles.Info);
-          $('#addNewProduct').modal('open');
-        }else{
-          this.addProductSearch(this.responseServer.products);
+    if(CONSTANT.hotkeys.indexOf(code) === -1) {
+      this.barCode = code;//TODO eliminar cuando sea necesario y este implementado el lector de codigos de barras
+      this._productService.getProductByCode(code).subscribe(
+        response => {
+          this.responseServer = response;
+          if (this.responseServer.message === CONSTANT.ResponseServers.InvalidParams) {
+            this._toastService.show(CONSTANT.messageToast.PARAMS_INVALID, 4000, CONSTANT.Styles.Warning);
+          } else if (this.responseServer.message === CONSTANT.ResponseServers.No_Data_Product) {
+            this._toastService.show(CONSTANT.messageToast.NO_DATA_AVAIBLE, 4000, CONSTANT.Styles.Info);
+            $('#addNewProduct').modal('open');
+          } else {
+            this.addProductSearch(this.responseServer.products);
+          }
+        }, error => {
+          this._toastService.show(CONSTANT.messageToast.PRODUCT_ERROR, 4000, CONSTANT.Styles.Error);
         }
-      },error=>{
-        this._toastService.show(CONSTANT.messageToast.PRODUCT_ERROR, 4000, CONSTANT.Styles.Error);
-      }
-    )
+      )
+    }
   }
 
   goToNewProduct(){

@@ -148,7 +148,7 @@
       <div id="addProduct" class="col s12 center">
         <div class="row center">
           <div class="input-field col s6 pink-text">
-            <input id="price" (click)="clearPrice()"  type="number" [(ngModel)]="addProductPrice">
+            <input id="price" (click)="clearPrice()" (keypress)="addProduct($event)" type="number" autofocus  [(ngModel)]="addProductPrice">
             <label class="active" for="price">Precio</label>
           </div>
         </div>
@@ -203,8 +203,8 @@
 
   <div class="modal-footer">
     <button  class="btn modal-action modal-close waves-effect waves-green btn-flat">Cancelar</button>
-    <button  class="btn modal-action modal-close waves-effect waves-green btn-flat" (click)="shoppingList=[]; totalItemPrice=0; payMoney=0; returnPay=0">No</button>
-    <button  class="btn modal-action modal-close waves-effect waves-green btn-flat" (click)="printTickets(); shoppingList=[]; totalItemPrice=0; payMoney=0; returnPay=0">Si</button>
+    <button  class="btn modal-action modal-close waves-effect waves-green btn-flat" (click)="checkStock(); shoppingList=[];  totalItemPrice=0; payMoney=0; returnPay=0">No</button>
+    <button  class="btn modal-action modal-close waves-effect waves-green btn-flat" (click)="printTickets(); checkStock(); shoppingList=[]; totalItemPrice=0; payMoney=0; returnPay=0">Si</button>
   </div>
 </div>
 

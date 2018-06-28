@@ -48,6 +48,12 @@ export class ProductService {
     let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
     return this._http.post(this.url+'updateProduct', param, {headers:header})
   }
+  checkStockProduct(products){
+    this.token = this._loginService.getToken();
+    let param = JSON.stringify(products);
+    let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
+    return this._http.post(this.url+'checkProductStock', param, {headers:header})
+  }
 
   getProductFavorites(){
     this.token = this._loginService.getToken();
@@ -67,4 +73,6 @@ export class ProductService {
     let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
     return this._http.get(this.url+'getProductByCode/'+ code,  {headers:header})
   }
+
+
 }

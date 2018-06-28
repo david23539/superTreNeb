@@ -9,6 +9,7 @@ const auditoriaController = require('./saveLogs.controller')
 const serviceProduct = require('../service/product.service')
 const fs = require('fs')
 const path = require('path')
+let productStock = [];
 
 
 
@@ -47,22 +48,34 @@ function createProduct(req, res){
 	}
 }
 
-function checkStockProduct(req, res){//todo funcion que devuelve todos los productos con los id obtenido por parametros
-	let product_IN = req.body;
-	if(validationProduct.checkIdsProduct(product_IN)){
-		ProductModel.find().where('_id').in(product_IN.ids).populate({path:'stn_categoryFk'}).exec((err, productsList_OUT)=>{
-			if(err){
-				console.log(err);
-			}
 
-			if(productsList_OUT.length > 0){
-				res.status(constantFile.httpCode.PETITION_CORRECT).send({products: adapterProduct.AdapterListProduct_OUT(productsList_OUT)});
-			}
-		});
-
+function changeStockProduct(req, res){
+	let params_IN = req.body;
+	if(validationProduct.checkListStockProduct(params_IN)){
+		for(let item of params_IN){
+			ProductModel.findByIdAndUpdate(item.id, {$inc:{stn_stockProduct: -item.quantity}}, {new:true}, (err, prodcutStock_OUT)=>{
+				if(prodcutStock_OUT){
+                    productStock.push(prodcutStock_OUT);
+                    privateCheckStock(params_IN, res);
+				}
+			})
+		}
 	}else{
-		paramsIvalids(res);
+		paramsIvalids(res)
 	}
+}
+
+function privateCheckStock(params_IN, res){
+    if(params_IN.length === productStock.length){
+        let notificationProductLowStock = [];
+        for(let subItem of productStock){
+            if(subItem._doc.stn_stockProduct <= subItem._doc.stn_stockProductMin){
+                notificationProductLowStock.push(subItem);
+            }
+        }
+        productStock = [];
+        res.status(constantFile.httpCode.PETITION_CORRECT).send({products: adapterProduct.AdapListProdWithoutCat_OUT(notificationProductLowStock)});
+    }
 }
 
 function checkReferenceProduct(reference, cb){
@@ -286,5 +299,5 @@ module.exports ={
 	getImageOriginalFile,
     getProductByCode,
     getFavoriteProduct,
-	checkStockProduct
+    changeStockProduct
 };
