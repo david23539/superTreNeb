@@ -153,6 +153,7 @@ export const CONSTANT = {
   hotkeys:["Control","Shift","Enter","ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Backspace", "Enter", "Alt", "Tab", "CapsLock", "NumLock", "Pause", "ScrollLock", "PrintScreen",
     "ContextMenu", "Control", "AltGraph", "Insert", "Home", "PageUp", "PageDown", "End", "Delete"],
   headCategory:["Nombre", "Descripción", "IVA"],
+  headStock:["Producto", "Stock Minimo", "Stock Actual"],
   headProduct:["Nombre", "Descripción", "Coste", "Referencia", "Iva", "Margen", "Stock","Stock Min.","Categoría", "Imagen"],
   headBills:["Cliente", "Estado", "Tipo", "Fecha Creación","F.Cierre, F.Modificación, F.Pago","Importe"],
   headBillsAutoManual:["Producto", "Descripción", "Cantidad","Precio", "Precio Total"],

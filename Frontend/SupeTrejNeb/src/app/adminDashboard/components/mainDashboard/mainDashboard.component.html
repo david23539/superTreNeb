@@ -209,24 +209,27 @@
 </div>
 
 <div id="ticket" [hidden]="true">
-  <div style="width: 200px; ">
+  <div style="width: 180px;">
     <p style="text-align: center ; font-size: small ;font-family:'Arial Black' ;"> AUTOSERVICIO OLALLA</p>
-    <p style="text-align: center ; font-size: x-small"> PLAZA DE ESPAÑA Nº 14</p>
-    <p style="text-align: center ; font-size: x-small"> CIF  09203990-B</p>
-    <p style="text-align: center ; font-size: x-small"> {{date}}</p>
+    <p style="text-align: center ; font-size: x-small;font-family:'Arial'"> PLAZA DE ESPAÑA Nº 14</p>
+    <p style="text-align: center ; font-size: x-small; font-family:'Arial'"> CIF  09203990-B</p>
+    <p style="text-align: center ; font-size: x-small; font-family:'Arial'"> {{date}}</p>
     <table style="width: 100%">
       <thead>
       <tr >
-        <th style="text-align: left; font-size:12px ">PRODUCTO</th>
-        <th style="text-align: left; font-size:12px">PRECIO</th>
-        <th style="text-align: left; font-size:12px">UND</th>
+        <th style="text-align: left; font-size:11px;font-family:'Arial'">UND</th>
+        <th style="text-align: left; font-size:11px;font-family:'Arial' ">PRODUCTO</th>
+        <th style="text-align: left; font-size:11px; font-family:'Arial'">PRECIO</th>
+        <th style="text-align: left; font-size:11px; font-family:'Arial'">TOTAL</th>
+
       </tr>
       </thead>
       <tbody>
       <tr *ngFor="let items of shoppingList">
-        <td style="text-transform: uppercase;font-size: 9px">{{items.product.length > 7?items.product.substr(0,10) +" ...":items.product}}</td>
-        <td style="text-transform: uppercase;text-align: center;font-size: 9px">{{items.finalPrice}} €</td>
-        <td style="text-transform: uppercase;text-align: center;font-size: 9px">{{items.quantity}}</td>
+        <td style="text-transform: uppercase;text-align: center;font-size: 10px;font-family:'Arial'">{{items.quantity}}</td>
+        <td style="text-transform: uppercase;font-size: 10px;font-family:'Arial'">{{items.product.length > 7?items.product.substr(0,7) +" ...":items.product}}</td>
+        <td style="text-transform: uppercase;text-align: center;font-size: 10px;font-family:'Arial'">{{items.finalPrice}} €</td>
+        <td style="text-transform: uppercase;text-align: center;font-size: 10px;font-family:'Arial'">{{(items.finalPrice * items.quantity).toFixed(2)}} €</td>
       </tr>
 
 
@@ -237,8 +240,8 @@
     <p style="text-align: center; font-size:12px ">
       <b>TOTAL: {{totalItemPrice.toFixed(2)}} €</b>
     </p>
-    <p style="text-align: center ; font-size: x-small; font-style: oblique">Gracias por su compra</p>
-    <p style="text-align: center; font-size: xx-small">IVA INCLUIDO</p>
+    <p style="text-align: center ; font-size: x-small; font-style: oblique;font-family:'Arial'">Gracias por su compra</p>
+    <p style="text-align: center; font-size: xx-small;font-family:'Arial'">IVA INCLUIDO</p>
   </div>
 
 </div>

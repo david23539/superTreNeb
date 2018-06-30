@@ -1,9 +1,11 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { Router} from "@angular/router";
 import { GLOBAL} from "../../../services/global";
 import {UserService} from "../../../services/service/user/user.service";
 import {DirectionIpService} from "../../../services/service/direcctionIP/direction-ip.service";
 import { DataBrowser} from "../../../utils/dataBrowser";
+import {NotificationService} from "../../services/notification/notification.service";
+import {CONSTANT} from "../../../services/constant";
 
 
 @Component({
@@ -13,9 +15,8 @@ import { DataBrowser} from "../../../utils/dataBrowser";
   providers:[DataBrowser, UserService, DirectionIpService]
 })
 
-export class DashboardComponent implements OnInit, AfterViewInit {
+export class DashboardComponent implements OnInit{
   public EXITAPPSESSION = "Salir";
-  public prueba: any = "prueba";
   public titleDiscover:String;
   public subtitleDiscover:String;
   public routers:any;
@@ -35,20 +36,37 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   public ADDRESS_PAGE: String = "Direcciones";
   public BILLING_PAGE: String = "Facturación";
   public classBackgraundSidenav="blue-grey lighten-2 z-depth-3";
+  public classNotificationIcon = "material-icons pink-text";
+  public classNotNotificationIcon = "material-icons";
+  public classDefaultNotificationIcon = "material-icons";
+  public notifications: any;
+  public bodyStock:any;
+  public headStock:any = CONSTANT.headStock;
 
   constructor(private _router:Router, private _userService:UserService, private _getDataBrowser:DataBrowser,
-              private _directionIpService:DirectionIpService) {
+              private _directionIpService:DirectionIpService, private _notification: NotificationService) {
     this.routers = _router;
     this.breadcumsTagsArray = this.routers.url;
     this.url = GLOBAL.url;
+    // this.checkNotifications();
+    this._notification.getNotification().subscribe(
+      response=>{
+        this.notifications = response;
+        if(this.notifications){
 
-  }
-  pruebas(){
-    console.log("dvdsfsdf"+this.prueba);
+          this.bodyStock = this.prepareDataToNotificationList();
+          this.classDefaultNotificationIcon = this.classNotificationIcon
+        }
+      }
+    )
   }
 
-  hidenSidenaves():void{
-    // $('.sidenav-overlay').click();
+  private prepareDataToNotificationList(){
+    let productNotifications= [];
+    for(let item of this.notifications){
+      productNotifications.push({name: item.name, stockMin: item.stockMin, stockMax: item.stock})
+    }
+    return productNotifications
   }
 
   exitSession(){
@@ -56,12 +74,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     sessionStorage.clear();
   }
 
-
-
-
-
   ngOnInit() {
-
+    $('.modal').modal();
 
     this._userService.getDataUserByToken().subscribe(
       response=>{
@@ -88,31 +102,18 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       }
     )
 
-    //lamar al servicio para mostrar la imagen y obtener todos los datos del usuario
-  }
-
-  ngAfterViewInit(): void {
-      // $('.sidenav').sidenav();
-      /*this.elem = document.querySelector('.tap-target');
-      this.instance = Materialize.FeatureDiscovery.init(this.elem);*/
 
   }
 
+  showNotifications(){
+    $('#stock').modal('open');
 
-
-  messageIntoDiscover():void{
-
-    switch (this._router.url){
-      case "/dashboard/main-dashboard":
-        this.titleDiscover = "USO DE LA TABLA";
-        this.subtitleDiscover = "Seleccione un elemento de la lista, marque la cantidad y ejecute la acción. Si desea sumar o restar un elemneto pulse el - o el +. " +
-          "Si desea eliminar un elemento pulse sobre eliminar o borrar en el teclado";
-        break;
-      case "/":
-        this.titleDiscover = "MENÚ LATERAL";
-        this.subtitleDiscover = "Pulse sobre el icono de menú, situado aquí debajo, para mostrar el menú oculto. Si se encuentra en la versión mobil arrastre de izquierda a derecha";
-    }
   }
+
+
+
+
+
 }
 
 

@@ -6,13 +6,13 @@
       <!--<li><button mz-button id="btn-sidenav-demo" ><i class="material-icons">menu</i></button></li>-->
       <li><a data-target="slide-out" (click)="sidenav.opened = !sidenav.opened" class="show-on-large hide-on-med-and-down sidenav-trigger"><i class="material-icons">menu</i></a></li>
       <li><a id="menu"  class="waves-effect waves-light btn btn-floating blue-grey darken-1 z-depth-0"><i class="material-icons">help_outline</i></a></li>
-      <li class="hide-on-med-and-down"><a href="#"><i class="material-icons">notifications</i></a></li>
-
-      <!--<li><a href="#" data-target="slide-out" class="hide-on-med-and-down sidenav-trigger"><i class="material-icons blue-grey-text">menu</i></a></li>-->
+      <li class="hide-on-med-and-down"><a id="notification" (click)="showNotifications()" class="waves-effect waves-light btn btn-floating blue-grey darken-1 z-depth-0"><i [class]="classDefaultNotificationIcon">notifications</i>
+      </a></li>
     </ul>
   </div>
 </nav>
 </header>
+
 
 <mz-sidenav
   [id]="'slide-out'"
@@ -43,7 +43,7 @@
 
      <mz-sidenav-divider></mz-sidenav-divider>
      <mz-sidenav-link>
-       <a [routerLink]="['/dashboard/main-dashboard']" (click)="hidenSidenaves()" ><i class="material-icons">dashboard</i>{{MAINPAGE}}</a>
+       <a [routerLink]="['/dashboard/main-dashboard']"  ><i class="material-icons">dashboard</i>{{MAINPAGE}}</a>
      </mz-sidenav-link>
 
      <mz-sidenav-divider></mz-sidenav-divider>
@@ -77,6 +77,18 @@
   <div class="tap-target-content white-text">
     <h5>{{titleDiscover}}</h5>
     <p>{{subtitleDiscover}}</p>
+  </div>
+</div>
+
+<div id="stock" class="modal">
+  <div class="modal-content">
+    <div class="row">
+      <table-list [bodyTableContent]="bodyStock" [headsTable]="headStock"></table-list>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button  class="btn modal-action modal-close waves-effect waves-green btn-flat">Cancelar</button>
+
   </div>
 </div>
 

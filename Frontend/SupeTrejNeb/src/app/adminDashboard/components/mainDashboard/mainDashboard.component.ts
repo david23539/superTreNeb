@@ -4,6 +4,7 @@ import {CONSTANT} from "../../../services/constant";
 import {ProductService} from "../../services/product/product.service";
 import {MzToastService} from "ng2-materialize";
 import {ActivatedRoute, Router} from "@angular/router";
+import {NotificationService} from "../../services/notification/notification.service";
 
 @Component({
   selector: 'main-dashboard',
@@ -61,7 +62,7 @@ export class MainDashboardComponent implements OnInit {
 
 
 
-  constructor(private _productService:ProductService, private _toastService:MzToastService, private _route: ActivatedRoute, private _router:Router) {
+  constructor(private _productService:ProductService, private _toastService:MzToastService, private _route: ActivatedRoute, private _router:Router, private _notification: NotificationService) {
     this.url = GLOBAL.url;
     this.constant = CONSTANT.keysPress;
     this.constantToast = CONSTANT.messageToast;
@@ -100,7 +101,11 @@ export class MainDashboardComponent implements OnInit {
     $('.modal').modal();
     $('.tabs').tabs();
     this.getProductFavorite();
+
+
   }
+
+
   getTotalFinalPrice(items){
     this.totalItemPrice = 0;
     for(let item of items){
@@ -220,19 +225,21 @@ export class MainDashboardComponent implements OnInit {
       if('string' === typeof(item.id))
         prepareShopList.push({id:item.id, quantity:item.quantity})
     }
-    this._productService.checkStockProduct(prepareShopList).subscribe(
-      response=>{
-        this.responseServer = response;
-        if (this.responseServer.message === CONSTANT.ResponseServers.InvalidParams) {
-          this._toastService.show(CONSTANT.messageToast.PARAMS_INVALID, 4000, CONSTANT.Styles.Warning);
-        }else{//TODO queda crear las notificaciones
-          this._toastService.show("calculado los stocks", 4000, CONSTANT.Styles.Success);
+    if(prepareShopList.length !== 0) {
+      this._productService.checkStockProduct(prepareShopList).subscribe(
+        response => {
+          this.responseServer = response;
+          if (this.responseServer.message === CONSTANT.ResponseServers.InvalidParams) {
+            this._toastService.show(CONSTANT.messageToast.PARAMS_INVALID, 4000, CONSTANT.Styles.Warning);
+          } else if(this.responseServer.products .length > 0){//TODO queda crear las notificaciones
+            this._notification.changeNotification(this.responseServer.products);
+            this._toastService.show("calculado los stocks", 4000, CONSTANT.Styles.Success);
+          }
+        }, error => {
+          this._toastService.show(CONSTANT.messageToast.PRODUCT_ERROR, 4000, CONSTANT.Styles.Error);
         }
-      },error=>{
-        this._toastService.show(CONSTANT.messageToast.PRODUCT_ERROR, 4000, CONSTANT.Styles.Error);
-
-      }
-    );
+      );
+    }
   }
 
   deleteItemShoppingList(itemDelete){
