@@ -56,6 +56,7 @@ const constant ={
 		PROVIDER_REGISTER_FAIL: 'Ha fallado el registro del proveedor',
 		PERSONA_REGISTER_FAIL: 'Ha fallado el registro de la persona',
 		ADDRESS_REGISTER_FAIL: 'Ha fallado el registro de la dirección',
+		NOTIFICATION_FAIL: 'Ha ocurrido un error con las notificaciones',
 		PERSONA_DELETED_FAIL: 'Ha ocurrido un error con la persona',
 		ADDRESS_DELETED_FAIL: 'Ha ocurrido un error con la direción',
 		EXISTS_REFERENCE_PRODUCT: 'Este producto ya existe',

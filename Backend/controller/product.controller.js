@@ -7,6 +7,7 @@ const validationProduct = require('../Validation/product.validation')
 const validationGlobal = require('../Validation/global.validation')
 const auditoriaController = require('./saveLogs.controller')
 const serviceProduct = require('../service/product.service')
+const notificationController = require('./notification.controller');
 const fs = require('fs')
 const path = require('path')
 let productStock = [];
@@ -48,9 +49,21 @@ function createProduct(req, res){
 	}
 }
 
+function getAllProductsByListIds(res, productListIds){
+    ProductModel.find({_id:{$in:productListIds}}, (err, productsListOut)=>{
+        if(err){
+            res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PRODUCT_GET_ERROR});
+        }else if(productsListOut.length === 0){
+            res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PRODUCT_GET_ERROR});
+        }else{
+            res.status(constantFile.httpCode.PETITION_CORRECT).send({products: adapterProduct.AdapListProdWithoutCat_OUT(productsListOut)});
+        }
+    })
+}
 
 function changeStockProduct(req, res){
 	let params_IN = req.body;
+    productStock = [];
 	if(validationProduct.checkListStockProduct(params_IN)){
 		for(let item of params_IN){
 			ProductModel.findByIdAndUpdate(item.id, {$inc:{stn_stockProduct: -item.quantity}}, {new:true}, (err, prodcutStock_OUT)=>{
@@ -67,14 +80,19 @@ function changeStockProduct(req, res){
 
 function privateCheckStock(params_IN, res){
     if(params_IN.length === productStock.length){
-        let notificationProductLowStock = [];
+        //let notificationProductLowStock = [];
         for(let subItem of productStock){
             if(subItem._doc.stn_stockProduct <= subItem._doc.stn_stockProductMin){
-                notificationProductLowStock.push(subItem);
+                notificationController.addNotification('Product', subItem._id);
+                // notificationProductLowStock.push(subItem);
             }
         }
+        notificationController.getNotifications(res);
         productStock = [];
-        res.status(constantFile.httpCode.PETITION_CORRECT).send({products: adapterProduct.AdapListProdWithoutCat_OUT(notificationProductLowStock)});
+
+
+
+        //res.status(constantFile.httpCode.PETITION_CORRECT).send({products: adapterProduct.AdapListProdWithoutCat_OUT(notificationProductLowStock)});
     }
 }
 
@@ -299,5 +317,6 @@ module.exports ={
 	getImageOriginalFile,
     getProductByCode,
     getFavoriteProduct,
-    changeStockProduct
+    changeStockProduct,
+    getAllProductsByListIds
 };
