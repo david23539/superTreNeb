@@ -49,17 +49,9 @@ function createProduct(req, res){
 	}
 }
 
-function getAllProductsByListIds(res, productListIds){
-    ProductModel.find({_id:{$in:productListIds}}, (err, productsListOut)=>{
-        if(err){
-            res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PRODUCT_GET_ERROR});
-        }else if(productsListOut.length === 0){
-            res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PRODUCT_GET_ERROR});
-        }else{
-            res.status(constantFile.httpCode.PETITION_CORRECT).send({products: adapterProduct.AdapListProdWithoutCat_OUT(productsListOut)});
-        }
-    })
-}
+
+
+
 
 function changeStockProduct(req, res){
 	let params_IN = req.body;
@@ -68,33 +60,34 @@ function changeStockProduct(req, res){
 		for(let item of params_IN){
 			ProductModel.findByIdAndUpdate(item.id, {$inc:{stn_stockProduct: -item.quantity}}, {new:true}, (err, prodcutStock_OUT)=>{
 				if(prodcutStock_OUT){
-                    productStock.push(prodcutStock_OUT);
-                    privateCheckStock(params_IN, res);
+					productStock.push(prodcutStock_OUT);
+					privateCheckStock(params_IN, res);
 				}
-			})
+			});
 		}
 	}else{
-		paramsIvalids(res)
+		paramsIvalids(res);
 	}
 }
 
-function privateCheckStock(params_IN, res){
-    if(params_IN.length === productStock.length){
-        //let notificationProductLowStock = [];
-        for(let subItem of productStock){
-            if(subItem._doc.stn_stockProduct <= subItem._doc.stn_stockProductMin){
-                notificationController.addNotification('Product', subItem._id);
-                // notificationProductLowStock.push(subItem);
-            }
-        }
-        notificationController.getNotifications(res);
-        productStock = [];
-
-
-
-        //res.status(constantFile.httpCode.PETITION_CORRECT).send({products: adapterProduct.AdapListProdWithoutCat_OUT(notificationProductLowStock)});
-    }
+function privateCheckStock(params_IN, res) {
+	if (params_IN.length === productStock.length) {
+		let i = 0;
+		for (let subItem of productStock) {
+			i++;
+			if (subItem._doc.stn_stockProduct <= subItem._doc.stn_stockProductMin) {
+				if(i === productStock.length){
+					notificationController.addNotification('Product', subItem._id, false, res);
+				}else{
+					notificationController.addNotification('Product', subItem._id, true, res);
+				}
+			}
+		}
+		productStock = [];
+	}
 }
+
+
 
 function checkReferenceProduct(reference, cb){
 	ProductModel.find({stn_referenceProduct:reference, stn_deleteProduct:false}, cb);
@@ -318,5 +311,5 @@ module.exports ={
     getProductByCode,
     getFavoriteProduct,
     changeStockProduct,
-    getAllProductsByListIds
+	//checkLowStock
 };
