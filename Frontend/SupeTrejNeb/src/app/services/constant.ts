@@ -172,6 +172,7 @@ export const CONSTANT = {
     CATEGORY_ERROR: "Ha ocurrido un error con la categoría",
     BILL_ERROR: "Ha ocurrido un error con la factura",
     PRODUCT_ERROR: "Ha ocurrido un error con el producto",
+    NOTIFICATIONS_ERROR: "Ha ocurrido un error con las notificaciones",
     PRODUCT_QUANTITY_ERROR: "Es necesario indicar la cantidad del producto",
     BILL_CREATE_SUCCESS: "Se ha creado la factura",
     BILL_UPDATE_SUCCESS: "Se ha actualizado la factura",

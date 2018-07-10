@@ -30,23 +30,7 @@ function addNotification (class_IN, idItem, more, res){
                    }
                }
            });
-        }/*else if(notification_OUT.length > 0){// aui vamos a limpiar la tabla de notificacines de aquellas que ya se han eliminado por ejemplo por que ya hay stock de un producto
-			let resultNotifications = getCompleteData(notification_OUT);
-			if(resultNotifications.product.length > 0){
-			    ProductModel.find()
-                    .where('_id')
-                    .in(resultNotifications.product)
-                    .exec((err, productsStock_OUT)=>{
-                        if(err || productsStock_OUT.length === 0){
-							res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.NOTIFICATION_FAIL});
-                        }else{
-							deletedNotification(productsStock_OUT, res, more);
-                        }
-                    });
-			}else{
-				getNotifications(res);
-            }
-        }*/
+        }
     });
 }
 
@@ -97,58 +81,11 @@ function getProduct(id,res, more){
 }
 
 
-/*function deletedNotifications(class_IN, listId, res){
-    NotificationModel.find({stn_class:class_IN}, (err, notificationOUT)=>{
-        if(err){
-			res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.NOTIFICATION_FAIL});
-        }else if(notificationOUT.length == 0){
-            getNotifications(res);
-        }else{
-			for(let item of listId) {
-			    if(notificationOUT.indexOf(item) === -1){
-			        NotificationModel.deleteOne({id:item}, (err, notificationOUTD)=>{
-			        	if(err || !notificationOUTD){
-							res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.NOTIFICATION_FAIL});
-						}else{
-							getNotifications(res);
-						}
-					})
-                }
-			}
-        }
-    })
-
-
-    }
-}*/
-
 function findSingleNotification(class_IN, idItem, cb){
     NotificationModel.find({stn_class:class_IN, stn_item:idItem}, cb);
 }
 
-/*function deletedNotification(listIdProducts, res, more){//abra que pasarle tantos parametros como sea necesarios cada uno de un tipo
-    let listIds = [];
-    if(listIdProducts){
-        for(let item of listIdProducts){
-            if(item._doc.stn_stockProduct > item._doc.stn_stockProductMin){
-                listIds.push(item._id);
-            }
-        }
-    }
-    if(listIds.length > 0){
-		NotificationModel.deleteMany({stn_item:listIds},(err, notificationOUT)=>{
-			if(err){
-				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.NOTIFICATION_FAIL});
-			}else if(notificationOUT.length > 0 && !more){
-				getNotifications(res);
-			}
-		});
-    }else if(!more){
-		getNotifications(res);
-    }
 
-
-}*/
 
 function getNotifications(res){
     NotificationModel.find().exec((err, notificatonsList_OUT)=>{
@@ -196,7 +133,6 @@ function getCompleteData(notificationList_IN){
     };
     for(let item of notificationList_IN){
         if(item._doc.stn_class === 'Product'){
-            // listProducts.push({ObjectId: item._doc.stn_item})
             listProducts.push(item._doc.stn_item);
         }
     }

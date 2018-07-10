@@ -20,6 +20,7 @@ import { BillingComponent } from './components/bils/billing/billing.component';
 import { BillingManualComponent } from './components/bils/billing-manual/billing-manual.component';
 import { BillingAutoComponent } from './components/bils/billing-auto/billing-auto.component';
 import {NotificationService} from "./services/notification/notification.service";
+import {NotificationsService} from "./services/notification/notifications.service";
 
 // import { MzTabModule } from 'ng2-materialize' SE HA COMENTADO PORQUE NO SE USA AUNQUE SI QUEREMOS INCLUIR OTRO HABRA QUE IMPORTARLO AQUI E INFORMARLO EN IMPORTS
 
@@ -53,7 +54,9 @@ import {NotificationService} from "./services/notification/notification.service"
     BillingAutoComponent,
   ],
   providers:[
-    NotificationService
+    NotificationService,
+    NotificationsService
+
   ],
 
   exports:[

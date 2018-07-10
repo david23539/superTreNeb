@@ -6,13 +6,14 @@ import {DirectionIpService} from "../../../services/service/direcctionIP/directi
 import { DataBrowser} from "../../../utils/dataBrowser";
 import {NotificationService} from "../../services/notification/notification.service";
 import {CONSTANT} from "../../../services/constant";
-
+import {NotificationsService} from "../../services/notification/notifications.service";
+import {MzToastService} from "ng2-materialize";
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
-  providers:[DataBrowser, UserService, DirectionIpService]
+  providers:[DataBrowser, UserService, MzToastService, DirectionIpService]
 })
 
 export class DashboardComponent implements OnInit{
@@ -39,15 +40,32 @@ export class DashboardComponent implements OnInit{
   public classNotificationIcon = "material-icons pink-text";
   public classNotNotificationIcon = "material-icons";
   public classDefaultNotificationIcon = "material-icons";
+  public responseServer: any;
   public notifications: any;
   public bodyStock:any;
   public headStock:any = CONSTANT.headStock;
 
-  constructor(private _router:Router, private _userService:UserService, private _getDataBrowser:DataBrowser,
-              private _directionIpService:DirectionIpService, private _notification: NotificationService) {
+  constructor(private _router:Router, private _userService:UserService, private _getDataBrowser:DataBrowser, private toastService: MzToastService,
+              private _directionIpService:DirectionIpService, private _notification: NotificationService, private _notifications:NotificationsService) {
     this.routers = _router;
     this.breadcumsTagsArray = this.routers.url;
     this.url = GLOBAL.url;
+
+    this._notification.getNotificationsServer().subscribe(
+      response=>{
+        this.responseServer = response;
+        this.notifications = this.responseServer.products;
+        if(this.notifications) {
+
+          this.bodyStock = this.prepareDataToNotificationList();
+          this.classDefaultNotificationIcon = this.classNotificationIcon
+        }
+      },error=>{
+        this.toastService.show(CONSTANT.messageToast.NOTIFICATIONS_ERROR, 4000, CONSTANT.Styles.Error);
+
+      }
+    );
+    // this.getNotifications();
     // this.checkNotifications();
     this._notification.getNotification().subscribe(
       response=>{
@@ -86,6 +104,7 @@ export class DashboardComponent implements OnInit{
           this.EMAIL = this.personData.person.email;
           this.NAME = this.personData.person.name;
           this.LASTNAME = this.personData.person.lastname;
+
         }else{
           this._router.navigate(['/login']);
         }
@@ -103,6 +122,7 @@ export class DashboardComponent implements OnInit{
     )
 
 
+
   }
 
   showNotifications(){
@@ -110,7 +130,9 @@ export class DashboardComponent implements OnInit{
 
   }
 
+  getNotifications(){
 
+  }
 
 
 
