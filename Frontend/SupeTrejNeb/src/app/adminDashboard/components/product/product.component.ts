@@ -9,6 +9,7 @@ import {Category} from "../../model/category/category.model";
 import {MzToastService} from "ng2-materialize";
 import {UploadService} from "../../services/uploadFiles/upload.service";
 import {ActivatedRoute, Params} from "@angular/router";
+import {NotificationService} from "../../services/notification/notification.service";
 
 @Component({
   selector: 'product',
@@ -92,7 +93,7 @@ export class ProductComponent implements OnInit {
   public codeProduct:string = "";
   public quantityTotalProd = 0;
 
-  constructor(private _route: ActivatedRoute, private _productService:ProductService, private _getDataBrowser: DataBrowser, private toastService: MzToastService, private _categoryService: CategoryService,
+  constructor(private _route: ActivatedRoute, private _notification:NotificationService, private _productService:ProductService, private _getDataBrowser: DataBrowser, private toastService: MzToastService, private _categoryService: CategoryService,
       private _uploadFile:UploadService) {
     this.inicializateObject();
     this.productModel_OUT = new Product_OUT({id: ""});
@@ -417,7 +418,8 @@ export class ProductComponent implements OnInit {
         response =>{
           this.responseServer = response;
           if(this.responseServer.message !== CONSTANT.ResponseServers.InvalidParams){
-            this.productModel_OUT.identifier.id = this.responseServer.id;
+            // this.productModel_OUT.identifier.id = this.responseServer.id;
+            this._notification.changeNotification(this.responseServer.products);
             this.toastService.show(CONSTANT.ResponseServers.Product_Success_Update, 4000, CONSTANT.Styles.Success);
             this.getProducts(1);
             $('#productModal').modal('close');

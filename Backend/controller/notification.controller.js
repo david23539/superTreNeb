@@ -34,57 +34,13 @@ function addNotification (class_IN, idItem, more, res){
     });
 }
 
-function reviewNotifications(req, res){
-	NotificationModel.find().exec((err, notificationsListOUT)=>{
-		if(err){
-			res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.NOTIFICATION_FAIL});
-		}else if(notificationsListOUT.length === 0){
-
-		}else{
-			let i = 0;
-			for(let item of notificationsListOUT){
-				i++;
-				if(item._doc.stn_class === 'Product'){
-					if(i === notificationsListOUT.length){
-						getProduct(item._doc.stn_item, res, false);
-					}else{
-						getProduct(item._doc.stn_item, res, true);
-					}
-
-				}
-			}
-		}
-	});
-}
-
-function getProduct(id,res, more){
-	ProductModel.findById(id, (err, productOUT)=>{
-		if (err || !productOUT){
-			if(!more){
-				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.NOTIFICATION_FAIL});
-			}
-		}else if(productOUT._doc.stn_stockProduct>productOUT._doc.stn_stockProductMin){
-			NotificationModel.deleteOne({stn_item:id}, (err,deletedNotifications)=>{
-				if(err || !deletedNotifications ){
-					if(!more){
-						res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.NOTIFICATION_FAIL});
-					}
-
-				}else if(!more){
-					getNotifications(res);
-				}
-			});
-		}else if(!more){
-			getNotifications(res);
-		}
-	})
-}
-
-
 function findSingleNotification(class_IN, idItem, cb){
     NotificationModel.find({stn_class:class_IN, stn_item:idItem}, cb);
 }
 
+function checkNotifications(req,res){
+	getNotifications(res);
+}
 
 
 function getNotifications(res){
@@ -103,6 +59,40 @@ function getNotifications(res){
         }
     });
 }
+
+/**
+ * Esta funcion recoge el id del item modificado
+ * lo busca en la coleccion de notificaciones y si
+ * encuentra el id lo elimina y devuelve todas las notificaciones
+ * si no lo encuentra devuelve las notificaciones
+ * @param id del item
+ * @param res respuesta
+ */
+
+function notificationbyIdItem(id,res){
+	NotificationModel.findOne({stn_item:id},(err, notification_OUT)=>{
+		if(err){
+			res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.NOTIFICATION_FAIL});
+		}else if(notification_OUT){
+			deletedNotification(notification_OUT._doc.stn_item, (err, deletedItem_OUT)=>{
+				if(err || !deletedItem_OUT){
+					res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.NOTIFICATION_FAIL});
+				}else{
+					getNotifications(res);
+				}
+			});
+		}else{
+			getNotifications(res);
+		}
+	});
+
+}
+
+function deletedNotification(id, cb){
+	NotificationModel.findOneAndRemove({stn_item:id},cb);
+}
+
+
 
 /**
  *
@@ -139,12 +129,13 @@ function getCompleteData(notificationList_IN){
     return result;
 }
 
-/*function paramsIvalids(res){
-    res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.ERROR_PARAMETROS_ENTRADA})
-}*/
+
 
 module.exports ={
     addNotification,
-	reviewNotifications
+	getNotifications,
+	checkNotifications,
+	notificationbyIdItem
+
 
 };

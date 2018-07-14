@@ -5,7 +5,9 @@ const notificationcontroller = require('../controller/notification.controller');
 const md_auth = require('../middleware/autenticate.middleware');
 
 
-api.get('/getNotifications', md_auth.ensureAuth, notificationcontroller.reviewNotifications);
+api.get('/getNotifications', md_auth.ensureAuth, notificationcontroller.checkNotifications);
+
+
 
 
 

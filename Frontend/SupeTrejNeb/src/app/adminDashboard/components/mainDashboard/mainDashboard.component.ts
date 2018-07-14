@@ -231,9 +231,9 @@ export class MainDashboardComponent implements OnInit {
           this.responseServer = response;
           if (this.responseServer.message === CONSTANT.ResponseServers.InvalidParams) {
             this._toastService.show(CONSTANT.messageToast.PARAMS_INVALID, 4000, CONSTANT.Styles.Warning);
-          } else if(this.responseServer.products .length > 0){//TODO queda crear las notificaciones
+          } else if(this.responseServer.products .length > 0){
             this._notification.changeNotification(this.responseServer.products);
-            this._toastService.show("calculado los stocks", 4000, CONSTANT.Styles.Success);
+            //this._toastService.show("calculado los stocks", 4000, CONSTANT.Styles.Success);
           }
         }, error => {
           this._toastService.show(CONSTANT.messageToast.PRODUCT_ERROR, 4000, CONSTANT.Styles.Error);

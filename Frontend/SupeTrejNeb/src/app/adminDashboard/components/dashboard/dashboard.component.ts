@@ -51,32 +51,6 @@ export class DashboardComponent implements OnInit{
     this.breadcumsTagsArray = this.routers.url;
     this.url = GLOBAL.url;
 
-    this._notification.getNotificationsServer().subscribe(
-      response=>{
-        this.responseServer = response;
-        this.notifications = this.responseServer.products;
-        if(this.notifications) {
-
-          this.bodyStock = this.prepareDataToNotificationList();
-          this.classDefaultNotificationIcon = this.classNotificationIcon
-        }
-      },error=>{
-        this.toastService.show(CONSTANT.messageToast.NOTIFICATIONS_ERROR, 4000, CONSTANT.Styles.Error);
-
-      }
-    );
-    // this.getNotifications();
-    // this.checkNotifications();
-    this._notification.getNotification().subscribe(
-      response=>{
-        this.notifications = response;
-        if(this.notifications){
-
-          this.bodyStock = this.prepareDataToNotificationList();
-          this.classDefaultNotificationIcon = this.classNotificationIcon
-        }
-      }
-    )
   }
 
   private prepareDataToNotificationList(){
@@ -119,8 +93,10 @@ export class DashboardComponent implements OnInit{
 
         }
       }
-    )
+    );
 
+    this.getNotifications();
+    this.getSubscriptionNotifications();
 
 
   }
@@ -130,8 +106,45 @@ export class DashboardComponent implements OnInit{
 
   }
 
-  getNotifications(){
+  /**
+   * nos subcribimos a las notificaciones service para
+   * estar a la escucha de los cambios
+   */
+  private getSubscriptionNotifications(){
+    this._notification.getNotification().subscribe(
+      response=>{
+        this.notifications = response;
+        if(this.notifications){
 
+          this.bodyStock = this.prepareDataToNotificationList();
+          this.classDefaultNotificationIcon = this.classNotificationIcon
+        }else{
+          this.bodyStock = [];
+          this.classDefaultNotificationIcon = this.classNotNotificationIcon;
+        }
+      }
+    )
+  }
+
+  /**
+   * obtenemos todas las notificaciones
+   * y a continuacion las mandamos al serrvice para compartirlas entre los controllers
+   */
+  getNotifications(){
+    this._notification.getNotificationsServer().subscribe(
+      response=>{
+        this.responseServer = response;
+        this.notifications = this.responseServer.products;
+        if(this.notifications) {
+
+          this._notification.changeNotification(this.responseServer.products);
+
+        }
+      },error=>{
+        this.toastService.show(CONSTANT.messageToast.NOTIFICATIONS_ERROR, 4000, CONSTANT.Styles.Error);
+
+      }
+    );
   }
 
 

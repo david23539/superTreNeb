@@ -55,7 +55,7 @@ function createProduct(req, res){
 
 function changeStockProduct(req, res){
 	let params_IN = req.body;
-    productStock = [];
+	productStock = [];
 	if(validationProduct.checkListStockProduct(params_IN)){
 		for(let item of params_IN){
 			ProductModel.findByIdAndUpdate(item.id, {$inc:{stn_stockProduct: -item.quantity}}, {new:true}, (err, prodcutStock_OUT)=>{
@@ -94,7 +94,12 @@ function checkReferenceProduct(reference, cb){
 }
 
 
-
+/**
+ * Actualizamos el producto.
+ * En casp de que se actualice el producto verificamos si su stoc es mayor a su minimo y nos tremos las notificaciones
+ * @param req
+ * @param res
+ */
 function updateProduct(req, res){
 	const params = req.body
 	const id = params.identifier.id
@@ -109,15 +114,19 @@ function updateProduct(req, res){
 					auditoriaController.saveLogsData(req.user.name,err, params.direccionIp.direccionData, params.direccionIp.navegador)
 					res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PRODUCT_UPDATE_ERROR})
 				}else{
+					if(productUpdateStorage._doc.stn_stockProduct > productUpdateStorage._doc.stn_stockProductMin){
+						notificationController.notificationbyIdItem(productUpdateStorage._id, res);
+					}else{
+						notificationController.getNotifications(res);
+					}
 					auditoriaController.saveLogsData(req.user.name,constantFile.functions.PRODUCT_UPDATE_SUCCESS, params.direccionIp.direccionData, params.direccionIp.navegador)
-					res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.PRODUCT_UPDATE_SUCCESS, id:productUpdateStorage._doc._id})
 				}
-			})
+			});
 		}else{
-			paramsIvalids(res)
+			paramsIvalids(res);
 		}
 	}else{
-		paramsIvalids(res)
+		paramsIvalids(res);
 	}
 }
 
@@ -311,5 +320,4 @@ module.exports ={
     getProductByCode,
     getFavoriteProduct,
     changeStockProduct,
-	//checkLowStock
 };
