@@ -47,7 +47,7 @@ function registerUser(req, res){
 						userAuxiliar.userExist(res)
 					}else{
 
-						serviceUser.registerNewUser(params, res, function(err, hash){
+						serviceUser.registerNewUser(params, function(err, hash){
 							if(err){
 								globalAuxiliar.errorPeticion(res)
 							}else if(hash){

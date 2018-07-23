@@ -5,7 +5,7 @@ const Log = require('log'), log = new Log('info')
 
 // eslint-disable-next-line no-unused-vars
 function registerNewUser(params, cb) {
-	bcrypt.hash(params.usuario.password,null, null, cb)
+	bcrypt.hash(params.usuario.password,null, null, cb);
 }
 
 function comparePassword(password, userDataPassword){
