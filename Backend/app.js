@@ -2,9 +2,13 @@
 
 const express = require('express')
 const bodyParser = require('body-parser')
+const limiter = require('express-limiter');
+const redisClient = require('redis').createClient();
 const app = express()
 const helmet = require('helmet');
 const path = require('path')
+const limits = limiter(app,redisClient);
+
 //rutas
 const user_routes = require('./routes/user.route')
 const category_routes = require('./routes/category.route')
@@ -23,7 +27,22 @@ app.use(bodyParser.json())
 app.use(helmet());
 app.use(helmet.noCache());
 app.use(helmet.dnsPrefetchControl());
+app.use(helmet({
+    frameguard: {
+        action: 'deny'
+    }
+}));
 
+//limite de peticiones por hora
+limits({
+	path:'/login',
+	method:'all',
+	lookup:['connection.remoteAddress'],
+	total:5,
+	expire:1000*60*60
+});
+
+app.disable('x-powered-by');
 
 //configurar cabeceras y cors
 app.use((req,res,next)=>{
