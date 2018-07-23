@@ -3,6 +3,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
+const helmet = require('helmet');
 const path = require('path')
 //rutas
 const user_routes = require('./routes/user.route')
@@ -19,12 +20,15 @@ const notification_router = require('./routes/notifications.route')
 //configurar middlewares de body-pare
 app.use(bodyParser.urlencoded({extend: false}))
 app.use(bodyParser.json())
-
+app.use(helmet());
+app.use(helmet.noCache());
+app.use(helmet.dnsPrefetchControl());
 
 
 //configurar cabeceras y cors
 app.use((req,res,next)=>{
-	res.header('Access-Control-Allow-Origin', '*')
+	//res.header('Access-Control-Allow-Origin', '159.89.25.242');
+	res.header('Access-Control-Allow-Origin', '*');
 	res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method')
 	res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
 	res.header('Allow', 'GET, POST, PUT, DELETE')
