@@ -2,12 +2,12 @@
 
 const express = require('express')
 const bodyParser = require('body-parser')
-const limiter = require('express-limiter');
-const redisClient = require('redis').createClient();
 const app = express()
 const helmet = require('helmet');
 const path = require('path')
-const limits = limiter(app,redisClient);
+//const limiter = require('express-limiter')(app, client);
+
+
 
 //rutas
 const user_routes = require('./routes/user.route')
@@ -33,15 +33,6 @@ app.use(helmet({
     }
 }));
 
-//limite de peticiones por hora
-limits({
-	path:'/login',
-	method:'all',
-	lookup:['connection.remoteAddress'],
-	total:5,
-	expire:1000*60*60
-});
-
 app.disable('x-powered-by');
 
 //configurar cabeceras y cors
@@ -52,7 +43,7 @@ app.use((req,res,next)=>{
 	res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
 	res.header('Allow', 'GET, POST, PUT, DELETE')
 	next()
-})
+});
 
 //rutas base
 //app.use('/', express.static('client', {redirect:false}))
@@ -65,6 +56,11 @@ app.use('/api', provider_router)
 app.use('/api', address_router)
 app.use('/api', bill_router)
 app.use('/api', notification_router)
+//ruta especial login evitando acceso fuerza bruta
+
+
+
+
 // app.get('*', function(req, res, next){
 // 	res.sendFile(path.resolve('client/index.html'))
 // })
