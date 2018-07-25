@@ -105,7 +105,8 @@ const constant ={
 		NO_PROVIDERS_AVAIBLE:'No existen proveedores',
 		PROVIDERS_AVAIBLE:'Existen proveedores relacionados',
 		NO_PERSON_AVAIBLE:'No existen personas',
-		NO_ADDRESS_AVAIBLE:'No existen direcciones'
+		NO_ADDRESS_AVAIBLE:'No existen direcciones',
+		PREVENT_BRUTE_FORCE_ACCESS:'Espere 10 segundos antes de volver a introducir sus credenciales'
 
 
 

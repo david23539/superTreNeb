@@ -1,41 +1,19 @@
-'use strict'
+'use strict';
 
 
 const client = require('redis').createClient({detect_buffers: true});
+const constantFile = require('../utils/Constant');
 
 
 exports.limit = function(req, res, next){
 
-    /*client.get("value!", function (err, reply) {
-        //console.log(reply.toString()); // Will print `OK`
-        if(err){
-            return res.status(200).send(err)
-        }else if(!reply){
-            client.set('key', 'value!');
-            next();
-
-        }else{
-            console.log(reply);
-            next();
-        }
-    });*/
-
-
-// This will return a JavaScript String
-    client.get("foo_rand00000001", function (err, reply) {
-       // console.log(reply.toString()); // Will print `OK`
+    client.get(req.connection.remoteAddress, function (err, reply) {
         if(reply !== 'OK'){
-            client.set("foo_rand00000001", "OK",'PX',1000 * 60 * 60, (e)=>{});
+            client.set(req.connection.remoteAddress, "OK");
+            client.expire(req.connection.remoteAddress, 10);
             next();
         }else{
-            return res.status(500).send('demasiadas veces logeado espera 10 segundos')
+            return res.status(constantFile.httpCode.FORBIDDEN).send(constantFile.functions.PREVENT_BRUTE_FORCE_ACCESS);
         }
-
     });
-
-
-
-
-    //next();
-
 };

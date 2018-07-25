@@ -101,7 +101,7 @@ export class LoginComponent implements OnInit {
 
 
       },error=>{
-        console.log(error);
+        this.toastService.show(error.error, 4000, 'red accent-2' );
         this.show = false;
         // this.instance.close();
       }
