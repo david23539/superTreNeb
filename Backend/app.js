@@ -5,6 +5,9 @@ const bodyParser = require('body-parser')
 const app = express()
 const helmet = require('helmet');
 const path = require('path')
+const compression = require('compression');
+
+
 
 
 
@@ -59,6 +62,7 @@ app.use('/api', notification_router)
 // 	res.sendFile(path.resolve('client/index.html'))
 // });
 
+app.use(compression());
 
 //rutas body-parse
 
