@@ -4,13 +4,15 @@ import { RecoverUser} from "../../../model/recoverUser";
 import {DataBrowser} from "../../../utils/dataBrowser";
 import {RecoverUserService} from "../../../services/service/recover-user.service";
 import {Router} from "@angular/router";
+import {MzToastService} from "ng2-materialize";
+
 
 
 @Component({
   selector: 'recover-user',
   templateUrl: './recover-user.component.html',
   styleUrls: ['./recover-user.component.css'],
-  providers: [DataBrowser,emailValidate,RecoverUserService]
+  providers: [DataBrowser,emailValidate,RecoverUserService, MzToastService]
 })
 export class RecoverUserComponent implements OnInit {
 
@@ -24,7 +26,8 @@ export class RecoverUserComponent implements OnInit {
   public dataBrowser:any;
   public responseEmail:String;
 
-  constructor(private _getDataBrowser:DataBrowser, private _emailValid: emailValidate, private _recoverUser:RecoverUserService, private  _router: Router) {
+  constructor(private _getDataBrowser:DataBrowser, private _emailValid: emailValidate,
+              private _recoverUser:RecoverUserService, private  _router: Router, private toastService: MzToastService) {
     this.recoverUser = new RecoverUser({email: ""}, "");
 
   }
@@ -40,6 +43,8 @@ export class RecoverUserComponent implements OnInit {
         response => {
           this._router.navigate(['/new-password']);
 
+        },error=>{
+          this.toastService.show(error.error.message, 4000, 'red accent-2' );
         }
       )
 

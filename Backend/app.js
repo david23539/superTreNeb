@@ -5,7 +5,6 @@ const bodyParser = require('body-parser')
 const app = express()
 const helmet = require('helmet');
 const path = require('path')
-//const limiter = require('express-limiter')(app, client);
 
 
 
@@ -19,7 +18,6 @@ const provider_router = require('./routes/provider.router')
 const address_router = require('./routes/address.route')
 const bill_router = require('./routes/bill.route')
 const notification_router = require('./routes/notifications.route')
-//const animal_routes = require('./rutes/animal')
 
 //configurar middlewares de body-pare
 app.use(bodyParser.urlencoded({extend: false}))

@@ -31,7 +31,12 @@ function sendCodeActivation(req, res) {
 				res.status(constantFile.httpCode.PETITION_CORRECT).send({message : constantFile.api.ERROR_REQUEST})
 			}else{
 				userController.getUserByPersonId(personStorage[0]._id, (err, userStorage)=>{
-					if(userStorage.length !== 0){
+					if(err){
+                        auditoriaController.saveLogsData('undefined', constantFile.api.ERROR_REQUEST + err, ip, params.navegador)
+                        res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.api.ERROR_REQUEST})
+					}
+
+                    else if(userStorage.length !== 0){
 						let codeVerification = (Math.random()* (Math.random() *100)).toString().replace('.','')
 						// userService.encriptCodeVerification(codeVerification, (err, encriptCode)=>{
 						// 	if(encriptCode){

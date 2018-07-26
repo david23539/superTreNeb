@@ -85,13 +85,7 @@ function registerData(err, data, params){//data es una instancia de la coleccion
 				emailService.sendMailChangeIp(params, constantFile.urls.CHANGE_IP, data._doc.stn_person.stn_email)
 			}
 		})
-		/*userController.userObject(data._doc.stn_user[0], function(err, data){
-			if(!err && data){
-				emailService.sendMailChangeIp(params, constantFile.urls.CHANGE_IP, data._doc.stn_person.stn_email)
-			}else if(err){
-				console.log(err)
-			}
-		})*/
+
 
 	}
 }

@@ -321,11 +321,8 @@ function changePassUer(data, params, ip, res) {
 
 function compareCodeActivation(req, res){
 	const params = req.body
-	const ip = req.connection.remoteAddress
-	//const ip = '192.168.123.123.456'
+	const ip = req.connection.remoteAddress;
 	let userUndefined = new User()
-	//-----------------------QUEDA BUSCAR LA IP QUE NO ESTE DESABILITADA EN CASO AFIRMATIVO DENEGAR LA PETICION
-	// serviceUser.compareCodeVerification(params.code, (err, hash)=>{
 	if(validationUser.validationCodeData(params.code)){
 		User.findOne({stn_codeVerication:params.code}, (err, data)=>{//si el codigo no esta relacionado se busca la ip si la ip no existe se añade, si extiste se comprueba que no este desabilitada
 			if(err){
@@ -377,10 +374,7 @@ function compareCodeActivation(req, res){
 		auditoriaController.saveLogsData('undefined', constantFile.api.ERROR_REQUEST + params.code, ip, params.navegador)
 		res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.api.ERROR_REQUEST})
 	}
-	// })
-//----------------------logica el la funcion de comparar-------------
-	//LLAMADA AL CONTROLADOR DE USUARIO PARA VERIFICAR EL NUEMERO Y SI ES CORRECTO DEVOLVER UN TRUE Y PASAR A LA SOLICITACION DE LA NUEVA CLAVE
-	//SI ES TRUE ELIMINAR CLAVE ALEATORIA EN EL USUARIO PARA QUE NO SE REPITA O SE PUEDA VOLVER A USAR
+
 }
 
 function updateUser(userData, cb){
