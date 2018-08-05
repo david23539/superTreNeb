@@ -13,6 +13,8 @@ const BillModel = require('../model/bill.model');
 const adapterBill = require('../adapter/bill.adapter');
 const validationBill = require('../Validation/bill.validation');
 const validationBrowser = require('../Validation/global.validation');
+const request = require('request');
+const fs = require('fs');
 
 
 
@@ -221,6 +223,43 @@ function countBills(cb){
 	BillModel.count({stn_status:true}, cb);
 }
 
+function downloadBill(req, res) {
+
+    const shortId = 'rk6pA17HQ';
+    let data = {
+        template:{'shortid': shortId},
+        data: {
+            'clientData': {
+                'date': '10/02/2018',
+                'population': 'Ribera del fresno 06800 (Badajoz)',
+                'direction': 'C/ Larga 15',
+                'dni': '45799346-X',
+                'telephone': '924568695',
+                'name': 'Javier Rodriguez Caballero'
+            },
+            'numberBill': '12233118515',
+            'billData': [{
+                'concept': 'Tomates',
+                'unitPrice': 10,
+                'unit': 1
+            }],
+            'iva': 16
+        },
+		options:{
+        	preview:false
+		}
+    };
+    let options ={
+    	uri:'http://davizco-tech.es:5488/api/report',
+		method:'POST',
+		json:data
+	};
+
+	request(options).pipe(res);
+
+
+
+}
 
 module.exports ={
     getCategoriesByProvider,
@@ -229,5 +268,6 @@ module.exports ={
 	getAllBill,
 	getBillById,
 	deleteBill,
-	filterBill
+	filterBill,
+	downloadBill
 };

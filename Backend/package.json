@@ -31,7 +31,8 @@
     "moment": "^2.20.1",
     "mongoose": "^4.13.9",
     "nodemailer": "^4.4.2",
-    "redis": "^2.8.0"
+    "redis": "^2.8.0",
+    "request": "^2.87.0"
   },
   "devDependencies": {
     "eslint-config-google": "^0.9.1",
