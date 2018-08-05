@@ -140,6 +140,7 @@ const constant ={
 		PROVIDER_RELATION_CONTACT:'numero de registros de personas de Contacto cambiados '
 	},
 	urls:{
+		URL_REPORT_BILLS:'http://davizco-tech.es:5488/api/report',
 		CHANGE_IP:'/../template/changeIp.html',
 		PRODUCT_IMG_ORIGINAL:'./uploadFiles/products/original/',// para linux
 		// PRODUCT_IMG_ORIGINAL:'./Backend/uploadFiles/products/original/', //para Windows

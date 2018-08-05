@@ -15,6 +15,7 @@ const validationBill = require('../Validation/bill.validation');
 const validationBrowser = require('../Validation/global.validation');
 const request = require('request');
 const fs = require('fs');
+const path = require('path')
 
 
 
@@ -232,7 +233,7 @@ function downloadBill(req, res) {
             'clientData': {
                 'date': '10/02/2018',
                 'population': 'Ribera del fresno 06800 (Badajoz)',
-                'direction': 'C/ Larga 15',
+                'direction': 'C/ Media 15',
                 'dni': '45799346-X',
                 'telephone': '924568695',
                 'name': 'Javier Rodriguez Caballero'
@@ -250,12 +251,19 @@ function downloadBill(req, res) {
 		}
     };
     let options ={
-    	uri:'http://davizco-tech.es:5488/api/report',
+    	uri:constantFile.urls.URL_REPORT_BILLS,
 		method:'POST',
 		json:data
 	};
 
-	request(options).pipe(res);
+	let nameBills = new Date().getTime().toString() + '.pdf';
+	let completeDataBill = fs.createWriteStream('./Backend/bills-data/' + nameBills);
+    request(options).pipe(completeDataBill);
+	completeDataBill.on('finish',()=>{
+        res.sendFile(path.resolve('./Backend/bills-data/' + nameBills))
+	});
+
+    // request(options).pipe(res);
 
 
 
