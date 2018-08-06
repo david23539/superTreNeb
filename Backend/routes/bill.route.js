@@ -12,7 +12,7 @@ api.get('/filterBill/:key', md_auth.ensureAuth, billController.filterBill);
 api.post('/createBill', md_auth.ensureAuth, billController.createBill);
 api.post('/getBills', md_auth.ensureAuth, billController.getAllBill);
 api.delete('/deletedBills/:idBill', md_auth.ensureAuth, billController.deleteBill);
-api.get('/downloadBill',billController.downloadBill);
+api.get('/downloadBill/:id',billController.downloadBill);
 
 
 

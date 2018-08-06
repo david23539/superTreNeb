@@ -13,9 +13,8 @@ const BillModel = require('../model/bill.model');
 const adapterBill = require('../adapter/bill.adapter');
 const validationBill = require('../Validation/bill.validation');
 const validationBrowser = require('../Validation/global.validation');
-const request = require('request');
-const fs = require('fs');
-const path = require('path')
+const serviceBill = require('../service/bill.service');
+
 
 
 
@@ -224,50 +223,27 @@ function countBills(cb){
 	BillModel.count({stn_status:true}, cb);
 }
 
+
+
 function downloadBill(req, res) {
-
-    const shortId = 'rk6pA17HQ';
-    let data = {
-        template:{'shortid': shortId},
-        data: {
-            'clientData': {
-                'date': '10/02/2018',
-                'population': 'Ribera del fresno 06800 (Badajoz)',
-                'direction': 'C/ Media 15',
-                'dni': '45799346-X',
-                'telephone': '924568695',
-                'name': 'Javier Rodriguez Caballero'
-            },
-            'numberBill': '12233118515',
-            'billData': [{
-                'concept': 'Tomates',
-                'unitPrice': 10,
-                'unit': 1
-            }],
-            'iva': 16
-        },
-		options:{
-        	preview:false
-		}
-    };
-    let options ={
-    	uri:constantFile.urls.URL_REPORT_BILLS,
-		method:'POST',
-		json:data
-	};
-
-	let nameBills = new Date().getTime().toString() + '.pdf';
-	let completeDataBill = fs.createWriteStream('./Backend/bills-data/' + nameBills);
-    request(options).pipe(completeDataBill);
-	completeDataBill.on('finish',()=>{
-        res.sendFile(path.resolve('./Backend/bills-data/' + nameBills))
-	});
-
-    // request(options).pipe(res);
-
-
-
+	let params_IN = req.params.id;
+    if(validationBrowser.validateId(params_IN)){
+        BillModel.findById(params_IN).where({stn_status:true}).exec((err, bill_OUT)=>{
+            if(err || !bill_OUT){
+                auditoriaController.saveLogsData(req.user.name,err, req.connection.remoteAddress, 'getBillById');
+                res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.BILLS_GET_ERROR});
+            }else{
+                // res.status(constantFile.httpCode.PETITION_CORRECT).send(serviceBill.downloadFile(bill_OUT));
+                // res.sendFile(path.resolve(serviceBill.downloadFile(bill_OUT)));
+                serviceBill.downloadFile(res, bill_OUT)
+            }
+        });
+    }else{
+        paramsIvalids(res);
+    }
 }
+
+
 
 module.exports ={
     getCategoriesByProvider,
