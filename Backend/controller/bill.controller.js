@@ -27,14 +27,22 @@ function createBill(req, res){
     if(!params_IN.identifier.id) {
 		let billModel_In = adapterBill.adapterBill_IN(params_IN);
 		if ((validationBill.validationBillData_IN(billModel_In)) && (validationBrowser.validateId(params_IN.direccionIp.navegador))) {
-			billModel_In.save((err, bill_OUT) => {
+            BillModel.count((err ,count)=>{
+                if(err){
+                    auditoriaController.saveLogsData(req.user.name, err, req.connection.remoteAddress, params_IN.direccionIp.navegador);
+                    res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.BILL_ERROR});
+				}else{
+                    billModel_In._doc.stn_number = count + 1;
+                    billModel_In.save((err, bill_OUT) => {
 // eslint-disable-next-line no-mixed-spaces-and-tabs
-				if (err || !bill_OUT) {
-					auditoriaController.saveLogsData(req.user.name, err, req.connection.remoteAddress, params_IN.direccionIp.navegador);
-					res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.BILL_ERROR});
-				} else {
-					auditoriaController.saveLogsData(req.user.name, constantFile.functions.BILL_SUCCESS, req.connection.remoteAddress, params_IN.direccionIp.navegador);
-					res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.BILL_SUCCESS});
+                        if (err || !bill_OUT) {
+                            auditoriaController.saveLogsData(req.user.name, err, req.connection.remoteAddress, params_IN.direccionIp.navegador);
+                            res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.BILL_ERROR});
+                        } else {
+                            auditoriaController.saveLogsData(req.user.name, constantFile.functions.BILL_SUCCESS, req.connection.remoteAddress, params_IN.direccionIp.navegador);
+                            res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.BILL_SUCCESS});
+                        }
+                    });
 				}
 			});
 		} else {
@@ -47,7 +55,7 @@ function createBill(req, res){
 
 function updateBill(req, res, params_IN){
 	let billModel_In = adapterBill.adapterBill_IN(params_IN);
-	if ((validationBill.validationBillData_IN(billModel_In)) && (validationBrowser.validateId(params_IN.direccionIp.navegador)) && (validationBrowser.validateId(params_IN.identifier.id))) {
+	if ((validationBill.validationBillData_IN(billModel_In._doc)) && (validationBrowser.validateId(params_IN.direccionIp.navegador)) && (validationBrowser.validateId(params_IN.identifier.id))) {
 		billModel_In._doc._id = params_IN.identifier.id;
 		BillModel.findByIdAndUpdate(params_IN.identifier.id, billModel_In, {new:true}, (err, billUpdate_OUT)=>{
 			if(err || !billUpdate_OUT){
@@ -179,6 +187,7 @@ function getAllBill(req, res){
         BillModel.find({stn_status:true})
 			.skip(params_IN.pagination.page)
 			.limit(10)
+            .populate('stn_nameClient')
             .exec((err, bills_OUT)=>{
                if(err){
                    auditoriaController.saveLogsData(req.user.name,err, req.connection.remoteAddress, params_IN.direccionIp.navegador);
@@ -206,7 +215,7 @@ function getAllBill(req, res){
 function getBillById(req, res){
 	const params_IN = req.params.idBill;
 	if(validationBrowser.validateId(params_IN)){
-		BillModel.findById(params_IN).where({stn_status:true}).exec((err, bill_OUT)=>{
+		BillModel.findById(params_IN).where({stn_status:true}).populate('stn_nameClient').exec((err, bill_OUT)=>{
 			if(err || !bill_OUT){
 				auditoriaController.saveLogsData(req.user.name,err, req.connection.remoteAddress, 'getBillById');
 				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.BILLS_GET_ERROR});
@@ -228,7 +237,14 @@ function countBills(cb){
 function downloadBill(req, res) {
 	let params_IN = req.params.id;
     if(validationBrowser.validateId(params_IN)){
-        BillModel.findById(params_IN).where({stn_status:true}).exec((err, bill_OUT)=>{
+        BillModel.findById(params_IN).where({stn_status:true})
+            .populate({
+                path:'stn_nameClient',
+                populate:{
+                    path: 'stn_fk_address'
+                }
+            })
+			.exec((err, bill_OUT)=>{
             if(err || !bill_OUT){
                 auditoriaController.saveLogsData(req.user.name,err, req.connection.remoteAddress, 'getBillById');
                 res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.BILLS_GET_ERROR});

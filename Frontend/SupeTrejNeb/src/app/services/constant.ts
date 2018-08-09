@@ -11,7 +11,8 @@ export const CONSTANT = {
   OperationTables:{
     create:"create",
     update:"update",
-    delete:"delete"
+    delete:"delete",
+    download:"download"
   },
   ResponseServers:{
     Category_Success:"Se ha creado la categoria con exito",
@@ -155,7 +156,7 @@ export const CONSTANT = {
   headCategory:["Nombre", "Descripción", "IVA"],
   headStock:["Producto", "Stock Minimo", "Stock Actual"],
   headProduct:["Nombre", "Descripción", "Coste", "Referencia", "Iva", "Margen", "Stock","Stock Min.","Categoría", "Imagen"],
-  headBills:["Cliente", "Estado", "Tipo", "Fecha Creación","F.Cierre, F.Modificación, F.Pago","Importe"],
+  headBills:["Cliente", "Estado", "Tipo", "Número", "Fecha Creación","F.Cierre, F.Modificación, F.Pago","Importe"],
   headBillsAutoManual:["Producto", "Descripción", "Cantidad","Precio", "Precio Total"],
   headProvider:["Nombre Empresa", "Persona Responsable", "Persona Contacto", "NIF", "Dirección"],
   headPerson:["Nombre", "Apellido1", "Apellido2", "DNI", "Teléfono", "Móvil", "Email", "Imagen", "Población"],
@@ -193,6 +194,7 @@ export const CONSTANT = {
     NO_DATA_AVAIBLE:"No hay datos aún",
     DELETED_BILL_SUCCESS:"Se ha eliminado con exito la factura",
     DELETED_BILL_ERROR:"Ha ocurrido un error al eliminar la factura",
+    DOWNLOAD_BILL_ERROR:"Ha ocurrido un error al descargar la factura",
     NO_CATEGORY_DATA:"No hay creadas categorías todavía",
     MOVIL_OR_TELEFONE:"Necesita informar un movil o un telefono",
     ADDRESS_NECESARY:"Necesita informar una dirección",

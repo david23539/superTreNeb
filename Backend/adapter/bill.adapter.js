@@ -23,9 +23,11 @@ function adapterListBill_OUT(billList_IN){
 	let adaptationBills = [];
 	for(let item of billList_IN){
 		let bill = {
-			client: item._doc.stn_nameClient,
+			client: item._doc.stn_nameClient._doc.stn_name + ' ' + item._doc.stn_nameClient._doc.stn_lastname1
+            	+ ' ' + item._doc.stn_nameClient._doc.stn_lastname2,
 			status: item._doc.stn_payStatus?'Pagada':(item._doc.stn_closed?'Cerrada':'Abierta'),
 			type: item._doc.stn_type,
+			number: item._doc.stn_number,
 			creationDate: moment(item._doc.stn_dateCreation).format('LLL'),
 			closingDate: item._doc.stn_dateLastModify?moment(item._doc.stn_dateLastModify).format('LLL'):'',
 			price: item.stn_ivaBill?privateCalculatePrice(item._doc.stn_dataBill,item.stn_ivaBill).toFixed(2):privateCalculatePrice(item._doc.stn_dataBill).toFixed(2),
@@ -39,7 +41,9 @@ function adapterListBill_OUT(billList_IN){
 function adapterBill_OUT(bill_IN){
 	let bill = {
 		data : JSON.parse(bill_IN._doc.stn_dataBill),
-		client: bill_IN._doc.stn_nameClient,
+		client: bill_IN._doc.stn_nameClient._doc.stn_name +' '+ bill_IN._doc.stn_nameClient._doc.stn_lastname1
+        +' '+ bill_IN._doc.stn_nameClient._doc.stn_lastname2,
+		idClient:bill_IN._doc.stn_nameClient._id,
 		id: bill_IN._doc._id
 	};
 	return bill;

@@ -11,25 +11,25 @@ const path = require('path');
 
 function downloadFile(res, data_IN) {
     const shortId = 'rk6pA17HQ';
-    let spain = moment.tz(data_IN._doc.stn_dateCreation,'Europe/Madrid').format('l');
+    let spain = moment.tz(data_IN._doc.stn_dateCreation,'Europe/Madrid').format('DD-MM-YYYY');
 
     let data = {
         template: {'shortid': shortId},
         data: {
             'clientData': {
                 'date': spain,
-                'population': 'Ribera del fresno 06800 (Badajoz)',//necesario guardar el id del cliente
-                'direction': 'C/ Media 15',
-                'dni': '45799346-X',
-                'telephone': '924568695',
-                'name': 'Javier Rodriguez Caballero'
+                'population': data_IN._doc.stn_nameClient._doc.stn_fk_address._doc.stn_location,//necesario guardar el id del cliente
+                'direction': 'C/ '+ data_IN._doc.stn_nameClient._doc.stn_fk_address._doc.stn_directionName
+                    + ' '+data_IN._doc.stn_nameClient._doc.stn_fk_address._doc.stn_number + ' ' +
+                    data_IN._doc.stn_nameClient._doc.stn_fk_address._doc.stn_floor + ' ' +
+                    data_IN._doc.stn_nameClient._doc.stn_fk_address._doc.stn_door,
+                'dni': data_IN._doc.stn_nameClient._doc.stn_dni,
+                'telephone': data_IN._doc.stn_nameClient._doc.stn_telephone,
+                'name': data_IN._doc.stn_nameClient._doc.stn_name + ' ' + data_IN._doc.stn_nameClient._doc.stn_lastname1
+                    + ' ' + data_IN._doc.stn_nameClient._doc.stn_lastname2
             },
-            'numberBill': '12233118515',//Necesario guardar el numero de la factura
-            'billData': /*[{
-                'concept': 'Tomates',
-                'unitPrice': 10,
-                'unit': 1
-            }]*/privateFormatProductToBill(data_IN._doc.stn_dataBill),
+            'numberBill': data_IN._doc.stn_number,//Necesario guardar el numero de la factura
+            'billData': privateFormatProductToBill(data_IN._doc.stn_dataBill),
             'iva': data_IN._doc.stn_ivaBill
         },
         options: {

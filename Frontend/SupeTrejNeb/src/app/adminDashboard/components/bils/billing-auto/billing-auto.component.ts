@@ -106,6 +106,7 @@ export class BillingAutoComponent implements OnInit {
         this.dataBillAuto.identifier.id = this.responseService.bills.id;
         this.client = this.responseService.bills.client;
         this.bodyTableFull = this.responseService.bills.data;
+        this.dataBillAuto.data.nombreClient =  this.responseService.bills.idClient;
       },error=>{
         this.toastService.show(CONSTANT.messageToast.BILL_ERROR, 4000, CONSTANT.Styles.Error);
       }
@@ -208,6 +209,7 @@ export class BillingAutoComponent implements OnInit {
   selectClients(event){
     let dataClient = event.object;
     this.client = dataClient.name +" "+dataClient.lastName + " " +dataClient.lastName2;
+    this.dataBillAuto.data.nombreClient = dataClient.id;
     $('#selectClient').modal('close');
   }
 
@@ -220,6 +222,7 @@ export class BillingAutoComponent implements OnInit {
     this.products = "";
     $('#selectProvider').modal('close');
   }
+
 
   selectCategory(event){
     let dataCategory = event.object;
@@ -319,7 +322,7 @@ export class BillingAutoComponent implements OnInit {
     this.dataBillAuto.data.tipoBill = CONSTANT.Labels.BillAuto;
     this.dataBillAuto.data.pagado = this.checkPay;
     this.dataBillAuto.data.ivaBill = this.ivaBill;
-    this.dataBillAuto.data.nombreClient = this.client;
+    // this.dataBillAuto.data.nombreClient = this.client;
     this.dataBillAuto.data.cierreDateBill = fcierre;
     this.dataBillAuto.data.cerrado = !!cierre;
     this.dataBillAuto.data.bodyBill = JSON.stringify(this.bodyTableFull);

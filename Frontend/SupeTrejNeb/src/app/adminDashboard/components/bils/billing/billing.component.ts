@@ -5,6 +5,7 @@ import {DataBrowser} from "../../../../utils/dataBrowser";
 import {BillDataModel} from "../../../model/bill/billData.model";
 import {MzToastService} from "ng2-materialize";
 import {ActivatedRoute, Router} from "@angular/router";
+const saveAs = require('file-saver');
 
 @Component({
   selector: 'app-billing',
@@ -113,9 +114,21 @@ export class BillingComponent implements OnInit {
       this.operationType = CONSTANT.OperationTables.delete;
       this.billData.identifier.id = event.items.id;
       $('#deletedBill').modal('open');
-
-
+    }else if(event.operation === CONSTANT.OperationTables.download){
+      this.downloadBill(event.items);
     }
+  }
+
+  private downloadBill(idBill){
+    this._billService.downloadBill(idBill).subscribe(
+      response=>{
+        //let blob = new Blob([response], {type:"application/pdf"});
+        this.responseServer = response;
+        saveAs(this.responseServer, "factura.pdf");
+      },error=>{
+        this.toastService.show(CONSTANT.messageToast.DOWNLOAD_BILL_ERROR, 4000, CONSTANT.Styles.Error);
+      }
+    )
   }
 
   public deleteBill(){

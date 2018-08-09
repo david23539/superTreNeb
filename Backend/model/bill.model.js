@@ -4,8 +4,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const BillSchema = Schema({
-	stn_nameClient: {type: String, require:true},
+
+    stn_nameClient: {type: Schema.ObjectId, ref: 'STN_Person'},
 	stn_ivaBill: Number,
+	stn_number:Number,
 	stn_dataBill:{type: String, require:true},
 	stn_type:{type: String, require:true},
 	stn_dateCreation:{type: Date, require:true},
