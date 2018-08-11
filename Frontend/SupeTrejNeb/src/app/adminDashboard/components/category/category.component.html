@@ -26,27 +26,18 @@
           <div class="input-field col s12 pink-text">
             <i class="material-icons prefix ">local_offer</i>
             <input id="nameCategory"  placeholder="Solo letras" name="nameCategory" #nameCategory="ngModel" autocomplete="false" [(ngModel)]="categoryModel.dataCategory.nameCat" mz-tooltip [tooltip]="'Nombre de la categoría'" (blur)="validateVisualForm('name')" type="text"  [class]="classStyleForm" required>
-            <label for="nameCategory">{{LABEL_CATEGORY}}</label>
-            <!--<span *ngIf="!nameCategory.valid && nameCategory.touched">
-              <span class="red-text">{{inputEmpty}}</span>
-            </span>-->
+            <label class="active" for="nameCategory">{{LABEL_CATEGORY}}</label>
           </div>
           <br>
           <div class="input-field col s12 pink-text">
             <i class="material-icons prefix ">description</i>
             <textarea id="description" placeholder="Sin espacios" name="descriptionCategory" #descriptionCategory="ngModel" mz-tooltip [tooltip]="'Descripción de la categoría'" [(ngModel)]="categoryModel.dataCategory.descriptionCat" (blur)="validateVisualForm('description')" [class]="classStyleTextArea"  required></textarea>
-            <label for="description">{{LABEL_DESCRIPTION_CATEGORY}}</label>
-            <!--<span *ngIf="!descriptionCategory.valid && descriptionCategory.touched">
-              <span class="red-text">{{inputEmpty}}</span>
-            </span>-->
+            <label class="active" for="description">{{LABEL_DESCRIPTION_CATEGORY}}</label>
           </div>
         </div>
         <div class="input-field col s12 pink-text">
           <input id="ivaCategory"  name="ivaCategory" #ivaCategory="ngModel" mz-tooltip [tooltip]="'Porcentaje de iva'" autocomplete="false" [(ngModel)]="categoryModel.dataCategory.ivaCat"  type="number" (blur)="validateVisualForm('number')" [class]="classStyleFormNum" required>
-          <label for="ivaCategory">{{LABEL_IVA_CATEGORY}}</label>
-          <!--<span *ngIf="!ivaCategory.valid && ivaCategory.touched">
-              <span class="red-text">{{inputEmpty}}</span>
-            </span>-->
+          <label class="active" for="ivaCategory">{{LABEL_IVA_CATEGORY}}</label>
         </div>
         <div class="row" >
           <div class="input-field col s12" *ngIf="buttonSaveUpdate">

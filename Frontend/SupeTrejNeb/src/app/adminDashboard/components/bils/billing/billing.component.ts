@@ -5,7 +5,7 @@ import {DataBrowser} from "../../../../utils/dataBrowser";
 import {BillDataModel} from "../../../model/bill/billData.model";
 import {MzToastService} from "ng2-materialize";
 import {ActivatedRoute, Router} from "@angular/router";
-const saveAs = require('file-saver');
+
 
 @Component({
   selector: 'app-billing',
@@ -122,9 +122,23 @@ export class BillingComponent implements OnInit {
   private downloadBill(idBill){
     this._billService.downloadBill(idBill).subscribe(
       response=>{
-        //let blob = new Blob([response], {type:"application/pdf"});
-        this.responseServer = response;
-        saveAs(this.responseServer, "factura.pdf");
+        //FUNCIONA EN CHROME NO BORRARR!!!!!!
+        let blob = new Blob([response], {type:"application/pdf"});
+        let url =  window.URL || window.webkitURL;
+        const data = url.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.setAttribute("type", "hidden");
+        link.href = data;
+        link.download="factura.pdf";
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        setTimeout(function(){
+          url.revokeObjectURL(data),
+        1000})
+
+
+        anchor.remove();
       },error=>{
         this.toastService.show(CONSTANT.messageToast.DOWNLOAD_BILL_ERROR, 4000, CONSTANT.Styles.Error);
       }

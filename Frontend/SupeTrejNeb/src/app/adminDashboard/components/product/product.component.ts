@@ -143,13 +143,6 @@ export class ProductComponent implements OnInit {
     this.quantityTotalProd.toFixed(2);
   }
 
-  codebar(){//TODO Eliminar la funcion cuando este implementado el tpv ya que esta asociado al boton de BuscarProducto provisional
-    let codes = {
-      key : "1234567"
-    };
-    this.getValueKey(codes);
-  }
-
   changeIva(){
     this.productModel_IN.dataProduct.ivaProd = this.categoryObject_OUT[this.selectItemCategory].iva;
   }
@@ -390,7 +383,6 @@ export class ProductComponent implements OnInit {
           response=>{
             this.responseServer = response;
             if(this.responseServer.message !== CONSTANT.ResponseServers.InvalidParams){
-              createUpdateForm.reset();
               this.productModel_OUT.identifier.id = this.responseServer.id;
               this.toastService.show(CONSTANT.messageToast.PRODUCT_NEW_SUCCESS, 4000, CONSTANT.Styles.Success);
               this.getProducts(1);
@@ -398,7 +390,6 @@ export class ProductComponent implements OnInit {
               $('#imageProductModal').modal('open');
             }else{
               this.toastService.show(CONSTANT.ResponseServers.InvalidParams, 4000, CONSTANT.Styles.Warning);
-              createUpdateForm.reset();
             }
 
           },error=>{
@@ -418,7 +409,6 @@ export class ProductComponent implements OnInit {
         response =>{
           this.responseServer = response;
           if(this.responseServer.message !== CONSTANT.ResponseServers.InvalidParams){
-            // this.productModel_OUT.identifier.id = this.responseServer.id;
             this._notification.changeNotification(this.responseServer.products);
             this.toastService.show(CONSTANT.ResponseServers.Product_Success_Update, 4000, CONSTANT.Styles.Success);
             this.getProducts(1);

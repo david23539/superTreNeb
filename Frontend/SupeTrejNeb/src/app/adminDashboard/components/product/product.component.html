@@ -38,48 +38,47 @@
           <div class="input-field col s12 l6 pink-text">
             <i class="material-icons prefix ">local_offer</i>
             <input id="nameProduct" placeholder="Only Words" name="nameProduct" #nameProduct="ngModel" autocomplete="false" [(ngModel)]="productModel_IN.dataProduct.nameProd" mz-tooltip [tooltip]=TOLLTIP_NAME_PRODUCT (blur)="validateVisualForm('name')" type="text" [class]="classStyleFormName" required>
-            <label for="nameProduct">{{NAME}}</label>
+            <label class="active" for="nameProduct">{{NAME}}</label>
           </div>
         </div>
-        <button type="button" (click)="codebar()">Referencia</button>
         <div class="row">
           <div class="input-field col s12 l6 pink-text">
             <i class="material-icons prefix ">description</i>
             <textarea id="description" name="descriptionProduct" #descriptionProduct="ngModel" mz-tooltip [tooltip]=TOLLTIP_DES_PRODUCT [(ngModel)]="productModel_IN.dataProduct.descriptProd" (blur)="validateVisualForm('description')" [class]="classStyleFormDes" required></textarea>
-            <label for="description">{{DESCRIPTION}}</label>
+            <label class="active" for="description">{{DESCRIPTION}}</label>
           </div>
 
           <div class="input-field col s12 l6 pink-text">
             <input id="ivaProd" name="ivaProd" #ivaProd="ngModel" mz-tooltip (keyup)="calculateTotal()" [tooltip]=TOLLTIP_IVA_PRODUCT autocomplete="false" [(ngModel)]="productModel_IN.dataProduct.ivaProd" type="number" (blur)="validateVisualForm('iva')" [class]="classStyleFormIva" required>
-            <label for="ivaProd">{{IVA}}</label>
+            <label class="active" for="ivaProd">{{IVA}}</label>
           </div>
         </div>
 
         <div class="row">
           <div class="input-field col s12 l6 pink-text">
             <input id="costProd" name="costProd" #costProd="ngModel" mz-tooltip (keyup)="calculateTotal()" [tooltip]=TOLLTIP_COST_PRODUCT autocomplete="false" [(ngModel)]="productModel_IN.dataProduct.costProd" type="number" (blur)="validateVisualForm('cost')" [class]="classStyleFormCost" required>
-            <label for="costProd">{{COST}}</label>
+            <label class="active" for="costProd">{{COST}}</label>
           </div>
 
           <div class="input-field col s12 l3 pink-text">
             <input id="marginProd" name="marginProd" #marginProd="ngModel" mz-tooltip (keyup)="calculateTotal()" [tooltip]=TOLLTIP_MARGIN_PRODUCT autocomplete="false" [(ngModel)]="productModel_IN.dataProduct.marginProd" type="number" (blur)="validateVisualForm('margi')" [class]="classStyleFormMar" required>
-            <label for="marginProd">{{MARG}}</label>
+            <label class="active" for="marginProd">{{MARG}}</label>
           </div>
           <div class="input-field col s12 l3 pink-text">
             <input id="totalProd" name="totalProd" #totalProd="ngModel" mz-tooltip [(ngModel)]="quantityTotalProd" type="number">
-            <label for="totalProd">Total</label>
+            <label for="totalProd" class="active">Total</label>
           </div>
         </div>
 
         <div class="row">
           <div class="input-field col s12 l3 pink-text">
             <input id="stockProduct" name="stockProduct" #stockProduct="ngModel" mz-tooltip [tooltip]=TOLLTIP_STOCK_PRODUCT autocomplete="false" [(ngModel)]="productModel_IN.dataProduct.stock" type="number" (blur)="validateVisualForm('stock')" [class]="classStyleFormSto" required>
-            <label for="stockProduct">{{STOCK}}</label>
+            <label class="active" for="stockProduct">{{STOCK}}</label>
           </div>
 
           <div class="input-field col s12 l3 pink-text">
             <input id="stockProductMin" name="stockProductMin" #stockProductMin="ngModel" mz-tooltip [tooltip]=TOLLTIP_STOCK_PRODUCT autocomplete="false" [(ngModel)]="productModel_IN.dataProduct.stockMin" type="number" (blur)="validateVisualForm('stock')" [class]="classStyleFormSto" required>
-            <label for="stockProductMin">Stock Mínimo</label>
+            <label class="active" for="stockProductMin">Stock Mínimo</label>
           </div>
 
           <div class="col s12 l3 switch pink-text">
@@ -93,7 +92,7 @@
           <div class="input-field col s12 l3 pink-text">
             <i class="material-icons prefix ">local_offer</i>
             <input id="refProduct" placeholder="Only Numbers" name="refProduct" #refProduct="ngModel" autocomplete="false" [(ngModel)]="productModel_IN.dataProduct.refProd" mz-tooltip [tooltip]=TOLLTIP_REF_PRODUCT (blur)="validateVisualForm('ref')" type="text" [class]="classStyleFormRef" required>
-            <label for="refProduct">{{REF}}</label>
+            <label class="active" for="refProduct">{{REF}}</label>
           </div>
         </div>
 

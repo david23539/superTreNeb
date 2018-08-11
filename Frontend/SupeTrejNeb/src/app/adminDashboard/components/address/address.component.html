@@ -21,46 +21,46 @@
           <div class="input-field col s12 l6 pink-text">
             <i class="material-icons prefix ">local_offer</i>
             <input id="province"  placeholder="Solo letras" name="province" #province="ngModel" autocomplete="false" [(ngModel)]="address_IN.dataAddress.provincia" mz-tooltip [tooltip]="'Provincia'" (blur)="validateVisualForm('province')" type="text"  [class]="classStyleProvinceForm" required>
-            <label for="province">{{LABEL_PROVINCE}}</label>
+            <label class="active" for="province">{{LABEL_PROVINCE}}</label>
           </div>
           <div class="input-field col s12 l6 pink-text">
             <i class="material-icons prefix ">local_offer</i>
             <input id="population"  placeholder="Solo letras" name="population" #population="ngModel" autocomplete="false" [(ngModel)]="address_IN.dataAddress.poblacion" mz-tooltip [tooltip]="'Población'" (blur)="validateVisualForm('population')" type="text"  [class]="classStylePopulationForm" required>
-            <label for="population">{{LABEL_POPULATION}}</label>
+            <label class="active" for="population">{{LABEL_POPULATION}}</label>
           </div>
           <div class="input-field col s12 l6 pink-text">
             <i class="material-icons prefix ">local_offer</i>
             <input id="typeVia"  placeholder="Solo letras" name="typeVia" #typeVia="ngModel" autocomplete="false" [(ngModel)]="address_IN.dataAddress.tipoVia" mz-tooltip [tooltip]="'Tipo de Via'" type="text">
-            <label for="typeVia">{{LABEL_TYPEVIA}}</label>
+            <label class="active" for="typeVia">{{LABEL_TYPEVIA}}</label>
           </div>
 
           <div class="input-field col s12 l6 pink-text">
             <i class="material-icons prefix ">local_offer</i>
             <input id="PostalCode"  placeholder="Solo letras" name="PostalCode" #PostalCode="ngModel" autocomplete="false" [(ngModel)]="address_IN.dataAddress.codigoPostal" mz-tooltip [tooltip]="'Código Postal'"  type="text">
-            <label for="PostalCode">{{LABEL_POSTALCODE}}</label>
+            <label class="active" for="PostalCode">{{LABEL_POSTALCODE}}</label>
           </div>
 
           <div class="input-field col s12 l6 pink-text">
             <i class="material-icons prefix ">local_offer</i>
             <input id="number"  placeholder="Solo letras" name="number" #number="ngModel" autocomplete="false" [(ngModel)]="address_IN.dataAddress.numero" mz-tooltip [tooltip]="'Numero de Puerta'" (blur)="validateVisualForm('number')" type="number"  [class]="classStyleNumberForm"required>
-            <label for="number">{{LABEL_NUMBER}}</label>
+            <label class="active" for="number">{{LABEL_NUMBER}}</label>
           </div>
           <div class="input-field col s12 l6 pink-text">
             <i class="material-icons prefix ">local_offer</i>
             <input id="door"  placeholder="Solo letras" name="door" #door="ngModel" autocomplete="false" [(ngModel)]="address_IN.dataAddress.puerta" mz-tooltip [tooltip]="'Puerta'" (blur)="validateVisualForm('door')" type="text" [class]="classStyleDoorForm" required>
-            <label for="door">{{LABEL_DOOR}}</label>
+            <label class="active" for="door">{{LABEL_DOOR}}</label>
           </div>
 
           <div class="input-field col s12 l6 pink-text">
             <i class="material-icons prefix ">local_offer</i>
             <input id="floor"  placeholder="Solo letras" name="floor" #floor="ngModel" autocomplete="false" [(ngModel)]="address_IN.dataAddress.piso" mz-tooltip [tooltip]="'Planta'" (blur)="validateVisualForm('floor')" type="number" [class]="classStyleFloorForm" required>
-            <label for="floor">{{LABEL_FLOOR}}</label>
+            <label class="active" for="floor">{{LABEL_FLOOR}}</label>
           </div>
 
           <div class="input-field col s12 l6 pink-text">
             <i class="material-icons prefix ">local_offer</i>
             <input id="NameStreet"  placeholder="Solo letras" name="NameStreet" #NameStreet="ngModel" autocomplete="false" [(ngModel)]="address_IN.dataAddress.nombreCalle" mz-tooltip [tooltip]="'Nombre de la calle'" (blur)="validateVisualForm('nameStreet')" type="text"  [class]="classStyleNameStreetForm" required>
-            <label for="NameStreet">{{LABEL_NAME_STREET}}</label>
+            <label class="active" for="NameStreet">{{LABEL_NAME_STREET}}</label>
           </div>
         </div>
 

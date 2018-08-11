@@ -24,41 +24,41 @@
           <div class="input-field col s12 l4 pink-text">
             <i class="material-icons prefix ">local_offer</i>
             <input id="namePerson"  placeholder="Solo letras" name="namePerson" #namePerson="ngModel" autocomplete="false" [(ngModel)]="Person_IN.dataPerson.nombre" mz-tooltip [tooltip]="'Nombre de la persona'" (blur)="validateVisualForm('name')" type="text"  [class]="classStyleForm"  required>
-            <label for="namePerson">{{LABEL_PERSON}}</label>
+            <label class="active" for="namePerson">{{LABEL_PERSON}}</label>
           </div>
           <div class="input-field col s12 l4 pink-text">
             <i class="material-icons prefix ">local_offer</i>
             <input id="lastName"  placeholder="Solo letras" name="lastName" #lastName="ngModel" autocomplete="false" [(ngModel)]="Person_IN.dataPerson.apellido1" mz-tooltip [tooltip]="'1º apellido de la persona'" (blur)="validateVisualForm('lastName')" type="text"  >
-            <label for="lastName">{{LABEL_LASTNAME}}</label>
+            <label class="active" for="lastName">{{LABEL_LASTNAME}}</label>
           </div>
           <div class="input-field col s12 l4 pink-text">
             <i class="material-icons prefix ">local_offer</i>
             <input id="lastName2"  placeholder="Solo letras" name="lastName2" #lastName2="ngModel" autocomplete="false" [(ngModel)]="Person_IN.dataPerson.apellido2" mz-tooltip [tooltip]="'2º apellido de la persona'" (blur)="validateVisualForm('lastName2')" type="text">
-            <label for="lastName2">{{LABEL_LASTNAME2}}</label>
+            <label class="active" for="lastName2">{{LABEL_LASTNAME2}}</label>
           </div>
         </div>
         <div class="row">
           <div class="input-field col s12 l6 pink-text">
             <i class="material-icons prefix ">local_offer</i>
             <input id="dni"  placeholder="Solo letras" name="dni" #dni="ngModel" autocomplete="false" [(ngModel)]="Person_IN.dataPerson.dni" mz-tooltip [tooltip]="'dni de la persona'" (blur)="validateVisualForm('dni')" type="text"  [class]="classStyleDNIForm" required>
-            <label for="dni">{{LABEL_DNI}}</label>
+            <label class="active" for="dni">{{LABEL_DNI}}</label>
           </div>
           <div class="input-field col s12 l6 pink-text">
             <i class="material-icons prefix ">local_offer</i>
             <input id="email"  placeholder="Solo letras" name="email" #email="ngModel" autocomplete="false" [(ngModel)]="Person_IN.dataPerson.email" mz-tooltip [tooltip]="'email de la persona'" (blur)="validateVisualForm('email')" type="text"  [class]="classStyleEmailForm" required>
-            <label for="email">{{LABEL_EMAIL}}</label>
+            <label class="active" for="email">{{LABEL_EMAIL}}</label>
           </div>
         </div>
         <div class="row">
           <div class="input-field col s12 l6 pink-text">
             <i class="material-icons prefix ">local_offer</i>
             <input id="movil"  placeholder="Solo letras" name="movil" #movil="ngModel" autocomplete="false" [(ngModel)]="Person_IN.dataPerson.movil" mz-tooltip [tooltip]="'movil de la persona'" (blur)="validateVisualForm('movil')" type="number" >
-            <label for="movil">{{LABEL_MOVIL}}</label>
+            <label class="active" for="movil">{{LABEL_MOVIL}}</label>
           </div>
           <div class="input-field col s12 l6 pink-text">
             <i class="material-icons prefix ">local_offer</i>
             <input id="telefone"  placeholder="Solo letras" name="telefone" #telefone="ngModel" autocomplete="false" [(ngModel)]="Person_IN.dataPerson.telefono" mz-tooltip [tooltip]="'teléfono de la persona'" (blur)="validateVisualForm('telefone')" type="number">
-            <label for="telefone">{{LABEL_TELEFONE}}</label>
+            <label class="active" for="telefone">{{LABEL_TELEFONE}}</label>
           </div>
         </div>
         <div class="row">
@@ -139,11 +139,11 @@
   <div class="row">
     <div class="input-field col s12 l6 pink-text">
       <input id="oldPerson"  placeholder="Solo letras" name="oldPerson" #oldPerson="ngModel" autocomplete="false" [(ngModel)]="personDataOld" mz-tooltip [tooltip]="'Antigua persona'" type="text" >
-      <label for="oldPerson">{{LABEL_OLD_PERSON}}</label>
+      <label class="active" for="oldPerson">{{LABEL_OLD_PERSON}}</label>
     </div>
     <div class="input-field col s12 l6 pink-text">
       <input id="newPerson"  placeholder="Solo letras" name="newPerson" #newPerson="ngModel" autocomplete="false" [(ngModel)]="personDataNew" mz-tooltip [tooltip]="'Nueva Persona'"  type="text">
-      <label for="newPerson">{{LABEL_NEW_PERSON}}</label>
+      <label class="active" for="newPerson">{{LABEL_NEW_PERSON}}</label>
     </div>
   </div>
   <div class="row">

@@ -1,10 +1,11 @@
-import { Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {GLOBAL} from "../../../services/global";
 import {CONSTANT} from "../../../services/constant";
 import {ProductService} from "../../services/product/product.service";
 import {MzToastService} from "ng2-materialize";
 import {ActivatedRoute, Router} from "@angular/router";
 import {NotificationService} from "../../services/notification/notification.service";
+import {CacheService} from "../../services/cache/cache.service";
 
 @Component({
   selector: 'main-dashboard',
@@ -16,7 +17,7 @@ import {NotificationService} from "../../services/notification/notification.serv
     '(document:keypress)':'prueba($event)'
   }
 })
-export class MainDashboardComponent implements OnInit {
+export class MainDashboardComponent implements OnInit, OnDestroy {
 
   public OPEN_BOX_REGISTER = "Abrir caja registradora";
   public ADD_PRODUCT = "Añadir Producto Manual";
@@ -41,14 +42,13 @@ export class MainDashboardComponent implements OnInit {
   public date: any;
   public searchProduct: string;
   public responseServer: any;
+  public responseService: any;
   public productsSearch:any;
   public url = "";
   public barCode:any;
   public codeProduct:string = "";
   public entra:boolean = false;
   public contextmenu = true;
-  public contextmenuX = 0;
-  public contextmenuY = 0;
   public arrays = [];
 
   public modalOptions: Materialize.ModalOptions = {
@@ -62,7 +62,7 @@ export class MainDashboardComponent implements OnInit {
 
 
 
-  constructor(private _productService:ProductService, private _toastService:MzToastService, private _route: ActivatedRoute, private _router:Router, private _notification: NotificationService) {
+  constructor(private _cacheService:CacheService, private _productService:ProductService, private _toastService:MzToastService, private _route: ActivatedRoute, private _router:Router, private _notification: NotificationService) {
     this.url = GLOBAL.url;
     this.constant = CONSTANT.keysPress;
     this.constantToast = CONSTANT.messageToast;
@@ -100,6 +100,16 @@ export class MainDashboardComponent implements OnInit {
   ngOnInit() {
     $('.modal').modal();
     $('.tabs').tabs();
+    this._cacheService.getCache().subscribe(
+      response=>{
+        this.responseService = response;
+        if(this.responseService !== null && this.responseService != 0){
+          this.shoppingList = this.responseService.list;
+          this.totalItemPrice = this.responseService.totalPrice;
+        }
+
+      }
+    );
     this.getProductFavorite();
 
 
@@ -111,11 +121,7 @@ export class MainDashboardComponent implements OnInit {
     for(let item of items){
       this.totalItemPrice += item.finalPrice * item.quantity;
     }
-/*
-    let numerro = this.totalItemPrice.toString();
-    let primeras  = numerro.indexOf(".");
-    let numeroFinal = numerro.substr(0, primeras+3);
-    this.totalItemPrice = parseFloat(numeroFinal);*/
+
     this.calculateReturnPayDinamic(this.totalItemPrice)
   }
 
@@ -166,9 +172,7 @@ export class MainDashboardComponent implements OnInit {
         exists = true;
       }
     }
-    /*let result = this.shoppingList.find((elemt)=>{
-      return elemt.id == newItemToList.id;
-    });*/
+
     if(exists){
       this.getTotalFinalPrice(this.shoppingList);
     }else{
@@ -233,7 +237,7 @@ export class MainDashboardComponent implements OnInit {
             this._toastService.show(CONSTANT.messageToast.PARAMS_INVALID, 4000, CONSTANT.Styles.Warning);
           } else if(this.responseServer.products .length > 0){
             this._notification.changeNotification(this.responseServer.products);
-            //this._toastService.show("calculado los stocks", 4000, CONSTANT.Styles.Success);
+            this._cacheService.setDataCache(null);
           }
         }, error => {
           this._toastService.show(CONSTANT.messageToast.PRODUCT_ERROR, 4000, CONSTANT.Styles.Error);
@@ -343,7 +347,6 @@ export class MainDashboardComponent implements OnInit {
       if(value && value === this.constant.SUM){
         quantityItem = this.itemSelected.quantity +1;
         this.itemSelected.quantity = quantityItem;
-        //this.updateShoppingList(this.itemSelected);
         this.getTotalFinalPrice(this.shoppingList);
       }else if(value === this.constant.REST){
         quantityItem = this.itemSelected.quantity - 1;
@@ -351,7 +354,6 @@ export class MainDashboardComponent implements OnInit {
           this.deleteItemShoppingList(this.itemSelected);
         }else{
           this.itemSelected.quantity = quantityItem;
-          //this.updateShoppingList(this.itemSelected);
           this.getTotalFinalPrice(this.shoppingList);
         }
       }else if(value === this.constant.DELETEITEM){
@@ -361,7 +363,6 @@ export class MainDashboardComponent implements OnInit {
         this.itemSelected.quantity = quantityItem * parseFloat(this.actionNumberKey);
         this.getTotalFinalPrice(this.shoppingList);
         this.actionNumberKey= "";
-        // this.updateShoppingList(this.itemSelected);
       }
     }else{
 
@@ -425,5 +426,13 @@ export class MainDashboardComponent implements OnInit {
           break;
       }
     }
+  }
+
+  ngOnDestroy(): void {
+    let data={
+      totalPrice : this.totalItemPrice,
+      list:this.shoppingList
+    };
+    this._cacheService.setDataCache(data);
   }
 }

@@ -42,13 +42,14 @@ function downloadFile(res, data_IN) {
         json: data
     };
 
-    let nameBills = new Date().getTime().toString() + '.pdf';
+    /*let nameBills = new Date().getTime().toString() + '.pdf';
     let completeDataBill = fs.createWriteStream('./Backend/bills-data/' + nameBills);
     request(options).pipe(completeDataBill);
     completeDataBill.on('finish', () => {
         res.sendFile(path.resolve('./Backend/bills-data/' + nameBills))
         // return './Backend/bills-data/' + nameBills;
-    });
+    });*/
+    request(options).pipe(res);
 }
 
 /**
