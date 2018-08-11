@@ -54,6 +54,7 @@ import { MzToastModule, MzSidenavModule, MzCheckboxModule, MzSelectModule} from 
     AdminGuard,
     TerminalBlockGuard,
     appRoutingProviders],
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }

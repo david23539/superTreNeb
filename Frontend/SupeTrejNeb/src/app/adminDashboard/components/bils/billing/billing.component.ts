@@ -15,6 +15,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class BillingComponent implements OnInit {
 
+  public show:boolean = false;
   public TITLE:string = CONSTANT.Labels.BillsTitle;
   public searchResult:string = "";
   private browser:any;
@@ -78,8 +79,10 @@ export class BillingComponent implements OnInit {
   private getBills(page:number){
     this.billData.pagination.page = page * 10;
     this.billData.direccionIp.navegador = this.browser.browser;
+    this.show = true;
     this._billService.getBills(this.billData).subscribe(
       response=>{
+        this.show = false;
         this.responseServer = response;
         if(this.responseServer.message === CONSTANT.ResponseServers.InvalidParams){
           this.toastService.show(CONSTANT.ResponseServers.InvalidParams, 4000, CONSTANT.Styles.Warning);
@@ -90,6 +93,7 @@ export class BillingComponent implements OnInit {
           this.countBill = this.responseServer.count;
         }
       },error=>{
+        this.show = false;
         this.toastService.show(CONSTANT.messageToast.BILL_ERROR, 4000, CONSTANT.Styles.Error);
       }
     )
@@ -120,9 +124,10 @@ export class BillingComponent implements OnInit {
   }
 
   private downloadBill(idBill){
+    this.show = true;
     this._billService.downloadBill(idBill).subscribe(
       response=>{
-        //FUNCIONA EN CHROME NO BORRARR!!!!!!
+        this.show = false;
         let blob = new Blob([response], {type:"application/pdf"});
         let url =  window.URL || window.webkitURL;
         const data = url.createObjectURL(blob);
@@ -136,9 +141,6 @@ export class BillingComponent implements OnInit {
         setTimeout(function(){
           url.revokeObjectURL(data),
         1000})
-
-
-        anchor.remove();
       },error=>{
         this.toastService.show(CONSTANT.messageToast.DOWNLOAD_BILL_ERROR, 4000, CONSTANT.Styles.Error);
       }

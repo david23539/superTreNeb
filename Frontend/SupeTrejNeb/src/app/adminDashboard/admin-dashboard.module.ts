@@ -10,7 +10,6 @@ import { TableComponent } from './utils/table/table.component';
 import { TableListComponent} from "./utils/table-list/table-list.component";
 import { MzTooltipModule, MzSelectModule, MzButtonModule, MzPaginationModule, MzCardModule
    } from "ng2-materialize";
-
 import { ProductComponent } from './components/product/product.component';
 import { ProviderComponent } from './components/provider/provider.component';
 import { SelectCategoriesComponent } from './components/select-categories/select-categories.component';
@@ -22,6 +21,7 @@ import { BillingAutoComponent } from './components/bils/billing-auto/billing-aut
 import {NotificationService} from "./services/notification/notification.service";
 import {NotificationsService} from "./services/notification/notifications.service";
 import {CacheService} from "./services/cache/cache.service";
+import {WaitLoadComponent} from "./components/wait-load/wait-load.component";
 
 // import { MzTabModule } from 'ng2-materialize' SE HA COMENTADO PORQUE NO SE USA AUNQUE SI QUEREMOS INCLUIR OTRO HABRA QUE IMPORTARLO AQUI E INFORMARLO EN IMPORTS
 
@@ -35,7 +35,8 @@ import {CacheService} from "./services/cache/cache.service";
     MzSelectModule,
     MzPaginationModule,
     MzCardModule,
-    MzButtonModule
+    MzButtonModule,
+
 
 
   ],
@@ -45,6 +46,7 @@ import {CacheService} from "./services/cache/cache.service";
     CategoryComponent,
     TableComponent,
     TableListComponent,
+    WaitLoadComponent,
     ProductComponent,
     ProviderComponent,
     SelectCategoriesComponent,
@@ -53,6 +55,10 @@ import {CacheService} from "./services/cache/cache.service";
     BillingComponent,
     BillingManualComponent,
     BillingAutoComponent,
+
+
+
+
   ],
   providers:[
     NotificationService,
@@ -65,7 +71,8 @@ import {CacheService} from "./services/cache/cache.service";
   exports:[
     AdminDashboardRoutingModule,
     BreadcumsComponent,
-    TableListComponent
+    TableListComponent,
+
 
   ]
 })
