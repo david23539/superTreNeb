@@ -14,11 +14,12 @@
                 <i class="right material-icons">arrow_drop_up</i>
               </ng-template>
             </th>
-            <th (click)="orderTableByColums('finalPrice'); finalPriceAsc == false? finalPriceAsc=true:finalPriceAsc=false">Precio Final <i *ngIf="finalPriceAsc; else priceASC" class="right material-icons">arrow_drop_down</i>
+            <th (click)="orderTableByColums('finalPrice'); finalPriceAsc == false? finalPriceAsc=true:finalPriceAsc=false">Precio Unidad <i *ngIf="finalPriceAsc; else priceASC" class="right material-icons">arrow_drop_down</i>
               <ng-template #priceASC>
                 <i class="right material-icons">arrow_drop_up</i>
               </ng-template>
             </th>
+            <th>Precio Final</th>
           </tr>
           </thead>
           <tbody>
@@ -26,6 +27,7 @@
               <td class="capitalizeText">{{item.product}}</td>
               <td>{{item.quantity}}</td>
               <td>{{item.finalPrice}} €</td>
+              <td>{{(item.finalPrice * item.quantity).toFixed(2)}} €</td>
             </tr>
           </tbody>
         </table>
@@ -34,7 +36,7 @@
   <div class="col s12 l2">
     <div class="card-panel white">
       <div class="row">
-        <div class="col l4" *ngFor="let item of arrays">
+        <div class="col l6" *ngFor="let item of arrays">
           <img (click)="getProductByScannerBar(item.reference)" mz-tooltip [tooltip]="item.name" class="circle avatar" src="{{url+'getImageResize/'+item.image}}"/>
         </div>
       </div>
@@ -247,7 +249,8 @@
 </div>
 
 <div  [hidden]="true" id="openBox">
-  27,112,0,100,200
+  027\112\000\048\048\
+  
 </div>
 
 <div id="addNewProduct" class="modal">
@@ -261,12 +264,3 @@
     <button  class="btn modal-action modal-close waves-effect waves-green btn-flat" (click)="goToNewProduct();">Aceptar</button>
   </div>
 </div>
-<!--
-<div [hidden]="contextmenu" class="contexmenu" [ngStyle]="{'left.px':contextmenuX, 'top.px':contextmenuY}">
-  <div class="row">
-    <ul class="collection with-header">
-      <li class="collection-item pink-text">Crear Favorito</li>
-      <li class="collection-item pink-text">Eliminar Favorito</li>
-    </ul>
-  </div>
-</div>-->

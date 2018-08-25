@@ -284,7 +284,7 @@ export class MainDashboardComponent implements OnInit, OnDestroy {
   }
 
   printTickets(){
-
+    let data = this.shoppingList;
     const ficha=document.getElementById("ticket");
     const ventimp=window.open(' ','popimpr');
     ventimp.document.write(ficha.innerHTML);

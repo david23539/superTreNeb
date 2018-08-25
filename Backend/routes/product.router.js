@@ -5,8 +5,9 @@ const api = express.Router();
 const productController = require('../controller/product.controller');
 const md_auth = require('../middleware/autenticate.middleware');
 const multipart = require('connect-multiparty');
-// const md_upload = multipart({uploadDir:'./Backend/uploadFiles/products/original'});
-const md_upload = multipart({uploadDir:'./uploadFiles/products/original'})
+
+const md_upload = multipart({uploadDir:'./Backend/uploadFiles/products/original'});//para windows
+//const md_upload = multipart({uploadDir:'./uploadFiles/products/original'})//para linux
 
 api.post('/createProduct', md_auth.ensureAuth, productController.createProduct);
 api.post('/updateProduct', md_auth.ensureAuth, productController.updateProduct);

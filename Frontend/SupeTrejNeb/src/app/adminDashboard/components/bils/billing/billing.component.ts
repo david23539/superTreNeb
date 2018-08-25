@@ -129,7 +129,7 @@ export class BillingComponent implements OnInit {
       response=>{
         this.show = false;
         let blob = new Blob([response], {type:"application/pdf"});
-        let url =  window.URL || window.webkitURL;
+        let url =  window.URL;
         const data = url.createObjectURL(blob);
         const link = document.createElement('a');
         link.setAttribute("type", "hidden");

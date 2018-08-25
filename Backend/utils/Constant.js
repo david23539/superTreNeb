@@ -33,6 +33,8 @@ const constant ={
 
 	},
 	functions:{
+		ERROR_GENERATE_TICKET: 'Ha ocurrido un error al generar el ticket',
+		SUCCESS_GENERATE_TICKET: 'Se ha creado un  ticket',
 		ERROR_PARAMETROS_ENTRADA: 'Los parametros de entrada no son correctos',
 		ERROR_PARAMETROS_ENTRADA_LOG: 'Los parametros de entrada no correctos Categoria',
 		USER_REGISTER_SUCCESS: 'Usuario registrado correctamente',
@@ -142,10 +144,10 @@ const constant ={
 	urls:{
 		URL_REPORT_BILLS:'http://davizco-tech.es:5488/api/report',
 		CHANGE_IP:'/../template/changeIp.html',
-		PRODUCT_IMG_ORIGINAL:'./uploadFiles/products/original/',// para linux
-		// PRODUCT_IMG_ORIGINAL:'./Backend/uploadFiles/products/original/', //para Windows
-		// PRODUCT_IMG_RESIZE:'./Backend/uploadFiles/products/resize/' //para windows
-		PRODUCT_IMG_RESIZE:'./uploadFiles/products/resize/'// para linux
+		//PRODUCT_IMG_ORIGINAL:'./uploadFiles/products/original/',// para linux
+		PRODUCT_IMG_ORIGINAL:'./Backend/uploadFiles/products/original/', //para Windows
+		PRODUCT_IMG_RESIZE:'./Backend/uploadFiles/products/resize/' //para windows
+		//PRODUCT_IMG_RESIZE:'./uploadFiles/products/resize/'// para linux
 	}
 }
 module.exports = constant

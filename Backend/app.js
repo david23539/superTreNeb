@@ -20,7 +20,8 @@ const direcctionIp_router = require('./routes/direcctionIp.route')
 const provider_router = require('./routes/provider.router')
 const address_router = require('./routes/address.route')
 const bill_router = require('./routes/bill.route')
-const notification_router = require('./routes/notifications.route')
+const notification_router = require('./routes/notifications.route');
+const ticket_router = require('./routes/ticket.route');
 
 //configurar middlewares de body-pare
 app.use(bodyParser.urlencoded({extend: false}))
@@ -47,7 +48,7 @@ app.use((req,res,next)=>{
 });
 
 //rutas base
-// app.use('/', express.static('client', {redirect:false}))
+//app.use('/', express.static('client', {redirect:false}))
 app.use('/api', user_routes)
 app.use('/api', person_router)
 app.use('/api', direcctionIp_router)
@@ -57,10 +58,11 @@ app.use('/api', provider_router)
 app.use('/api', address_router)
 app.use('/api', bill_router)
 app.use('/api', notification_router)
+app.use('/api', ticket_router);
 
-// app.get('*', function(req, res, next){
-// 	res.sendFile(path.resolve('client/index.html'))
-// });
+//app.get('*', function(req, res, next){
+//	res.sendFile(path.resolve('client/index.html'))
+//});
 
 app.use(compression());
 

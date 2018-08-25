@@ -18,7 +18,7 @@ import {NotificationService} from "../../services/notification/notification.serv
   providers: [ProductService, DataBrowser, MzToastService, CategoryService,UploadService],
   host:{
     '(document:keyup)':'getValueKey($event)',
-    '(document:keypress)':'prueba($event)',
+    //'(document:keypress)':'prueba($event)',
   }
 })
 export class ProductComponent implements OnInit {
@@ -107,7 +107,7 @@ export class ProductComponent implements OnInit {
       let result = CONSTANT.hotkeys.find((elemento)=>{
         return elemento == evento.key;
       });
-    if(!result){
+    if(result === undefined){
       this.codeProduct += evento.key;
     }else{
       let code = {
