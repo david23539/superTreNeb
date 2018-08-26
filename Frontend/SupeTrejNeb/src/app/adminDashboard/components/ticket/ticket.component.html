@@ -30,14 +30,88 @@
       </div>
       <div class="col s12 l3">
         <div class="col s2 l2">
-          <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill" [disabled]="!ticket.ticket.dateTicket && !ticket.ticket.price && !ticket.ticket.idTicket" (click)="getFilterTicket();" [float]="true">
+          <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill"  (click)="getFilterTicket(page);" [float]="true">
             <i class="material-icons pink-text">search</i>
           </button>
         </div>
       </div>
 
 
-      <tableComponenets [headsTable]="headsTables" [bodyTableContent]=bodyTable (paginationParams)="getProductsByPagination($event);" [countRecord]="countProduct"  (changeItem)="addUpdateProduct($event)"></tableComponenets>
+      <table-list [bodyTableContent]="bodyTable" [headsTable]="headsTables" (changeItem)="selectTicket($event)" (paginationParams)="getFilterTicket($event)"  [countRecord]="countRecord"></table-list>
     </div>
   </div>
+</div>
+
+<div id="ticketModal" #modal class="modal">
+  <div class="modal-content">
+    <h4 class="pink-text center">Ticket</h4>
+
+    <div class="row">
+      <div class="right col l12 s12">
+        <div class="col s12 l4">
+          <div class="input-field pink-text">
+
+            <input id="datet"  [(ngModel)]="datesTicket"  readonly type="text" >
+            <label for="datet" class="active">Fecha</label>
+          </div>
+        </div>
+        <div class="col s12 l4">
+          <div class="input-field pink-text">
+            <input id="Ref"  [(ngModel)]="ref" readonly type="text" >
+            <label for="Ref" class="active">Referencia</label>
+          </div>
+        </div>
+
+        <div class="col s12 l4">
+          <div class="input-field pink-text">
+
+            <input id="Tot"  [(ngModel)]="total" readonly type="text" >
+            <label for="Tot" class="active">Total</label>
+          </div>
+        </div>
+        <table-list [bodyTableContent]="bodyTicket" [headsTable]="headsTicket"></table-list>
+        <a class="btn waves-effect modal-close modal-trigger waves-light blue right col l3 s12" (click)="printTickets()" type="button" >Imprimir Ticket
+          <i class="material-icons right">print</i>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="ticket" *ngIf="bodyTicket" [hidden]="true">
+  <div style="width: 180px;">
+    <p style="text-align: center ; font-size: small ;font-family:'Arial Black' ;"> AUTOSERVICIO OLALLA</p>
+    <p style="text-align: center ; font-size: x-small;font-family:'Arial'"> PLAZA DE ESPAÑA Nº 14</p>
+    <p style="text-align: center ; font-size: x-small; font-family:'Arial'"> CIF  09203990-B</p>
+    <p style="text-align: center ; font-size: x-small; font-family:'Arial'"> {{datesTicket}}</p>
+    <table style="width: 100%">
+      <thead>
+      <tr >
+        <th style="text-align: left; font-size:11px;font-family:'Arial'">UND</th>
+        <th style="text-align: left; font-size:11px;font-family:'Arial' ">PRODUCTO</th>
+        <th style="text-align: left; font-size:11px; font-family:'Arial'">PRECIO</th>
+        <th style="text-align: left; font-size:11px; font-family:'Arial'">TOTAL</th>
+
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let items of bodyTicket">
+        <td style="text-transform: uppercase;text-align: center;font-size: 10px;font-family:'Arial'">{{items.quantity}}</td>
+        <td style="text-transform: uppercase;font-size: 10px;font-family:'Arial'">{{items.product.length > 7?items.product.substr(0,7) +" ...":items.product}}</td>
+        <td style="text-transform: uppercase;text-align: center;font-size: 10px;font-family:'Arial'">{{items.finalPrice}} €</td>
+        <td style="text-transform: uppercase;text-align: center;font-size: 10px;font-family:'Arial'">{{(items.finalPrice * items.quantity).toFixed(2)}} €</td>
+      </tr>
+
+
+
+      </tbody>
+    </table>
+    <hr style="height: 1px; width: 60%; margin-left: 20%; border-bottom: 0.2px solid gray; border-top: none;border-left: none;border-right: none">
+    <p style="text-align: center; font-size:12px ">
+      <b>TOTAL: {{total.toFixed(2)}} €</b>
+    </p>
+    <p style="text-align: center ; font-size: x-small; font-style: oblique;font-family:'Arial'">Gracias por su compra</p>
+    <p style="text-align: center; font-size: xx-small;font-family:'Arial'">IVA INCLUIDO</p>
+  </div>
+
 </div>

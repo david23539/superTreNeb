@@ -7,6 +7,9 @@ export class Ticket{
     },
     public direccionIp:{
       navegador:String
+    },
+    public pagination:{
+      page:Number
     }
   ){}
 }

@@ -5,7 +5,7 @@ const constantFile = require('../utils/Constant')
 const adapterTicket = require('../adapter/ticket.adapter');
 const validationTicket = require('../Validation/ticket.validation');
 const TicketModel = require('../model/ticket.model');
-
+let query = {};
 
 
 function createTicket(req, res) {
@@ -30,8 +30,8 @@ function createTicket(req, res) {
 function filterTicket(req, res){
     let param_IN = req.body;
     let ticketModel = adapterTicket.adapterFindTicket(param_IN);
-    if(validationTicket.ticketFindValidation(ticketModel._doc) && validationGlobal.validateId(param_IN.direccionIp.navegador)){
-        let query = {};
+    if(validationTicket.ticketFindValidation(ticketModel._doc) && validationGlobal.validateId(param_IN.direccionIp.navegador) && validationGlobal.validationPage(param_IN.pagination.page)){
+        query = {};
         if(ticketModel.stn_numberTicket){
             query.stn_numberTicket = ticketModel.stn_numberTicket
         }
@@ -41,21 +41,47 @@ function filterTicket(req, res){
         if(ticketModel.stn_dateTicket){
             //abra que lanzar la siguiente query para filtrar bien por fechas
             //{stn_dateTicket:{$gt: new ISODate('2018-08-25')}, stn_dateTicket:{$lt: new ISODate('2018-08-26')}}
-            query.stn_dateTicket ={$gt: new ISODate(ticketModel.stn_dateTicket)};
+            let dateFilter = new Date(ticketModel.stn_dateTicket);
+            let dayfilter = ticketModel.stn_dateTicket.getDate();
+            dateFilter = dateFilter.setDate(dayfilter +1);
+            query.stn_dateTicket ={
+                $gt: new Date(ticketModel.stn_dateTicket),
+                $lt: new Date(dateFilter)
+            };
         }
-        TicketModel.find(query,(err, tickets_OUT)=>{
+        TicketModel.find(query).skip(param_IN.pagination.page).limit(10).exec((err, tickets_OUT)=>{
             if(err){
                 res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.ERROR_GENERATE_TICKET})
             }else if(tickets_OUT.length === 0){
                 res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.NO_DATA})
             }else{
-                res.status(constantFile.httpCode.PETITION_CORRECT).send({ticket: adapterTicket.adapterTicketOUT(tickets_OUT)})
+                countFilter(query, tickets_OUT, res);
             }
         })
     }else{
         paramsIvalids(res);
     }
 
+}
+
+function countFilter(query, tickets_OUT, res){
+    TicketModel.count(query,(err, coutn_OUT)=>{
+        if(err || !coutn_OUT){
+            res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.ERROR_GENERATE_TICKET})
+        }else{
+            res.status(constantFile.httpCode.PETITION_CORRECT).send({ticket: adapterTicket.adapterTicketOUT(tickets_OUT), count:coutn_OUT});
+        }
+    })
+}
+
+function countTicket(req, res){
+    TicketModel.count((err, coutn_OUT)=>{
+        if(err || !coutn_OUT){
+            res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.ERROR_GENERATE_TICKET})
+        }else{
+            res.status(constantFile.httpCode.PETITION_CORRECT).send({count: coutn_OUT})
+        }
+    })
 }
 
 function getTickets(req, res){
@@ -84,7 +110,8 @@ function paramsIvalids(res){
 module.exports ={
     createTicket,
     filterTicket,
-    getTickets
+    getTickets,
+    countTicket
 };
 
 

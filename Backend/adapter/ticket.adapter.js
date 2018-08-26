@@ -44,11 +44,13 @@ function adapterTicketOUT(ticket_IN){
             dataOut.name = item.stn_nameProduct;
             shopingArray.push(dataOut);
         }
+        let spain = moment.tz(supetItem._doc.stn_dateTicket,'Europe/Madrid').format('DD-MM-YYYY');
         let dataPrevObject = {
-            shopping: shopingArray,
+
             number: supetItem._doc.stn_numberTicket,
+            date: spain,
             price: supetItem._doc.stn_priceTicket,
-            date: supetItem._doc.stn_dateTicket
+            shopping: shopingArray,
         };
         ticketOut.push(dataPrevObject)
     }
