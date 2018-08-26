@@ -1,0 +1,43 @@
+<div class="row">
+  <div class="col s12 l12">
+    <div class="card-panel white">
+      <h4 class="card-title pink-text">{{TITLE}}</h4>
+      <div class="col s12 l3">
+        <div class="input-field pink-text">
+
+          <input id="filterRef"  [(ngModel)]="ticket.ticket.idTicket"   type="number" >
+          <label for="filterRef">{{n_ref}}</label>
+        </div>
+      </div>
+      <div class="col s12 l3">
+        <div class="input-field pink-text s4 l4">
+
+          <input id="price"  [(ngModel)]="ticket.ticket.price"   type="number" >
+          <label for="price">{{price}}</label>
+        </div>
+      </div>
+      <div class="col s12 l3">
+        <mz-datepicker-container class="col s12 pink-text">
+          <input mz-datepicker
+          [label]="'Fecha'"
+           [options]="options"
+                 [(ngModel)]="ticket.ticket.dateTicket"
+                 id="datepicker"
+                 placeholder="Fecha Ticket"
+                 type="text"
+          >
+        </mz-datepicker-container>
+      </div>
+      <div class="col s12 l3">
+        <div class="col s2 l2">
+          <button mz-button  [flat]="true"  [large]="false" class="btn-search-bill" [disabled]="!ticket.ticket.dateTicket && !ticket.ticket.price && !ticket.ticket.idTicket" (click)="getFilterTicket();" [float]="true">
+            <i class="material-icons pink-text">search</i>
+          </button>
+        </div>
+      </div>
+
+
+      <tableComponenets [headsTable]="headsTables" [bodyTableContent]=bodyTable (paginationParams)="getProductsByPagination($event);" [countRecord]="countProduct"  (changeItem)="addUpdateProduct($event)"></tableComponenets>
+    </div>
+  </div>
+</div>

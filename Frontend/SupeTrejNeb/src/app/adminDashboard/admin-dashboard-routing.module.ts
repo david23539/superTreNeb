@@ -13,6 +13,7 @@ import {AddressComponent} from "./components/address/address.component";
 import {BillingComponent} from "./components/bils/billing/billing.component";
 import {BillingAutoComponent} from "./components/bils/billing-auto/billing-auto.component";
 import {BillingManualComponent} from "./components/bils/billing-manual/billing-manual.component";
+import {TicketComponent} from "./components/ticket/ticket.component";
 
 
 const adminDashboardRouter: Routes = [
@@ -26,7 +27,8 @@ const adminDashboardRouter: Routes = [
       {path: 'addresses', component: AddressComponent},
       {path: 'billing', component: BillingComponent},
       {path: 'billingAuto', component: BillingAutoComponent},
-      {path: 'billingManual', component: BillingManualComponent}
+      {path: 'billingManual', component: BillingManualComponent},
+      {path: 'ticket', component: TicketComponent}
 
     ]},
 ];

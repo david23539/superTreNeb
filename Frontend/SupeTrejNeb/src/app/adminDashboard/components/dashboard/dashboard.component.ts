@@ -36,6 +36,7 @@ export class DashboardComponent implements OnInit{
   public PERSONS_PAGE: String = "Personas";
   public ADDRESS_PAGE: String = "Direcciones";
   public BILLING_PAGE: String = "Facturación";
+  public TICKET_PAGE: String = "Tickets";
   public classBackgraundSidenav="blue-grey lighten-2 z-depth-3";
   public classNotificationIcon = "material-icons pink-text";
   public classNotNotificationIcon = "material-icons";

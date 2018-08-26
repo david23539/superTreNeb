@@ -30,6 +30,17 @@
 
 
 */
+.picker__date-display{
+  background-color: #e91e63 !important;
+}
+
+.picker__day--selected, .picker__day--selected:hover, .picker--focused .picker__day--selected{
+  background-color: #e91e63 !important;
+}
+
+.picker__day.picker__day--today{
+  color: #e91e63;
+}
 
 .select-item:active{
   background-color: #e91e63 !important;

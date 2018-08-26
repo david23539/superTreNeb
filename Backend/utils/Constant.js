@@ -100,7 +100,7 @@ const constant ={
 		ADDRESS_GET_ERROR: 'Ha ocurrido un error al obtener las direcciones',
 		NO_DATA_CATEGORY:'No hay coincidencias',
 		NO_DATA_AVAIBLE:'No existen categorías',
-
+		NO_DATA:'No hay datos',
 		NO_PRODUCT_AVAIBLE:'No existen productos',
 		NO_BILLS_AVAIBLE:'No existen facturas',
 		NO_CATEGORY_AVAIBLE:'No existen categorías',
@@ -108,7 +108,8 @@ const constant ={
 		PROVIDERS_AVAIBLE:'Existen proveedores relacionados',
 		NO_PERSON_AVAIBLE:'No existen personas',
 		NO_ADDRESS_AVAIBLE:'No existen direcciones',
-		PREVENT_BRUTE_FORCE_ACCESS:'Espere 10 segundos antes de volver a introducir sus credenciales'
+		PREVENT_BRUTE_FORCE_ACCESS:'Espere 10 segundos antes de volver a introducir sus credenciales',
+		INVALID_DATE : 'Invalid Date'
 
 
 

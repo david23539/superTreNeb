@@ -8,8 +8,8 @@ import { BreadcumsComponent } from './utils/breadcums/breadcums.component';
 import { CategoryComponent } from './components/category/category.component';
 import { TableComponent } from './utils/table/table.component';
 import { TableListComponent} from "./utils/table-list/table-list.component";
-import { MzTooltipModule, MzSelectModule, MzButtonModule, MzPaginationModule, MzCardModule
-   } from "ng2-materialize";
+import { MzTooltipModule, MzSelectModule, MzButtonModule, MzPaginationModule, MzCardModule,
+   MzDatepickerModule} from "ng2-materialize";
 import { ProductComponent } from './components/product/product.component';
 import { ProviderComponent } from './components/provider/provider.component';
 import { SelectCategoriesComponent } from './components/select-categories/select-categories.component';
@@ -22,6 +22,8 @@ import {NotificationService} from "./services/notification/notification.service"
 import {NotificationsService} from "./services/notification/notifications.service";
 import {CacheService} from "./services/cache/cache.service";
 import {WaitLoadComponent} from "./components/wait-load/wait-load.component";
+import { TicketComponent } from './components/ticket/ticket.component';
+
 
 // import { MzTabModule } from 'ng2-materialize' SE HA COMENTADO PORQUE NO SE USA AUNQUE SI QUEREMOS INCLUIR OTRO HABRA QUE IMPORTARLO AQUI E INFORMARLO EN IMPORTS
 
@@ -36,6 +38,7 @@ import {WaitLoadComponent} from "./components/wait-load/wait-load.component";
     MzPaginationModule,
     MzCardModule,
     MzButtonModule,
+    MzDatepickerModule
 
 
 
@@ -55,6 +58,7 @@ import {WaitLoadComponent} from "./components/wait-load/wait-load.component";
     BillingComponent,
     BillingManualComponent,
     BillingAutoComponent,
+    TicketComponent,
 
 
 

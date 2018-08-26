@@ -6,6 +6,8 @@ const ticketController = require('../controller/ticket.controller');
 const md_auth = require('../middleware/autenticate.middleware');
 
 api.post('/createTicket', md_auth.ensureAuth, ticketController.createTicket);
+api.post('/filterTicket', md_auth.ensureAuth, ticketController.filterTicket);
+api.post('/getTicket', md_auth.ensureAuth, ticketController.getTickets);
 
 
 // eslint-disable-next-line no-undef

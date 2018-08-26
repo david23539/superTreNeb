@@ -93,16 +93,6 @@ export class ProductComponent implements OnInit {
   public codeProduct:string = "";
   public quantityTotalProd = 0;
 
-  constructor(private _route: ActivatedRoute, private _notification:NotificationService, private _productService:ProductService, private _getDataBrowser: DataBrowser, private toastService: MzToastService, private _categoryService: CategoryService,
-      private _uploadFile:UploadService) {
-    this.inicializateObject();
-    this.productModel_OUT = new Product_OUT({id: ""});
-    this.categoryObject_IN = new Category({
-      nameCat:"",
-      descriptionCat:"",
-      ivaCat:0},{id:""},{page:0},{direccionData:"",navegador:this.browser});
-  }
-
   prueba(evento){
       let result = CONSTANT.hotkeys.find((elemento)=>{
         return elemento == evento.key;
@@ -118,6 +108,16 @@ export class ProductComponent implements OnInit {
 
 
     }
+  }
+
+  constructor(private _route: ActivatedRoute, private _notification:NotificationService, private _productService:ProductService, private _getDataBrowser: DataBrowser, private toastService: MzToastService, private _categoryService: CategoryService,
+              private _uploadFile:UploadService) {
+    this.inicializateObject();
+    this.productModel_OUT = new Product_OUT({id: ""});
+    this.categoryObject_IN = new Category({
+      nameCat:"",
+      descriptionCat:"",
+      ivaCat:0},{id:""},{page:0},{direccionData:"",navegador:this.browser});
   }
   private inicializateObject(){
     this.productModel_IN = new Product({nameProd:"", image:"",catProd:"",descriptProd:"",refProd:"",ivaProd:0,marginProd:0,stock:0,stockMin:0,favorite:false,costProd:0},
