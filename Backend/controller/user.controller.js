@@ -146,25 +146,34 @@ function extractMethodCheckIp(err, userStorage, params, res, ips) {
 				if (err) {// si ocurre un error guardamos auditoria
 					auditoriaController.saveLogsData(userStorage._doc.stn_username, err, params.direccionIp.direccionData, params.direccionIp.navegador)
 				} else if (!ipData) {//si no tiene registro la nueva ip al usuario y vacio el contador tanto del usuario como de la ip
-					directionIpController.registerNewIp(params, userStorage)
+					directionIpController.registerNewIp(params, userStorage);
+                    let dateTime = new Date();
+                    dateTime.setHours(dateTime.getHours() + 20);
 					auditoriaController.saveLogsData(userStorage._doc.stn_username, constantFile.functions.USER_LOGIN_SUCCESS_TOKEN, params.direccionIp.direccionData, params.direccionIp.navegador)
 					res.status(constantFile.httpCode.PETITION_CORRECT).send({
-						token: jwtService.createToken(userStorage)
+						token: jwtService.createToken(userStorage),
+						timeExp: dateTime
 					})
 				} else {//si ya tiene asociada una ip miro si esta ip esta relacionada y si no lo esta la relaciono y vacio el contador tanto del usuario como de la ip
 					ips = ipData._doc.stn_directionIp
 					if (directionIpService.compareIps(params.direccionIp.direccionData, ips)) {
-						directionIpController.resetCount(ipData._id, params)
+						directionIpController.resetCount(ipData._id, params);
+                        let dateTime = new Date();
+                        dateTime.setHours(dateTime.getHours() + 20);
 						auditoriaController.saveLogsData(userStorage._doc.stn_username, constantFile.functions.USER_LOGIN_SUCCESS_TOKEN, params.direccionIp.direccionData, params.direccionIp.navegador)
 						res.status(constantFile.httpCode.PETITION_CORRECT).send({
-							token: jwtService.createToken(userStorage)
+							token: jwtService.createToken(userStorage),
+							timeExp:dateTime
 						})
 					} else {//añado la ip nueva al array que se guardara
 						ips.push(params.direccionIp.direccionData)
 						directionIpController.addIpForUser(ipData, ips, params)
-						directionIpController.resetCount(ipData._id, params)
+						directionIpController.resetCount(ipData._id, params);
+                        let dateTime = new Date();
+                        dateTime.setHours(dateTime.getHours() + 20);
 						res.status(constantFile.httpCode.PETITION_CORRECT).send({
-							token: jwtService.createToken(userStorage)
+							token: jwtService.createToken(userStorage),
+							timeExp: dateTime
 						})
 					}
 
@@ -205,9 +214,12 @@ function login(req, res){
 					User.findOne({stn_person: person._doc._id, stn_state:true}, (err, userStorage) => {
 						if (getData(err, userStorage, params.usuario.password, serviceUser.comparePassword)) {
 							if(params.getToken){
+								let dateTime = new Date();
+								dateTime.setHours(dateTime.getHours() + 20);
 								auditoriaController.saveLogsData(userStorage._doc.stn_username, constantFile.functions.USER_LOGIN_SUCCESS_TOKEN,params.direccionIp.direccionData, params.direccionIp.navegador)
 								res.status(constantFile.httpCode.PETITION_CORRECT).send({
-									token: jwtService.createToken(userStorage)
+									token: jwtService.createToken(userStorage),
+									timeExp: dateTime
 								})
 							}else{
 								auditoriaController.saveLogsData(userStorage._doc.stn_username, constantFile.functions.USER_LOGIN_SUCCESS,params.direccionIp.direccionData, params.direccionIp.navegador)
