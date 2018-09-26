@@ -33,4 +33,11 @@ export class TicketService {
     return this._http.post(this.url+'getTicket', param, {headers:header})
   }
 
+  createTiket(ticket_IN) {
+    this.token = this._loginService.getToken();
+    let param = JSON.stringify(ticket_IN);
+    let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
+    return this._http.post(this.url+'createTicket', param, {headers:header})
+  }
+
 }

@@ -206,7 +206,7 @@
   <div class="modal-footer">
     <button  class="btn modal-action modal-close waves-effect waves-green btn-flat">Cancelar</button>
     <button  class="btn modal-action modal-close waves-effect waves-green btn-flat" (click)="checkStock(); shoppingList=[];  totalItemPrice=0; payMoney=0; returnPay=0">No</button>
-    <button  class="btn modal-action modal-close waves-effect waves-green btn-flat" (click)="printTickets(); checkStock(); shoppingList=[]; totalItemPrice=0; payMoney=0; returnPay=0">Si</button>
+    <button  class="btn modal-action modal-close waves-effect waves-green btn-flat" (click)="createTicket();printTickets(); checkStock(); shoppingList=[]; totalItemPrice=0; payMoney=0; returnPay=0">Si</button>
   </div>
 </div>
 
@@ -250,7 +250,7 @@
 
 <div  [hidden]="true" id="openBox">
   027\112\000\048\048\
-  
+
 </div>
 
 <div id="addNewProduct" class="modal">

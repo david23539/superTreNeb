@@ -6,17 +6,23 @@ import {MzToastService} from "ng2-materialize";
 import {ActivatedRoute, Router} from "@angular/router";
 import {NotificationService} from "../../services/notification/notification.service";
 import {CacheService} from "../../services/cache/cache.service";
+import {CreaTicketModel} from "../../model/ticket/creaTicket.model";
+import {TicketService} from "../../services/ticket/ticket.service";
+import {DataBrowser} from "../../../utils/dataBrowser";
 
 @Component({
   selector: 'main-dashboard',
   templateUrl: './mainDashboard.component.html',
   styleUrls: ['./mainDashboard.component.css'],
-  providers:[ProductService, MzToastService],
+  providers:[ProductService, MzToastService, TicketService, DataBrowser],
   host:{
     '(document:keyup)':'getValueKey($event)',
     '(document:keypress)':'prueba($event)'
   }
 })
+
+
+
 export class MainDashboardComponent implements OnInit, OnDestroy {
 
   public OPEN_BOX_REGISTER = "Abrir caja registradora";
@@ -36,7 +42,7 @@ export class MainDashboardComponent implements OnInit, OnDestroy {
   public finalPriceAsc:Boolean = true;
   public quantityAsc:Boolean = true;
   public productAsc:Boolean = true;
-  // public addProductName = "Varios";
+  public ticket: CreaTicketModel;
   public addProductPrice :any;
   public addProductQuantity:number = 1;
   public date: any;
@@ -50,6 +56,8 @@ export class MainDashboardComponent implements OnInit, OnDestroy {
   public entra:boolean = false;
   public contextmenu = true;
   public arrays = [];
+  public browser: any;
+
 
   public modalOptions: Materialize.ModalOptions = {
     dismissible: false, // Modal can be dismissed by clicking outside of the modal
@@ -62,12 +70,17 @@ export class MainDashboardComponent implements OnInit, OnDestroy {
 
 
 
-  constructor(private _cacheService:CacheService, private _productService:ProductService, private _toastService:MzToastService, private _route: ActivatedRoute, private _router:Router, private _notification: NotificationService) {
+  constructor(private _cacheService:CacheService, private _productService:ProductService, private _toastService:MzToastService, private _route: ActivatedRoute,
+              private _router:Router, private _notification: NotificationService, private _ticketService: TicketService,
+              private _getDataBrowser: DataBrowser) {
     this.url = GLOBAL.url;
     this.constant = CONSTANT.keysPress;
     this.constantToast = CONSTANT.messageToast;
     this.actionNumberKey = "";
     this.addProductPrice = null;
+    this.ticket = new CreaTicketModel([{product:'',quantity:0,finalPrice:0}], 0,{navegador:''});
+
+    this.browser = this._getDataBrowser.getDataBrowser();
   }
 
   prueba(evento){
@@ -294,6 +307,40 @@ export class MainDashboardComponent implements OnInit, OnDestroy {
 
   }
 
+  createTicket(){
+    this.ticket.shoppingList = this.shoppingList.map( item => {
+      return {
+        product: item.product,
+        quantity: item.quantity,
+        finalPrice: parseFloat(item.finalPrice)
+      }
+    });
+    this.ticket.direccionIp.navegador = this.browser.browser;
+    this._ticketService.countTicket().subscribe(
+      response => {
+        this.responseServer = response;
+        this.ticket.idTicket = this.responseServer.count + 1;
+        this.continueCreateTicket();
+      },error => {
+        this._toastService.show(CONSTANT.messageToast.TICKET_ERROR, 4000, CONSTANT.Styles.Error);
+      }
+    )
+  }
+
+  private continueCreateTicket() {
+
+    this._ticketService.createTiket(this.ticket).subscribe(
+      response =>{
+        this.responseServer = response;
+        if (this.responseServer.message === CONSTANT.ResponseServers.InvalidParams) {
+          this._toastService.show(CONSTANT.messageToast.TICKET_ERROR, 4000, CONSTANT.Styles.Error);
+        }
+      }, error => {
+        this._toastService.show(CONSTANT.messageToast.TICKET_ERROR, 4000, CONSTANT.Styles.Error);
+      }
+    )
+  }
+
   calculateReturnPayDinamic( total){
     if(this.payMoney){
       this.returnPay =  this.payMoney - total;
@@ -303,7 +350,7 @@ export class MainDashboardComponent implements OnInit, OnDestroy {
 
   getProductByScannerBar(code){
     if(CONSTANT.hotkeys.indexOf(code) === -1) {
-      this.barCode = code;//TODO eliminar cuando sea necesario y este implementado el lector de codigos de barras
+      this.barCode = code;
       this._productService.getProductByCode(code).subscribe(
         response => {
           this.responseServer = response;

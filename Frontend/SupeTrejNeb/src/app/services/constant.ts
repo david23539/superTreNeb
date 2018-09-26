@@ -35,6 +35,7 @@ export const CONSTANT = {
     No_Data_Address:'No existen direcciones',
     No_Data_Bill:'No existen facturas',
     No_Data:'No hay datos',
+    Error_tiket_Create: 'Ha ocurrido un error al generar el ticket',
   },
   Styles:{
     Valid:"valid pink-text",
