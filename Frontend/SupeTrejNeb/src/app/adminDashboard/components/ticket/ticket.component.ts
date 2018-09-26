@@ -57,6 +57,7 @@ export class TicketComponent implements OnInit {
       this.bodyTicket = event.object.shopping;
       this.ref = event.object.number;
       this.datesTicket = event.object.date;
+
       this.total = event.object.price;
 
       $('#ticketModal').modal('open');
@@ -82,7 +83,9 @@ export class TicketComponent implements OnInit {
         this.responseServer = response;
         if(this.responseServer.message === CONSTANT.ResponseServers.InvalidParams){
           this.toastService.show(CONSTANT.ResponseServers.InvalidParams, 4000, CONSTANT.Styles.Warning);
-        }else{
+        }else if(this.responseServer.message === CONSTANT.ResponseServers.No_Data){
+          this.toastService.show(CONSTANT.ResponseServers.No_Data, 4000, CONSTANT.Styles.Info);
+        }else {
           this.bodyTable = this.responseServer.ticket;
         }
       },error =>{

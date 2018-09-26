@@ -29,6 +29,11 @@ export class LoginService {
   }
 
   public getToken(): String{//queda hacer pruebas para ver si esta vacio
+    let dateNow = new Date();
+    let dateToken = new Date(localStorage.getItem('timeExp'));
+    if(dateNow >= dateToken){
+      localStorage.clear();
+    }
     if(localStorage.getItem('token')){
       this.token = localStorage.getItem('token')
     }else{

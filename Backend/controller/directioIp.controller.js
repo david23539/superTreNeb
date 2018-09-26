@@ -116,7 +116,7 @@ function findIp(ip, cb){
 
 
 function checkIpForBlock(req, res){
-	const ip = req.connection.remoteAddress
+	const ip = req.connection.remoteAddress;
 	DirectionIp.findOne({stn_directionIp:ip}, (err, dataIp)=>{
 		if(err){
 			res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message : constantFile.api.ERROR_REQUEST})

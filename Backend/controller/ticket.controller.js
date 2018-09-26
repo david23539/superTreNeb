@@ -76,7 +76,7 @@ function countFilter(query, tickets_OUT, res){
 
 function countTicket(req, res){
     TicketModel.count((err, coutn_OUT)=>{
-        if(err || !coutn_OUT){
+        if(err){
             res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.ERROR_GENERATE_TICKET})
         }else{
             res.status(constantFile.httpCode.PETITION_CORRECT).send({count: coutn_OUT})

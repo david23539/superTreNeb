@@ -33,10 +33,11 @@ function adapterFindTicket(paramIN) {
 }
 
 function adapterTicketOUT(ticket_IN){
-    let shopingArray = [];
+
     let ticketOut = [];
 
     for(let supetItem of ticket_IN){
+        let shopingArray = [];
         for(let item of supetItem._doc.stn_shoppingList){
             let dataOut = {};
             dataOut.price = item.stn_unitPrice;

@@ -96,10 +96,10 @@
       </thead>
       <tbody>
       <tr *ngFor="let items of bodyTicket">
-        <td style="text-transform: uppercase;text-align: center;font-size: 10px;font-family:'Arial'">{{items.quantity}}</td>
-        <td style="text-transform: uppercase;font-size: 10px;font-family:'Arial'">{{items.product.length > 7?items.product.substr(0,7) +" ...":items.product}}</td>
-        <td style="text-transform: uppercase;text-align: center;font-size: 10px;font-family:'Arial'">{{items.finalPrice}} €</td>
-        <td style="text-transform: uppercase;text-align: center;font-size: 10px;font-family:'Arial'">{{(items.finalPrice * items.quantity).toFixed(2)}} €</td>
+        <td style="text-transform: uppercase;text-align: center;font-size: 10px;font-family:'Arial'">{{items && items.quantity}}</td>
+        <td style="text-transform: uppercase;font-size: 10px;font-family:'Arial' ">{{items.name.length > 7?items.name.substr(0,7) +" ...":items.name}}</td>
+        <td style="text-transform: uppercase;text-align: center;font-size: 10px;font-family:'Arial'">{{items.price}} €</td>
+        <td style="text-transform: uppercase;text-align: center;font-size: 10px;font-family:'Arial'">{{(items.price * items.quantity).toFixed(2)}} €</td>
       </tr>
 
 
