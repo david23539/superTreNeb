@@ -36,11 +36,12 @@ function filterTicket(req, res){
             query.stn_numberTicket = ticketModel.stn_numberTicket
         }
         if(ticketModel.stn_priceTicket){
-            query.stn_priceTicket = ticketModel.stn_priceTicket
+            query.stn_priceTicket = {
+                $gte:ticketModel.stn_priceTicket,
+                $lt:ticketModel.stn_priceTicket +1
+            }
         }
         if(ticketModel.stn_dateTicket){
-            //abra que lanzar la siguiente query para filtrar bien por fechas
-            //{stn_dateTicket:{$gt: new ISODate('2018-08-25')}, stn_dateTicket:{$lt: new ISODate('2018-08-26')}}
             let dateFilter = new Date(ticketModel.stn_dateTicket);
             let dayfilter = ticketModel.stn_dateTicket.getDate();
             dateFilter = dateFilter.setDate(dayfilter +1);

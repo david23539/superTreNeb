@@ -9,6 +9,7 @@ import {CacheService} from "../../services/cache/cache.service";
 import {CreaTicketModel} from "../../model/ticket/creaTicket.model";
 import {TicketService} from "../../services/ticket/ticket.service";
 import {DataBrowser} from "../../../utils/dataBrowser";
+import {DecimalPipe} from "@angular/common";
 
 @Component({
   selector: 'main-dashboard',
@@ -57,6 +58,7 @@ export class MainDashboardComponent implements OnInit, OnDestroy {
   public contextmenu = true;
   public arrays = [];
   public browser: any;
+  public refTicket: number;
 
 
   public modalOptions: Materialize.ModalOptions = {
@@ -79,9 +81,9 @@ export class MainDashboardComponent implements OnInit, OnDestroy {
     this.actionNumberKey = "";
     this.addProductPrice = null;
     this.ticket = new CreaTicketModel([{product:'',quantity:0,finalPrice:0}], 0,{navegador:''});
-
     this.browser = this._getDataBrowser.getDataBrowser();
   }
+
 
   prueba(evento){
     let result = CONSTANT.hotkeys.find((elemento)=>{
@@ -124,7 +126,7 @@ export class MainDashboardComponent implements OnInit, OnDestroy {
       }
     );
     this.getProductFavorite();
-
+    this.getNumbersReftickets()
 
   }
 
@@ -193,10 +195,20 @@ export class MainDashboardComponent implements OnInit, OnDestroy {
       this.getTotalFinalPrice(this.shoppingList);
 
     }
-
-
-
   }
+
+  private getNumbersReftickets() {
+    this._ticketService.countTicket().subscribe(
+      response => {
+        this.responseServer = response;
+        this.refTicket = this.responseServer.count;
+      },error => {
+        this._toastService.show(CONSTANT.messageToast.TICKET_ERROR, 4000, CONSTANT.Styles.Error);
+        this.refTicket = 0
+      }
+    );
+  }
+
 
   addProductToList(){
     const numberElementOfList = this.shoppingList.length;
@@ -308,27 +320,19 @@ export class MainDashboardComponent implements OnInit, OnDestroy {
   }
 
   createTicket(){
+
     this.ticket.shoppingList = this.shoppingList.map( item => {
+      let price = parseFloat(item.finalPrice).toFixed(2);
+      let priceF = parseFloat(price);
       return {
         product: item.product,
         quantity: item.quantity,
-        finalPrice: parseFloat(item.finalPrice)
+        finalPrice: priceF
       }
     });
+    this.refTicket++;
     this.ticket.direccionIp.navegador = this.browser.browser;
-    this._ticketService.countTicket().subscribe(
-      response => {
-        this.responseServer = response;
-        this.ticket.idTicket = this.responseServer.count + 1;
-        this.continueCreateTicket();
-      },error => {
-        this._toastService.show(CONSTANT.messageToast.TICKET_ERROR, 4000, CONSTANT.Styles.Error);
-      }
-    )
-  }
-
-  private continueCreateTicket() {
-
+    this.ticket.idTicket = this.refTicket ? this.refTicket : 0;
     this._ticketService.createTiket(this.ticket).subscribe(
       response =>{
         this.responseServer = response;
