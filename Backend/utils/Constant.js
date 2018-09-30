@@ -145,10 +145,10 @@ const constant ={
 	urls:{
 		URL_REPORT_BILLS:'http://davizco-tech.es:5488/api/report',
 		CHANGE_IP:'/../template/changeIp.html',
-		//PRODUCT_IMG_ORIGINAL:'./uploadFiles/products/original/',// para linux
-		PRODUCT_IMG_ORIGINAL:'./Backend/uploadFiles/products/original/', //para Windows
-		PRODUCT_IMG_RESIZE:'./Backend/uploadFiles/products/resize/' //para windows
-		//PRODUCT_IMG_RESIZE:'./uploadFiles/products/resize/'// para linux
+		PRODUCT_IMG_ORIGINAL:'./uploadFiles/products/original/',// para linux
+		// PRODUCT_IMG_ORIGINAL:'./Backend/uploadFiles/products/original/', //para Windows
+		// PRODUCT_IMG_RESIZE:'./Backend/uploadFiles/products/resize/' //para windows
+		PRODUCT_IMG_RESIZE:'./uploadFiles/products/resize/'// para linux
 	}
 }
 module.exports = constant

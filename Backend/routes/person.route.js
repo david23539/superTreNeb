@@ -3,8 +3,8 @@ const express = require('express')
 const api = express.Router()
 const personController = require('../controller/persona.controller')
 const multipart = require('connect-multiparty')
-const md_upload = multipart({uploadDir:'./Backend/uploadFiles/products/original'}) //para windows
-//const md_upload = multipart({uploadDir:'./uploadFiles/products/original'}) //para linux
+// const md_upload = multipart({uploadDir:'./Backend/uploadFiles/products/original'}) //para windows
+const md_upload = multipart({uploadDir:'./uploadFiles/products/original'}) //para linux
 const md_auth = require('../middleware/autenticate.middleware')
 
 api.post('/getCodeRecover', personController.sendCodeActivation)

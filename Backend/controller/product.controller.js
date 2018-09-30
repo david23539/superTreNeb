@@ -275,8 +275,8 @@ function getProductByCode(req, res){
 
 function getImageResizeFile(req, res) {
 	const imageFile = req.params.imageFile;
-	//const path_file = './uploadFiles/products/resize/'+imageFile   //para linux
-	const path_file = './Backend/uploadFiles/products/resize/'+imageFile;   //para windows
+	const path_file = './uploadFiles/products/resize/'+imageFile   //para linux
+	// const path_file = './Backend/uploadFiles/products/resize/'+imageFile;   //para windows
 
 	sendImageFile(path_file, res)
 }
@@ -285,8 +285,8 @@ function getImageResizeFile(req, res) {
 
 function getImageOriginalFile(req, res) {
 	const imageFile = req.params.imageFile
-	//const path_file = './uploadFiles/products/original/'+imageFile //para linux
-	const path_file = './Backend/uploadFiles/products/original/'+imageFile //para windows
+	const path_file = './uploadFiles/products/original/'+imageFile //para linux
+	// const path_file = './Backend/uploadFiles/products/original/'+imageFile //para windows
 
 	sendImageFile(path_file, res)
 }
