@@ -16,7 +16,7 @@ function validationProductDataComplete(product){
 
 
 function privateValidationProductDataNumberComplete(product){
-    return regexNumbers.test(product.stn_costProduct) && regexNumbers.test(product.stn_referenceProduct)
+    return regexNumbers.test(product.stn_costProduct)
         && regexNumbers.test(product.stn_ivaProduct) && regexNumbers.test(product.stn_marginProduct) &&
         regexNumbers.test(product.stn_stockProduct) && regexNumbers.test(product.stn_stockProductMin);
 }
@@ -58,10 +58,16 @@ function validationCodeProduct(code){
     }
 }
 
+function validationNameProduct(name){
+    return regexString.test(name);
+
+}
+
 
 
 module.exports = {
     validationProductDataComplete,
     validationCodeProduct,
-    checkListStockProduct
+    checkListStockProduct,
+    validationNameProduct
 };

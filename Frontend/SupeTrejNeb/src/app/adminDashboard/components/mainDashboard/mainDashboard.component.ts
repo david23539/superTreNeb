@@ -352,10 +352,14 @@ export class MainDashboardComponent implements OnInit, OnDestroy {
 
   }
 
-  getProductByScannerBar(code){
+  getProductByScannerBar(code, name = null){
     if(CONSTANT.hotkeys.indexOf(code) === -1) {
       this.barCode = code;
-      this._productService.getProductByCode(code).subscribe(
+      const data_IN = {
+        code:code,
+        name:name
+      };
+      this._productService.getProductByCode(data_IN).subscribe(
         response => {
           this.responseServer = response;
           if (this.responseServer.message === CONSTANT.ResponseServers.InvalidParams) {

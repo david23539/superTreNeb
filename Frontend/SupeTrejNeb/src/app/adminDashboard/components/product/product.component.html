@@ -92,7 +92,7 @@
 
           <div class="input-field col s12 l3 pink-text">
             <i class="material-icons prefix ">local_offer</i>
-            <input id="refProduct" placeholder="Only Numbers" name="refProduct" #refProduct="ngModel" readonly (keypress)="prueba($event)" autocomplete="false" [(ngModel)]="productModel_IN.dataProduct.refProd" mz-tooltip [tooltip]=TOLLTIP_REF_PRODUCT (blur)="validateVisualForm('ref')" type="text" [class]="classStyleFormRef" required>
+            <input id="refProduct" placeholder="Only Numbers" name="refProduct" #refProduct="ngModel" readonly (keypress)="prueba($event)" autocomplete="false" [(ngModel)]="productModel_IN.dataProduct.refProd" mz-tooltip [tooltip]=TOLLTIP_REF_PRODUCT (blur)="validateVisualForm('ref')" type="text" [class]="classStyleFormRef">
             <label class="active" for="refProduct">{{REF}}</label>
           </div>
         </div>

@@ -37,7 +37,7 @@
     <div class="card-panel white">
       <div class="row">
         <div class="col l6" *ngFor="let item of arrays">
-          <img (click)="getProductByScannerBar(item.reference)" mz-tooltip [tooltip]="item.name" class="circle avatar" src="{{url+'getImageResize/'+item.image}}"/>
+          <img (click)="getProductByScannerBar(item.reference, item.name)" mz-tooltip [tooltip]="item.name" class="circle avatar" src="{{url+'getImageResize/'+item.image}}"/>
         </div>
       </div>
     </div>
@@ -205,7 +205,7 @@
 
   <div class="modal-footer">
     <button  class="btn modal-action modal-close waves-effect waves-green btn-flat">Cancelar</button>
-    <button  class="btn modal-action modal-close waves-effect waves-green btn-flat" (click)="checkStock(); shoppingList=[];  totalItemPrice=0; payMoney=0; returnPay=0">No</button>
+    <button  class="btn modal-action modal-close waves-effect waves-green btn-flat" (click)="createTicket();checkStock(); shoppingList=[];  totalItemPrice=0; payMoney=0; returnPay=0">No</button>
     <button  class="btn modal-action modal-close waves-effect waves-green btn-flat" (click)="createTicket();printTickets(); checkStock(); shoppingList=[]; totalItemPrice=0; payMoney=0; returnPay=0">Si</button>
   </div>
 </div>

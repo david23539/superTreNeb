@@ -39,8 +39,8 @@ app.disable('x-powered-by');
 
 //configurar cabeceras y cors
 app.use((req,res,next)=>{
-	// res.header('Access-Control-Allow-Origin', '159.89.25.242');
-	res.header('Access-Control-Allow-Origin', '*');
+	res.header('Access-Control-Allow-Origin', '159.89.25.242');
+	// res.header('Access-Control-Allow-Origin', '*');
 	res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method')
 	res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
 	res.header('Allow', 'GET, POST, PUT, DELETE')
@@ -48,7 +48,7 @@ app.use((req,res,next)=>{
 });
 
 //rutas base
-//app.use('/', express.static('client', {redirect:false}))
+app.use('/', express.static('client', {redirect:false}))
 app.use('/api', user_routes)
 app.use('/api', person_router)
 app.use('/api', direcctionIp_router)
@@ -60,9 +60,9 @@ app.use('/api', bill_router)
 app.use('/api', notification_router)
 app.use('/api', ticket_router);
 
-//app.get('*', function(req, res, next){
-//	res.sendFile(path.resolve('client/index.html'))
-//});
+app.get('*', function(req, res, next){
+	res.sendFile(path.resolve('client/index.html'))
+});
 
 app.use(compression());
 

@@ -256,9 +256,10 @@ function getDetailProduct(req, res){
 }
 
 function getProductByCode(req, res){
-	let params_IN = req.params.codeProduct;
-	if(validationProduct.validationCodeProduct(params_IN)){
-		ProductModel.findOne({stn_referenceProduct:params_IN, stn_deleteProduct: false}, (err, product_OUT)=>{
+	let params_IN = req.params;
+
+	if(params_IN.codeProduct && validationProduct.validationCodeProduct(params_IN.codeProduct)){ // si viene el codigo
+		ProductModel.findOne({stn_referenceProduct:params_IN.codeProduct, stn_deleteProduct: false}, (err, product_OUT)=>{
 			if(err){
                 res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PRODUCT_GET_ERROR});
 
@@ -268,9 +269,20 @@ function getProductByCode(req, res){
                 res.status(constantFile.httpCode.PETITION_CORRECT).send({products: adapterProduct.AdapterProductByCode(product_OUT)});
 			}
 		});
-	}else{
-		paramsIvalids(res);
-	}
+	}else if(params_IN.name && validationProduct.validationNameProduct(params_IN.name)){ // si viene el nombre y no el codigo
+        ProductModel.findOne({stn_nameProduct:params_IN.name, stn_deleteProduct: false}, (err, product_OUT)=>{
+            if(err){
+                res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PRODUCT_GET_ERROR});
+
+            }else if(!product_OUT){
+                res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.NO_PRODUCT_AVAIBLE});
+            }else{
+                res.status(constantFile.httpCode.PETITION_CORRECT).send({products: adapterProduct.AdapterProductByCode(product_OUT)});
+            }
+        });
+	} else {
+        paramsIvalids(res);
+    }
 }
 
 function getImageResizeFile(req, res) {

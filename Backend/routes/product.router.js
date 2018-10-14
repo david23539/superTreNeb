@@ -20,7 +20,7 @@ api.get('/countProducts', md_auth.ensureAuth, productController.countProduct);
 api.get('/getUniqueProduct/:id', md_auth.ensureAuth, productController.getDetailProduct);
 api.get('/getImageResize/:imageFile', productController.getImageResizeFile);
 api.get('/getImageOriginal/:imageFile', productController.getImageOriginalFile);
-api.get('/getProductByCode/:codeProduct', productController.getProductByCode);
+api.get('/getProductByCode/:codeProduct/:name', productController.getProductByCode);
 api.delete('/deleteProduct/:id', md_auth.ensureAuth, productController.deletedProduct);
 
 
