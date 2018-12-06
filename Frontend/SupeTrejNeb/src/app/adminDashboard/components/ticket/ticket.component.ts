@@ -86,7 +86,15 @@ export class TicketComponent implements OnInit {
         }else if(this.responseServer.message === CONSTANT.ResponseServers.No_Data){
           this.toastService.show(CONSTANT.ResponseServers.No_Data, 4000, CONSTANT.Styles.Info);
         }else {
-          this.bodyTable = this.responseServer.ticket
+          this.bodyTable = this.responseServer.ticket.map((item) =>{
+              return {
+                'date': item.date,
+                'number': item.number,
+                'price': item.price.toFixed(2),
+                'shopping': item.shopping
+              }
+            }
+          )
         }
       },error =>{
         this.toastService.show(CONSTANT.messageToast.TICKET_ERROR, 4000, CONSTANT.Styles.Error);

@@ -9,10 +9,18 @@ function adapterTicket(paramIN) {
     let totalPrice = 0;
     let arrayShopping = [];
     for (let item of paramIN.shoppingList){
-        shopingList.stn_nameProduct = item.product;
+        arrayShopping.push({
+            'stn_nameProduct' : item.product,
+            'stn_quantityProduct' : item.quantity,
+            'stn_unitPrice' : item.finalPrice
+        });
+
+
+
+        /*shopingList.stn_nameProduct = item.product;
         shopingList.stn_quantityProduct = item.quantity;
         shopingList.stn_unitPrice = item.finalPrice;
-        arrayShopping.push(shopingList);
+        arrayShopping.push(shopingList);*/
         totalPrice += item.finalPrice * item.quantity;
     }
     ticketModel.stn_shoppingList = arrayShopping;
