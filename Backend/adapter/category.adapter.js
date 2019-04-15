@@ -7,7 +7,6 @@ function categoryDataAdapter(categoryParams) {
 	category.stn_nameCategory = categoryParams.dataCategory.nameCat
 	category.stn_descriptionCategory = categoryParams.dataCategory.descriptionCat
 	category.stn_ivaCategory = categoryParams.dataCategory.ivaCat
-	// category._doc._id = categoryParams.identifier.id
 	return category
 
 
