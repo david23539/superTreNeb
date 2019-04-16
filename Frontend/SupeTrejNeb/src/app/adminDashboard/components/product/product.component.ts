@@ -182,6 +182,7 @@ export class ProductComponent implements OnInit {
     $('.modal').modal();
     this.getProducts(1)
     this.checkCodeBar();
+    this.getAllCategories();
   }
 
 
@@ -212,6 +213,16 @@ export class ProductComponent implements OnInit {
     )
   }
 
+  purgueProducts() {
+    this._productService.purgeProducts().subscribe(
+      response =>{
+        this.toastService.show(CONSTANT.messageToast.PRODUCT_DELETED_SUCCESS, 4000, CONSTANT.Styles.Success);
+        this.getProducts(1);
+      },error =>{
+        this.toastService.show(CONSTANT.messageToast.PRODUCT_ERROR, 4000, CONSTANT.Styles.Error);
+      }
+    )
+  }
 
   validateVisualForm(value){
     switch (value){
@@ -331,6 +342,19 @@ export class ProductComponent implements OnInit {
           this.responseServer = response;
           this.categoryObject_OUT = this.responseServer.categoryObject;
         },error=>{
+          this.toastService.show(CONSTANT.messageToast.PRODUCT_ERROR, 4000, CONSTANT.Styles.Error);
+        }
+      )
+    }
+  }
+
+  getProductsByCategories(id) {
+    if(this.selectItemCategory) {
+      this._productService.getProductByCategory(this.categoryObject_OUT[id].id).subscribe(
+        response => {
+          this.responseServer = response;
+          this.bodyTable = this.responseServer.products
+        }, error => {
           this.toastService.show(CONSTANT.messageToast.PRODUCT_ERROR, 4000, CONSTANT.Styles.Error);
         }
       )

@@ -17,7 +17,9 @@ api.get('/getProductFavorites', md_auth.ensureAuth, productController.getFavorit
 api.post('/uploadImageProduct/:id', [md_auth.ensureAuth, md_upload], productController.updateProductImage);
 api.get('/filterProducts/:key', md_auth.ensureAuth, productController.filterProduct);
 api.get('/countProducts', md_auth.ensureAuth, productController.countProduct);
+api.get('/purgeProducts', md_auth.ensureAuth, productController.purgeProducts);
 api.get('/getUniqueProduct/:id', md_auth.ensureAuth, productController.getDetailProduct);
+api.get('/getProductByCategory/:id', md_auth.ensureAuth, productController.getProductByCategory);
 api.get('/getImageResize/:imageFile', productController.getImageResizeFile);
 api.get('/getImageOriginal/:imageFile', productController.getImageOriginalFile);
 api.get('/getProductByCode/:codeProduct/:name', productController.getProductByCode);

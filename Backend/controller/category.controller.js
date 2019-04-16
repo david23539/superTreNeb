@@ -4,6 +4,7 @@ const categoryAdapter = require('../adapter/category.adapter')
 const categoryValidation = require('../Validation/category.validation')
 const constantFile = require('../utils/Constant')
 const auditoriaController = require('./saveLogs.controller')
+const productController = require('./product.controller')
 
 
 /*Funcion para crear una categoria*/
@@ -67,13 +68,20 @@ function updateCategory(req, res){
 function deletedCategory(req, res){
 	const categoryId = req.params.id
 	if(categoryValidation.validateId(categoryId)){
-		CategoryModel.findByIdAndRemove(categoryId, (err, categoryRemoved)=>{
-			if(err || !categoryRemoved){
+		productController.deletedProductsByCategory(categoryId, (err, response) => {
+			if (err) {
 				auditoriaController.saveLogsData(req.user.name,err, req.connection.remoteAddress,'undefined')
 				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.CATEGORY_DELETE_ERROR})
-			}else{
-				auditoriaController.saveLogsData(req.user.name,constantFile.functions.CATEGORY_DELETE_SUCCESS, req.connection.remoteAddress, 'undefined')
-				res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.CATEGORY_DELETE_SUCCESS})
+			} else {
+				CategoryModel.findByIdAndRemove(categoryId, (err, categoryRemoved)=>{
+					if(err || !categoryRemoved){
+						auditoriaController.saveLogsData(req.user.name,err, req.connection.remoteAddress,'undefined')
+						res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.CATEGORY_DELETE_ERROR})
+					}else{
+						auditoriaController.saveLogsData(req.user.name,constantFile.functions.CATEGORY_DELETE_SUCCESS, req.connection.remoteAddress, 'undefined')
+						res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.CATEGORY_DELETE_SUCCESS})
+					}
+				})
 			}
 		})
 	}else{

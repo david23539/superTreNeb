@@ -108,7 +108,7 @@ export const CONSTANT = {
     SelectResponsible: "Responsable",
     SelectContact: "Persona de Contacto",
     Control_Input_Required: "El campo debe estar informado",
-    Confirm_Deleted_Category: "¿Estas seguro que quieres eliminar la categoría?",
+    Confirm_Deleted_Category: "¿Estas seguro que quieres eliminar la categoría?, Si la elimina se eliminarán todos los productos asociados a ella",
     Confirm_Deleted_Provider: "¿Estas seguro que quieres eliminar el proveedor?",
     Confirm_Deleted_Person: "¿Estas seguro que quieres eliminar la persona?",
     Confirm_Deleted_Bill: "¿Estas seguro que quieres eliminar la factura?",

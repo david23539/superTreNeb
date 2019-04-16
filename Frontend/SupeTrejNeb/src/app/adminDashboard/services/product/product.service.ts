@@ -36,10 +36,22 @@ export class ProductService {
     return this._http.post(this.url+'createProduct', param, {headers:header})
   }
 
+  purgeProducts() {
+    this.token = this._loginService.getToken();
+    let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
+    return this._http.get(this.url+'purgeProducts',{headers:header})
+  }
+
   filterProduct(keyWords){
     this.token = this._loginService.getToken();
     let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
     return this._http.get(this.url+'filterProducts/'+ keyWords,  {headers:header})
+  }
+
+  getProductByCategory(idCategory) {
+    this.token = this._loginService.getToken();
+    let header = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': this.token});
+    return this._http.get(this.url+'getProductByCategory/'+ idCategory,  {headers:header})
   }
 
   updateProduct(product_IN){

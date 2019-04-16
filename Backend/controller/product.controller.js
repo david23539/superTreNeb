@@ -167,6 +167,45 @@ function getProductAllPagination(req, res) {
 	}
 }
 
+function purgeProducts (req, res) {
+	ProductModel.find().populate({path:'stn_categoryFk'}).exec((err , response) => {
+		if(err) {
+			auditoriaController.saveLogsData(req.user.name,err, params.direccionIp.direccionData, params.direccionIp.navegador);
+			res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PRODUCT_GET_ERROR});
+		} else if (response.length === 0) {
+			res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.NO_PRODUCT_AVAIBLE});
+		} else {
+			let productRemove = [];
+			for(let i of response) {
+				if (!i._doc.stn_categoryFk) {
+					ProductModel.findByIdAndRemove(i._id)
+				}
+			}
+			res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.WORKING_IN_PURGUE_PRODUCTS})
+
+
+	}
+	})
+}
+
+function getProductByCategory(req, res) {
+	const categoryId = req.params.id;
+	if(validationGlobal.validateId(categoryId)) {
+		ProductModel.find({stn_categoryFk:categoryId}).populate({path:'stn_categoryFk'}).exec((err, response) => {
+			if (err) {
+				auditoriaController.saveLogsData(req.user.name,err, params.direccionIp.direccionData, params.direccionIp.navegador);
+				res.status(constantFile.httpCode.INTERNAL_SERVER_ERROR).send({message: constantFile.functions.PRODUCT_GET_ERROR});
+			} else if (response.length === 0){
+			res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.NO_PRODUCT_AVAIBLE});
+			} else {
+				res.status(constantFile.httpCode.PETITION_CORRECT).send({products: adapterProduct.AdapterListProduct_OUT(response)});
+			}
+		})
+	} else {
+		paramsIvalids(res)
+	}
+}
+
 function getFavoriteProduct(req, res){
     ProductModel.find({stn_deleteProduct: false, stn_favorite: true }).populate({path:'stn_categoryFk'}).exec((err, productList_OUT)=>{
         if(err){
@@ -303,6 +342,10 @@ function getImageOriginalFile(req, res) {
 	sendImageFile(path_file, res)
 }
 
+function deletedProductsByCategory( categoryId, cb) {
+	ProductModel.deleteMany({stn_categoryFk: categoryId}, cb)
+}
+
 function sendImageFile(path_file, res) {
 	fs.access(path_file, function (err) {
 		if (!err) {
@@ -332,4 +375,7 @@ module.exports ={
     getProductByCode,
     getFavoriteProduct,
     changeStockProduct,
+	deletedProductsByCategory,
+	getProductByCategory,
+	purgeProducts
 };

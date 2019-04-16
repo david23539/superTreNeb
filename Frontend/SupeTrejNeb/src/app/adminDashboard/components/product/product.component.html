@@ -2,10 +2,29 @@
   <div class="col s12 l12">
     <div class="card-panel white">
       <h4 class="card-title pink-text">{{TITLE}}</h4>
-      <div class="input-field pink-text s6 l6">
+      <div class="input-field pink-text col s4 l4">
         <i class="material-icons prefix">search</i>
-        <input id="searchCategory"  [(ngModel)]="searchResult" (keyup)="filterItem()"  type="text" >
-        <label for="searchCategory">{{ProductSearch}}</label>
+        <input id="searchProduct"  [(ngModel)]="searchResult" (keyup)="filterItem()"  type="text" >
+        <label for="searchProduct">{{ProductSearch}}</label>
+      </div>
+      <div class="input-field pink-text col s2 l2">
+        <button class="btn col s12 light-blue darken-4 waves-effect waves-light" (click)="purgueProducts()">Purgar Productos</button>
+      </div>
+      <div class="input-field pink-text col s6 l6">
+        <mz-select-container>
+          <select mz-select
+                  id="options-category"
+                  [label]=CATEGORY
+                  [placeholder]=CATEGORY
+                  [(ngModel)]="selectItemCategory"
+                  name="category"
+                  (change)="getProductsByCategories(selectItemCategory)"
+                  >
+            <option *ngFor="let item of categoryObject_OUT; let i = index" [value]= i>
+              {{item.name}}
+            </option>
+          </select>
+        </mz-select-container>
       </div>
       <tableComponenets [headsTable]="headsTables" [bodyTableContent]=bodyTable (paginationParams)="getProductsByPagination($event);" [countRecord]="countProduct"  (changeItem)="addUpdateProduct($event)"></tableComponenets>
     </div>
