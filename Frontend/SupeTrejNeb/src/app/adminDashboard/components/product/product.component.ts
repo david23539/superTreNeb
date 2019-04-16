@@ -299,7 +299,7 @@ export class ProductComponent implements OnInit {
       this.buttonSaveUpdate = true;
       this.initStateModal();
       this.getAllCategories();
-
+      this.productModel_OUT.identifier.id = event.items.id;
     }else if(event.operation === CONSTANT.OperationTables.update && event.items){
       this.operationType = CONSTANT.OperationTables.update;
       $('#productModal').modal('open');
@@ -308,6 +308,7 @@ export class ProductComponent implements OnInit {
       this.initStateModal();
       this.getAllCategories();
       this.setProperties(event.items);
+      this.productModel_OUT.identifier.id = event.items.id;
     }else if(event.operation === CONSTANT.OperationTables.delete && event.items){
       $('#deletedProduct').modal('open');
       this.productModel_OUT.identifier.id = event.items.id;
