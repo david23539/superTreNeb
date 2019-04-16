@@ -178,7 +178,11 @@ function purgeProducts (req, res) {
 			let productRemove = [];
 			for(let i of response) {
 				if (!i._doc.stn_categoryFk) {
-					ProductModel.findByIdAndRemove(i._id)
+					ProductModel.findByIdAndRemove(i._id, (err, responseRemove) => {
+						if(err) {
+							auditoriaController.saveLogsData(req.user.name,err, params.direccionIp.direccionData, params.direccionIp.navegador);
+						}
+					})
 				}
 			}
 			res.status(constantFile.httpCode.PETITION_CORRECT).send({message: constantFile.functions.WORKING_IN_PURGUE_PRODUCTS})
