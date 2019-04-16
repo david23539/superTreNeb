@@ -161,7 +161,7 @@ export const CONSTANT = {
     "ContextMenu", "Control", "AltGraph", "Insert", "Home", "PageUp", "PageDown", "End", "Delete"],
   headCategory:["Nombre", "Descripción", "IVA"],
   headStock:["Producto", "Stock Minimo", "Stock Actual"],
-  headTicket:["Nº Referencia", "Fecha", "Precio"],
+  headTicket:["Fecha","Nº Referencia", "Precio"],
   shoppingList:["Precio", "Cantidad", "Producto"],
   headProduct:["Nombre", "Descripción", "Coste", "Referencia", "Iva", "Margen", "Stock","Stock Min.","Categoría", "Imagen"],
   headBills:["Cliente", "Estado", "Tipo", "Número", "Fecha Creación","F.Cierre, F.Modificación, F.Pago","Importe"],
